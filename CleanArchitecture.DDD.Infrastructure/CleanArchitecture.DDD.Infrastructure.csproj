@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CleanArchitecture.DDD.Application\CleanArchitecture.DDD.Application.csproj" />
+  </ItemGroup>
+
 </Project>
