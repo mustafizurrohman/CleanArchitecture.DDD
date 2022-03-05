@@ -10,4 +10,9 @@
     <ProjectReference Include="..\CleanArchitecture.DDD.Core\CleanArchitecture.DDD.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="10.3.6" />
+    <PackageReference Include="ValueOf" Version="2.0.31" />
+  </ItemGroup>
+
 </Project>
