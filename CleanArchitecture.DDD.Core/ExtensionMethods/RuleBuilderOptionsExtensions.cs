@@ -1,23 +1,22 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.Validators;
 
-namespace CleanArchitecture.DDD.Domain.Extensions;
+namespace CleanArchitecture.DDD.Core.ExtensionMethods;
 
-[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-public static class ValidatorExtensions
+public static class RuleBuilderOptionsExtensions
 {
     /// <summary>
     /// Checks if a name is valid
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="rule"></param>
+    /// <param name="maxLength"></param>
     /// <returns></returns>
-    public static IRuleBuilderOptions<T, string> MustBeValidName<T>(this IRuleBuilder<T, string> rule)
+    public static IRuleBuilderOptions<T, string> MustBeValidName<T>(this IRuleBuilder<T, string> rule, int maxLength = 30)
     {
         return rule
             .MustNotBeNullOrEmpty()
-            .MaximumLength(30)
+            .MaximumLength(maxLength)
             .WithMessage("'{PropertyName}' cannot have more than 30 characters")
             .NotContainNumbersOrSpecialCharacters()
             .MustNotStartOrEndWithWhiteSpace()
@@ -48,7 +47,7 @@ public static class ValidatorExtensions
     /// <typeparam name="T"></typeparam>
     /// <param name="ruleBuilder"></param>
     /// <returns></returns>
-    public static IRuleBuilderOptions<T, string> NotStartWithWhiteSpace<T>(this IRuleBuilder<T, string> ruleBuilder)     
+    private static IRuleBuilderOptions<T, string> NotStartWithWhiteSpace<T>(this IRuleBuilder<T, string> ruleBuilder)     
     {         
         return ruleBuilder.Must(m => m != null && !m.StartsWith(" "))
             .WithMessage("'{PropertyName}' must not start with whitespace.");     
@@ -60,7 +59,7 @@ public static class ValidatorExtensions
     /// <typeparam name="T"></typeparam>
     /// <param name="ruleBuilder"></param>
     /// <returns></returns>
-    public static IRuleBuilderOptions<T, string> NotEndWithWhiteSpace<T>(this IRuleBuilder<T, string> ruleBuilder)     
+    private static IRuleBuilderOptions<T, string> NotEndWithWhiteSpace<T>(this IRuleBuilder<T, string> ruleBuilder)     
     {         
         return ruleBuilder.Must(m => m != null && !m.EndsWith(" "))
             .WithMessage("'{PropertyName}' must not end with whitespace.");     
@@ -72,7 +71,7 @@ public static class ValidatorExtensions
     /// <typeparam name="T"></typeparam>
     /// <param name="ruleBuilder"></param>
     /// <returns></returns>
-    public static IRuleBuilderOptions<T, string> MustNotStartOrEndWithWhiteSpace<T>(this IRuleBuilder<T, string> ruleBuilder)
+    private static IRuleBuilderOptions<T, string> MustNotStartOrEndWithWhiteSpace<T>(this IRuleBuilder<T, string> ruleBuilder)
     {
         return ruleBuilder.NotStartWithWhiteSpace()
             .NotEndWithWhiteSpace();
@@ -84,7 +83,7 @@ public static class ValidatorExtensions
     /// <typeparam name="T"></typeparam>
     /// <param name="ruleBuilder"></param>
     /// <returns></returns>
-    public static IRuleBuilderOptions<T, string> NotContainNumbersOrSpecialCharacters<T>(this IRuleBuilder<T, string> ruleBuilder)
+    private static IRuleBuilderOptions<T, string> NotContainNumbersOrSpecialCharacters<T>(this IRuleBuilder<T, string> ruleBuilder)
     {
         return ruleBuilder.Must(name => !name.Any(char.IsDigit))
             .WithMessage("'{PropertyName}' must not contain numbers");
@@ -96,10 +95,11 @@ public static class ValidatorExtensions
     /// <typeparam name="T"></typeparam>
     /// <param name="ruleBuilder"></param>
     /// <returns></returns>
-    public static IRuleBuilderOptions<T, string> MustNotContainConsequitiveSpaces<T>(this IRuleBuilder<T, string> ruleBuilder)
+    private static IRuleBuilderOptions<T, string> MustNotContainConsequitiveSpaces<T>(this IRuleBuilder<T, string> ruleBuilder)
     {
         return ruleBuilder.Must(name => !name.Contains("  "))
             .WithMessage("'{PropertyName}' must mot contain more than 1 consequitive spaces");
         
     }
+
 }

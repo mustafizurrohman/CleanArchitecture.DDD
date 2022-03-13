@@ -1,5 +1,7 @@
 ﻿
 
+using CleanArchitecture.DDD.Core.ExtensionMethods;
+
 namespace CleanArchitecture.DDD.Domain.ValueObjects;
 
 /// <summary>
