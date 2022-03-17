@@ -1,16 +1,21 @@
-using CleanArchitecture.DDD.API.ExtensionMethods;
-using CleanArchitecture.DDD.Core;
-using CleanArchitecture.DDD.Core.ExtensionMethods;
-using CleanArchitecture.DDD.Domain.ValueObjects;
-using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.EntityFrameworkCore;
-
 // Add services to the container
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog((hostBuilderContext, loggerContext) =>
+{
+    loggerContext.WriteTo.Console();
+    loggerContext.Enrich.WithCorrelationId();
+    loggerContext.Enrich.WithCorrelationIdHeader();
+    loggerContext.Enrich.WithMachineName();
+    loggerContext.Enrich.WithProcessId();
+    loggerContext.Enrich.WithProcessName();
+});
+
 var connectionString = builder.Configuration.GetConnectionString("DDD_Db");
+
+if (string.IsNullOrWhiteSpace(connectionString))
+    throw new Exception("Database conntection must be specified.");
+
 builder.Services.AddDbContext<DomainDbContext>(options =>
 {
     options.UseSqlServer(connectionString);
@@ -27,6 +32,7 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddSingleton<IValidator<Name>, NameValidator>();
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CoreAssemblyMarker>());
 builder.Services.AddValidatorsFromAssemblies(new[] { typeof(CoreAssemblyMarker).Assembly });
@@ -41,6 +47,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Must be configurable in a real application
+app.UseCors(options =>
+{
+    options.AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowAnyOrigin();
+});
+
 app.MigrateDatabase();
 
 app.UseHttpsRedirection();
@@ -48,5 +62,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseSerilogRequestLogging();
 
 app.Run();

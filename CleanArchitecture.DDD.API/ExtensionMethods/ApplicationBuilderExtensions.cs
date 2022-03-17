@@ -1,7 +1,4 @@
-﻿using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
-using Microsoft.EntityFrameworkCore;
-
-namespace CleanArchitecture.DDD.API.ExtensionMethods;
+﻿namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
 public static class ApplicationBuilderExtensions
 {
@@ -19,17 +16,17 @@ public static class ApplicationBuilderExtensions
         using var context = serviceScope.ServiceProvider.GetService<DomainDbContext>();
         try
         {
-            //Log.Information("Starting database migration ...");
+            Log.Information("Starting database migration ...");
             context?.Database.Migrate();
         }
         catch (Exception ex)
         {
-            //Log.Error("An exception occurred during migrating database ...");
-            //Log.Error(ex.ToString());
+            Log.Error("An exception occurred during migrating database ...");
+            Log.Error(ex.ToString());
         }
         finally
         {
-            //Log.Information("Database Migration completed ...");
+            Log.Information("Database Migration completed ...");
         }
 
     }

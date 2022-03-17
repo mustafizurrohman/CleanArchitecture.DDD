@@ -1,5 +1,3 @@
-using CleanArchitecture.DDD.Domain.ValueObjects;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.DDD.API.Controllers;

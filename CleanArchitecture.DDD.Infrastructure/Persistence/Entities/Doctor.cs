@@ -13,7 +13,7 @@ public sealed class Doctor
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("ID")]
-    public DoctorID DoctorID { get; set; }
+    public Guid DoctorID { get; set; }
 
     public Name Name { get; set; }
 

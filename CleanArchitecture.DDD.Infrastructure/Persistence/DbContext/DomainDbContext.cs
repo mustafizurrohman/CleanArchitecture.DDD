@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
+﻿using System.Reflection;
+using CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using DatabaseContext = Microsoft.EntityFrameworkCore.DbContext;
 
@@ -16,4 +17,14 @@ public partial class DomainDbContext : DatabaseContext
     }
 
     public virtual DbSet<Doctor> Doctors { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
 }
