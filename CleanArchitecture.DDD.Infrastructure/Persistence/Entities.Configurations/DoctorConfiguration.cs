@@ -10,5 +10,7 @@ internal class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
         builder.HasKey(doc => doc.DoctorID);
 
         builder.OwnsOne(doc => doc.Name);
+
+        builder.Metadata.SetNavigationAccessMode(PropertyAccessMode.Field);
     }
 }

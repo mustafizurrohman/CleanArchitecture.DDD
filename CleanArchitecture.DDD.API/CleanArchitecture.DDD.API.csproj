@@ -11,11 +11,14 @@
 	  <ProjectCapability Include="DynamicFileNesting" />
 	  <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
 	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.4.0" />
+	  <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
 	  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.0-preview.2.22153.2" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-preview.2.22153.1">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
+	  <PackageReference Include="Scrutor" Version="4.1.0" />
+	  <PackageReference Include="Scrutor.AspNetCore" Version="3.3.0" />
 	  <PackageReference Include="Serilog.AspNetCore" Version="6.0.0-dev-00265" />
 	  <PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
 	  <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.1-dev-00787" />

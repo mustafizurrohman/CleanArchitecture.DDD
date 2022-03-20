@@ -6,3 +6,4 @@ global using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 global using FluentValidation;
 global using FluentValidation.AspNetCore;
 global using Microsoft.EntityFrameworkCore;
+global using MediatR;

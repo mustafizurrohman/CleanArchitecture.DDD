@@ -14,4 +14,11 @@
     <ProjectReference Include="..\CleanArchitecture.DDD.Domain\CleanArchitecture.DDD.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MediatR\Command\" />
+    <Folder Include="MediatR\Handlers\" />
+    <Folder Include="MediatR\PipelineBehaviours\" />
+    <Folder Include="MediatR\Queries\" />
+  </ItemGroup>
+
 </Project>

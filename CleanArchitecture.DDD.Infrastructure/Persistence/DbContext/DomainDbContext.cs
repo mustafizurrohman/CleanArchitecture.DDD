@@ -24,7 +24,7 @@ public partial class DomainDbContext : DatabaseContext
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
+    {      
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }
