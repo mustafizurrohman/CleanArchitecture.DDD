@@ -1,4 +1,5 @@
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
+using CleanArchitecture.DDD.API.ExtensionMethods;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.DDD.API.Controllers;
@@ -24,9 +25,8 @@ public class TestController : ControllerBase
         var validationResult = _nameValidator.Validate(name);
 
         if (validationResult.IsValid)
-        {
             return Ok();
-        }
+        
 
         var errors = validationResult.Errors
             .Select(x => x.ErrorMessage)
@@ -38,10 +38,7 @@ public class TestController : ControllerBase
     [HttpPost]
     public async  Task<IActionResult> CreateName([FromBody] Name name)
     {
-        var doctor = new Doctor()
-        {
-            Name = name
-        };
+        var doctor = Doctor.Create(name.Firstname, name.Middlename, name.Lastname);
 
         _dbContext.Doctors.Add(doctor);
         await _dbContext.SaveChangesAsync();
@@ -58,15 +55,31 @@ public class TestController : ControllerBase
         return Ok(doctors);
     }
 
+    
     // Test only
     [HttpGet("search")]
-    public async Task<IActionResult> Search([FromQuery] string? firstname, [FromQuery] string? middlename,
-        [FromQuery] string? lastname)
+    public async Task<IActionResult> Search([FromQuery] string? firstname, [FromQuery] string? lastname, [FromQuery] bool and = false, CancellationToken cancellationToken)
     {
-        var name = new Name(firstname, middlename, lastname);
+        var name = new Name(firstname ?? string.Empty, lastname ?? string.Empty);
 
-        var doctors = await _dbContext.Doctors.FirstOrDefaultAsync(doc => doc.Name == name);
+        var validationResult = _nameValidator.Validate(name);
+
+        if (!validationResult.IsValid && and)
+            return Ok();
+        
+
+        var doctors = await _dbContext.Doctors.AsNoTracking()
+            .SearchByName(name)
+            .ToListAsync(cancellationToken);        
+        
+        /*
+        var doctors2 = await _dbContext.Doctors.AsNoTracking()
+            .Search(doc => doc.Name == name)
+            .ToListAsync(cancellationToken)
+        */
         
         return Ok(doctors);
-    }
+    } 
+
+
 }

@@ -10,11 +10,25 @@ public partial struct DoctorID{}
 
 public sealed class Doctor
 {
+    private Guid _doctorID;
+    private Name _name;
+
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("ID")]
-    public Guid DoctorID { get; set; }
+    public Guid DoctorID => _doctorID;
 
-    public Name Name { get; set; }
+    public Name Name => _name;
+
+    public static Doctor Create(string firstname, string? middlename, string lastname)
+    {
+        var name = new Name(firstname, middlename, lastname);
+
+        return new Doctor
+        {
+            _doctorID = Guid.NewGuid(),
+            _name = name
+        };
+    }
 
 }

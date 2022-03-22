@@ -31,7 +31,7 @@ public static class WebExtensionBuilderExtensions
             #endif
         });
 
-        builder.Services.AddMediatR(typeof(CleanArchitecture.DDD.Application.ApplicationAssemblyMarker).Assembly);
+        builder.Services.AddMediatR(typeof(Application.ApplicationAssemblyMarker).Assembly);
 
         builder.Services.AddControllers().AddNewtonsoftJson();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

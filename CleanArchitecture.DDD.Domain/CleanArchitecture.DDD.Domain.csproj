@@ -15,4 +15,8 @@
     <PackageReference Include="ValueOf" Version="2.0.31" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Automapper\" />
+  </ItemGroup>
+
 </Project>
