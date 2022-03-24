@@ -58,7 +58,7 @@ public class TestController : ControllerBase
     
     // Test only
     [HttpGet("search")]
-    public async Task<IActionResult> Search([FromQuery] string? firstname, [FromQuery] string? lastname, [FromQuery] bool and = false, CancellationToken cancellationToken)
+    public async Task<IActionResult> Search(CancellationToken cancellationToken, [FromQuery] string? firstname, [FromQuery] string? lastname, [FromQuery] bool and = false)
     {
         var name = new Name(firstname ?? string.Empty, lastname ?? string.Empty);
 

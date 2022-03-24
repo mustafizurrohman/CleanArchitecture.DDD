@@ -20,6 +20,14 @@ public sealed class Doctor
 
     public Name Name => _name;
 
+    public Address Address { get; init; }
+    [ForeignKey("Address")]
+    public Guid AddressId;
+
+    public Doctor()
+    {
+    }
+
     public static Doctor Create(string firstname, string? middlename, string lastname)
     {
         var name = new Name(firstname, middlename, lastname);

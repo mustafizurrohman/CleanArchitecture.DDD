@@ -4,6 +4,7 @@ using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.DDD.Infrastructure.Migrations
 {
     [DbContext(typeof(DomainDbContext))]
-    partial class DomainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220324111851_added-address")]
+    partial class addedaddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,6 +40,9 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("DoctorID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("StreetAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -46,6 +52,9 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AddressID");
+
+                    b.HasIndex("DoctorID")
+                        .IsUnique();
 
                     b.ToTable("Addresses");
                 });
@@ -62,19 +71,22 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
 
                     b.HasKey("DoctorID");
 
-                    b.HasIndex("AddressId");
-
                     b.ToTable("Doctors");
+                });
+
+            modelBuilder.Entity("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Address", b =>
+                {
+                    b.HasOne("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Doctor", "Doctor")
+                        .WithOne("Address")
+                        .HasForeignKey("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Address", "DoctorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
                 });
 
             modelBuilder.Entity("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Doctor", b =>
                 {
-                    b.HasOne("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.OwnsOne("CleanArchitecture.DDD.Domain.ValueObjects.Name", "Name", b1 =>
                         {
                             b1.Property<Guid>("DoctorID")
@@ -99,9 +111,13 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
                                 .HasForeignKey("DoctorID");
                         });
 
-                    b.Navigation("Address");
-
                     b.Navigation("Name")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Doctor", b =>
+                {
+                    b.Navigation("Address")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -4,6 +4,7 @@ using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.DDD.Infrastructure.Migrations
 {
     [DbContext(typeof(DomainDbContext))]
-    partial class DomainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220324112140_removed-doctorid-from-address")]
+    partial class removeddoctoridfromaddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

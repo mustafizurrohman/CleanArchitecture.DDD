@@ -14,9 +14,9 @@ internal class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
 
         builder.OwnsOne(doc => doc.Name);
         builder.Navigation(doc => doc.Name).Metadata.SetField("_name");
-        // No backing field could be found for property 'Name.DoctorID'
-        // and the property does not have a getter.
 
+        builder.Navigation(doc => doc.Address)
+            .UsePropertyAccessMode(PropertyAccessMode.Property);
 
     }
 }

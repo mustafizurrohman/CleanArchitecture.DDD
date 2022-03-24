@@ -17,6 +17,7 @@ public partial class DomainDbContext : DatabaseContext
     }
 
     public virtual DbSet<Doctor> Doctors { get; set; }
+    public virtual DbSet<Address> Addresses { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

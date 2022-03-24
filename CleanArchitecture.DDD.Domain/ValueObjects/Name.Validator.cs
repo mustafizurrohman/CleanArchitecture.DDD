@@ -16,7 +16,7 @@ public class NameValidator : AbstractValidator<Name>
 
         When(prop => !string.IsNullOrEmpty(prop.Middlename), () =>
         {
-            RuleFor(prop => prop.Middlename)
+            RuleFor(prop => prop.Middlename ?? string.Empty)
                 .MustBeValidName();
         });
 
