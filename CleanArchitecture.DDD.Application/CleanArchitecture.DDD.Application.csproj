@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CleanArchitecture.DDD.Domain\CleanArchitecture.DDD.Domain.csproj" />
+    <ProjectReference Include="..\CleanArchitecture.DDD.Infrastructure\CleanArchitecture.DDD.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -7,3 +7,8 @@ global using FluentValidation;
 global using FluentValidation.AspNetCore;
 global using Microsoft.EntityFrameworkCore;
 global using MediatR;
+
+global using CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
+global using Microsoft.AspNetCore.Mvc;
+global using AutoMapper.QueryableExtensions;
+global using CleanArchitecture.DDD.Domain.DTOs;

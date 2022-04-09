@@ -34,6 +34,7 @@ public static class WebExtensionBuilderExtensions
             #endif
         });
 
+        builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         builder.Services.AddMediatR(typeof(Application.ApplicationAssemblyMarker).Assembly);
 
         builder.Services.AddControllers().AddNewtonsoftJson();

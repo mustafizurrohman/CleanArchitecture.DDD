@@ -6,19 +6,15 @@ namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
 
 public sealed class Address
 {
-    private string _streetAddress;
-    private string _zipCode;
-    private string _city;
-    private string _country;
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("ID")]
-    public Guid AddressID { get; init; }    
-    public string StreetAddress => _streetAddress;
-    public string ZipCode => _zipCode;
-    public string City => _city;
-    public string Country => _country;
+    public Guid AddressID { get; set; }    
+    public string StreetAddress { get; set; }
+    public string ZipCode { get; set; }
+    public string City { get; set; }
+    public string Country { get; set; }
 
     public Address()
     {
@@ -29,11 +25,20 @@ public sealed class Address
         return new Address
         {
             AddressID = Guid.NewGuid(),
-            _streetAddress = streetAddress,
-            _zipCode = zipCode,
-            _city = city,
-            _country = country
+            StreetAddress = streetAddress,
+            ZipCode = zipCode,
+            City = city,
+            Country = country
         };
+    }
+
+    public override string ToString()
+    {
+        var separator = ", ";
+
+        return StreetAddress + separator
+            + ZipCode + separator
+            + City + separator + Country;
     }
 
 }

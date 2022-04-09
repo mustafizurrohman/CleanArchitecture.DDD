@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -13,11 +13,8 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="FluentValidation" Version="10.4.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.0-preview.2.22153.1" />
     <PackageReference Include="ValueOf" Version="2.0.31" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Automapper\" />
   </ItemGroup>
 
 </Project>
