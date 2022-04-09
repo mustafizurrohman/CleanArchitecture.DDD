@@ -10,8 +10,6 @@ public partial struct DoctorID{}
 
 public sealed class Doctor
 {
-    //private Guid _doctorID;
-    private Name _name;
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -32,8 +30,7 @@ public sealed class Doctor
     {
         return new Doctor
         {
-            Name = Name.Copy(new Name(firstname, middlename, lastname)),
-            _name = Name.Copy(new Name(firstname, middlename, lastname))
+            Name = Name.Copy(new Name(firstname, middlename, lastname))
         };
     }
 
@@ -42,7 +39,6 @@ public sealed class Doctor
         var doc =  new Doctor
         {
             Name = Name.Copy(name),
-            _name = Name.Copy(name),
             Address = address
         };
 
@@ -55,8 +51,8 @@ public sealed class Doctor
         {
             // This is not allowed: Limitation of EF Core
             // Name = name,
+            // Because EF Core teats owned objects and PK-FK relations equaly
             Name = Name.Copy(name),
-            _name = Name.Copy(name),
             AddressId = addressId
         };
 

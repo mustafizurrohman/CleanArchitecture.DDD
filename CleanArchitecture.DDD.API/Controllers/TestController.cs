@@ -149,5 +149,14 @@ public class TestController : ControllerBase
         return Ok();
 
     }
+
+    [HttpGet("compare/names")]
+    public IActionResult CompareNames(string firstname, string middlename, string lastname, CancellationToken cancellationToken)
+    {
+        var name1 = new Name(firstname, middlename, lastname);
+        var name2 = new Name(firstname, middlename, lastname);
+
+        return Ok(name1 == name2);
+    }
        
 }
