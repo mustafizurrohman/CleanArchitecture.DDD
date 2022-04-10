@@ -34,6 +34,6 @@ public record Name(string Firstname, string? Middlename, string Lastname)
        
     public static Name Copy(Name name)
     { 
-        return new Name(name);
+        return new Name(name.Firstname, name.Middlename ?? string.Empty, name.Lastname);
     }
 }

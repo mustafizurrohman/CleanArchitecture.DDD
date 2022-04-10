@@ -120,13 +120,12 @@ public class TestController : ControllerBase
 
                 return Doctor.Create(randomName, randomAddrGuid);
             })
-            .Where(doc => doc.Name.ToString().Length > 0)
             .ToList();
 
         await _dbContext.Doctors.AddRangeAsync(doctors, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);    
 
-        return Ok();
+        return Ok(await _dbContext.Doctors.CountAsync(cancellationToken));
     }
 
     [HttpPost("insert/address")]
