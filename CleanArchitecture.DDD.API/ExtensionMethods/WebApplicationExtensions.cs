@@ -9,7 +9,10 @@ public static class WebApplicationExtensions
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(c =>
+            {
+                c.DisplayRequestDuration();
+            });
         }
 
         // Must be configurable in a real application

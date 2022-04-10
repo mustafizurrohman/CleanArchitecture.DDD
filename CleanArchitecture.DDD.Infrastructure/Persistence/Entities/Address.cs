@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
 
 public sealed class Address
@@ -18,6 +17,16 @@ public sealed class Address
 
     public Address()
     {
+    }
+
+    public Address(Address address)
+    {
+        Create(address.StreetAddress, address.ZipCode, address.City, address.Country);
+    }
+
+    public static Address Copy(Address address)
+    {
+        return Create(address.StreetAddress, address.ZipCode, address.City, address.Country);
     }
 
     public static Address Create(string streetAddress, string zipCode, string city, string country)
@@ -40,5 +49,7 @@ public sealed class Address
             + ZipCode + separator
             + City + separator + Country;
     }
+
+
 
 }

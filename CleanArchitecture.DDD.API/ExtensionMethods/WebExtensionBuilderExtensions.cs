@@ -1,7 +1,4 @@
-﻿using CleanArchitecture.DDD.Infrastructure;
-using System.Reflection;
-
-namespace CleanArchitecture.DDD.API.ExtensionMethods;
+﻿namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
 public static class WebExtensionBuilderExtensions
 {

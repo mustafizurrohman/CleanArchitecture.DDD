@@ -9,20 +9,6 @@ internal class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
     {
         builder.HasKey(doc => doc.DoctorID);
 
-        //builder.Property(doc => doc.DoctorID)
-        //    .HasField("_doctorID")
-        //    .UsePropertyAccessMode(PropertyAccessMode.Field);
-
         builder.OwnsOne(doc => doc.Name);
-
-        //builder.Navigation(doc => doc.Name)
-        //    .HasField("_name")
-        //    .UsePropertyAccessMode(PropertyAccessMode.Field);
-
-        //builder.Navigation(doc => doc.Name).Metadata.SetField("_name");
-
-        //builder.Navigation(doc => doc.Address)
-        //    .UsePropertyAccessMode(PropertyAccessMode.Property);
-
     }
 }

@@ -70,6 +70,7 @@ public class TestController : ControllerBase
 
         var doctors = await _dbContext.Doctors.AsNoTracking()
             .SearchByName(name, and)
+            .ProjectTo<DoctorCityDTO>(_automapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
          
         return Ok(doctors);
@@ -104,10 +105,7 @@ public class TestController : ControllerBase
         var faker = new Faker();
 
         var names = Enumerable.Range(0, num)
-            .Select(_ =>
-            {
-                return new Name(faker.Name.FirstName(), faker.Name.LastName());
-            })
+            .Select(_ => new Name(faker.Name.FirstName(), faker.Name.LastName()))
             .ToArray();
 
         var addressIds = await _dbContext.Addresses
@@ -137,10 +135,7 @@ public class TestController : ControllerBase
         var faker = new Faker();
 
         var addresses = Enumerable.Range(0, num)
-            .Select(_ =>
-            {
-                return Address.Create(faker.Address.StreetName(), faker.Address.ZipCode(), faker.Address.City(), faker.Address.Country());
-            })
+            .Select(_ => Address.Create(faker.Address.StreetName(), faker.Address.ZipCode(), faker.Address.City(), faker.Address.Country()))
             .ToList();
 
         await _dbContext.Addresses.AddRangeAsync(addresses, cancellationToken);
