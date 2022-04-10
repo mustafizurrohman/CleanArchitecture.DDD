@@ -9,13 +9,13 @@ public class TestController : ControllerBase
 {
     private readonly IValidator<Name> _nameValidator;
     private readonly DomainDbContext _dbContext;
-    private readonly IMapper _automapper;
+    private readonly IMapper _autoMapper;
 
-    public TestController(IValidator<Name> nameValidator, DomainDbContext dbContext, IMapper automapper)
+    public TestController(IValidator<Name> nameValidator, DomainDbContext dbContext, IMapper autoMapper)
     {
         _nameValidator = nameValidator;
         _dbContext = dbContext;
-        _automapper = automapper;
+        _autoMapper = autoMapper;
     }
 
     [HttpGet]
@@ -62,15 +62,14 @@ public class TestController : ControllerBase
     {
         var name = new Name(firstname ?? string.Empty, lastname ?? string.Empty);
 
-        var validationResult = _nameValidator.Validate(name);
+        var validationResult = await _nameValidator.ValidateAsync(name, cancellationToken);
 
         if (!validationResult.IsValid && and)
             return Ok();
         
-
         var doctors = await _dbContext.Doctors.AsNoTracking()
             .SearchByName(name, and)
-            .ProjectTo<DoctorCityDTO>(_automapper.ConfigurationProvider)
+            .ProjectTo<DoctorCityDTO>(_autoMapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
          
         return Ok(doctors);
@@ -93,7 +92,7 @@ public class TestController : ControllerBase
     public async Task<IActionResult> Test(CancellationToken cancellationToken)
     {
         var results = await _dbContext.Doctors.AsNoTracking()
-            .ProjectTo<DoctorCityDTO>(_automapper.ConfigurationProvider)
+            .ProjectTo<DoctorCityDTO>(_autoMapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 
         return Ok(results);
@@ -108,17 +107,30 @@ public class TestController : ControllerBase
             .Select(_ => new Name(faker.Name.FirstName(), faker.Name.LastName()))
             .ToArray();
 
+        var existingDoctorAddresses = await _dbContext.Doctors
+            .Select(doc => doc.AddressId)
+            .ToListAsync(cancellationToken);
+
         var addressIds = await _dbContext.Addresses
             .Select(add => add.AddressID)
             .ToListAsync(cancellationToken);
 
+        var availableAddressIds = addressIds.Except(existingDoctorAddresses).ToList();
+
+        if (availableAddressIds.Count < num)
+        {
+            return BadRequest("Sufficient unique addresses not available");
+        }
+
         var doctors = Enumerable.Range(0, num)
             .Select(_ =>
             {
-                Name randomName = faker.Random.ArrayElement(names);
-                var randomAddrGuid = faker.Random.ArrayElement(addressIds.ToArray());
+                var randomName = faker.Random.ArrayElement(names);
+                var randomAddressGuid = faker.Random.ArrayElement(addressIds.ToArray());
 
-                return Doctor.Create(randomName, randomAddrGuid);
+                addressIds.Remove(randomAddressGuid);
+
+                return Doctor.Create(randomName, randomAddressGuid);
             })
             .ToList();
 

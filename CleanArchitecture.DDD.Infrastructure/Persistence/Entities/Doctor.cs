@@ -51,7 +51,8 @@ public sealed class Doctor
         {
             // This is not allowed: Limitation of EF Core
             // Name = name,
-            // Because EF Core teats owned objects and PK-FK relations equaly
+            // Because EF Core teats owned objects and PK-FK relations as the same
+            // Should be fixed in a future version 
             Name = Name.Copy(name),
             AddressId = addressId
         };
