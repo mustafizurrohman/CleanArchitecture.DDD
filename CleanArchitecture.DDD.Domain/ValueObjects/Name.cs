@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
+﻿using System.Collections.Specialized;
+using CleanArchitecture.DDD.Core.ExtensionMethods;
 
 namespace CleanArchitecture.DDD.Domain.ValueObjects;
 
@@ -12,6 +13,7 @@ public record Name(string Firstname, string? Middlename, string Lastname)
     {
     }
 
+    // ReSharper disable once UseDeconstructionOnParameter
     public Name(Name name)
     {
         Create(name.Firstname, name.Middlename ?? string.Empty, name.Lastname);
@@ -19,12 +21,16 @@ public record Name(string Firstname, string? Middlename, string Lastname)
 
     public static Name Create(string firstName, string middleName, string lastName)
     {
-        return new Name
+        var newName = new Name
         {
             Firstname = firstName,
             Middlename = middleName,
             Lastname = lastName
         };
+
+        Validate(newName);
+
+        return newName;
     }
 
     public override string ToString()
@@ -33,7 +39,17 @@ public record Name(string Firstname, string? Middlename, string Lastname)
     }
        
     public static Name Copy(Name name)
-    { 
+    {
+        Validate(name);
         return new Name(name.Firstname, name.Middlename ?? string.Empty, name.Lastname);
     }
+
+    private static void Validate(Name name)
+    {
+        var validationResult = (new NameValidator()).Validate(name);
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+    }
+
 }

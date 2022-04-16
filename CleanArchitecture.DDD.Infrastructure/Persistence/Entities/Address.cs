@@ -15,7 +15,10 @@ public sealed class Address
     public string City { get; set; }
     public string Country { get; set; }
 
-    public Address()
+    /// <summary>
+    /// Used by Entity Framework
+    /// </summary>
+    private Address()
     {
     }
 

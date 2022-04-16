@@ -118,10 +118,8 @@ public class TestController : ControllerBase
         var availableAddressIds = addressIds.Except(existingDoctorAddresses).ToList();
 
         if (availableAddressIds.Count < num)
-        {
             return BadRequest("Sufficient unique addresses not available");
-        }
-
+        
         var doctors = Enumerable.Range(0, num)
             .Select(_ =>
             {

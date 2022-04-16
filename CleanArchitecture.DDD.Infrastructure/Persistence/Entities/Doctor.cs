@@ -22,7 +22,10 @@ public sealed class Doctor
     [ForeignKey("Address")]
     public Guid AddressId { get; set; }
 
-    public Doctor()
+    /// <summary>
+    /// Required for EntityFramework
+    /// </summary>
+    private Doctor()
     {
     }
 
