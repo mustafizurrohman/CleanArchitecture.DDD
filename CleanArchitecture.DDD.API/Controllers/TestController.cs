@@ -21,7 +21,7 @@ public class TestController : ControllerBase
     [HttpGet]
     public IActionResult CreateName([FromQuery] string? firstname, [FromQuery] string? lastname)
     {
-        var name = new Name(firstname ?? string.Empty, lastname ?? string.Empty);
+        var name = Name.Create(firstname ?? string.Empty, lastname ?? string.Empty);
 
         var validationResult = _nameValidator.Validate(name);
 
@@ -60,7 +60,7 @@ public class TestController : ControllerBase
     [HttpGet("search")]
     public async Task<IActionResult> Search(CancellationToken cancellationToken, [FromQuery] string? firstname, [FromQuery] string? lastname, [FromQuery] bool and = false)
     {
-        var name = new Name(firstname ?? string.Empty, lastname ?? string.Empty);
+        var name = Name.Create(firstname ?? string.Empty, lastname ?? string.Empty);
 
         var validationResult = await _nameValidator.ValidateAsync(name, cancellationToken);
 
@@ -104,7 +104,7 @@ public class TestController : ControllerBase
         var faker = new Faker();
 
         var names = Enumerable.Range(0, num)
-            .Select(_ => new Name(faker.Name.FirstName(), faker.Name.LastName()))
+            .Select(_ => Name.Create(faker.Name.FirstName(), faker.Name.LastName()))
             .ToArray();
 
         var existingDoctorAddresses = await _dbContext.Doctors
@@ -131,7 +131,7 @@ public class TestController : ControllerBase
                 return Doctor.Create(randomName, randomAddressGuid);
             })
             .ToList();
-
+        
         await _dbContext.Doctors.AddRangeAsync(doctors, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);    
 

@@ -15,7 +15,7 @@ public class NameGenerator : IEnumerable<IEnumerable<Name>>
         var faker = new Faker();
         
         var names = Enumerable.Range(0, numberOfNames)
-            .Select(_ => new Name(faker.Name.FirstName(), faker.Name.LastName()))
+            .Select(_ => Name.Create(faker.Name.FirstName(), string.Empty, faker.Name.LastName()))
             .ToList();
 
         return names;

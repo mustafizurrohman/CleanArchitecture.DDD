@@ -1,15 +1,14 @@
-﻿using System.Collections.Specialized;
-using CleanArchitecture.DDD.Core.ExtensionMethods;
+﻿ using CleanArchitecture.DDD.Core.ExtensionMethods;
 
 namespace CleanArchitecture.DDD.Domain.ValueObjects;
 
 public record Name(string Firstname, string? Middlename, string Lastname) 
 {
-    public Name(string firstname, string lastname) : this(firstname, string.Empty, lastname)
+    protected Name(string firstname, string lastname) : this(firstname, string.Empty, lastname)
     {
     }
 
-    public Name() : this(string.Empty, string.Empty, string.Empty)
+    protected Name() : this(string.Empty, string.Empty, string.Empty)
     {
     }
 
@@ -17,6 +16,11 @@ public record Name(string Firstname, string? Middlename, string Lastname)
     public Name(Name name)
     {
         Create(name.Firstname, name.Middlename ?? string.Empty, name.Lastname);
+    }
+
+    public static Name Create(string firstName, string lastName)
+    {
+        return Create(firstName, string.Empty, lastName);
     }
 
     public static Name Create(string firstName, string middleName, string lastName)
@@ -46,7 +50,7 @@ public record Name(string Firstname, string? Middlename, string Lastname)
 
     private static void Validate(Name name)
     {
-        var validationResult = (new NameValidator()).Validate(name);
+        var validationResult = new NameValidator().Validate(name);
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
