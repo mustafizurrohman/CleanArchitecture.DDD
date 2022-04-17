@@ -4,7 +4,7 @@ using CleanArchitecture.DDD.Domain.ValueObjects;
 
 namespace Domain.UnitTests.Generators;
 
-public class NameGenerator : IEnumerable<IEnumerable<Name>>
+public class NameGenerator : IEnumerable<Name>
 {
     private readonly IEnumerable<Name> _names = GetNames();
 
@@ -20,11 +20,10 @@ public class NameGenerator : IEnumerable<IEnumerable<Name>>
 
         return names;
     }
-    
-    public IEnumerator<IEnumerable<Name>> GetEnumerator()
+
+    public IEnumerator<Name> GetEnumerator()
     {
-        throw new NotImplementedException();
-        // return _names.GetEnumerator();
+        return _names.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
