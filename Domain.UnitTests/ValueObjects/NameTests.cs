@@ -1,5 +1,4 @@
 ﻿using CleanArchitecture.DDD.Domain.ValueObjects;
-using Domain.UnitTests.Generators;
 using FluentValidation;
 
 namespace Domain.UnitTests.ValueObjects;

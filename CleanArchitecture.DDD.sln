@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.UnitTests", "Domain.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.UnitTests", "Core.UnitTests\Core.UnitTests.csproj", "{D488E487-4774-44EA-A1AC-ECAD27D651AC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeIntegrityTests", "CodeIntegrityTests\CodeIntegrityTests.csproj", "{2D2A1F13-624A-47A2-B653-6D002798B25D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{D488E487-4774-44EA-A1AC-ECAD27D651AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D488E487-4774-44EA-A1AC-ECAD27D651AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D488E487-4774-44EA-A1AC-ECAD27D651AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D2A1F13-624A-47A2-B653-6D002798B25D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D2A1F13-624A-47A2-B653-6D002798B25D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D2A1F13-624A-47A2-B653-6D002798B25D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D2A1F13-624A-47A2-B653-6D002798B25D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +93,7 @@ Global
 		{99BA7CA4-36C2-4DE1-87A3-52C4AFCC0A6C} = {D773AB12-DAAE-4898-838A-3B41794FFC13}
 		{A58C46A4-41F0-42E6-865C-A4E47D33D3BC} = {D773AB12-DAAE-4898-838A-3B41794FFC13}
 		{D488E487-4774-44EA-A1AC-ECAD27D651AC} = {D773AB12-DAAE-4898-838A-3B41794FFC13}
+		{2D2A1F13-624A-47A2-B653-6D002798B25D} = {D773AB12-DAAE-4898-838A-3B41794FFC13}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0AD1C472-4D3B-446D-A2D8-DFAC2FD8A4C6}
