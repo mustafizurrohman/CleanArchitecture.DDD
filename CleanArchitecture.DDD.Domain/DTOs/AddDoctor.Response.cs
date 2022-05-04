@@ -1,5 +1,6 @@
-﻿namespace CleanArchitecture.DDD.Domain.DTOs;
-
-public class AddDoctorResponse
+﻿namespace CleanArchitecture.DDD.Domain.DTOs
 {
+    public class AddDoctorResponse
+    {
+    }
 }

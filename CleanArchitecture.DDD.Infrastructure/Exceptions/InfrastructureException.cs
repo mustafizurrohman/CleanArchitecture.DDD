@@ -1,5 +1,6 @@
-﻿namespace CleanArchitecture.DDD.Infrastructure.Exceptions;
-
-public class InfrastructureException : Exception
+﻿namespace CleanArchitecture.DDD.Infrastructure.Exceptions
 {
+    public class InfrastructureException : Exception
+    {
+    }
 }

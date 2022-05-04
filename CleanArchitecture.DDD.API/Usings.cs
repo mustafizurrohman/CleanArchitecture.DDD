@@ -12,3 +12,8 @@ global using CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
 global using Microsoft.AspNetCore.Mvc;
 global using AutoMapper.QueryableExtensions;
 global using CleanArchitecture.DDD.Domain.DTOs;
+
+global using System.Diagnostics;
+global using System.Net.Mime;
+global using Ardalis.GuardClauses;
+global using Bogus;

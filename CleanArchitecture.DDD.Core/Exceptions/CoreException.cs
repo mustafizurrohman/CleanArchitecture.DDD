@@ -1,5 +1,6 @@
-﻿namespace CleanArchitecture.DDD.Core.Exceptions;
-
-public class CoreException : Exception
+﻿namespace CleanArchitecture.DDD.Core.Exceptions
 {
+    public class CoreException : Exception
+    {
+    }
 }

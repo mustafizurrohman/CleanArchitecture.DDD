@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Configurations;
-
-internal class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
+namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Configurations
 {
-    public void Configure(EntityTypeBuilder<Doctor> builder)
+    internal class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
     {
-        builder.HasKey(doc => doc.DoctorID);
+        public void Configure(EntityTypeBuilder<Doctor> builder)
+        {
+            builder.HasKey(doc => doc.DoctorID);
 
-        builder.OwnsOne(doc => doc.Name);
+            builder.OwnsOne(doc => doc.Name);
+        }
     }
 }

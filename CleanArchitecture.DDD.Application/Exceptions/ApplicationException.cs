@@ -1,5 +1,6 @@
-﻿namespace CleanArchitecture.DDD.Application.Exceptions;
-
-public class ApplicationException : Exception
+﻿namespace CleanArchitecture.DDD.Application.Exceptions
 {
+    public class ApplicationException : Exception
+    {
+    }
 }
