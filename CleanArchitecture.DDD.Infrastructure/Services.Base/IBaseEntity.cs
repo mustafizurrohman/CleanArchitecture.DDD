@@ -1,32 +1,31 @@
-﻿namespace CleanArchitecture.DDD.Infrastructure.Services.Base
+﻿namespace CleanArchitecture.DDD.Infrastructure.Services.Base;
+
+/// <summary>
+/// 
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public interface IBaseEntity<T>
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public interface IBaseEntity<T>
-    {
-        // Create
-        public Task AddEntity(T entity);
+    // Create
+    public Task AddEntity(T entity);
 
-        public Task AddEntityList(IEnumerable<T> entities);
+    public Task AddEntityList(IEnumerable<T> entities);
 
-        // Read
-        public IQueryable<T> GetAll();
+    // Read
+    public IQueryable<T> GetAll();
 
-        public Task<T?> GetById(Guid id);
+    public Task<T?> GetById(Guid id);
 
-        public IQueryable<T> GetByIds(IEnumerable<Guid> ids);
+    public IQueryable<T> GetByIds(IEnumerable<Guid> ids);
 
-        // Update
-        public Task UpdateEntity(Guid id, T entity);
+    // Update
+    public Task UpdateEntity(Guid id, T entity, CancellationToken cancellationToken = default);
 
-        public Task UpdateEntityList(IEnumerable<T> entities);
+    public Task UpdateEntityList(IEnumerable<T> entities);
 
-        // Delete
-        public Task DeleteEntityById(Guid id, CancellationToken cancellationToken = default);
+    // Delete
+    public Task DeleteEntityById(Guid id, CancellationToken cancellationToken = default);
 
-        public Task DeleteEntityListById(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
+    public Task DeleteEntityListById(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
     
-    }
 }

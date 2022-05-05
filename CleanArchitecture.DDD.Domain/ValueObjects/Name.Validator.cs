@@ -1,27 +1,26 @@
 ﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
 
-namespace CleanArchitecture.DDD.Domain.ValueObjects
+namespace CleanArchitecture.DDD.Domain.ValueObjects;
+
+public class NameValidator : AbstractValidator<Name>
 {
-    public class NameValidator : AbstractValidator<Name>
+    public NameValidator()
     {
-        public NameValidator()
+        SetValidationRules();
+    }
+
+    private void SetValidationRules()
+    {
+        RuleFor(prop => prop.Firstname)
+            .MustBeValidName();
+
+        When(prop => !string.IsNullOrEmpty(prop.Middlename), () =>
         {
-            SetValidationRules();
-        }
-
-        private void SetValidationRules()
-        {
-            RuleFor(prop => prop.Firstname)
+            RuleFor(prop => prop.Middlename ?? string.Empty)
                 .MustBeValidName();
+        });
 
-            When(prop => !string.IsNullOrEmpty(prop.Middlename), () =>
-            {
-                RuleFor(prop => prop.Middlename ?? string.Empty)
-                    .MustBeValidName();
-            });
-
-            RuleFor(prop => prop.Lastname)
-                .MustBeValidName();
-        }
+        RuleFor(prop => prop.Lastname)
+            .MustBeValidName();
     }
 }

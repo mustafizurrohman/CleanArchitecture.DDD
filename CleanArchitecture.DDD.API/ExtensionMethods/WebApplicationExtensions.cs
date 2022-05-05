@@ -1,39 +1,38 @@
-﻿namespace CleanArchitecture.DDD.API.ExtensionMethods
+﻿namespace CleanArchitecture.DDD.API.ExtensionMethods;
+
+public static class WebApplicationExtensions
 {
-    public static class WebApplicationExtensions
+    public static WebApplication ConfigureHttpPipeline(this WebApplication app)
     {
-        public static WebApplication ConfigureHttpPipeline(this WebApplication app)
-        {
        
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.DisplayRequestDuration();
-                });
-            }
-
-            // Must be configurable in a real application
-            app.UseCors(options =>
-            {
-                options.AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowAnyOrigin();
+                c.DisplayRequestDuration();
             });
+        }
 
-            app.MigrateDatabase();
+        // Must be configurable in a real application
+        app.UseCors(options =>
+        {
+            options.AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin();
+        });
 
-            app.UseHttpsRedirection();
+        app.MigrateDatabase();
 
-            app.UseAuthorization();
+        app.UseHttpsRedirection();
 
-            app.MapControllers();
+        app.UseAuthorization();
 
-            app.UseSerilogRequestLogging();
+        app.MapControllers();
 
-            return app;
-        }   
-    }
+        app.UseSerilogRequestLogging();
+
+        return app;
+    }   
 }

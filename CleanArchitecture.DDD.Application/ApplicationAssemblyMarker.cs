@@ -1,6 +1,5 @@
-﻿namespace CleanArchitecture.DDD.Application
+﻿namespace CleanArchitecture.DDD.Application;
+
+public abstract class ApplicationAssemblyMarker
 {
-    public abstract class ApplicationAssemblyMarker
-    {
-    }
 }

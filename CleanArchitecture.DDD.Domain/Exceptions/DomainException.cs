@@ -1,6 +1,5 @@
-﻿namespace CleanArchitecture.DDD.Domain.Exceptions
+﻿namespace CleanArchitecture.DDD.Domain.Exceptions;
+
+public class DomainException : Exception
 {
-    public class DomainException : Exception
-    {
-    }
 }

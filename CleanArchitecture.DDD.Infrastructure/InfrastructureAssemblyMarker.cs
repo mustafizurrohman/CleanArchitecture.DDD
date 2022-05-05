@@ -1,6 +1,5 @@
-﻿namespace CleanArchitecture.DDD.Infrastructure
+﻿namespace CleanArchitecture.DDD.Infrastructure;
+
+public class InfrastructureAssemblyMarker
 {
-    public class InfrastructureAssemblyMarker
-    {
-    }
 }

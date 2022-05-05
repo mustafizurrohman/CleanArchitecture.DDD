@@ -1,6 +1,5 @@
-﻿namespace CleanArchitecture.DDD.Core
+﻿namespace CleanArchitecture.DDD.Core;
+
+public abstract class CoreAssemblyMarker
 {
-    public abstract class CoreAssemblyMarker
-    {
-    }
 }

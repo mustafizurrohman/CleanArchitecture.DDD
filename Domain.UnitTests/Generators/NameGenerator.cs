@@ -2,33 +2,32 @@
 using Bogus;
 using CleanArchitecture.DDD.Domain.ValueObjects;
 
-namespace Domain.UnitTests.Generators
+namespace Domain.UnitTests.Generators;
+
+public class NameGenerator : IEnumerable<Name>
 {
-    public class NameGenerator : IEnumerable<Name>
+    private readonly IEnumerable<Name> _names = GetNames();
+
+    private static IEnumerable<Name> GetNames()
     {
-        private readonly IEnumerable<Name> _names = GetNames();
+        const int numberOfNames = 1000;
 
-        private static IEnumerable<Name> GetNames()
-        {
-            const int numberOfNames = 1000;
-
-            var faker = new Faker();
+        var faker = new Faker();
         
-            var names = Enumerable.Range(0, numberOfNames)
-                .Select(_ => Name.Create(faker.Name.FirstName(), string.Empty, faker.Name.LastName()))
-                .ToList();
+        var names = Enumerable.Range(0, numberOfNames)
+            .Select(_ => Name.Create(faker.Name.FirstName(), string.Empty, faker.Name.LastName()))
+            .ToList();
 
-            return names;
-        }
+        return names;
+    }
 
-        public IEnumerator<Name> GetEnumerator()
-        {
-            return _names.GetEnumerator();
-        }
+    public IEnumerator<Name> GetEnumerator()
+    {
+        return _names.GetEnumerator();
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
