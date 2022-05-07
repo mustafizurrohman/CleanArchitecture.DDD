@@ -49,26 +49,28 @@ public class DoctorEntityService : IBaseEntity<Doctor>
     {
         await _dbContext.Doctors
             .Where(doc => doc.DoctorID == id)
-            .UpdateAsync(_ => Doctor.Create(entity.Name, entity.Address), cancellationToken);
+            .UpdateAsync(_ => Doctor.Copy(entity), cancellationToken);
     }
 
     // TODO: Test and explore other possibilities
-    public Task UpdateEntityList(IEnumerable<Doctor> entities)
+    public async Task UpdateEntityList(IEnumerable<Doctor> entities, CancellationToken cancellationToken = default)
     {
-        // _dbContext.UpdateRange(entities);
-        throw new NotImplementedException();
+        foreach (var entity in entities)
+        {
+            await UpdateEntity(entity.DoctorID, entity, cancellationToken);
+        }
     }
 
-    public async Task DeleteEntityById(Guid id, CancellationToken cancellationToken = default)
+    public async Task<int> DeleteEntityById(Guid id, CancellationToken cancellationToken = default)
     {
-        await _dbContext.Doctors
+        return await _dbContext.Doctors
             .Where(doc => doc.DoctorID == id)
             .DeleteAsync(cancellationToken);
     }
 
-    public async Task DeleteEntityListById(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
+    public async Task<int> DeleteEntityListById(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
     {
-        await _dbContext.Doctors
+        return await _dbContext.Doctors
             .Where(doc => ids.Contains(doc.DoctorID))
             .DeleteAsync(cancellationToken);
     }

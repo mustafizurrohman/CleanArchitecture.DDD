@@ -65,7 +65,7 @@ public class SeedController : BaseAPIController
         var stopWatch = new Stopwatch();
         stopWatch.Start();
 
-        await _dbContext.Doctors.AddRangeAsync(doctors, cancellationToken);
+        await _dbContext.AddRangeAsync(doctors, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         stopWatch.Stop();
@@ -87,16 +87,23 @@ public class SeedController : BaseAPIController
         if (num <= 0)
             return BadRequest("Number must be 0 or positive.");
 
-        var faker = new Faker();
+        var faker = new Faker("de");
+
+        var fakeCountries = new List<string>()
+        {
+            "Deutschland",
+            "Osterreich",
+            "Schweiz"
+        };
 
         var addresses = Enumerable.Range(0, num)
-            .Select(_ => Address.Create(faker.Address.StreetName(), faker.Address.ZipCode(), faker.Address.City(), faker.Address.Country()))
+            .Select(_ => Address.Create(faker.Address.StreetName(), faker.Address.ZipCode(), faker.Address.City(), faker.Random.ArrayElement(fakeCountries.ToArray())))
             .ToList();
-
+        
         var stopWatch = new Stopwatch();
         stopWatch.Start();
 
-        await _dbContext.Addresses.AddRangeAsync(addresses, cancellationToken);
+        await _dbContext.AddRangeAsync(addresses, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         stopWatch.Stop();

@@ -5,6 +5,8 @@ namespace CleanArchitecture.DDD.Domain.Exceptions;
 
 internal class NameValidationException : DomainValidationException
 {
+    public override string Message => "Invalid name";
+
     public NameValidationException(string message) : base(message)
     {
     }

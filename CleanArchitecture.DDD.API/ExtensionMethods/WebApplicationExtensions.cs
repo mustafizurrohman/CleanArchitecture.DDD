@@ -33,6 +33,8 @@ public static class WebApplicationExtensions
 
         app.UseSerilogRequestLogging();
 
+        Log.Information("Application started ... ");
+
         return app;
     }   
 }

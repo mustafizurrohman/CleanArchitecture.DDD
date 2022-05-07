@@ -21,11 +21,11 @@ public interface IBaseEntity<T>
     // Update
     public Task UpdateEntity(Guid id, T entity, CancellationToken cancellationToken = default);
 
-    public Task UpdateEntityList(IEnumerable<T> entities);
+    public Task UpdateEntityList(IEnumerable<T> entities, CancellationToken cancellationToken = default);
 
     // Delete
-    public Task DeleteEntityById(Guid id, CancellationToken cancellationToken = default);
+    public Task<int> DeleteEntityById(Guid id, CancellationToken cancellationToken = default);
 
-    public Task DeleteEntityListById(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
+    public Task<int> DeleteEntityListById(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
     
 }
