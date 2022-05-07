@@ -2,6 +2,9 @@
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
+/// <summary>
+/// 
+/// </summary>
 public class SeedController : BaseAPIController
 {
     private readonly DomainDbContext _dbContext;

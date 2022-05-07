@@ -8,12 +8,23 @@ namespace CleanArchitecture.DDD.API.Controllers;
 [ApiController]
 [Route("[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-// ReSharper disable once InconsistentNaming
 public abstract class BaseAPIController : ControllerBase
 {
+    /// <summary>
+    /// 
+    /// </summary>
     protected DomainDbContext DbContext { get; } 
+    
+    /// <summary>
+    /// 
+    /// </summary>
     protected IMapper AutoMapper { get; }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dbContext"></param>
+    /// <param name="autoMapper"></param>
     protected BaseAPIController(DomainDbContext dbContext, IMapper autoMapper)
     {
         DbContext = dbContext;

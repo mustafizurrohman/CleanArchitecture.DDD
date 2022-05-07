@@ -7,16 +7,24 @@ using Serilog.Formatting.Compact;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
+/// <summary>
+/// 
+/// </summary>
 public static class WebExtensionBuilderExtensions
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
     public static WebApplicationBuilder ConfigureApplication(this WebApplicationBuilder builder)
     {
         builder.ConfigureSerilog()
             .ConfigureEntityFramework()
             .ConfigureServices()
-            .ConfigureControllers()
+            .ConfigureInputValidation()
             .ConfigureSwagger()
-            .ConfigureInputValidation();
+            .ConfigureControllers();
         
         return builder;
     }
@@ -85,23 +93,17 @@ public static class WebExtensionBuilderExtensions
 
     private static WebApplicationBuilder ConfigureEntityFramework(this WebApplicationBuilder builder)
     {
-        var connectionString = builder.Configuration.GetConnectionString("DDD_Db");
-
-        if (string.IsNullOrWhiteSpace(connectionString))
-            throw new Exception("Database connection must be specified.");
-
-        builder.Services.AddDbContext<DomainDbContext>(options =>
+        // TODO: This must be an implementation detail in DomainDbContext
+        var consoleLoggerFactory = LoggerFactory.Create(loggerBuilder =>
         {
-            options.UseSqlServer(connectionString);
-            #if DEBUG
-                options.EnableSensitiveDataLogging()
-                    .UseLoggerFactory(LoggerFactory.Create(loggerBuilder =>
-                    {
-                        loggerBuilder.AddConsole();
-                    }));
-            #endif
+            loggerBuilder
+                .AddFilter((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information)
+                .AddConsole();
         });
 
+        var connectionString = builder.Configuration.GetConnectionString("DDD_Db");
+        
+        builder.Services.AddScoped(_ => new DomainDbContext(connectionString ?? string.Empty, true, consoleLoggerFactory));
 
         return builder;
     }
@@ -130,7 +132,7 @@ public static class WebExtensionBuilderExtensions
 
             loggerConfig
                 .WriteTo.Console()
-                .WriteTo.File(new RenderedCompactJsonFormatter(), @"C:\dev\Serilog\logs.json", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7);
+                .WriteTo.File(new RenderedCompactJsonFormatter(), @"C:\dev\Serilog\logs.json", rollingInterval: RollingInterval.Minute, retainedFileCountLimit: 7);
         });
 
         return builder;
