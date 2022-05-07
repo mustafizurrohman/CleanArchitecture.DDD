@@ -9,9 +9,12 @@ public static class WebApplicationExtensions
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(setupAction =>
             {
-                c.DisplayRequestDuration();
+                setupAction.DisplayRequestDuration();
+
+                setupAction.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.List);
+                setupAction.EnableDeepLinking();
             });
         }
 

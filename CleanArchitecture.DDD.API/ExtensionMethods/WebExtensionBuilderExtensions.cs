@@ -1,5 +1,6 @@
 ﻿using System.Drawing.Printing;
 using System.Reflection;
+using Microsoft.OpenApi.Models;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
@@ -41,7 +42,34 @@ public static class WebExtensionBuilderExtensions
     {
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Version = "1.0.0",
+                Title = "Doctor API",
+                Description = "API for doctor management",
+                TermsOfService = new Uri("https://www.gnu.org/licenses/gpl-3.0.en.html"),
+                Contact = new OpenApiContact()
+                {
+                    Name = "Mustafizur Rohman",
+                    Email = "mustafizur.rohman88@gmail.com",
+                    Url = new Uri("https://www.linkedin.com/in/mustafizurrohman")
+                }
+            });
+
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization header using the Bearer scheme.Example: \"Authorization: Bearer {token}",
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http
+            });
+
+            var xmlFile = Assembly.GetEntryAssembly()?.GetName().Name + ".xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            c.IncludeXmlComments(xmlPath);
+        });
+
 
         return builder;
     }
