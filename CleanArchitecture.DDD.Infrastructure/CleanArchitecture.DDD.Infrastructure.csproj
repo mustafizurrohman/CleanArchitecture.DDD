@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -7,7 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CleanArchitecture.DDD.Application\CleanArchitecture.DDD.Application.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="7.0.0-preview.3.22175.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-preview.3.22175.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0-preview.3.22175.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.0-preview.3.22175.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0-preview.3.22175.4" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="StronglyTypedId" Version="1.0.0-beta06" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="7.0.0-preview.3.22175.1-01" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CleanArchitecture.DDD.Domain\CleanArchitecture.DDD.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,12 +2,24 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-	<ImplicitUsings>enable</ImplicitUsings>
+	  <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CleanArchitecture.DDD.Domain\CleanArchitecture.DDD.Domain.csproj" />
+    <ProjectReference Include="..\CleanArchitecture.DDD.Infrastructure\CleanArchitecture.DDD.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="MediatR\Command\" />
+    <Folder Include="MediatR\Handlers\" />
+    <Folder Include="MediatR\PipelineBehaviours\" />
+    <Folder Include="MediatR\Queries\" />
   </ItemGroup>
 
 </Project>

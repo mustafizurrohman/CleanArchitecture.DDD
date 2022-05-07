@@ -15,20 +15,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.DDD.Infra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{265D2339-4FFA-4604-A76A-025AA64A23DA}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.DDD.API", "CleanArchitecture.DDD.API\CleanArchitecture.DDD.API.csproj", "{A600724A-4ACD-4904-A175-37A229844FFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.DDD.API", "CleanArchitecture.DDD.API\CleanArchitecture.DDD.API.csproj", "{A600724A-4ACD-4904-A175-37A229844FFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.DDD.Core", "CleanArchitecture.DDD.Core\CleanArchitecture.DDD.Core.csproj", "{F5D6E63B-71EC-41FF-B012-26AB4F297F48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.DDD.Core", "CleanArchitecture.DDD.Core\CleanArchitecture.DDD.Core.csproj", "{F5D6E63B-71EC-41FF-B012-26AB4F297F48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.IntegrationTests", "Application.IntegrationTests\Application.IntegrationTests.csproj", "{BDE58992-3B70-4D13-AE1D-5E3001FF38C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.IntegrationTests", "Application.IntegrationTests\Application.IntegrationTests.csproj", "{BDE58992-3B70-4D13-AE1D-5E3001FF38C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.UnitTests", "Application.UnitTests\Application.UnitTests.csproj", "{99BA7CA4-36C2-4DE1-87A3-52C4AFCC0A6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.UnitTests", "Application.UnitTests\Application.UnitTests.csproj", "{99BA7CA4-36C2-4DE1-87A3-52C4AFCC0A6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.UnitTests", "Domain.UnitTests\Domain.UnitTests.csproj", "{A58C46A4-41F0-42E6-865C-A4E47D33D3BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.UnitTests", "Domain.UnitTests\Domain.UnitTests.csproj", "{A58C46A4-41F0-42E6-865C-A4E47D33D3BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.UnitTests", "Core.UnitTests\Core.UnitTests.csproj", "{D488E487-4774-44EA-A1AC-ECAD27D651AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.UnitTests", "Core.UnitTests\Core.UnitTests.csproj", "{D488E487-4774-44EA-A1AC-ECAD27D651AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeIntegrityTests", "CodeIntegrityTests\CodeIntegrityTests.csproj", "{2D2A1F13-624A-47A2-B653-6D002798B25D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,6 +75,10 @@ Global
 		{D488E487-4774-44EA-A1AC-ECAD27D651AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D488E487-4774-44EA-A1AC-ECAD27D651AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D488E487-4774-44EA-A1AC-ECAD27D651AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D2A1F13-624A-47A2-B653-6D002798B25D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D2A1F13-624A-47A2-B653-6D002798B25D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D2A1F13-624A-47A2-B653-6D002798B25D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D2A1F13-624A-47A2-B653-6D002798B25D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +93,7 @@ Global
 		{99BA7CA4-36C2-4DE1-87A3-52C4AFCC0A6C} = {D773AB12-DAAE-4898-838A-3B41794FFC13}
 		{A58C46A4-41F0-42E6-865C-A4E47D33D3BC} = {D773AB12-DAAE-4898-838A-3B41794FFC13}
 		{D488E487-4774-44EA-A1AC-ECAD27D651AC} = {D773AB12-DAAE-4898-838A-3B41794FFC13}
+		{2D2A1F13-624A-47A2-B653-6D002798B25D} = {D773AB12-DAAE-4898-838A-3B41794FFC13}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0AD1C472-4D3B-446D-A2D8-DFAC2FD8A4C6}

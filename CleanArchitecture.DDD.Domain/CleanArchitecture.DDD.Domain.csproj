@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -8,6 +8,17 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CleanArchitecture.DDD.Core\CleanArchitecture.DDD.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="FluentValidation" Version="11.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.0-preview.3.22175.1" />
+    <PackageReference Include="ValueOf" Version="2.0.31" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services.Base\" />
   </ItemGroup>
 
 </Project>
