@@ -1,6 +1,7 @@
 ﻿using System.Drawing.Printing;
 using System.Reflection;
 using Serilog.Events;
+using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
@@ -91,6 +92,8 @@ public static class WebExtensionBuilderExtensions
             loggerConfig
                 .Enrich.WithCorrelationId()
                 .Enrich.WithCorrelationIdHeader()
+                .Enrich.FromLogContext()
+                .Enrich.WithExceptionDetails()
                 .Enrich.WithMachineName()
                 .Enrich.WithProcessId()
                 .Enrich.WithProcessName()
@@ -99,7 +102,7 @@ public static class WebExtensionBuilderExtensions
 
             loggerConfig
                 .WriteTo.Console()
-                .WriteTo.File(new RenderedCompactJsonFormatter(), @"C:\dev\Serilog\logs.json");
+                .WriteTo.File(new RenderedCompactJsonFormatter(), @"C:\dev\Serilog\logs.json", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7);
         });
 
         return builder;

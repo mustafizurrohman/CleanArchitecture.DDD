@@ -12,11 +12,11 @@
 	  <PackageReference Include="Ardalis.GuardClauses" Version="4.0.1" />
 	  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 	  <PackageReference Include="Bogus" Version="34.0.2" />
-	  <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
-	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.4.0" />
+	  <PackageReference Include="FluentValidation.AspNetCore" Version="11.0.0" />
+	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.0.0" />
 	  <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
-	  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.0-preview.2.22153.2" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-preview.2.22153.1">
+	  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.0-preview.3.22178.4" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-preview.3.22175.1">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
@@ -28,8 +28,8 @@
 	  <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.2" />
 	  <PackageReference Include="Serilog.Enrichers.Thread" Version="3.2.0-dev-00752" />
 	  <PackageReference Include="Serilog.Exceptions" Version="8.1.0" />
-	  <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.1-dev-00296" />
-	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+	  <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.1-dev-00313" />
+	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
   </ItemGroup>
 
   <ItemGroup>
