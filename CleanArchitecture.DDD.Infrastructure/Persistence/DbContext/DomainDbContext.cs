@@ -24,7 +24,7 @@ public partial class DomainDbContext : DatabaseContext
         _connectionString = connectionString;
 
         if (!IsConnectionStringValid(_connectionString))
-            throw new Exception("Invalid database connection string or database is not reachable .. ");
+            throw new Exception("Invalid database connection string or database is not reachable ... ");
 
         _useLogger = useLogger;
         _loggerFactory = loggerFactory;
@@ -52,8 +52,7 @@ public partial class DomainDbContext : DatabaseContext
                 }));
         }
     }
-
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {      
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
@@ -94,6 +93,5 @@ public partial class DomainDbContext : DatabaseContext
         
         return true;
     }
-
     
 }

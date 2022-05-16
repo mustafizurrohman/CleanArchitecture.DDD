@@ -1,7 +1,9 @@
 using AutoMapper;
+using CleanArchitecture.DDD.Domain.Exceptions;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
+[ApiExplorerSettings(IgnoreApi = true)]
 public class TestController : BaseAPIController
 {
     private readonly IValidator<Name> _nameValidator;
@@ -12,6 +14,15 @@ public class TestController : BaseAPIController
     {
         _nameValidator = nameValidator;
         _logger = logger;
+    }
+
+    [HttpGet("doctors", Name = "GetAllDoctors")]
+    [ProducesResponseType(typeof(IEnumerable<Doctor>), StatusCodes.Status200OK)]
+
+    public async Task<IActionResult> GetAllDoctors()
+    {
+        var doctors = await DbContext.Doctors.ToListAsync();
+        return Ok(doctors);
     }
 
     [HttpGet]
@@ -44,13 +55,6 @@ public class TestController : BaseAPIController
 
         return Ok(allDoctors);
     }
-
-    [HttpGet("doctors")]
-    public async Task<IActionResult> GetAllDoctors()
-    {
-        var doctors = await DbContext.Doctors.ToListAsync();
-        return Ok(doctors);
-    }
         
     // Test only
     [HttpGet("search")]
@@ -58,7 +62,7 @@ public class TestController : BaseAPIController
     {
         var name = Name.Create(firstname ?? string.Empty, lastname ?? string.Empty);
 
-        // TODO: Must be possible to search only by Firstname and/or Lastname
+        // TODO: Must be possible to search only by FirstOrLastname and/or Lastname
         var validationResult = await _nameValidator.ValidateAsync(name, cancellationToken);
 
         if (!validationResult.IsValid && and)
@@ -71,7 +75,7 @@ public class TestController : BaseAPIController
          
         return Ok(doctors);
     }
-    
+
     [HttpGet("test")]
     public async Task<IActionResult> Test(CancellationToken cancellationToken)
     {
@@ -92,5 +96,33 @@ public class TestController : BaseAPIController
 
         return Ok(name1 == name2);
     }
-       
+
+    [HttpPost("testValueObject")]
+    public IActionResult TestNameValueObject(string name)
+    {
+        var createdName = NameValueObject.Create(name);
+
+        if (createdName.Error is not null)
+            return BadRequest(createdName.Error.Message);
+
+        var x = createdName.Value;
+
+        return Ok();
+    }
+
+    [HttpPost("exceptionLogging")]
+    public IActionResult TestExceptionLogging()
+    {
+        try
+        {
+            throw new NotImplementedException();
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Unhandled exception");
+        }
+
+        return Ok();
+    }
+
 }

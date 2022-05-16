@@ -19,12 +19,12 @@
          Create(name.Firstname, name.Middlename ?? string.Empty, name.Lastname);
      }
 
-     public static Name Create(string firstName, string lastName)
+     public static Name Create(string firstName, string lastName, bool validate = true)
      {
-         return Create(firstName, string.Empty, lastName);
+         return Create(firstName, string.Empty, lastName, validate);
      }
 
-     public static Name Create(string firstName, string middleName, string lastName)
+     public static Name Create(string firstName, string middleName, string lastName, bool validate = true)
      {
          var newName = new Name
          {
@@ -33,7 +33,8 @@
              Lastname = lastName
          };
 
-         Validate(newName);
+         if (validate)
+            Validate(newName);
 
          return newName;
      }
@@ -43,9 +44,11 @@
          return (Firstname + " " + Middlename + " " + Lastname).RemoveConsequtiveSpaces();
      }
        
-     public static Name Copy(Name name)
+     public static Name Copy(Name name, bool validate = true)
      {
-         Validate(name);
+         if (validate)
+            Validate(name);
+
          return new Name(name.Firstname, name.Middlename ?? string.Empty, name.Lastname);
      }
 

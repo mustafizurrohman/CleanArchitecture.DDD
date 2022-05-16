@@ -44,7 +44,7 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
                             b1.Property<Guid>("DoctorID")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<string>("Firstname")
+                            b1.Property<string>("FirstOrLastname")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 

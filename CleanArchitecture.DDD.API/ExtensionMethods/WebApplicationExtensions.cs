@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.API.ExtensionMethods;
+﻿using Swashbuckle.AspNetCore.SwaggerUI;
+
+namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
 public static class WebApplicationExtensions
 {
@@ -13,7 +15,10 @@ public static class WebApplicationExtensions
             {
                 setupAction.DisplayRequestDuration();
 
-                setupAction.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.List);
+                setupAction.DefaultModelExpandDepth(2);
+                setupAction.DefaultModelRendering(ModelRendering.Model);
+                setupAction.DisplayOperationId();
+                setupAction.DocExpansion(DocExpansion.List);
                 setupAction.EnableDeepLinking();
             });
         }

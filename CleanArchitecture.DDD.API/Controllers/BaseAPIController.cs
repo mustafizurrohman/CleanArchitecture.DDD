@@ -8,6 +8,8 @@ namespace CleanArchitecture.DDD.API.Controllers;
 [ApiController]
 [Route("[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
+[Consumes(MediaTypeNames.Application.Json)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public abstract class BaseAPIController : ControllerBase
 {
     /// <summary>

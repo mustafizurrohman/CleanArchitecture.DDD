@@ -1,5 +1,5 @@
-﻿using System.Drawing.Printing;
-using System.Reflection;
+﻿using System.Reflection;
+using CleanArchitecture.DDD.Domain;
 using Microsoft.OpenApi.Models;
 using Serilog.Events;
 using Serilog.Exceptions;
@@ -66,16 +66,38 @@ public static class WebExtensionBuilderExtensions
                 }
             });
 
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
             {
-                Description = "JWT Authorization header using the Bearer scheme.Example: \"Authorization: Bearer {token}",
                 Name = "Authorization",
-                Type = SecuritySchemeType.Http
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n " +
+                              "Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\n" +
+                              "Example: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIx...\"",
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
+                }
             });
 
             var xmlFile = Assembly.GetEntryAssembly()?.GetName().Name + ".xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             c.IncludeXmlComments(xmlPath);
+
+            c.EnableAnnotations();
         });
 
 
@@ -84,9 +106,10 @@ public static class WebExtensionBuilderExtensions
 
     private static WebApplicationBuilder ConfigureInputValidation(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<IValidator<Name>, NameValidator>();
+        // builder.Services.AddSingleton<IValidator<Name>, NameValidator>();
         builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CoreAssemblyMarker>());
         builder.Services.AddValidatorsFromAssemblies(new[] { typeof(CoreAssemblyMarker).Assembly });
+        builder.Services.AddValidatorsFromAssemblies(new[] { typeof(DomainAssemblyMarker).Assembly });
 
         return builder;
     }
@@ -97,7 +120,9 @@ public static class WebExtensionBuilderExtensions
         var consoleLoggerFactory = LoggerFactory.Create(loggerBuilder =>
         {
             loggerBuilder
-                .AddFilter((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information)
+                .AddFilter((category, level) => 
+                       category == DbLoggerCategory.Database.Command.Name 
+                    && level == LogLevel.Information)
                 .AddConsole();
         });
 

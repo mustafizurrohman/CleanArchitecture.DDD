@@ -5,6 +5,7 @@ namespace CleanArchitecture.DDD.API.Controllers;
 /// <summary>
 /// 
 /// </summary>
+[ApiExplorerSettings(IgnoreApi = true)]
 public class SeedController : BaseAPIController
 {
     private readonly DomainDbContext _dbContext;
