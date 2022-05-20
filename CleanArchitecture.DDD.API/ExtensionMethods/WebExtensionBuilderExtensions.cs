@@ -28,8 +28,7 @@ public static class WebExtensionBuilderExtensions
         
         return builder;
     }
-
-
+    
     private static WebApplicationBuilder ConfigureControllers(this WebApplicationBuilder builder)
     {
         builder.Services.AddControllers()
@@ -116,19 +115,9 @@ public static class WebExtensionBuilderExtensions
 
     private static WebApplicationBuilder ConfigureEntityFramework(this WebApplicationBuilder builder)
     {
-        // TODO: This must be an implementation detail in DomainDbContext
-        var consoleLoggerFactory = LoggerFactory.Create(loggerBuilder =>
-        {
-            loggerBuilder
-                .AddFilter((category, level) => 
-                       category == DbLoggerCategory.Database.Command.Name 
-                    && level == LogLevel.Information)
-                .AddConsole();
-        });
-
-        var connectionString = builder.Configuration.GetConnectionString("DDD_Db");
+        var connectionString = builder.Configuration.GetConnectionString("DDD_Db") ?? string.Empty;
         
-        builder.Services.AddScoped(_ => new DomainDbContext(connectionString ?? string.Empty, true, consoleLoggerFactory));
+        builder.Services.AddScoped(_ => new DomainDbContext(connectionString, builder.Environment.IsDevelopment()));
 
         return builder;
     }
@@ -162,4 +151,5 @@ public static class WebExtensionBuilderExtensions
 
         return builder;
     }
+
 }

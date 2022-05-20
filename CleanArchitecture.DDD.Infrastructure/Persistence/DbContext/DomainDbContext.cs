@@ -13,13 +13,12 @@ public partial class DomainDbContext : DatabaseContext
 {
     private readonly string _connectionString;
     private readonly bool _useLogger;
-    private readonly ILoggerFactory _loggerFactory;
     
     private DomainDbContext()
     {
     }
 
-    public DomainDbContext(string connectionString, bool useLogger, ILoggerFactory loggerFactory)
+    public DomainDbContext(string connectionString, bool useLogger)
     {
         _connectionString = connectionString;
 
@@ -27,7 +26,6 @@ public partial class DomainDbContext : DatabaseContext
             throw new Exception("Invalid database connection string or database is not reachable ... ");
 
         _useLogger = useLogger;
-        _loggerFactory = loggerFactory;
     }
 
     public virtual DbSet<Doctor> Doctors { get; set; }
@@ -39,9 +37,18 @@ public partial class DomainDbContext : DatabaseContext
 
         if (_useLogger)
         {
+            var consoleLoggerFactory = LoggerFactory.Create(loggerBuilder =>
+            {
+                loggerBuilder
+                    .AddFilter((category, level) =>
+                        category == DbLoggerCategory.Database.Command.Name
+                        && level == LogLevel.Information)
+                    .AddConsole();
+            });
+            
             optionsBuilder
                 .EnableSensitiveDataLogging()
-                .UseLoggerFactory(_loggerFactory);
+                .UseLoggerFactory(consoleLoggerFactory);
         }
         else
         {
