@@ -17,7 +17,6 @@ public class SwaggerDocController : BaseAPIController
     {
     }
 
-    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpGet("doctors")]
     [SwaggerOperation(
         Summary = "Retrieves all doctors from database",
@@ -44,7 +43,7 @@ public class SwaggerDocController : BaseAPIController
     [SwaggerOperation(
         Summary = "Searches for doctors from database",
         Description = "No or default authentication required",
-        OperationId = "SearchVersion2",
+        OperationId = "SearchDoctorsVersion2",
         Tags = new[] { "Doctors" }
     )]
     [ProducesResponseType(typeof(IEnumerable<DoctorCityDTO>), StatusCodes.Status200OK)]

@@ -46,7 +46,7 @@ public sealed class Address
 
     public override string ToString()
     {
-        var separator = ", ";
+        const string separator = ", ";
 
         return StreetAddress + separator
                              + ZipCode + separator

@@ -13,12 +13,9 @@ public class TechnicalTests
 
         var allEntityTypes = AllTypes.From(assembly)
             .ThatAreInNamespace("CleanArchitecture.DDD.Infrastructure.Persistence.Entities");
-            
-        foreach (var entityType in allEntityTypes)
-        {
-            entityType
-                .Should()
-                .BeSealed();
-        }
+        
+        allEntityTypes
+            .Should()
+            .BeSealed();
     }
 }
