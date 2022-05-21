@@ -1,12 +1,13 @@
 ﻿using System.Reflection;
 using CleanArchitecture.DDD.API.Polly;
+using CleanArchitecture.DDD.Application.Services;
 using CleanArchitecture.DDD.Domain;
 using Microsoft.OpenApi.Models;
 using Polly;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
-using Polly.Extensions.Http;
+using Microsoft.Extensions.Http;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
@@ -27,6 +28,7 @@ public static class WebExtensionBuilderExtensions
             .ConfigureServices()
             .ConfigureInputValidation()
             .ConfigureSwagger()
+            .ConfigureHttpClientFactory()
             .ConfigureControllers();
         
         return builder;
@@ -155,12 +157,14 @@ public static class WebExtensionBuilderExtensions
         return builder;
     }
 
-    public static WebApplicationBuilder SetupClientFactory(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder ConfigureHttpClientFactory(this WebApplicationBuilder builder)
     {
+        // TODO: Ensure that best practice is followed here
         PollyPolicies.PollyRegistry.TryGet<IAsyncPolicy<HttpResponseMessage>>(PollyPolicies.RetryPolicy, out var retryPolicy);
 
-        //builder.Services.AddHttpClient()
-        //    .AddPolicy(retryPolicy);
+        builder.Services.AddHttpClient<ISampleService, SampleService>()
+            .SetHandlerLifetime(TimeSpan.FromMinutes(1))
+            .AddPolicyHandler(retryPolicy);
 
         return builder;
     }
