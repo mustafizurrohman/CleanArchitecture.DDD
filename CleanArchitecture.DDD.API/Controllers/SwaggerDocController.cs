@@ -25,9 +25,9 @@ public class SwaggerDocController : BaseAPIController
         Tags = new[] { "Doctors" }
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<Doctor>))]
-    public async Task<IActionResult> GetAllDoctors()
+    public async Task<IActionResult> GetAllDoctors(CancellationToken cancellationToken)
     {
-        var doctors = await DbContext.Doctors.ToListAsync();
+        var doctors = await DbContext.Doctors.ToListAsync(cancellationToken);
         return Ok(doctors);
     }
 

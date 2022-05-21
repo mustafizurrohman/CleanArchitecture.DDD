@@ -1,9 +1,12 @@
 ﻿using System.Reflection;
+using CleanArchitecture.DDD.API.Polly;
 using CleanArchitecture.DDD.Domain;
 using Microsoft.OpenApi.Models;
+using Polly;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
+using Polly.Extensions.Http;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
@@ -148,6 +151,16 @@ public static class WebExtensionBuilderExtensions
                 .WriteTo.Console()
                 .WriteTo.File(new RenderedCompactJsonFormatter(), @"C:\dev\Serilog\logs.json", rollingInterval: RollingInterval.Minute, retainedFileCountLimit: 7);
         });
+
+        return builder;
+    }
+
+    public static WebApplicationBuilder SetupClientFactory(this WebApplicationBuilder builder)
+    {
+        PollyPolicies.PollyRegistry.TryGet<IAsyncPolicy<HttpResponseMessage>>(PollyPolicies.RetryPolicy, out var retryPolicy);
+
+        //builder.Services.AddHttpClient()
+        //    .AddPolicy(retryPolicy);
 
         return builder;
     }
