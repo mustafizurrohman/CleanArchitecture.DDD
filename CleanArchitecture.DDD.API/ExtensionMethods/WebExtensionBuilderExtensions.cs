@@ -1,15 +1,12 @@
 ﻿using System.Reflection;
-using System.Runtime.InteropServices.ComTypes;
-using CleanArchitecture.DDD.API.Polly;
 using CleanArchitecture.DDD.Application.Services;
+using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Domain;
 using Microsoft.OpenApi.Models;
 using Polly;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
-using Microsoft.Extensions.Http;
-using Polly.Registry;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
@@ -18,6 +15,7 @@ namespace CleanArchitecture.DDD.API.ExtensionMethods;
 /// </summary>
 public static class WebExtensionBuilderExtensions
 {
+
     /// <summary>
     /// 
     /// </summary>
@@ -48,6 +46,7 @@ public static class WebExtensionBuilderExtensions
     {
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         builder.Services.AddMediatR(typeof(Application.ApplicationAssemblyMarker).Assembly);
+        builder.Services.AddSingleton<IPolicyHolder, PolicyHolder>();
 
         return builder;
     }
@@ -162,8 +161,8 @@ public static class WebExtensionBuilderExtensions
     // TODO: Ensure that best practice is followed here
     public static WebApplicationBuilder ConfigureHttpClientFactory(this WebApplicationBuilder builder)
     {
-        PollyPolicies.PollyPolicyRegistry
-            .TryGet<IAsyncPolicy<HttpResponseMessage>>(PollyPolicies.RetryPolicy, out var retryPolicy);
+        var policyHolder = new PolicyHolder();
+        var retryPolicy = policyHolder.GetPolicy(HttpPolicyNames.HttpRetryPolicy);
 
         builder.Services.AddHttpClient<ISampleService, SampleService>()
             .SetHandlerLifetime(TimeSpan.FromMinutes(1))

@@ -1,6 +1,5 @@
 ﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
 using CSharpFunctionalExtensions;
-using FluentValidation.Results;
 
 namespace CleanArchitecture.DDD.Domain.ValueObjects;
 

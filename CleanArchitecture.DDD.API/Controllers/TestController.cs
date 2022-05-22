@@ -1,5 +1,5 @@
 using AutoMapper;
-using CleanArchitecture.DDD.Domain.Exceptions;
+using CleanArchitecture.DDD.Application.Services;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
@@ -8,12 +8,14 @@ public class TestController : BaseAPIController
 {
     private readonly IValidator<Name> _nameValidator;
     private readonly ILogger<TestController> _logger;
+    private readonly ISampleService _sampleService;
 
-    public TestController(IValidator<Name> nameValidator, DomainDbContext dbContext, IMapper autoMapper, ILogger<TestController> logger)
+    public TestController(IValidator<Name> nameValidator, DomainDbContext dbContext, IMapper autoMapper, ILogger<TestController> logger, ISampleService sampleService)
         : base(dbContext, autoMapper)
     {
         _nameValidator = nameValidator;
         _logger = logger;
+        _sampleService = sampleService;
     }
 
     [HttpGet("doctors", Name = "GetAllDoctors")]
