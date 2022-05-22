@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 using CleanArchitecture.DDD.API.Polly;
 using CleanArchitecture.DDD.Application.Services;
 using CleanArchitecture.DDD.Domain;
@@ -8,6 +9,7 @@ using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
 using Microsoft.Extensions.Http;
+using Polly.Registry;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
@@ -157,10 +159,11 @@ public static class WebExtensionBuilderExtensions
         return builder;
     }
 
+    // TODO: Ensure that best practice is followed here
     public static WebApplicationBuilder ConfigureHttpClientFactory(this WebApplicationBuilder builder)
     {
-        // TODO: Ensure that best practice is followed here
-        PollyPolicies.PollyRegistry.TryGet<IAsyncPolicy<HttpResponseMessage>>(PollyPolicies.RetryPolicy, out var retryPolicy);
+        PollyPolicies.PollyPolicyRegistry
+            .TryGet<IAsyncPolicy<HttpResponseMessage>>(PollyPolicies.RetryPolicy, out var retryPolicy);
 
         builder.Services.AddHttpClient<ISampleService, SampleService>()
             .SetHandlerLifetime(TimeSpan.FromMinutes(1))
