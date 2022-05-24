@@ -2,5 +2,5 @@
 
 public interface ISampleService
 {
-    Task TestHttpClient();
+    Task<IEnumerable<Doctor>> TestHttpClient();
 }

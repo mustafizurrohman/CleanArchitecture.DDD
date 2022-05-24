@@ -1,9 +1,10 @@
+using System.Net;
 using AutoMapper;
 using CleanArchitecture.DDD.Application.Services;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
-[ApiExplorerSettings(IgnoreApi = true)]
+[ApiExplorerSettings(IgnoreApi = false)]
 public class TestController : BaseAPIController
 {
     private readonly IValidator<Name> _nameValidator;
@@ -18,6 +19,7 @@ public class TestController : BaseAPIController
         _sampleService = sampleService;
     }
 
+    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpGet("doctors", Name = "GetAllDoctors")]
     [ProducesResponseType(typeof(IEnumerable<Doctor>), StatusCodes.Status200OK)]
 
@@ -27,6 +29,23 @@ public class TestController : BaseAPIController
         return Ok(doctors);
     }
 
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpGet("httpClient", Name = "httpClient")]
+    public async Task<IActionResult> TestHttpClient()
+    {
+        try
+        {
+            var doctors = await _sampleService.TestHttpClient();
+            return Ok(doctors);
+        }
+        catch (TimeoutException ex)
+        {
+            Log.Error(ex, "Internal error");
+            return StatusCode((int) HttpStatusCode.GatewayTimeout, $"Support code : {HttpContext.Connection.Id}");
+        }
+    }
+
+    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpGet]
     public IActionResult CreateName([FromQuery] string? firstname, [FromQuery] string? lastname)
     {
@@ -45,6 +64,7 @@ public class TestController : BaseAPIController
         return BadRequest(errors);
     }
 
+    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpPost]
     public async  Task<IActionResult> CreateName([FromBody] Name name)
     {
@@ -57,8 +77,9 @@ public class TestController : BaseAPIController
 
         return Ok(allDoctors);
     }
-        
+
     // Test only
+    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpGet("search")]
     public async Task<IActionResult> Search(CancellationToken cancellationToken, [FromQuery] string? firstname, [FromQuery] string? lastname, [FromQuery] bool and = false)
     {
@@ -78,6 +99,7 @@ public class TestController : BaseAPIController
         return Ok(doctors);
     }
 
+    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpGet("test")]
     public async Task<IActionResult> Test(CancellationToken cancellationToken)
     {
@@ -90,6 +112,7 @@ public class TestController : BaseAPIController
 
 
 
+    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpGet("compare/names")]
     public IActionResult CompareNames(string firstname, string middlename, string lastname, CancellationToken cancellationToken)
     {
@@ -99,6 +122,7 @@ public class TestController : BaseAPIController
         return Ok(name1 == name2);
     }
 
+    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpPost("testValueObject")]
     public IActionResult TestNameValueObject(string name)
     {
@@ -112,6 +136,7 @@ public class TestController : BaseAPIController
         return Ok();
     }
 
+    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpPost("exceptionLogging")]
     public IActionResult TestExceptionLogging()
     {

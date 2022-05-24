@@ -3,7 +3,6 @@ using CleanArchitecture.DDD.Application.Services;
 using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Domain;
 using Microsoft.OpenApi.Models;
-using Polly;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
@@ -147,25 +146,29 @@ public static class WebExtensionBuilderExtensions
                 .Enrich.WithMachineName()
                 .Enrich.WithProcessId()
                 .Enrich.WithProcessName()
+                .Enrich.WithEnvironmentName()
                 .Enrich.WithProperty("Assembly", $"{assemblyName.Name}")
                 .Enrich.WithProperty("Version", $"{assemblyName.Version}");
 
             loggerConfig
                 .WriteTo.Console()
-                .WriteTo.File(new RenderedCompactJsonFormatter(), @"C:\dev\Serilog\logs.json", rollingInterval: RollingInterval.Minute, retainedFileCountLimit: 7);
+                .WriteTo.File(new RenderedCompactJsonFormatter(), @"C:\dev\Serilog\logs.json", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7);
         });
 
         return builder;
     }
 
     // TODO: Ensure that best practice is followed here
-    public static WebApplicationBuilder ConfigureHttpClientFactory(this WebApplicationBuilder builder)
+    private static WebApplicationBuilder ConfigureHttpClientFactory(this WebApplicationBuilder builder)
     {
         var policyHolder = new PolicyHolder();
         var retryPolicy = policyHolder.GetPolicy(HttpPolicyNames.HttpRetryPolicy);
-
-        builder.Services.AddHttpClient<ISampleService, SampleService>()
-            .SetHandlerLifetime(TimeSpan.FromMinutes(1))
+        
+        builder.Services.AddHttpClient<ISampleService, SampleService>(config =>
+            {
+                config.BaseAddress = new Uri("https://localhost:7125/");
+            })
+            // .SetHandlerLifetime(TimeSpan.FromMinutes(1))
             .AddPolicyHandler(retryPolicy);
 
         return builder;

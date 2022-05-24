@@ -7,6 +7,8 @@ namespace CleanArchitecture.DDD.API.Controllers;
 [ApiExplorerSettings(IgnoreApi = false)]
 public class SwaggerDocController : BaseAPIController
 {
+    private static int _attempt = 4;
+
     /// <summary>
     /// 
     /// </summary>
@@ -27,6 +29,10 @@ public class SwaggerDocController : BaseAPIController
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<Doctor>))]
     public async Task<IActionResult> GetAllDoctors(CancellationToken cancellationToken)
     {
+        // Simulate fake error
+        if (_attempt++ % 4 != 0)
+            throw new NotImplementedException();
+
         var doctors = await DbContext.Doctors.ToListAsync(cancellationToken);
         return Ok(doctors);
     }

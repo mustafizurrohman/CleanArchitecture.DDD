@@ -6,26 +6,10 @@ using Polly.Extensions.Http;
 using Polly.Registry;
 using Polly.Timeout;
 using Polly.Wrap;
+using Serilog;
 
 namespace CleanArchitecture.DDD.Core.Polly;
 
-public enum PolicyNames
-{
-    TimeOutPolicy,
-    RetryPolicyWithJitter
-};
-
-public enum HttpPolicyNames
-{
-    HttpRetryPolicy,
-    HttpCircuitBreakerPolicy,
-    HttpRequestFallbackPolicy
-};
-
-public enum WrappedPolicyNames
-{
-    TimeoutRetryAndFallbackWrap
-}
 
 public class PolicyHolder : IPolicyHolder
 {
@@ -120,13 +104,17 @@ public class PolicyHolder : IPolicyHolder
 
     private IAsyncPolicy<HttpResponseMessage> GetHttpRetryPolicy()
     {
+        int attempts = 0;
+        
         return HttpPolicyExtensions
             .HandleTransientHttpError()
             .WaitAndRetryAsync(5,
                 retryAttempt => TimeSpan.FromMilliseconds(Math.Pow(1.5, retryAttempt) * 1000),
                 (_, waitingTime) =>
                 {
-                    Console.WriteLine("Retrying due to Polly retry policy");
+                    var now = DateTime.Now;
+                    var nextTry = now.Add(waitingTime);
+                    Log.Information("Polly Attempt# {@attempts} at {@now}. Retrying due to Polly retry policy. Next try at {@nextTry} if current attempt fails", ++attempts, now.ToString("dd.MM.yyyy HH:mm:ss"), nextTry.ToString("dd.MM.yyyy HH:mm:ss"));
                 });
     }
 
