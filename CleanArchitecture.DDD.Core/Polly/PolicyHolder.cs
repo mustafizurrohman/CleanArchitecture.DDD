@@ -97,6 +97,7 @@ public class PolicyHolder : IPolicyHolder
 
     private IAsyncPolicy<HttpResponseMessage> GetHttpCircuitBreakerPolicy()
     {
+        // Break after 3 tries and wait for 15 seconds before retrying
         return HttpPolicyExtensions
             .HandleTransientHttpError()
             .CircuitBreakerAsync(3, TimeSpan.FromSeconds(15));
@@ -105,6 +106,8 @@ public class PolicyHolder : IPolicyHolder
     private IAsyncPolicy<HttpResponseMessage> GetHttpRetryPolicy()
     {
         int attempts = 0;
+
+        const string dateTimeFormat = "dd.MM.yyyy HH:mm:ss";
         
         return HttpPolicyExtensions
             .HandleTransientHttpError()
@@ -114,7 +117,10 @@ public class PolicyHolder : IPolicyHolder
                 {
                     var now = DateTime.Now;
                     var nextTry = now.Add(waitingTime);
-                    Log.Information("Polly Attempt# {@attempts} at {@now}. Retrying due to Polly retry policy. Next try at {@nextTry} if current attempt fails", ++attempts, now.ToString("dd.MM.yyyy HH:mm:ss"), nextTry.ToString("dd.MM.yyyy HH:mm:ss"));
+                    Log.Information("Polly RetryAttempt# {@attempts} at {@now}. Next try at {@nextTry} if current attempt fails", 
+                        ++attempts, 
+                        now.ToString(dateTimeFormat), 
+                        nextTry.ToString(dateTimeFormat));
                 });
     }
 

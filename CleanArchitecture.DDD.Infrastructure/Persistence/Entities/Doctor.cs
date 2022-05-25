@@ -50,7 +50,7 @@ public sealed class Doctor
         var doc =  new Doctor
         {
             Name = Name.Copy(name),
-            Address = address
+            Address = Address.Copy(address)
         };
 
         return doc;

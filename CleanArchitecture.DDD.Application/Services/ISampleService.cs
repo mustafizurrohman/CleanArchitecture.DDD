@@ -1,6 +1,8 @@
-﻿namespace CleanArchitecture.DDD.Application.Services;
+﻿using CleanArchitecture.DDD.Application.DTO;
+
+namespace CleanArchitecture.DDD.Application.Services;
 
 public interface ISampleService
 {
-    Task<IEnumerable<Doctor>> TestHttpClient();
+    Task<IEnumerable<DoctorDTO>> TestHttpClient();
 }

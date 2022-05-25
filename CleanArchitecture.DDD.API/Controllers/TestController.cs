@@ -38,7 +38,7 @@ public class TestController : BaseAPIController
             var doctors = await _sampleService.TestHttpClient();
             return Ok(doctors);
         }
-        catch (TimeoutException ex)
+        catch (HttpRequestException ex)
         {
             Log.Error(ex, "Internal error");
             return StatusCode((int) HttpStatusCode.GatewayTimeout, $"Support code : {HttpContext.Connection.Id}");
