@@ -10,7 +10,6 @@ namespace CleanArchitecture.DDD.Application.Services;
 public class SampleService : ISampleService
 {
     private readonly HttpClient _httpClient;
-    private readonly IPolicyHolder _policyHolder;
     private readonly DomainDbContext _domainDbContext;
 
     private readonly IAsyncPolicy<HttpResponseMessage> _retryPolicy;
@@ -18,11 +17,9 @@ public class SampleService : ISampleService
     public SampleService(HttpClient httpClient, IPolicyHolder policyHolder, DomainDbContext domainDbContext)
     {
         _httpClient = httpClient;
-        _policyHolder = policyHolder;
         _domainDbContext = domainDbContext;
-
-
-        _policyHolder.Registry
+        
+        policyHolder.Registry
             .TryGet<IAsyncPolicy<HttpResponseMessage>>(HttpPolicyNames.HttpRetryPolicy.ToString(), out _retryPolicy);
         
     }
@@ -50,7 +47,6 @@ public class SampleService : ISampleService
         await _domainDbContext.SaveChangesAsync();
 
         return doctorDTOList;
-
-        // throw new TimeoutException("Error while retrieving data from (fake) remote server ...");
+        
     }
 }
