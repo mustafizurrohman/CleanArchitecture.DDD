@@ -51,7 +51,7 @@ public class FakeController : BaseAPIController
             "Switzerland"
         };
 
-        var addresses = Enumerable.Range(0, num)
+        var fakeAddresses = Enumerable.Range(0, num)
             .Select(_ => new AddressDTO()
             {
                 AddressID = Guid.NewGuid(),
@@ -62,17 +62,17 @@ public class FakeController : BaseAPIController
             })
             .ToList();
 
-        var names = Enumerable.Range(0, num)
+        var fakeNames = Enumerable.Range(0, num)
             .Select(_ => Name.Create(faker.Name.FirstName(), faker.Name.LastName()))
             .ToArray();
 
         var doctors = Enumerable.Range(0, num)
             .Select(_ =>
             {
-                var randomName = faker.Random.ArrayElement(names);
-                var randomAddress = faker.Random.ArrayElement(addresses.ToArray());
+                var randomName = faker.Random.ArrayElement(fakeNames);
+                var randomAddress = faker.Random.ArrayElement(fakeAddresses.ToArray());
 
-                addresses.Remove(randomAddress);
+                fakeAddresses.Remove(randomAddress);
 
                 return new DoctorDTO
                 {
