@@ -46,26 +46,25 @@ public class TestController : BaseAPIController
     }
 
     [ApiExplorerSettings(IgnoreApi = true)]
-    [HttpGet]
+    [HttpGet("TestNameValidation")]
     public IActionResult CreateName([FromQuery] string? firstname, [FromQuery] string? lastname)
     {
-        var name = Name.Create(firstname ?? string.Empty, lastname ?? string.Empty);
+        var name = Name.Create(firstname ?? string.Empty, lastname ?? string.Empty, false);
 
         var validationResult = _nameValidator.Validate(name);
 
         if (validationResult.IsValid)
             return Ok();
-        
 
         var errors = validationResult.Errors
-            .Select(x => x.ErrorMessage)
+            .GroupBy(x => x.PropertyName)
             .ToList();
 
         return BadRequest(errors);
     }
 
-    [ApiExplorerSettings(IgnoreApi = true)]
-    [HttpPost]
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpPost("demo")]
     public async  Task<IActionResult> CreateName([FromBody] Name name)
     {
         var doctor = Doctor.Create(name.Firstname, name.Middlename, name.Lastname);

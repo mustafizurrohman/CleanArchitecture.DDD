@@ -35,9 +35,9 @@ public class SampleService : ISampleService
         var doctors = doctorDTOList
             .Select(doc =>
             {
-                var addressDTO = doc.Address;
-                var docAddress = Address
-                    .Create(addressDTO.StreetAddress, addressDTO.ZipCode, addressDTO.City, addressDTO.Country);
+                // ReSharper disable once IdentifierTypo
+                var addrDTO = doc.Address;
+                var docAddress = Address.Create(addrDTO.StreetAddress, addrDTO.ZipCode, addrDTO.City, addrDTO.Country);
                 
                 var docName = Name.Copy(doc.Name, false);
 

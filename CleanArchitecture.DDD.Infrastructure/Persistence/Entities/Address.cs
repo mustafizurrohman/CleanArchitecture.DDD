@@ -26,11 +26,13 @@ public sealed class Address
     {
         Create(address.StreetAddress, address.ZipCode, address.City, address.Country);
     }
-
+    
     public static Address Copy(Address address)
     {
         return Create(address.StreetAddress, address.ZipCode, address.City, address.Country);
     }
+
+    // Address from AddressDTO
 
     public static Address Create(string streetAddress, string zipCode, string city, string country)
     {
