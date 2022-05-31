@@ -1,7 +1,6 @@
-﻿using System.Configuration;
-using System.Reflection;
-using CleanArchitecture.DDD.API.Hangfire;
+﻿using System.Reflection;
 using CleanArchitecture.DDD.Application.Services;
+using CleanArchitecture.DDD.Core.LoggingEnrichers;
 using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Domain;
 using Hangfire;
@@ -11,7 +10,6 @@ using Newtonsoft.Json;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
-using Z.EntityFramework.Extensions;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
@@ -181,6 +179,8 @@ public static class WebExtensionBuilderExtensions
                 .Enrich.WithProcessId()
                 .Enrich.WithProcessName()
                 .Enrich.WithEnvironmentName()
+                // Custom serilog enricher
+                .Enrich.WithReleaseNumber()
                 .Enrich.WithProperty("Assembly", $"{assemblyName.Name}")
                 .Enrich.WithProperty("Version", $"{assemblyName.Version}");
 

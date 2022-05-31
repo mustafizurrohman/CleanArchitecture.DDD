@@ -1,13 +1,11 @@
 ﻿using System.Collections.Immutable;
 using CleanArchitecture.DDD.Application.DTO;
 using CleanArchitecture.DDD.Core.Polly;
-using CleanArchitecture.DDD.Domain.ValueObjects;
 using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Polly;
 using Serilog;
-using Z.EntityFramework.Extensions;
 using Z.EntityFramework.Plus;
 
 namespace CleanArchitecture.DDD.Application.Services;
