@@ -1,4 +1,5 @@
-﻿using Swashbuckle.AspNetCore.SwaggerUI;
+﻿using Hangfire;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
@@ -37,7 +38,12 @@ public static class WebApplicationExtensions
 
         app.UseAuthorization();
 
-        app.MapControllers();
+        app.UseRouting();
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+            endpoints.MapHangfireDashboard();
+        });
 
         app.UseSerilogRequestLogging();
 

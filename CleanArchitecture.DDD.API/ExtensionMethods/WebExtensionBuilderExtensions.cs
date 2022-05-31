@@ -1,7 +1,11 @@
-﻿using System.Reflection;
+﻿using System.Configuration;
+using System.Reflection;
+using CleanArchitecture.DDD.API.Hangfire;
 using CleanArchitecture.DDD.Application.Services;
 using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Domain;
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.OpenApi.Models;
 using Serilog.Events;
 using Serilog.Exceptions;
@@ -28,6 +32,7 @@ public static class WebExtensionBuilderExtensions
             .ConfigureInputValidation()
             .ConfigureSwagger()
             .ConfigureHttpClientFactory()
+            .ConfigureHangfire()
             .ConfigureControllers();
         
         return builder;
@@ -127,6 +132,30 @@ public static class WebExtensionBuilderExtensions
         return builder;
     }
 
+    private static WebApplicationBuilder ConfigureHangfire(this WebApplicationBuilder builder)
+    {
+        GlobalConfiguration.Configuration.UseActivator(new HangfireActivator(builder.Services.BuildServiceProvider()));
+
+        // Add Hangfire services.
+        builder.Services.AddHangfire(configuration => configuration
+            .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+            .UseSimpleAssemblyNameTypeSerializer()
+            .UseRecommendedSerializerSettings()
+            .UseSqlServerStorage(builder.Configuration.GetConnectionString("HangfireDb"), new SqlServerStorageOptions
+            {
+                CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                QueuePollInterval = TimeSpan.Zero,
+                UseRecommendedIsolationLevel = true,
+                DisableGlobalLocks = true
+            }));
+
+        // Add the processing server as IHostedService
+        builder.Services.AddHangfireServer();
+
+        return builder;
+    }
+
     private static WebApplicationBuilder ConfigureSerilog(this WebApplicationBuilder builder)
     {
         builder.Host.UseSerilog((provider, contextBoundObject, loggerConfig) =>
@@ -136,7 +165,8 @@ public static class WebExtensionBuilderExtensions
             loggerConfig
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .MinimumLevel.Override("IdentityServer4", LogEventLevel.Information);
+                .MinimumLevel.Override("IdentityServer4", LogEventLevel.Information)
+                .MinimumLevel.Override("Hangfire", LogEventLevel.Information);
 
             loggerConfig
                 .Enrich.WithCorrelationId()
@@ -152,7 +182,10 @@ public static class WebExtensionBuilderExtensions
 
             loggerConfig
                 .WriteTo.Console()
-                .WriteTo.File(new RenderedCompactJsonFormatter(), @"C:\dev\Serilog\logs.json", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7);
+                .WriteTo.File(new RenderedCompactJsonFormatter(), 
+                    @"C:\dev\Serilog\logs.json", 
+                    rollingInterval: RollingInterval.Day, 
+                    retainedFileCountLimit: 7);
         });
 
         return builder;

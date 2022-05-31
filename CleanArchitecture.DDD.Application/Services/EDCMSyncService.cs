@@ -2,7 +2,9 @@
 using CleanArchitecture.DDD.Application.DTO;
 using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
+using Hangfire;
 using Polly;
+using Serilog;
 
 namespace CleanArchitecture.DDD.Application.Services;
 
@@ -23,8 +25,10 @@ public class EDCMSyncService : IEDCMSyncService
         
     }
 
-    public async Task<IEnumerable<DoctorDTO>>  SyncDoctors()
+    public async Task<IEnumerable<DoctorDTO>> SyncDoctors()
     {
+        Log.Information("Syncing doctors");
+
         var response = await _httpClient.GetAsync("Fake/doctors");
         response.EnsureSuccessStatusCode();
 
@@ -43,5 +47,15 @@ public class EDCMSyncService : IEDCMSyncService
 
         return doctorDTOList;
         
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public void SyncDoctorsInBackground()
+    {
+        _ = BackgroundJob.Enqueue(() => SyncDoctors());
+
     }
 }

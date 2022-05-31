@@ -14,6 +14,7 @@ public class EDCMController : BaseAPIController
     /// </summary>
     /// <param name="dbContext"></param>
     /// <param name="autoMapper"></param>
+    /// <param name="iedcmSyncService"></param>
     public EDCMController(DomainDbContext dbContext, IMapper autoMapper, IEDCMSyncService iedcmSyncService) 
         : base(dbContext, autoMapper)
     {
@@ -36,6 +37,29 @@ public class EDCMController : BaseAPIController
         {
             var doctors = await _iedcmSyncService.SyncDoctors();
             return Ok(doctors);
+        }
+        catch (HttpRequestException ex)
+        {
+            Log.Error(ex, "Internal error");
+            return StatusCode((int)HttpStatusCode.GatewayTimeout, $"Support code : {HttpContext.Connection.Id}");
+        }
+    }
+
+    [ApiExplorerSettings(IgnoreApi = true)]
+    [HttpGet("syncDoc/background", Name = "syncDocBackground")]
+    [SwaggerOperation(
+        Summary = "Gets doc from a fake external data service as a Background task",
+        Description = "No or default authentication required",
+        OperationId = "SyncDocBackground",
+        Tags = new[] { "EDCM" }
+    )]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult SyncDoctorsInBackground()
+    {
+        try
+        {
+            _iedcmSyncService.SyncDoctorsInBackground();
+            return Ok();
         }
         catch (HttpRequestException ex)
         {
