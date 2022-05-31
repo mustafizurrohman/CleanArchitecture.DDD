@@ -1,6 +1,5 @@
-﻿namespace CleanArchitecture.DDD.Application.MediatR.Queries
+﻿namespace CleanArchitecture.DDD.Application.MediatR.Queries;
+
+public class GetAllDoctorsQuery
 {
-    internal class GetAllDoctorsQuery
-    {
-    }
 }
