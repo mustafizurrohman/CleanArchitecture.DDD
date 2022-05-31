@@ -1,5 +1,4 @@
 ﻿using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
-using MediatR;
 
 namespace CleanArchitecture.DDD.Application.MediatR.PipelineBehaviours;
 

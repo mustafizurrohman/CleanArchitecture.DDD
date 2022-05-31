@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using AutoMapper;
+using CleanArchitecture.DDD.Application.MediatR.Commands;
 using CleanArchitecture.DDD.Application.Services;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -8,6 +9,7 @@ namespace CleanArchitecture.DDD.API.Controllers;
 public class EDCMController : BaseAPIController
 {
     private readonly IEDCMSyncService _iedcmSyncService;
+    private readonly IMediator _mediator;
 
     /// <summary>
     /// 
@@ -15,10 +17,11 @@ public class EDCMController : BaseAPIController
     /// <param name="dbContext"></param>
     /// <param name="autoMapper"></param>
     /// <param name="iedcmSyncService"></param>
-    public EDCMController(DomainDbContext dbContext, IMapper autoMapper, IEDCMSyncService iedcmSyncService) 
+    public EDCMController(DomainDbContext dbContext, IMapper autoMapper, IEDCMSyncService iedcmSyncService, IMediator mediator) 
         : base(dbContext, autoMapper)
     {
         _iedcmSyncService = iedcmSyncService;
+        _mediator = mediator;
     }
 
     [ApiExplorerSettings(IgnoreApi = false)]
@@ -29,14 +32,16 @@ public class EDCMController : BaseAPIController
         OperationId = "SyncDoc",
         Tags = new[] { "EDCM" }
     )]
-    [ProducesResponseType(typeof(IEnumerable<DoctorCityDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status504GatewayTimeout)]
     public async Task<IActionResult> SyncDoctors()
     {
         try
         {
-            var doctors = await _iedcmSyncService.SyncDoctors();
-            return Ok(doctors);
+            var syncDoctorCommand = new SyncDoctorCommand();
+            await _mediator.Send(syncDoctorCommand);
+
+            return Ok();
         }
         catch (HttpRequestException ex)
         {

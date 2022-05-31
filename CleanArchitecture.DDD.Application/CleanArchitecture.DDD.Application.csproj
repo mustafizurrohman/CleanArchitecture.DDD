@@ -24,8 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MediatR\Commands\" />
-    <Folder Include="MediatR\Handlers\" />
     <Folder Include="MediatR\Decorators\" />
     <Folder Include="MediatR\Queries\" />
   </ItemGroup>

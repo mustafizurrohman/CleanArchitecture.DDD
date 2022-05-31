@@ -58,6 +58,7 @@ public static class WebExtensionBuilderExtensions
 
         // MediatR Configuration
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
+        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TimingBehaviour<,>));
 
         return builder;
     }
