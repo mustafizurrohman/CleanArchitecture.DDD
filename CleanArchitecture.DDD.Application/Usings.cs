@@ -4,3 +4,7 @@ global using CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
 global using MediatR;
 global using CleanArchitecture.DDD.Application.MediatR.Commands;
 global using CleanArchitecture.DDD.Application.Services;
+global using AutoMapper.QueryableExtensions;
+global using CleanArchitecture.DDD.Application.MediatR.Queries;
+global using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
+global using Microsoft.EntityFrameworkCore;

@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
-
-namespace CleanArchitecture.DDD.Application.MediatR.PipelineBehaviours;
+﻿namespace CleanArchitecture.DDD.Application.MediatR.PipelineBehaviours;
 
 public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>

@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-
-namespace CleanArchitecture.DDD.API.Controllers;
+﻿namespace CleanArchitecture.DDD.API.Controllers;
 
 /// <summary>
 /// 

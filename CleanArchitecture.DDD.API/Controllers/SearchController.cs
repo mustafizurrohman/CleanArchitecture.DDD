@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CleanArchitecture.DDD.Application.MediatR.Queries;
+﻿using CleanArchitecture.DDD.Application.MediatR.Queries;
 using CleanArchitecture.DDD.Domain.Exceptions;
 using Swashbuckle.AspNetCore.Annotations;
 

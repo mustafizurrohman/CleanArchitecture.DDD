@@ -1,7 +1,4 @@
 ﻿using System.Net;
-using AutoMapper;
-using CleanArchitecture.DDD.Application.MediatR.Commands;
-using CleanArchitecture.DDD.Application.Services;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanArchitecture.DDD.API.Controllers;

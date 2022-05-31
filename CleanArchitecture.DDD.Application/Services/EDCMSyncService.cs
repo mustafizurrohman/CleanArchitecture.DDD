@@ -1,9 +1,7 @@
 ﻿using System.Collections.Immutable;
 using CleanArchitecture.DDD.Application.DTO;
 using CleanArchitecture.DDD.Core.Polly;
-using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 using Hangfire;
-using Microsoft.EntityFrameworkCore;
 using Polly;
 using Serilog;
 using Z.EntityFramework.Plus;

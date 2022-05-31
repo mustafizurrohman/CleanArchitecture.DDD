@@ -1,6 +1,3 @@
-using AutoMapper;
-using CleanArchitecture.DDD.Application.Services;
-
 namespace CleanArchitecture.DDD.API.Controllers;
 
 [ApiExplorerSettings(IgnoreApi = true)]

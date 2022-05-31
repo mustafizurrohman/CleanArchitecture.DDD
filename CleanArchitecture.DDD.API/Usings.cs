@@ -17,3 +17,7 @@ global using System.Diagnostics;
 global using System.Net.Mime;
 global using Ardalis.GuardClauses;
 global using Bogus;
+
+global using AutoMapper;
+global using CleanArchitecture.DDD.Application.MediatR.Commands;
+global using CleanArchitecture.DDD.Application.Services;

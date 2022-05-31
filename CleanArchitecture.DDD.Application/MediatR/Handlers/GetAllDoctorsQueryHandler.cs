@@ -1,9 +1,4 @@
-﻿using AutoMapper.QueryableExtensions;
-using CleanArchitecture.DDD.Application.MediatR.Queries;
-using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
-using Microsoft.EntityFrameworkCore;
-
-namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
+﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
 public class GetAllDoctorsQueryHandler : IRequestHandler<GetAllDoctorsQuery, IEnumerable<DoctorCityDTO>>
 {
@@ -18,6 +13,8 @@ public class GetAllDoctorsQueryHandler : IRequestHandler<GetAllDoctorsQuery, IEn
 
     public async Task<IEnumerable<DoctorCityDTO>> Handle(GetAllDoctorsQuery request, CancellationToken cancellationToken)
     {
+
+        // A join will be performed automatically by AutoMapper using Entity Framework
         var doctors = await _dbContext.Doctors.AsNoTracking()
             .ProjectTo<DoctorCityDTO>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);

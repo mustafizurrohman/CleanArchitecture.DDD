@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using AutoMapper;
 using CleanArchitecture.DDD.Application.DTO;
 using Swashbuckle.AspNetCore.Annotations;
 
