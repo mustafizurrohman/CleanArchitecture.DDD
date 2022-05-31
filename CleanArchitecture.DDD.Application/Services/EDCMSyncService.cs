@@ -38,7 +38,7 @@ public class EDCMSyncService : IEDCMSyncService
 
         // Prepare to save to database
         // We are using a static method here but AutoMapper could also be used
-        var doctors = doctorDTOList
+        ImmutableList<Doctor> doctors = doctorDTOList
             .Select(DoctorDTO.ToDoctor)
             .ToImmutableList();
         
@@ -53,7 +53,7 @@ public class EDCMSyncService : IEDCMSyncService
             {
                 await _domainDbContext.Addresses
                     .Where(addr => addr.AddressID == existingDoctor.AddressId)
-                    .UpdateAsync(_ => new Address()
+                    .UpdateAsync(_ => new Address
                     {
                         City = doctor.Address.City,
                         Country = doctor.Address.Country,
@@ -64,7 +64,6 @@ public class EDCMSyncService : IEDCMSyncService
             else
             {
                 await _domainDbContext.Doctors.AddAsync(doctor);
-                
             }
         }
 
@@ -73,7 +72,7 @@ public class EDCMSyncService : IEDCMSyncService
     }
 
     /// <summary>
-    /// Better Alternative: Implement this as a Azure Serverless function and invoke explicitely from here or
+    /// Better Alternative: Implement this as a Azure Serverless function and invoke explicitly from here or
     /// by using a CRON Scheduler
     /// </summary>
     /// <returns></returns>
