@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanArchitecture.DDD.Application.MediatR.Queries;
 using CleanArchitecture.DDD.Domain.Exceptions;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -7,16 +8,18 @@ namespace CleanArchitecture.DDD.API.Controllers;
 [ApiExplorerSettings(IgnoreApi = false)]
 public class SearchController : BaseAPIController
 {
-    private static int _attempt = 4;
-
+    private readonly IMediator _mediator;
+    
     /// <summary>
     /// 
     /// </summary>
     /// <param name="dbContext"></param>
     /// <param name="autoMapper"></param>
-    public SearchController(DomainDbContext dbContext, IMapper autoMapper)
+    /// <param name="mediator"></param>
+    public SearchController(DomainDbContext dbContext, IMapper autoMapper, IMediator mediator)
         : base(dbContext, autoMapper)
     {
+        _mediator = mediator;
     }
 
     [HttpGet("doctors")]
@@ -29,12 +32,10 @@ public class SearchController : BaseAPIController
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<Doctor>))]
     public async Task<IActionResult> GetAllDoctors(CancellationToken cancellationToken)
     {
-        // Simulate fake error
-        if (_attempt++ % 4 != 0)
-            throw new NotImplementedException();
+        var command = new GetAllDoctorsQuery();
+        var result = await _mediator.Send(command, cancellationToken);
 
-        var doctors = await DbContext.Doctors.ToListAsync(cancellationToken);
-        return Ok(doctors);
+        return Ok(result);
     }
 
     /// <summary>

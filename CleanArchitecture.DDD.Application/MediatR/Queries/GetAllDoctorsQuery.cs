@@ -1,5 +1,5 @@
 ﻿namespace CleanArchitecture.DDD.Application.MediatR.Queries;
 
-public class GetAllDoctorsQuery
+public record GetAllDoctorsQuery : IRequest<IEnumerable<DoctorCityDTO>>
 {
 }
