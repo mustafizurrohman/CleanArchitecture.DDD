@@ -50,12 +50,36 @@ public class EDCMSyncService : IEDCMSyncService
     }
 
     /// <summary>
-    /// 
+    /// Better Alternative: Implement this as a Azure Serverless function and invoke from here or
+    /// using a CRON Scheduler
     /// </summary>
     /// <returns></returns>
     public void SyncDoctorsInBackground()
     {
-        _ = BackgroundJob.Enqueue(() => SyncDoctors());
+        _ = BackgroundJob.Enqueue(() => SyncDoctorsInBackground(_httpClient, _domainDbContext));
+    }
 
+    // ReSharper disable once MemberCanBePrivate.Global
+    public async Task<IEnumerable<DoctorDTO>> SyncDoctorsInBackground(HttpClient httpClient, DomainDbContext domainDbContext)
+    {
+        Log.Information("Syncing doctors in background");
+
+        var response = await httpClient.GetAsync("Fake/doctors");
+        response.EnsureSuccessStatusCode();
+
+        var doctorDTOList = await response.Content.ReadAsAsync<IReadOnlyList<DoctorDTO>>();
+
+        // Prepare to save to database
+        // We are using a static method here but AutoMapper could also be used
+        var doctors = doctorDTOList
+            .Select(DoctorDTO.ToDoctor)
+            .ToImmutableList();
+
+        // Entity Framework is aware that Doctors an Address have a PK-FK Relationship
+        // So it will take care that the keys are properly created and linked.
+        await domainDbContext.AddRangeAsync(doctors);
+        await domainDbContext.SaveChangesAsync();
+
+        return doctorDTOList;
     }
 }

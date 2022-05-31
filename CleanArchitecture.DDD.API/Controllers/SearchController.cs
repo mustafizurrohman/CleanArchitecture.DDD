@@ -5,7 +5,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace CleanArchitecture.DDD.API.Controllers;
 
 [ApiExplorerSettings(IgnoreApi = false)]
-public class SwaggerDocController : BaseAPIController
+public class SearchController : BaseAPIController
 {
     private static int _attempt = 4;
 
@@ -14,7 +14,7 @@ public class SwaggerDocController : BaseAPIController
     /// </summary>
     /// <param name="dbContext"></param>
     /// <param name="autoMapper"></param>
-    public SwaggerDocController(DomainDbContext dbContext, IMapper autoMapper)
+    public SearchController(DomainDbContext dbContext, IMapper autoMapper)
         : base(dbContext, autoMapper)
     {
     }

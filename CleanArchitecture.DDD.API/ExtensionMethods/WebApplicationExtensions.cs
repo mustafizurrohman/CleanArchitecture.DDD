@@ -1,4 +1,5 @@
-﻿using Hangfire;
+﻿using CleanArchitecture.DDD.API.Hangfire;
+using Hangfire;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
@@ -37,8 +38,11 @@ public static class WebApplicationExtensions
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
-
+        
         app.UseRouting();
+
+        GlobalConfiguration.Configuration.UseActivator(new HangfireActivator(app.Services));
+
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();

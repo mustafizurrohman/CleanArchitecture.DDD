@@ -7,6 +7,7 @@ using CleanArchitecture.DDD.Domain;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
@@ -134,21 +135,22 @@ public static class WebExtensionBuilderExtensions
 
     private static WebApplicationBuilder ConfigureHangfire(this WebApplicationBuilder builder)
     {
-        GlobalConfiguration.Configuration.UseActivator(new HangfireActivator(builder.Services.BuildServiceProvider()));
-
         // Add Hangfire services.
         builder.Services.AddHangfire(configuration => configuration
-            .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-            .UseSimpleAssemblyNameTypeSerializer()
-            .UseRecommendedSerializerSettings()
-            .UseSqlServerStorage(builder.Configuration.GetConnectionString("HangfireDb"), new SqlServerStorageOptions
-            {
-                CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                QueuePollInterval = TimeSpan.Zero,
-                UseRecommendedIsolationLevel = true,
-                DisableGlobalLocks = true
-            }));
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSerializerSettings(new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })
+                .UseSqlServerStorage(builder.Configuration.GetConnectionString("HangfireDb"), new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true
+                }
+                    
+            ));
 
         // Add the processing server as IHostedService
         builder.Services.AddHangfireServer();
@@ -158,6 +160,7 @@ public static class WebExtensionBuilderExtensions
 
     private static WebApplicationBuilder ConfigureSerilog(this WebApplicationBuilder builder)
     {
+        // We can also use appSettings to configure logging
         builder.Host.UseSerilog((provider, contextBoundObject, loggerConfig) =>
         {
             var assemblyName = Assembly.GetExecutingAssembly().GetName();
