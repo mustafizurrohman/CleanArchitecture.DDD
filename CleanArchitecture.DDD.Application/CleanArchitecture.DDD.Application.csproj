@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="MediatR\Decorators\" />
-    <Folder Include="MediatR\Queries\" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,4 @@
-﻿using CleanArchitecture.DDD.Application.MediatR.Commands;
-using CleanArchitecture.DDD.Application.Services;
-
-namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
+﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
 public class SyncDoctorCommandHandler : IRequestHandler<SyncDoctorCommand>
 {
