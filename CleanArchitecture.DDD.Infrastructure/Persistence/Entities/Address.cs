@@ -18,7 +18,7 @@ public sealed class Address
     /// <summary>
     /// Used by Entity Framework
     /// </summary>
-    private Address()
+    public Address()
     {
     }
 

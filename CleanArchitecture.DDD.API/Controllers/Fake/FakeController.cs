@@ -16,6 +16,8 @@ public class FakeController : BaseAPIController
 
     private static int _attempts = 0;
 
+    private static IEnumerable<DoctorDTO> cachedDoctors = new List<DoctorDTO>();
+
     /// <summary>
     /// 
     /// </summary>
@@ -37,12 +39,42 @@ public class FakeController : BaseAPIController
     public IActionResult GetFakeDoctors(int num = 10, CancellationToken cancellationToken = default)
     {
         // Simulate a fake delay here
-        Thread.Sleep(2000);
+        // Thread.Sleep(2000);
 
         // Simulate a fake error here
-        if (++_attempts % 4 != 0)
+        if (++_attempts % 2 != 0)
             return StatusCode((int)HttpStatusCode.GatewayTimeout);
-            
+
+
+        if (cachedDoctors.Any())
+        {
+            var modifiedDoctors = new List<DoctorDTO>();
+
+            foreach (var cachedDoctor in cachedDoctors)
+            {
+                var modifiedDoctor = new DoctorDTO()
+                {
+                    // Update Address here 
+                    Address = new AddressDTO()
+                    {
+                        AddressID = cachedDoctor.Address.AddressID,
+                        StreetAddress = cachedDoctor.Address.StreetAddress + " 2",
+                        ZipCode = "22087",
+                        City = "Hamburg",
+                        Country = cachedDoctor.Address.Country
+                    },
+                    Name = cachedDoctor.Name
+                };
+                
+                modifiedDoctors.Add(modifiedDoctor);
+
+            }
+
+            return Ok(modifiedDoctors);
+        }
+
+
+
         var faker = new Faker("de");
 
         var fakeCountries = new List<string>()
@@ -82,6 +114,8 @@ public class FakeController : BaseAPIController
                 };
             })
             .ToList();
+
+        cachedDoctors = doctors;
 
         return Ok(doctors);
     }

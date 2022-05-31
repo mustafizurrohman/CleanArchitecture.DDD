@@ -14,5 +14,5 @@ public interface IPolicyHolder
 
     AsyncPolicyWrap<HttpResponseMessage> GetPolicy(WrappedPolicyNames wrappedPolicyNames);
 
-    IAsyncPolicy<HttpResponseMessage> PolicySelector(HttpRequestMessage httpRequestMessage)
+    IAsyncPolicy<HttpResponseMessage> PolicySelector(HttpRequestMessage httpRequestMessage);
 }

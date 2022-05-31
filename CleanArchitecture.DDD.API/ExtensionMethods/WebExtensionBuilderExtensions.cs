@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
+using Z.EntityFramework.Extensions;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 

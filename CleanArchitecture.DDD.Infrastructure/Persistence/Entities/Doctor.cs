@@ -12,19 +12,26 @@ public sealed class Doctor
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("ID")]
-    public Guid DoctorID { get; init;}
+    public Guid DoctorID { get; set; }
 
-    public Name Name { get; init; }
+    public Name Name { get; set; }
 
-    public Address Address { get; init; }
+    // Must be init
+    public Address Address { get; set; }
     [ForeignKey("Address")]
-    public Guid AddressId { get; init; }
+    public Guid AddressId { get; set; }
 
     /// <summary>
     /// Required for EntityFramework
     /// </summary>
-    private Doctor()
+    public Doctor()
     {
+    }
+
+    public Doctor UpdateAddress(Address updatedAddress)
+    {
+        this.Address = updatedAddress;
+        return this;
     }
 
     public static Doctor Copy(Doctor doctor)
