@@ -51,7 +51,10 @@ public static class WebExtensionBuilderExtensions
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         builder.Services.AddMediatR(typeof(Application.ApplicationAssemblyMarker).Assembly);
         builder.Services.AddSingleton<IPolicyHolder, PolicyHolder>();
-
+        
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddTransient<UserNameEnricher>();
+        
         return builder;
     }
 
@@ -179,8 +182,10 @@ public static class WebExtensionBuilderExtensions
                 .Enrich.WithProcessId()
                 .Enrich.WithProcessName()
                 .Enrich.WithEnvironmentName()
-                // Custom serilog enricher
+                // Custom serilog enricher to append release number
                 .Enrich.WithReleaseNumber()
+                // Custom serilog enricher to append logged in username
+                .Enrich.WithUsername()
                 .Enrich.WithProperty("Assembly", $"{assemblyName.Name}")
                 .Enrich.WithProperty("Version", $"{assemblyName.Version}");
 

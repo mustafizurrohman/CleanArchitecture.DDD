@@ -9,4 +9,12 @@ public static class EnricherExtensionMethods
     {
         return enrich is null ? throw new ArgumentNullException(nameof(enrich)) : enrich.With<ReleaseNumberEnricher>();
     }
+
+    public static LoggerConfiguration WithUsername(this LoggerEnrichmentConfiguration enrich)
+    {
+        return enrich is null
+            ? throw new ArgumentNullException(nameof(enrich))
+            : enrich.With<UserNameEnricher>();
+    }
+
 }
