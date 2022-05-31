@@ -8,9 +8,12 @@ public enum PolicyNames
 
 public enum HttpPolicyNames
 {
+    HttpNoOpPolicy,
+    HttpTimeOutPolicy,
     HttpRetryPolicy,
     HttpCircuitBreakerPolicy,
-    HttpRequestFallbackPolicy
+    HttpRequestFallbackPolicy,
+    HttpRetryPolicyWithJitter
 };
 
 public enum WrappedPolicyNames

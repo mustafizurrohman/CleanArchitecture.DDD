@@ -26,9 +26,11 @@ public class PolicyHolder : IPolicyHolder
     {
         return httpPolicyName switch
         {
+            HttpPolicyNames.HttpTimeOutPolicy => GetTimeOutPolicy().AsAsyncPolicy<HttpResponseMessage>(),
             HttpPolicyNames.HttpRetryPolicy => GetHttpRetryPolicy(),
             HttpPolicyNames.HttpCircuitBreakerPolicy => GetHttpCircuitBreakerPolicy(),
             HttpPolicyNames.HttpRequestFallbackPolicy => GetHttpRequestFallbackPolicy(),
+            HttpPolicyNames.HttpRetryPolicyWithJitter => GetHttpRetryPolicyWithJitter(),
             _ => throw new ArgumentOutOfRangeException(nameof(httpPolicyName), httpPolicyName, null)
         };
     }
@@ -65,9 +67,13 @@ public class PolicyHolder : IPolicyHolder
         _pollyPolicyRegistry.Add(HttpPolicyNames.HttpRetryPolicy.ToString(), GetHttpRetryPolicy());
         _pollyPolicyRegistry.Add(HttpPolicyNames.HttpCircuitBreakerPolicy.ToString(), GetHttpCircuitBreakerPolicy());
         _pollyPolicyRegistry.Add(HttpPolicyNames.HttpRequestFallbackPolicy.ToString(), GetHttpRequestFallbackPolicy());
+        _pollyPolicyRegistry.Add(HttpPolicyNames.HttpRetryPolicyWithJitter.ToString(), GetHttpRetryPolicyWithJitter());
+        _pollyPolicyRegistry.Add(HttpPolicyNames.HttpNoOpPolicy.ToString(), GetNoOpPolicy());
 
         _pollyPolicyRegistry.Add(PolicyNames.TimeOutPolicy.ToString(), GetTimeOutPolicy());
         _pollyPolicyRegistry.Add(PolicyNames.RetryPolicyWithJitter.ToString(), GetRetryPolicyWithJitter());
+
+        _pollyPolicyRegistry.Add(WrappedPolicyNames.TimeoutRetryAndFallbackWrap.ToString(), GetTimeoutRetryAndFallbackWrap());
     }
 
     private IAsyncPolicy GetRetryPolicyWithJitter()
@@ -137,12 +143,22 @@ public class PolicyHolder : IPolicyHolder
             });
     }
 
-    public AsyncPolicyWrap<HttpResponseMessage> GetTimeoutRetryAndFallbackWrap()
+    private AsyncPolicyWrap<HttpResponseMessage> GetTimeoutRetryAndFallbackWrap()
     {
         var circuitBreakerPolicy = GetHttpCircuitBreakerPolicy();
         var fallbackPolicy = GetHttpRequestFallbackPolicy();
 
         return Policy.WrapAsync(circuitBreakerPolicy, fallbackPolicy);
+    }
+
+    private IAsyncPolicy<HttpResponseMessage> GetNoOpPolicy()
+    {
+        return Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>();
+    }
+
+    private IAsyncPolicy<HttpResponseMessage> GetHttpRetryPolicyWithJitter()
+    {
+        return GetRetryPolicyWithJitter().AsAsyncPolicy<HttpResponseMessage>();
     }
 
     #endregion
