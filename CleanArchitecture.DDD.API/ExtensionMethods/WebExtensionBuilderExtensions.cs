@@ -164,9 +164,10 @@ public static class WebExtensionBuilderExtensions
         var policyHolder = new PolicyHolder();
         var retryPolicy = policyHolder.GetPolicy(HttpPolicyNames.HttpRetryPolicy);
         
-        builder.Services.AddHttpClient<ISampleService, SampleService>(config =>
+        builder.Services.AddHttpClient<IEDCMSyncService, EDCMSyncService>(config =>
             {
                 config.BaseAddress = new Uri("https://localhost:7125/");
+                config.DefaultRequestHeaders.Add("Accept", MediaTypeNames.Application.Json);
             })
             // .SetHandlerLifetime(TimeSpan.FromMinutes(1))
             .AddPolicyHandler(retryPolicy);

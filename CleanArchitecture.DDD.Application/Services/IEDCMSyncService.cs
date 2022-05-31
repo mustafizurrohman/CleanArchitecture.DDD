@@ -2,7 +2,7 @@
 
 namespace CleanArchitecture.DDD.Application.Services;
 
-public interface ISampleService
+public interface IEDCMSyncService
 {
-    Task<IEnumerable<DoctorDTO>> TestHttpClient();
+    Task<IEnumerable<DoctorDTO>> SyncDoctors();
 }

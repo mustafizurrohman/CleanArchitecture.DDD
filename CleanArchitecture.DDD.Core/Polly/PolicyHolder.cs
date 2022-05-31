@@ -16,7 +16,9 @@ public class PolicyHolder : IPolicyHolder
     public PolicyRegistry Registry => _pollyPolicyRegistry;
 
     private PolicyRegistry _pollyPolicyRegistry;
-    
+
+    private readonly string dateTimeFormat = "dd.MM.yyyy HH:mm:ss";
+
     public PolicyHolder()
     {
         InitPolicyRegistry();
@@ -78,11 +80,8 @@ public class PolicyHolder : IPolicyHolder
 
     private IAsyncPolicy GetRetryPolicyWithJitter()
     {
-        // Reference: https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/implement-http-call-retries-exponential-backoff-polly
-
-        // Old
-        // var delay = Backoff.DecorrelatedJitterBackoffV2(medianFirstRetryDelay: TimeSpan.FromSeconds(1), retryCount: 5);
-
+        int attempts = 0;
+        
         var maxDelay = TimeSpan.FromSeconds(45);
         
         IEnumerable<TimeSpan> delay = Backoff
@@ -91,7 +90,16 @@ public class PolicyHolder : IPolicyHolder
 
         return Policy
             .Handle<Exception>()
-            .WaitAndRetryAsync(delay);
+            .WaitAndRetryAsync(delay,
+                (_, waitingTime) =>
+                {
+                    var now = DateTime.Now;
+                    var nextTry = now.Add(waitingTime);
+                    Log.Information("Polly RetryAttempt# {@attempts} at {@now}. Next try at {@nextTry} if current attempt fails",
+                        ++attempts,
+                        now.ToString(dateTimeFormat),
+                        nextTry.ToString(dateTimeFormat));
+                });
     }
     
     private IAsyncPolicy GetTimeOutPolicy()
@@ -112,8 +120,6 @@ public class PolicyHolder : IPolicyHolder
     private IAsyncPolicy<HttpResponseMessage> GetHttpRetryPolicy()
     {
         int attempts = 0;
-
-        const string dateTimeFormat = "dd.MM.yyyy HH:mm:ss";
         
         return HttpPolicyExtensions
             .HandleTransientHttpError()

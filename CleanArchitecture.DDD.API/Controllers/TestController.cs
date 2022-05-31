@@ -4,19 +4,19 @@ using CleanArchitecture.DDD.Application.Services;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
-[ApiExplorerSettings(IgnoreApi = false)]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class TestController : BaseAPIController
 {
     private readonly IValidator<Name> _nameValidator;
     private readonly ILogger<TestController> _logger;
-    private readonly ISampleService _sampleService;
+    private readonly IEDCMSyncService _iedcmSyncService;
 
-    public TestController(IValidator<Name> nameValidator, DomainDbContext dbContext, IMapper autoMapper, ILogger<TestController> logger, ISampleService sampleService)
+    public TestController(IValidator<Name> nameValidator, DomainDbContext dbContext, IMapper autoMapper, ILogger<TestController> logger, IEDCMSyncService iedcmSyncService)
         : base(dbContext, autoMapper)
     {
         _nameValidator = nameValidator;
         _logger = logger;
-        _sampleService = sampleService;
+        _iedcmSyncService = iedcmSyncService;
     }
 
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -29,21 +29,7 @@ public class TestController : BaseAPIController
         return Ok(doctors);
     }
 
-    [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpGet("httpClient", Name = "httpClient")]
-    public async Task<IActionResult> TestHttpClient()
-    {
-        try
-        {
-            var doctors = await _sampleService.TestHttpClient();
-            return Ok(doctors);
-        }
-        catch (HttpRequestException ex)
-        {
-            Log.Error(ex, "Internal error");
-            return StatusCode((int) HttpStatusCode.GatewayTimeout, $"Support code : {HttpContext.Connection.Id}");
-        }
-    }
+
 
     [ApiExplorerSettings(IgnoreApi = true)]
     [HttpGet("TestNameValidation")]
@@ -63,7 +49,7 @@ public class TestController : BaseAPIController
         return BadRequest(errors);
     }
 
-    [ApiExplorerSettings(IgnoreApi = false)]
+    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpPost("demo")]
     public async  Task<IActionResult> CreateName([FromBody] Name name)
     {

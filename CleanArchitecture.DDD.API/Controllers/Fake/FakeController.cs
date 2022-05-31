@@ -10,6 +10,7 @@ namespace CleanArchitecture.DDD.API.Controllers.Fake;
 /// In a real application this will be another service
 /// like CRM
 /// </summary>
+[ApiExplorerSettings(IgnoreApi = true)]
 public class FakeController : BaseAPIController
 {
 
@@ -39,7 +40,7 @@ public class FakeController : BaseAPIController
         Thread.Sleep(2000);
 
         // Simulate a fake error here
-        if (++_attempts % 15 != 0)
+        if (++_attempts % 4 != 0)
             return StatusCode((int)HttpStatusCode.GatewayTimeout);
             
         var faker = new Faker("de");

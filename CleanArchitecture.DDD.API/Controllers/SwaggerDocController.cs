@@ -24,7 +24,7 @@ public class SwaggerDocController : BaseAPIController
         Summary = "Retrieves all doctors from database",
         Description = "No authentication required",
         OperationId = "GetAllDoctors",
-        Tags = new[] { "Doctors" }
+        Tags = new[] { "Search" }
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<Doctor>))]
     public async Task<IActionResult> GetAllDoctors(CancellationToken cancellationToken)
@@ -50,7 +50,7 @@ public class SwaggerDocController : BaseAPIController
         Summary = "Searches for doctors from database",
         Description = "No or default authentication required",
         OperationId = "SearchDoctorsVersion2",
-        Tags = new[] { "Doctors" }
+        Tags = new[] { "Search" }
     )]
     [ProducesResponseType(typeof(IEnumerable<DoctorCityDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchVersion2(

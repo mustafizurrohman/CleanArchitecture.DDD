@@ -1,20 +1,19 @@
 ﻿using System.Collections.Immutable;
 using CleanArchitecture.DDD.Application.DTO;
 using CleanArchitecture.DDD.Core.Polly;
-using CleanArchitecture.DDD.Domain.ValueObjects;
 using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 using Polly;
 
 namespace CleanArchitecture.DDD.Application.Services;
 
-public class SampleService : ISampleService
+public class EDCMSyncService : IEDCMSyncService
 {
     private readonly HttpClient _httpClient;
     private readonly DomainDbContext _domainDbContext;
 
     private readonly IAsyncPolicy<HttpResponseMessage> _retryPolicy;
 
-    public SampleService(HttpClient httpClient, IPolicyHolder policyHolder, DomainDbContext domainDbContext)
+    public EDCMSyncService(HttpClient httpClient, IPolicyHolder policyHolder, DomainDbContext domainDbContext)
     {
         _httpClient = httpClient;
         _domainDbContext = domainDbContext;
@@ -24,25 +23,17 @@ public class SampleService : ISampleService
         
     }
 
-    public async Task<IEnumerable<DoctorDTO>>  TestHttpClient()
+    public async Task<IEnumerable<DoctorDTO>>  SyncDoctors()
     {
         var response = await _httpClient.GetAsync("Fake/doctors");
         response.EnsureSuccessStatusCode();
 
         var doctorDTOList = await response.Content.ReadAsAsync<IReadOnlyList<DoctorDTO>>();
 
-        // Save to database
+        // Prepare to save to database
+        // We are using a static method here but AutoMapper could also be used
         var doctors = doctorDTOList
-            .Select(doc =>
-            {
-                // ReSharper disable once IdentifierTypo
-                var addrDTO = doc.Address;
-                var docAddress = Address.Create(addrDTO.StreetAddress, addrDTO.ZipCode, addrDTO.City, addrDTO.Country);
-                
-                var docName = Name.Copy(doc.Name, false);
-
-                return Doctor.Create(docName, docAddress);
-            })
+            .Select(DoctorDTO.ToDoctor)
             .ToImmutableList();
 
         // Entity Framework is aware that Doctors an Address have a PK-FK Relationship

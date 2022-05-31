@@ -7,19 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MediatR\**" />
+    <EmbeddedResource Remove="MediatR\**" />
+    <None Remove="MediatR\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CleanArchitecture.DDD.Domain\CleanArchitecture.DDD.Domain.csproj" />
     <ProjectReference Include="..\CleanArchitecture.DDD.Infrastructure\CleanArchitecture.DDD.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="MediatR\Command\" />
-    <Folder Include="MediatR\Handlers\" />
-    <Folder Include="MediatR\PipelineBehaviours\" />
-    <Folder Include="MediatR\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
