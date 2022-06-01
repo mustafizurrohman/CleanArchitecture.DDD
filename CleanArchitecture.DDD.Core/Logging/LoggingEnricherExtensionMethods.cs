@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.DDD.Core.LoggingEnrichers;
+﻿namespace CleanArchitecture.DDD.Core.Logging;
 
 public static class LoggingEnricherExtensionMethods
 {

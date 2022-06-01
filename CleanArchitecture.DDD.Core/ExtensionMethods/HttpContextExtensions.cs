@@ -1,5 +1,4 @@
-﻿
-using AspNetHttpContext = Microsoft.AspNetCore.Http.HttpContext;
+﻿using AspNetHttpContext = Microsoft.AspNetCore.Http.HttpContext;
 
 namespace CleanArchitecture.DDD.Core.ExtensionMethods;
 

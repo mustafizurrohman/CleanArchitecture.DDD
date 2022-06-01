@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using CleanArchitecture.DDD.Application.MediatR.PipelineBehaviours;
-using CleanArchitecture.DDD.Core.LoggingEnrichers;
+using CleanArchitecture.DDD.Core.Logging;
 using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Domain;
 using Hangfire;

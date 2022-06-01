@@ -98,7 +98,7 @@ public static class RuleBuilderOptionsExtensions
     private static IRuleBuilderOptions<T, string> MustNotContainConsequitiveSpaces<T>(this IRuleBuilder<T, string> ruleBuilder)
     {
         return ruleBuilder.Must(name => !name.Contains("  "))
-            .WithMessage("'{PropertyName}' must mot contain more than 1 consequitive spaces");
+            .WithMessage("'{PropertyName}' must not contain more than 1 consequitive spaces");
         
     }
 

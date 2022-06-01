@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services.Base\**" />
+    <EmbeddedResource Remove="Services.Base\**" />
+    <None Remove="Services.Base\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CleanArchitecture.DDD.Core\CleanArchitecture.DDD.Core.csproj" />
   </ItemGroup>
 
@@ -16,10 +22,6 @@
     <PackageReference Include="FluentValidation" Version="11.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.0-preview.4.22229.2" />
     <PackageReference Include="ValueOf" Version="2.0.31" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services.Base\" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Bogus;
+﻿using Bogus;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 

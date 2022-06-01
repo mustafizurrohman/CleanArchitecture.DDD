@@ -2,7 +2,7 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace CleanArchitecture.DDD.Core.LoggingEnrichers;
+namespace CleanArchitecture.DDD.Core.Logging;
 
 // TODO: Debug this!
 public class UserNameEnricher : ILogEventEnricher

@@ -20,6 +20,7 @@ public static class ApplicationBuilderExtensions
             return;
             
         using var context = serviceScope.ServiceProvider.GetService<DomainDbContext>();
+        context?.Database.EnsureCreated();
         try
         {
             Log.Information("Starting database migration ...");
@@ -28,7 +29,7 @@ public static class ApplicationBuilderExtensions
         catch (Exception ex)
         {
             Log.Error("An exception occurred during migrating database ...");
-            Log.Error(ex.ToString());
+            Log.Error(ex, ex.Message);
         }
         finally
         {
@@ -36,6 +37,7 @@ public static class ApplicationBuilderExtensions
         }
     }
 
+    // This can also be implemented as a Middleware
     public static void UseCustomExceptionHandler(this IApplicationBuilder applicationBuilder)
     {
         applicationBuilder.UseExceptionHandler(appBuilder =>

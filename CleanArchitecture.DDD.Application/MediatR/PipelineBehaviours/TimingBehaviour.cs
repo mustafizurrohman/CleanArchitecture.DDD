@@ -24,9 +24,9 @@ public class TimingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, 
 
         // Performance monitoring
         if (requestProcessingTime > 100)
-            Log.Warning("Slow request {requestType}. Took {requestProcessingTime} ms", request.GetType(), requestProcessingTime);
-        
-        Log.Information("MediatR Timing middleware: Processed request in {requestProcessingTime} ms.", requestProcessingTime);
+            Log.Warning("MediatR Timing middleware: Slow request {requestType}! Took {requestProcessingTime} ms", request.GetType(), requestProcessingTime);
+        else 
+            Log.Information("MediatR Timing middleware: Processed request in {requestProcessingTime} ms.", requestProcessingTime);
 
         return response;
     }
