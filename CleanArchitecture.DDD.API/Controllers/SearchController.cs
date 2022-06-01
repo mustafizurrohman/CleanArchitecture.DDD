@@ -24,7 +24,7 @@ public class SearchController : BaseAPIController
     /// <param name="and"></param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns></returns>
-    [HttpGet("search")]
+    [HttpGet("doctor")]
     [SwaggerOperation(
         Summary = "Searches for doctors from database",
         Description = "No or default authentication required",

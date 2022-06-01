@@ -1,17 +1,24 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
 
 namespace CleanArchitecture.DDD.Application.MediatR.PipelineBehaviours;
 
 public class TimingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
     // Dependency Injection can be used here
-    public TimingBehaviour(DomainDbContext dbContext)
+    public TimingBehaviour(IHttpContextAccessor httpContextAccessor)
     {
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
     {
+        HttpRequest httpRequest = _httpContextAccessor.HttpContext.Request;
+        var requestUrl = httpRequest.Scheme + "://" + httpRequest.Host + httpRequest.Path;
+
         Stopwatch stopwatch = new();
         
         stopwatch.Start();
@@ -24,7 +31,7 @@ public class TimingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, 
 
         // Performance monitoring
         if (requestProcessingTime > 100)
-            Log.Warning("MediatR Timing middleware: Slow request {requestType}! Took {requestProcessingTime} ms", request.GetType(), requestProcessingTime);
+            Log.Warning("MediatR Timing middleware: Slow request {requestType}! Took {requestProcessingTime} ms. Request url {requestUrl}", request.GetType(), requestProcessingTime, requestUrl);
         else 
             Log.Information("MediatR Timing middleware: Processed request in {requestProcessingTime} ms.", requestProcessingTime);
 

@@ -16,6 +16,8 @@ public class SearchDoctorsQueryHandler : BaseHandler, IRequestHandler<SearchDoct
 
     public async Task<IEnumerable<DoctorCityDTO>> Handle(SearchDoctorsQuery request, CancellationToken cancellationToken)
     {
+        Thread.Sleep(1000);
+
         // Ignoring spaces at first and last of input
         var firstName = request.FirstName?.Trim() ?? string.Empty;
         var lastName  = request.LastName?.Trim() ?? string.Empty;
