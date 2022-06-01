@@ -1,10 +1,13 @@
-﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
+﻿using CleanArchitecture.DDD.Application.ServicesAggregate;
 
-public class SyncDoctorCommandHandler : IRequestHandler<SyncDoctorCommand>
+namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
+
+public class SyncDoctorCommandHandler : BaseHandler, IRequestHandler<SyncDoctorCommand>
 {
     private readonly IEDCMSyncService _iedcmSyncService;
 
-    public SyncDoctorCommandHandler(IEDCMSyncService iedcmSyncService)
+    public SyncDoctorCommandHandler(IEDCMSyncService iedcmSyncService, IAppServices appServices)
+        : base(appServices)
     {
         _iedcmSyncService = iedcmSyncService;
     }

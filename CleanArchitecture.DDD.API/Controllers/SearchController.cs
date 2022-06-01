@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.DDD.Application.MediatR.Queries;
+using CleanArchitecture.DDD.Application.ServicesAggregate;
 using CleanArchitecture.DDD.Domain.Exceptions;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -7,24 +8,21 @@ namespace CleanArchitecture.DDD.API.Controllers;
 [ApiExplorerSettings(IgnoreApi = false)]
 public class SearchController : BaseAPIController
 {
-    private readonly IMediator _mediator;
     
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="dbContext"></param>
-    /// <param name="autoMapper"></param>
-    /// <param name="mediator"></param>
-    public SearchController(DomainDbContext dbContext, IMapper autoMapper, IMediator mediator)
-        : base(dbContext, autoMapper)
+    /// <param name="appServices"></param>
+    public SearchController(IAppServices appServices)
+        : base(appServices)
     {
-        _mediator = mediator;
+
     }
 
     [HttpGet("doctors")]
     [SwaggerOperation(
         Summary = "Retrieves all doctors from database",
-        Description = "No authentication required",
+        Description = "No or default authentication required",
         OperationId = "GetAllDoctors",
         Tags = new[] { "Search" }
     )]
@@ -32,7 +30,7 @@ public class SearchController : BaseAPIController
     public async Task<IActionResult> GetAllDoctors(CancellationToken cancellationToken)
     {
         var command = new GetAllDoctorsQuery();
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await Mediator.Send(command, cancellationToken);
 
         return Ok(result);
     }
@@ -59,48 +57,10 @@ public class SearchController : BaseAPIController
         [FromQuery, SwaggerParameter("Search keyword- Lastname", Required = false)] string? lastName,
         CancellationToken cancellationToken)
     {
-        try
-        {
-            firstName = firstName?.Trim() ?? string.Empty;
-            middleName = middleName?.Trim() ?? string.Empty;
-            lastName = lastName?.Trim() ?? string.Empty;
+        var query = new SearchDoctorsQuery(firstName, middleName, lastName);
+        var result = await Mediator.Send(query, cancellationToken);
 
-            var query = DbContext.Doctors.AsQueryable();
-
-            var name = Name.Create(firstName, middleName, lastName);
-
-            if (!string.IsNullOrWhiteSpace(firstName))
-                query = query.Where(doc => doc.Name.Firstname.ToLower().Contains(name.Firstname.ToLower()));
-
-            if (!string.IsNullOrWhiteSpace(middleName)) {
-
-                #pragma warning disable CS8602 
-                // Dereference of a possibly null reference.
-                query = query
-                    .Where(doc => doc.Name.Middlename != null)
-                    .Where(doc => doc.Name.Middlename.ToLower().Contains(name.Middlename.ToLower()));
-                #pragma warning restore CS8602 
-                // Dereference of a possibly null reference.
-            }
-
-            if (!string.IsNullOrWhiteSpace(lastName))
-                query = query.Where(doc => doc.Name.Lastname.ToLower().Contains(name.Lastname.ToLower()));
-
-            var results = await query.AsNoTracking()
-                .ProjectTo<DoctorCityDTO>(AutoMapper.ConfigurationProvider)
-                .ToListAsync(cancellationToken);
-
-            return Ok(results);
-        }
-        catch (DomainValidationException ex)
-        {
-            Log.Information(ex, "Smart optimization");
-
-            // If an Exception of this type of thrown it means that the 
-            // search query does not represent a valid domain model and in that case we do not need
-            // to search the database at all
-            return Ok(Enumerable.Empty<DoctorCityDTO>());
-        }
+        return Ok(result);
     }
 
 }

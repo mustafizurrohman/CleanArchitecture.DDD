@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using CleanArchitecture.DDD.Application.ServicesAggregate;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanArchitecture.DDD.API.Controllers;
@@ -6,19 +7,16 @@ namespace CleanArchitecture.DDD.API.Controllers;
 public class EDCMController : BaseAPIController
 {
     private readonly IEDCMSyncService _iedcmSyncService;
-    private readonly IMediator _mediator;
-
+    
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="dbContext"></param>
-    /// <param name="autoMapper"></param>
+    /// <param name="appServices"></param>
     /// <param name="iedcmSyncService"></param>
-    public EDCMController(DomainDbContext dbContext, IMapper autoMapper, IEDCMSyncService iedcmSyncService, IMediator mediator) 
-        : base(dbContext, autoMapper)
+    public EDCMController(IAppServices appServices, IEDCMSyncService iedcmSyncService) 
+        : base(appServices)
     {
         _iedcmSyncService = iedcmSyncService;
-        _mediator = mediator;
     }
 
     [ApiExplorerSettings(IgnoreApi = false)]
@@ -36,7 +34,7 @@ public class EDCMController : BaseAPIController
         try
         {
             var syncDoctorCommand = new SyncDoctorCommand();
-            await _mediator.Send(syncDoctorCommand);
+            await Mediator.Send(syncDoctorCommand);
 
             return Ok();
         }

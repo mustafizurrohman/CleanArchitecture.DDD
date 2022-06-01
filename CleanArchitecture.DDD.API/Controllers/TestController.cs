@@ -1,18 +1,16 @@
+using CleanArchitecture.DDD.Application.ServicesAggregate;
+
 namespace CleanArchitecture.DDD.API.Controllers;
 
 [ApiExplorerSettings(IgnoreApi = true)]
 public class TestController : BaseAPIController
 {
     private readonly IValidator<Name> _nameValidator;
-    private readonly ILogger<TestController> _logger;
-    private readonly IEDCMSyncService _iedcmSyncService;
 
-    public TestController(IValidator<Name> nameValidator, DomainDbContext dbContext, IMapper autoMapper, ILogger<TestController> logger, IEDCMSyncService iedcmSyncService)
-        : base(dbContext, autoMapper)
+    public TestController(IValidator<Name> nameValidator, IAppServices appServices)
+        : base(appServices)
     {
         _nameValidator = nameValidator;
-        _logger = logger;
-        _iedcmSyncService = iedcmSyncService;
     }
 
     [ApiExplorerSettings(IgnoreApi = true)]

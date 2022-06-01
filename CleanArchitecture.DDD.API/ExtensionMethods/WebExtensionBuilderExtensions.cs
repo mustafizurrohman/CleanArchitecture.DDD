@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CleanArchitecture.DDD.Application.MediatR.PipelineBehaviours;
+using CleanArchitecture.DDD.Application.ServicesAggregate;
 using CleanArchitecture.DDD.Core.LoggingEnrichers;
 using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Domain;
@@ -54,6 +55,7 @@ public static class WebExtensionBuilderExtensions
         
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddTransient<UserNameEnricher>();
+        builder.Services.AddTransient<IAppServices, AppServices>();
 
         // MediatR Configuration
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));

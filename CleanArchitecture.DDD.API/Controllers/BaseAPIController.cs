@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.API.Controllers;
+﻿using CleanArchitecture.DDD.Application.ServicesAggregate;
+
+namespace CleanArchitecture.DDD.API.Controllers;
 
 /// <summary>
 /// 
@@ -23,11 +25,16 @@ public abstract class BaseAPIController : ControllerBase
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="dbContext"></param>
-    /// <param name="autoMapper"></param>
-    protected BaseAPIController(DomainDbContext dbContext, IMapper autoMapper)
+    protected  IMediator Mediator { get; }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="appServices"></param>
+    protected BaseAPIController(IAppServices appServices)
     {
-        DbContext = dbContext;
-        AutoMapper = autoMapper;
+        DbContext = Guard.Against.Null(appServices.DbContext, nameof(appServices));
+        AutoMapper = Guard.Against.Null(appServices.AutoMapper, nameof(appServices));
+        Mediator = Guard.Against.Null(appServices.Mediator, nameof(appServices));
     }
 }

@@ -3,7 +3,7 @@ using Serilog.Configuration;
 
 namespace CleanArchitecture.DDD.Core.LoggingEnrichers;
 
-public static class EnricherExtensionMethods
+public static class LoggingEnricherExtensionMethods
 {
     public static LoggerConfiguration WithReleaseNumber(this LoggerEnrichmentConfiguration enrich)
     {

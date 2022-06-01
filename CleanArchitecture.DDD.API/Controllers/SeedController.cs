@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.API.Controllers;
+﻿using CleanArchitecture.DDD.Application.ServicesAggregate;
+
+namespace CleanArchitecture.DDD.API.Controllers;
 
 /// <summary>
 /// 
@@ -6,17 +8,14 @@
 [ApiExplorerSettings(IgnoreApi = true)]
 public class SeedController : BaseAPIController
 {
-    private readonly DomainDbContext _dbContext;
-
+    
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="dbContext"></param>
-    /// <param name="mapper"></param>
-    public SeedController(DomainDbContext dbContext, IMapper mapper)
-        : base(dbContext, mapper)
+    /// <param name="appServices"></param>
+    public SeedController(IAppServices appServices)
+        : base(appServices)
     {
-        _dbContext = Guard.Against.Null(dbContext, nameof(dbContext));
     }
 
     /// <summary>
@@ -35,11 +34,11 @@ public class SeedController : BaseAPIController
 
         var faker = new Faker();
 
-        var existingDoctorAddresses = await _dbContext.Doctors
+        var existingDoctorAddresses = await DbContext.Doctors
             .Select(doc => doc.AddressId)
             .ToListAsync(cancellationToken);
 
-        var addressIds = await _dbContext.Addresses
+        var addressIds = await DbContext.Addresses
             .Select(add => add.AddressID)
             .ToListAsync(cancellationToken);
 
@@ -67,8 +66,8 @@ public class SeedController : BaseAPIController
         var stopWatch = new Stopwatch();
         stopWatch.Start();
 
-        await _dbContext.AddRangeAsync(doctors, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await DbContext.AddRangeAsync(doctors, cancellationToken);
+        await DbContext.SaveChangesAsync(cancellationToken);
 
         stopWatch.Stop();
 
@@ -105,8 +104,8 @@ public class SeedController : BaseAPIController
         var stopWatch = new Stopwatch();
         stopWatch.Start();
 
-        await _dbContext.AddRangeAsync(addresses, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await DbContext.AddRangeAsync(addresses, cancellationToken);
+        await DbContext.SaveChangesAsync(cancellationToken);
 
         stopWatch.Stop();
 

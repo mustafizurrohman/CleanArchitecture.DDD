@@ -1,22 +1,21 @@
-﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
+﻿using CleanArchitecture.DDD.Application.ServicesAggregate;
 
-public class GetAllDoctorsQueryHandler : IRequestHandler<GetAllDoctorsQuery, IEnumerable<DoctorCityDTO>>
+namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
+
+public class GetAllDoctorsQueryHandler : BaseHandler, IRequestHandler<GetAllDoctorsQuery, IEnumerable<DoctorCityDTO>>
 {
-    private readonly DomainDbContext _dbContext;
-    private readonly IMapper _mapper;
-
-    public GetAllDoctorsQueryHandler(DomainDbContext dbContext, IMapper mapper)
+    public GetAllDoctorsQueryHandler(IAppServices appServices)
+        : base(appServices)
     {
-        _dbContext = dbContext;
-        _mapper = mapper;
+
     }
 
     public async Task<IEnumerable<DoctorCityDTO>> Handle(GetAllDoctorsQuery request, CancellationToken cancellationToken)
     {
 
         // A join will be performed automatically by AutoMapper using Entity Framework
-        var doctors = await _dbContext.Doctors.AsNoTracking()
-            .ProjectTo<DoctorCityDTO>(_mapper.ConfigurationProvider)
+        var doctors = await DbContext.Doctors.AsNoTracking()
+            .ProjectTo<DoctorCityDTO>(AutoMapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
         
         return doctors;

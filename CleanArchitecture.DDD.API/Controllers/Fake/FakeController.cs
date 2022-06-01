@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using CleanArchitecture.DDD.Application.DTO;
+using CleanArchitecture.DDD.Application.ServicesAggregate;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanArchitecture.DDD.API.Controllers.Fake;
@@ -15,15 +16,14 @@ public class FakeController : BaseAPIController
 
     private static int _attempts = 0;
 
-    private static IEnumerable<DoctorDTO> cachedDoctors = new List<DoctorDTO>();
+    private static IEnumerable<DoctorDTO> _cachedDoctors = new List<DoctorDTO>();
 
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="dbContext"></param>
-    /// <param name="autoMapper"></param>
-    public FakeController(DomainDbContext dbContext, IMapper autoMapper) 
-        : base(dbContext, autoMapper)
+    /// <param name="appServices"></param>
+    public FakeController(IAppServices appServices) 
+        : base(appServices)
     {
     }
 
@@ -45,11 +45,11 @@ public class FakeController : BaseAPIController
             return StatusCode((int)HttpStatusCode.GatewayTimeout);
 
 
-        if (cachedDoctors.Any())
+        if (_cachedDoctors.Any())
         {
             var modifiedDoctors = new List<DoctorDTO>();
 
-            foreach (var cachedDoctor in cachedDoctors)
+            foreach (var cachedDoctor in _cachedDoctors)
             {
                 var modifiedDoctor = new DoctorDTO()
                 {
@@ -114,7 +114,7 @@ public class FakeController : BaseAPIController
             })
             .ToList();
 
-        cachedDoctors = doctors;
+        _cachedDoctors = doctors;
 
         return Ok(doctors);
     }
