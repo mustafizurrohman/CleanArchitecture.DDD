@@ -23,11 +23,11 @@ public class EDCMController : BaseAPIController
     /// </summary>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpGet("syncDoc", Name = "syncDoc")]
+    [HttpGet("syncDoc", Name = "Sync Doctors")]
     [SwaggerOperation(
         Summary = "Gets doc from a fake external data service",
         Description = "No or default authentication required",
-        OperationId = "SyncDoc",
+        OperationId = "Sync Doctors",
         Tags = new[] { "EDCM" }
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]

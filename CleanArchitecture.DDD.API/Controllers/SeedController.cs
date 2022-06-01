@@ -28,7 +28,7 @@ public class SeedController : BaseAPIController
     [SwaggerOperation(
         Summary = "Seed specified number of doctors in database",
         Description = "No or default authentication required",
-        OperationId = "SeedDoc",
+        OperationId = "Seed Doctors",
         Tags = new[] { "Seed" }
     )]
     [ProducesResponseType(typeof(Tuple<int, long>), StatusCodes.Status200OK)]
@@ -66,7 +66,7 @@ public class SeedController : BaseAPIController
     [SwaggerOperation(
         Summary = "Seed specified number of address in database",
         Description = "No or default authentication required",
-        OperationId = "SeedAddress",
+        OperationId = "Seed Addresses",
         Tags = new[] { "Seed" }
     )]
     [ProducesResponseType(typeof(Tuple<int, long>), StatusCodes.Status200OK)]

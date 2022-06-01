@@ -3,79 +3,46 @@ namespace CleanArchitecture.DDD.API.Controllers;
 [ApiExplorerSettings(IgnoreApi = false)]
 public class DemoController : BaseAPIController
 {
-    private readonly IValidator<Name> _nameValidator;
-
     public DemoController(IValidator<Name> nameValidator, IAppServices appServices)
         : base(appServices)
     {
-        _nameValidator = nameValidator;
     }
 
-    [ApiExplorerSettings(IgnoreApi = true)]
-    [HttpGet("doctors", Name = "GetAllDoctors")]
-    [ProducesResponseType(typeof(IEnumerable<Doctor>), StatusCodes.Status200OK)]
-
-    public async Task<IActionResult> GetAllDoctors()
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpPost("ValueObject/equality", Name = "valueObjectEquality")]
+    [SwaggerOperation(
+        Summary = "Demo of equality of Value Object",
+        Description = "No or default authentication required",
+        OperationId = "Check Value Object for equality",
+        Tags = new[] { "Demo" }
+    )]
+    public IActionResult TestNameValueObjectForEquality(string name)
     {
-        var doctors = await DbContext.Doctors.ToListAsync();
-        return Ok(doctors);
-    }
+        var createdName1 = NameValueObject.Create(name);
+        var createdName2 = NameValueObject.Create(name);
 
-
-
-    [ApiExplorerSettings(IgnoreApi = true)]
-    [HttpGet("TestNameValidation")]
-    public IActionResult CreateName([FromQuery] string? firstname, [FromQuery] string? lastname)
-    {
-        var name = Name.Create(firstname ?? string.Empty, lastname ?? string.Empty, false);
-
-        var validationResult = _nameValidator.Validate(name);
-
-        if (validationResult.IsValid)
-            return Ok();
-
-        var errors = validationResult.Errors
-            .GroupBy(x => x.PropertyName)
-            .ToList();
-
-        return BadRequest(errors);
-    }
-
-    [ApiExplorerSettings(IgnoreApi = true)]
-    [HttpGet("test")]
-    public async Task<IActionResult> Test(CancellationToken cancellationToken)
-    {
-        var results = await DbContext.Doctors.AsNoTracking()
-            .ProjectTo<DoctorCityDTO>(AutoMapper.ConfigurationProvider)
-            .ToListAsync(cancellationToken);
-
-        return Ok(results);
-    }
-
-
-
-    [ApiExplorerSettings(IgnoreApi = true)]
-    [HttpGet("compare/names")]
-    public IActionResult CompareNames(string firstname, string middlename, string lastname, CancellationToken cancellationToken)
-    {
-        var name1 = new Name(firstname, middlename, lastname);
-        var name2 = new Name(firstname, middlename, lastname);
+        var name1 = createdName1.Value;
+        var name2 = createdName2.Value;
 
         return Ok(name1 == name2);
     }
 
-    [ApiExplorerSettings(IgnoreApi = true)]
-    [HttpPost("testValueObject")]
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpPost("ValueObject/validation", Name = "valueObjectValidation")]
+    [SwaggerOperation(
+        Summary = "Demo of validation of Value Object",
+        Description = "No or default authentication required",
+        OperationId = "Validate Value Object",
+        Tags = new[] { "Demo" }
+    )]
     public IActionResult TestNameValueObject(string name)
     {
         var createdName = NameValueObject.Create(name);
 
         if (createdName.Error is not null)
             return BadRequest(createdName.Error.Message);
-
-        var x = createdName.Value;
-
-        return Ok();
+        
+        return Ok(createdName.Value);
     }
 
     [ApiExplorerSettings(IgnoreApi = false)]

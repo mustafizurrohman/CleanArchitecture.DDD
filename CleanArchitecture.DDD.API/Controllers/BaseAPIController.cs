@@ -13,11 +13,13 @@ public abstract class BaseAPIController : ControllerBase
     /// <summary>
     /// 
     /// </summary>
+    // ReSharper disable once MemberCanBePrivate.Global
     protected DomainDbContext DbContext { get; } 
     
     /// <summary>
     /// 
     /// </summary>
+    // ReSharper disable once MemberCanBePrivate.Global
     protected IMapper AutoMapper { get; }
 
     /// <summary>
@@ -35,4 +37,6 @@ public abstract class BaseAPIController : ControllerBase
         AutoMapper = Guard.Against.Null(appServices.AutoMapper, nameof(appServices));
         Mediator = Guard.Against.Null(appServices.Mediator, nameof(appServices));
     }
+    
+
 }
