@@ -42,7 +42,7 @@ public class NameValueObjectValidator : AbstractValidator<NameValueObject>
         SetValidationRules();
     }
 
-    public void SetValidationRules()
+    private void SetValidationRules()
     {
         RuleFor(prop => prop.Value)
             .MustBeValidName()

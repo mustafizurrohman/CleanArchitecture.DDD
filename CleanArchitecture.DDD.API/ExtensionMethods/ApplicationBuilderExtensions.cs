@@ -37,7 +37,11 @@ public static class ApplicationBuilderExtensions
         }
     }
 
-    // This can also be implemented as a Middleware
+    /// <summary>
+    /// Custom Exception Handler 
+    /// This can also be implemented as a Middleware
+    /// </summary>
+    /// <param name="applicationBuilder"></param>
     public static void UseCustomExceptionHandler(this IApplicationBuilder applicationBuilder)
     {
         applicationBuilder.UseExceptionHandler(appBuilder =>

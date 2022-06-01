@@ -1,14 +1,18 @@
-﻿using CleanArchitecture.DDD.Domain.Exceptions;
+﻿using CleanArchitecture.DDD.Application.ExtensionMethods;
+using CleanArchitecture.DDD.Domain.Exceptions;
 using CleanArchitecture.DDD.Domain.ValueObjects;
+using FluentValidation;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
 public class SearchDoctorsQueryHandler : BaseHandler, IRequestHandler<SearchDoctorsQuery, IEnumerable<DoctorCityDTO>>
 {
-    public SearchDoctorsQueryHandler(IAppServices appServices)
+    private readonly IValidator<Name> _nameValidator;
+
+    public SearchDoctorsQueryHandler(IAppServices appServices, IValidator<Name> nameValidator)
         : base(appServices)
     {
-        
+        _nameValidator = nameValidator;
     }
 
     public async Task<IEnumerable<DoctorCityDTO>> Handle(SearchDoctorsQuery request, CancellationToken cancellationToken)
@@ -16,32 +20,21 @@ public class SearchDoctorsQueryHandler : BaseHandler, IRequestHandler<SearchDoct
         try
         {
             var firstName = request.FirstName?.Trim() ?? string.Empty;
-            var middleName = request.MiddleName?.Trim() ?? string.Empty;
             var lastName  = request.LastName?.Trim() ?? string.Empty;
 
-            var query = DbContext.Doctors.AsQueryable();
+            
+            Name name = Name.Create(firstName, string.Empty, lastName, request.And);
 
-            var name = Name.Create(firstName, middleName, lastName);
-
-            if (!string.IsNullOrWhiteSpace(firstName))
-                query = query.Where(doc => doc.Name.Firstname.ToLower().Contains(name.Firstname.ToLower()));
-
-            if (!string.IsNullOrWhiteSpace(middleName))
+            if (request.And)
             {
+                var validationResult = await _nameValidator.ValidateAsync(name, cancellationToken);
 
-#pragma warning disable CS8602
-                // Dereference of a possibly null reference.
-                query = query
-                    .Where(doc => doc.Name.Middlename != null)
-                    .Where(doc => doc.Name.Middlename.ToLower().Contains(name.Middlename.ToLower()));
-#pragma warning restore CS8602
-                // Dereference of a possibly null reference.
+                if (!validationResult.IsValid)
+                    return Enumerable.Empty<DoctorCityDTO>();
             }
 
-            if (!string.IsNullOrWhiteSpace(lastName))
-                query = query.Where(doc => doc.Name.Lastname.ToLower().Contains(name.Lastname.ToLower()));
-
-            var results = await query.AsNoTracking()
+            var results = await DbContext.Doctors.AsNoTracking()
+                .SearchByName(name, request.And)
                 .ProjectTo<DoctorCityDTO>(AutoMapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
@@ -57,4 +50,5 @@ public class SearchDoctorsQueryHandler : BaseHandler, IRequestHandler<SearchDoct
             return Enumerable.Empty<DoctorCityDTO>();
         }
     }
+
 }

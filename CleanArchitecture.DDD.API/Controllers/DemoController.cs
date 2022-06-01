@@ -41,27 +41,6 @@ public class DemoController : BaseAPIController
         return BadRequest(errors);
     }
 
-    // Test only
-    [ApiExplorerSettings(IgnoreApi = true)]
-    [HttpGet("search")]
-    public async Task<IActionResult> Search(CancellationToken cancellationToken, [FromQuery] string? firstname, [FromQuery] string? lastname, [FromQuery] bool and = false)
-    {
-        var name = Name.Create(firstname ?? string.Empty, lastname ?? string.Empty);
-
-        // TODO: Must be possible to search only by FirstOrLastname and/or Lastname
-        var validationResult = await _nameValidator.ValidateAsync(name, cancellationToken);
-
-        if (!validationResult.IsValid && and)
-            return Ok();
-        
-        var doctors = await DbContext.Doctors.AsNoTracking()
-            .SearchByName(name, and)
-            .ProjectTo<DoctorCityDTO>(AutoMapper.ConfigurationProvider)
-            .ToListAsync(cancellationToken);
-         
-        return Ok(doctors);
-    }
-
     [ApiExplorerSettings(IgnoreApi = true)]
     [HttpGet("test")]
     public async Task<IActionResult> Test(CancellationToken cancellationToken)

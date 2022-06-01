@@ -41,6 +41,7 @@ public class SearchController : BaseAPIController
     /// <param name="firstName">Firstname to search for</param>
     /// <param name="middleName">Middlename to search for</param>
     /// <param name="lastName">Lastname to search for</param>
+    /// <param name="and"></param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns></returns>
     [HttpGet("search")]
@@ -52,12 +53,13 @@ public class SearchController : BaseAPIController
     )]
     [ProducesResponseType(typeof(IEnumerable<DoctorCityDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchVersion2(
+        CancellationToken cancellationToken,
         [FromQuery, SwaggerParameter("Search keyword- Firstname", Required = false)] string? firstName,
-        [FromQuery, SwaggerParameter("Search keyword- Middlename", Required = false)] string? middleName,
         [FromQuery, SwaggerParameter("Search keyword- Lastname", Required = false)] string? lastName,
-        CancellationToken cancellationToken)
+        [FromQuery, SwaggerParameter("Search Criteria- And", Required = true)] bool and = true
+        )
     {
-        var query = new SearchDoctorsQuery(firstName, middleName, lastName);
+        var query = new SearchDoctorsQuery(firstName, lastName, and);
         var result = await Mediator.Send(query, cancellationToken);
 
         return Ok(result);
