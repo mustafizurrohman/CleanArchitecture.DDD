@@ -57,6 +57,7 @@ public static class WebExtensionBuilderExtensions
         builder.Services.AddTransient<IAppServices, AppServices>();
 
         // MediatR Configuration
+        // TODO: Use Scrutor here!
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TimingBehaviour<,>));
 
@@ -156,8 +157,7 @@ public static class WebExtensionBuilderExtensions
                     UseRecommendedIsolationLevel = true,
                     DisableGlobalLocks = true
                 }
-                    
-            ));
+                ));
 
         // Add the processing server as IHostedService
         builder.Services.AddHangfireServer();

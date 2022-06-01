@@ -1,11 +1,4 @@
-﻿using System.Data;
-using System.Reflection;
-using CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Serilog;
-using DatabaseContext = Microsoft.EntityFrameworkCore.DbContext;
+﻿using DatabaseContext = Microsoft.EntityFrameworkCore.DbContext;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 

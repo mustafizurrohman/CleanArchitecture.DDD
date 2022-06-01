@@ -1,6 +1,4 @@
 ﻿using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
-using CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
-using Microsoft.EntityFrameworkCore;
 using Z.EntityFramework.Plus;
 
 namespace CleanArchitecture.DDD.Infrastructure.Services.Base;
