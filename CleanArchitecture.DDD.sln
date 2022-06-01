@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.DDD.API", "CleanArchitecture.DDD.API\CleanArchitecture.DDD.API.csproj", "{A600724A-4ACD-4904-A175-37A229844FFE}"
@@ -31,7 +32,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.UnitTests", "Domain.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.UnitTests", "Core.UnitTests\Core.UnitTests.csproj", "{D488E487-4774-44EA-A1AC-ECAD27D651AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeIntegrityTests", "CodeIntegrityTests\CodeIntegrityTests.csproj", "{2D2A1F13-624A-47A2-B653-6D002798B25D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeIntegrityTests", "CodeIntegrityTests\CodeIntegrityTests.csproj", "{2D2A1F13-624A-47A2-B653-6D002798B25D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
