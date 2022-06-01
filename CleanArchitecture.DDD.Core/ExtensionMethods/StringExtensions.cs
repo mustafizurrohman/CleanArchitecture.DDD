@@ -118,6 +118,7 @@ public static class StringExtensions
     /// </summary>
     /// <param name="sourceString">The source string.</param>
     /// <returns>System.String.</returns>
+    // ReSharper disable once MemberCanBePrivate.Global
     public static string CapitalizeWord(this string sourceString)
     {
         if (string.IsNullOrEmpty(sourceString))
