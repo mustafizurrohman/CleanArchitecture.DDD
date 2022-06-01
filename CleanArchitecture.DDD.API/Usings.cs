@@ -21,3 +21,7 @@ global using Bogus;
 global using AutoMapper;
 global using CleanArchitecture.DDD.Application.MediatR.Commands;
 global using CleanArchitecture.DDD.Application.Services;
+
+global using CleanArchitecture.DDD.Application.MediatR.Queries;
+global using CleanArchitecture.DDD.Application.ServicesAggregate;
+global using Swashbuckle.AspNetCore.Annotations;

@@ -3,7 +3,6 @@ using CleanArchitecture.DDD.Application.DTO;
 using CleanArchitecture.DDD.Core.Polly;
 using Hangfire;
 using Polly;
-using Serilog;
 using Z.EntityFramework.Plus;
 
 namespace CleanArchitecture.DDD.Application.Services;

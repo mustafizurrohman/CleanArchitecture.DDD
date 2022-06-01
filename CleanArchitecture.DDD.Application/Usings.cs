@@ -1,10 +1,11 @@
 ﻿global using AutoMapper;
-global using CleanArchitecture.DDD.Domain.DTOs;
-global using CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
 global using MediatR;
-global using CleanArchitecture.DDD.Application.MediatR.Commands;
-global using CleanArchitecture.DDD.Application.Services;
+global using Serilog;
+global using Microsoft.EntityFrameworkCore;
 global using AutoMapper.QueryableExtensions;
 global using CleanArchitecture.DDD.Application.MediatR.Queries;
+global using CleanArchitecture.DDD.Application.MediatR.Commands;
+global using CleanArchitecture.DDD.Application.Services;
 global using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
-global using Microsoft.EntityFrameworkCore;
+global using CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
+global using CleanArchitecture.DDD.Domain.DTOs;

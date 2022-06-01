@@ -1,7 +1,4 @@
-﻿using Serilog;
-using Serilog.Configuration;
-
-namespace CleanArchitecture.DDD.Core.LoggingEnrichers;
+﻿namespace CleanArchitecture.DDD.Core.LoggingEnrichers;
 
 public static class LoggingEnricherExtensionMethods
 {

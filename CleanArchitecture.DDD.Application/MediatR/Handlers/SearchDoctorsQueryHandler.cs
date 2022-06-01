@@ -1,7 +1,6 @@
 ﻿using CleanArchitecture.DDD.Application.ServicesAggregate;
 using CleanArchitecture.DDD.Domain.Exceptions;
 using CleanArchitecture.DDD.Domain.ValueObjects;
-using Serilog;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 

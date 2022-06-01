@@ -1,8 +1,4 @@
-﻿using Polly;
-using Polly.Registry;
-using Polly.Wrap;
-
-namespace CleanArchitecture.DDD.Core.Polly;
+﻿namespace CleanArchitecture.DDD.Core.Polly;
 
 public interface IPolicyHolder
 {

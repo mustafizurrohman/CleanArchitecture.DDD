@@ -1,9 +1,4 @@
-﻿using CleanArchitecture.DDD.Application.MediatR.Queries;
-using CleanArchitecture.DDD.Application.ServicesAggregate;
-using CleanArchitecture.DDD.Domain.Exceptions;
-using Swashbuckle.AspNetCore.Annotations;
-
-namespace CleanArchitecture.DDD.API.Controllers;
+﻿namespace CleanArchitecture.DDD.API.Controllers;
 
 [ApiExplorerSettings(IgnoreApi = false)]
 public class SearchController : BaseAPIController
@@ -19,6 +14,11 @@ public class SearchController : BaseAPIController
 
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet("doctors")]
     [SwaggerOperation(
         Summary = "Retrieves all doctors from database",
@@ -38,16 +38,16 @@ public class SearchController : BaseAPIController
     /// <summary>
     /// Search for doctors by name
     /// </summary>
-    /// <param name="firstName">Firstname</param>
-    /// <param name="middleName">Middlename</param>
-    /// <param name="lastName">Lastname</param>
+    /// <param name="firstName">Firstname to search for</param>
+    /// <param name="middleName">Middlename to search for</param>
+    /// <param name="lastName">Lastname to search for</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns></returns>
     [HttpGet("search")]
     [SwaggerOperation(
         Summary = "Searches for doctors from database",
         Description = "No or default authentication required",
-        OperationId = "SearchDoctorsVersion2",
+        OperationId = "SearchDoctors",
         Tags = new[] { "Search" }
     )]
     [ProducesResponseType(typeof(IEnumerable<DoctorCityDTO>), StatusCodes.Status200OK)]

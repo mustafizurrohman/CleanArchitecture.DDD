@@ -1,12 +1,8 @@
 ﻿using System.Net;
 using System.Net.Http.Formatting;
-using Polly;
 using Polly.Contrib.WaitAndRetry;
 using Polly.Extensions.Http;
-using Polly.Registry;
 using Polly.Timeout;
-using Polly.Wrap;
-using Serilog;
 
 namespace CleanArchitecture.DDD.Core.Polly;
 

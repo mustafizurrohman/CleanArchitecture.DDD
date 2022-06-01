@@ -33,6 +33,8 @@ public static class WebApplicationExtensions
                 .AllowAnyOrigin();
         });
 
+        app.UseCustomExceptionHandler();
+
         app.MigrateDatabase();
 
         app.UseHttpsRedirection();
@@ -41,12 +43,12 @@ public static class WebApplicationExtensions
         
         app.UseRouting();
 
-        GlobalConfiguration.Configuration.UseActivator(new HangfireActivator(app.Services));
+        // GlobalConfiguration.Configuration.UseActivator(new HangfireActivator(app.Services));
 
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
-            endpoints.MapHangfireDashboard();
+            // endpoints.MapHangfireDashboard();
         });
 
         app.UseSerilogRequestLogging();

@@ -1,4 +1,8 @@
-﻿namespace CleanArchitecture.DDD.API.ExtensionMethods;
+﻿using System.Net;
+using System.Text;
+using Microsoft.AspNetCore.Diagnostics;
+
+namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
 public static class ApplicationBuilderExtensions
 {
@@ -28,6 +32,26 @@ public static class ApplicationBuilderExtensions
         {
             Log.Information("Database Migration completed ...");
         }
+    }
 
+    public static void UseCustomExceptionHandler(this IApplicationBuilder applicationBuilder)
+    {
+        applicationBuilder.UseExceptionHandler(appBuilder =>
+        {
+            appBuilder.Run(async context =>
+            {
+                var errorFeature = context.Features.Get<IExceptionHandlerFeature>();
+                var exception = errorFeature?.Error ?? new Exception();
+
+                Log.Error(exception, exception.Message);
+
+                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                context.Response.ContentType = MediaTypeNames.Application.Json;
+
+                var errorMessage = "An internal server error occured. Support code : \'" + context.Connection.Id + "\'";
+
+                await context.Response.WriteAsync(errorMessage, Encoding.UTF8);
+            });
+        });
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System.Net;
 using CleanArchitecture.DDD.Application.DTO;
-using CleanArchitecture.DDD.Application.ServicesAggregate;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanArchitecture.DDD.API.Controllers.Fake;
 

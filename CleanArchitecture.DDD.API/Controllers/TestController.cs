@@ -1,5 +1,3 @@
-using CleanArchitecture.DDD.Application.ServicesAggregate;
-
 namespace CleanArchitecture.DDD.API.Controllers;
 
 [ApiExplorerSettings(IgnoreApi = true)]
