@@ -37,7 +37,7 @@ public partial class DomainDbContext : DatabaseContext
 
         if (_useLogger)
         {
-            ILoggerFactory consoleLoggerFactory = LoggerFactory.Create(loggerBuilder =>
+            var consoleLoggerFactory = LoggerFactory.Create(loggerBuilder =>
             {
                 loggerBuilder
                     .AddFilter((category, level) =>

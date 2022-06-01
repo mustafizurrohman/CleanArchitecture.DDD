@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.API.Hangfire;
-using Hangfire;
-using Swashbuckle.AspNetCore.SwaggerUI;
+﻿using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 

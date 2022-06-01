@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.Application.ServicesAggregate;
-
-namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
+﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
 public class GetAllDoctorsQueryHandler : BaseHandler, IRequestHandler<GetAllDoctorsQuery, IEnumerable<DoctorCityDTO>>
 {

@@ -15,20 +15,18 @@ public class TimingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         Stopwatch stopwatch = new();
         
         stopwatch.Start();
-        // Thread.Sleep(700);
         var response = await next();
         stopwatch.Stop();
 
-        // Log details about request which takes more than 500ms
+        // Log details about request which takes more than 100ms
         // Email admin if it takes more than a second!
         var requestProcessingTime = stopwatch.ElapsedMilliseconds;
 
-        if (requestProcessingTime > 500)
-        {
+        // Performance monitoring
+        if (requestProcessingTime > 100)
             Log.Warning("Slow request {requestType}. Took {requestProcessingTime} ms", request.GetType(), requestProcessingTime);
-        }
-
-        Log.Information($"MediatR Timing middleware: Processed request in {requestProcessingTime} ms.");
+        
+        Log.Information("MediatR Timing middleware: Processed request in {requestProcessingTime} ms.", requestProcessingTime);
 
         return response;
     }

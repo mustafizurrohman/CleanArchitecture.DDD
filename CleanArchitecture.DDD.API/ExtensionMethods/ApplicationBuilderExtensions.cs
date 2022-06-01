@@ -1,5 +1,7 @@
 ﻿using System.Net;
 using System.Text;
+using System.Text.Json;
+using CleanArchitecture.DDD.Core.ExtensionMethods;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
@@ -48,9 +50,9 @@ public static class ApplicationBuilderExtensions
                 context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                 context.Response.ContentType = MediaTypeNames.Application.Json;
 
-                var errorMessage = "An internal server error occured. Support code : \'" + context.Connection.Id + "\'";
+                var errorMessage = "An internal server error occured. Support code : \'" + context.GetSupportCode() + "\'";
 
-                await context.Response.WriteAsync(errorMessage, Encoding.UTF8);
+                await context.Response.WriteAsync(JsonSerializer.Serialize(errorMessage), Encoding.UTF8);
             });
         });
     }

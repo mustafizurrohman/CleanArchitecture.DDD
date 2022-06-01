@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using CleanArchitecture.DDD.Core.ExtensionMethods;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
@@ -17,6 +18,10 @@ public class EDCMController : BaseAPIController
         _iedcmSyncService = iedcmSyncService;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("syncDoc", Name = "syncDoc")]
     [SwaggerOperation(
@@ -39,10 +44,14 @@ public class EDCMController : BaseAPIController
         catch (HttpRequestException ex)
         {
             Log.Error(ex, "Internal error");
-            return StatusCode((int)HttpStatusCode.GatewayTimeout, $"Support code : {HttpContext.Connection.Id}");
+            return StatusCode((int)HttpStatusCode.GatewayTimeout, $"Support code : {HttpContext.GetSupportCode()}");
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = true)]
     [HttpGet("syncDoc/background", Name = "syncDocBackground")]
     [SwaggerOperation(
@@ -62,7 +71,7 @@ public class EDCMController : BaseAPIController
         catch (HttpRequestException ex)
         {
             Log.Error(ex, "Internal error");
-            return StatusCode((int)HttpStatusCode.GatewayTimeout, $"Support code : {HttpContext.Connection.Id}");
+            return StatusCode((int)HttpStatusCode.GatewayTimeout, $"Support code : {HttpContext.GetSupportCode()}");
         }
     }
 }

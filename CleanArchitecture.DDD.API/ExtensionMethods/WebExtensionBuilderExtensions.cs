@@ -190,7 +190,7 @@ public static class WebExtensionBuilderExtensions
                 // Custom serilog enricher to append release number
                 .Enrich.WithReleaseNumber()
                 // Custom serilog enricher to append logged in username
-                .Enrich.WithUsername()
+                // .Enrich.WithUsername()
                 .Enrich.WithProperty("Assembly", $"{assemblyName.Name}")
                 .Enrich.WithProperty("Version", $"{assemblyName.Version}");
 

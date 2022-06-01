@@ -1,7 +1,4 @@
-﻿using Ardalis.GuardClauses;
-using CleanArchitecture.DDD.Application.ServicesAggregate;
-
-namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
+﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
 public abstract class BaseHandler
 {

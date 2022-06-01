@@ -1,6 +1,4 @@
-﻿using Ardalis.GuardClauses;
-
-namespace CleanArchitecture.DDD.Application.ServicesAggregate;
+﻿namespace CleanArchitecture.DDD.Application.ServicesAggregate;
 
 public class AppServices : IAppServices
 {
