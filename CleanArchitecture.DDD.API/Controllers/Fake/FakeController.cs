@@ -11,6 +11,7 @@ namespace CleanArchitecture.DDD.API.Controllers.Fake;
 [ApiExplorerSettings(IgnoreApi = true)]
 public class FakeController : BaseAPIController
 {
+    private readonly IFakeDataService _fakeDataService;
 
     private static int _attempts = 0;
     private static IEnumerable<DoctorDTO> _cachedDoctors = new List<DoctorDTO>();
@@ -19,9 +20,11 @@ public class FakeController : BaseAPIController
     /// 
     /// </summary>
     /// <param name="appServices"></param>
-    public FakeController(IAppServices appServices) 
+    /// <param name="fakeDataService"></param>
+    public FakeController(IAppServices appServices, IFakeDataService fakeDataService) 
         : base(appServices)
     {
+        _fakeDataService = fakeDataService;
     }
 
     [HttpGet("doctors")]
@@ -35,87 +38,21 @@ public class FakeController : BaseAPIController
     public IActionResult GetFakeDoctors(int num = 10, CancellationToken cancellationToken = default)
     {
         // Simulate a fake delay here
-        // Thread.Sleep(2000);
+        Thread.Sleep(2000);
 
         // Simulate a fake error here
         if (++_attempts % 2 != 0)
             return StatusCode((int)HttpStatusCode.GatewayTimeout);
-
-
+        
         if (_cachedDoctors.Any())
         {
-            var modifiedDoctors = new List<DoctorDTO>();
-
-            foreach (var cachedDoctor in _cachedDoctors)
-            {
-                var modifiedDoctor = new DoctorDTO()
-                {
-                    // Update Address here 
-                    Address = new AddressDTO()
-                    {
-                        AddressID = cachedDoctor.Address.AddressID,
-                        StreetAddress = cachedDoctor.Address.StreetAddress + " 2",
-                        ZipCode = "22087",
-                        City = "Hamburg",
-                        Country = cachedDoctor.Address.Country
-                    },
-                    Name = Name.Copy(cachedDoctor.Name)
-                };
-                
-                modifiedDoctors.Add(modifiedDoctor);
-
-            }
-
-            return Ok(modifiedDoctors);
+            var updatedDoctors = _fakeDataService.GetDoctorsWithUpdatedAddress(_cachedDoctors);
+            return Ok(updatedDoctors);
         }
 
 
-
-        var faker = new Faker("de");
-
-        var fakeCountries = new List<string>()
-        {
-            "Germany",
-            "Austria",
-            "Switzerland"
-        };
-
-        var fakeAddresses = Enumerable.Range(0, num)
-            .Select(_ => new AddressDTO()
-            {
-                AddressID = Guid.NewGuid(),
-                StreetAddress = faker.Address.StreetAddress(),
-                ZipCode = faker.Address.ZipCode(),
-                City = faker.Address.City(),
-                Country = faker.Random.ArrayElement(fakeCountries.ToArray())
-            })
-            .ToList();
-
-        var fakeNames = Enumerable.Range(0, num)
-            .Select(_ => Name.Create(faker.Name.FirstName(), faker.Name.LastName()))
-            .ToArray();
-
-        var doctors = Enumerable.Range(0, num)
-            .Select(_ =>
-            {
-                var randomName = faker.Random.ArrayElement(fakeNames);
-                var randomAddress = faker.Random.ArrayElement(fakeAddresses.ToArray());
-
-                fakeAddresses.Remove(randomAddress);
-
-                return new DoctorDTO
-                {
-                    Name = randomName,
-                    Address = randomAddress
-                };
-            })
-            .ToList();
-
-        _cachedDoctors = doctors;
-
-        return Ok(doctors);
+        _cachedDoctors = _fakeDataService.GetDoctors(num);
+        return Ok(_cachedDoctors);
     }
-
-
-
+    
 }

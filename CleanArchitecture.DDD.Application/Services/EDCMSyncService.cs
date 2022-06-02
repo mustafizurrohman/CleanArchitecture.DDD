@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using CleanArchitecture.DDD.Application.DTO;
 using CleanArchitecture.DDD.Core.Polly;
+using CleanArchitecture.DDD.Domain.ValueObjects;
 using Hangfire;
 using Polly;
 using Z.EntityFramework.Plus;
@@ -42,21 +43,27 @@ public class EDCMSyncService : IEDCMSyncService
         foreach (var doctor in doctors)
         {
             var existingDoctor = await _domainDbContext.Doctors
-                .Where(doc => doc.Name.Firstname == doctor.Name.Firstname
-                              && doc.Name.Lastname == doctor.Name.Lastname)
+                .Where(doc => doc.EDCMExternalID == doctor.EDCMExternalID)
                 .FirstOrDefaultAsync();
 
             if (existingDoctor is not null)
             {
-                await _domainDbContext.Addresses
-                    .Where(addr => addr.AddressID == existingDoctor.AddressId)
-                    .UpdateAsync(_ => new Address
-                    {
-                        City = doctor.Address.City,
-                        Country = doctor.Address.Country,
-                        StreetAddress = doctor.Address.StreetAddress,
-                        ZipCode = doctor.Address.ZipCode
-                    });
+                if (existingDoctor.Address != doctor.Address)
+                {
+                    await _domainDbContext.Addresses
+                        .Where(addr => addr.AddressID == existingDoctor.AddressId)
+                        .UpdateAsync(_ => new Address
+                        {
+                            City = doctor.Address.City,
+                            Country = doctor.Address.Country,
+                            StreetAddress = doctor.Address.StreetAddress,
+                            ZipCode = doctor.Address.ZipCode
+                        });
+
+                }
+
+                // For the sake of simplicity we are assuming that Names do not change
+
             }
             else
             {

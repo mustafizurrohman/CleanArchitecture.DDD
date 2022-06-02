@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CleanArchitecture.DDD.API.Controllers.Fake;
 using CleanArchitecture.DDD.Application.MediatR.PipelineBehaviours;
 using CleanArchitecture.DDD.Core.Logging;
 using CleanArchitecture.DDD.Core.Polly;
@@ -55,6 +56,8 @@ public static class WebExtensionBuilderExtensions
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddTransient<UserNameEnricher>();
         builder.Services.AddTransient<IAppServices, AppServices>();
+
+        builder.Services.AddTransient<IFakeDataService, FakeDataService>();
 
         // MediatR Configuration
         // TODO: Use Scrutor here!

@@ -5,6 +5,8 @@ namespace CleanArchitecture.DDD.Application.DTO;
 
 public class DoctorDTO
 {
+    public Guid EDCMExternalID { get; init; }
+
     public Name Name { get; init; }
 
     public AddressDTO Address { get; init; }
@@ -17,7 +19,7 @@ public class DoctorDTO
 
         var docName = Name.Copy(doctorDTO.Name, false);
 
-        return Doctor.Create(docName, docAddress);
+        return Doctor.Create(docName, docAddress, doctorDTO.EDCMExternalID);
     }
     
 }

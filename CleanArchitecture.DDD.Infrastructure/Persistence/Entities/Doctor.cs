@@ -14,7 +14,7 @@ public sealed class Doctor
     [Column("ID")]
     public Guid DoctorID { get; set; }
 
-    public Guid? EDCMExternalID { get; set; }
+    public Guid EDCMExternalID { get; set; }
 
     public Name Name { get; set; }
 
@@ -52,6 +52,18 @@ public sealed class Doctor
         {
             Name = Name.Copy(new Name(firstname, middlename, lastname))
         };
+    }
+
+    public static Doctor Create(Name name, Address address, Guid EDCMExternalID)
+    {
+        var doc = new Doctor
+        {
+            Name = Name.Copy(name),
+            Address = Address.Copy(address),
+            EDCMExternalID = EDCMExternalID
+        };
+
+        return doc;
     }
 
     public static Doctor Create(Name name, Address address)

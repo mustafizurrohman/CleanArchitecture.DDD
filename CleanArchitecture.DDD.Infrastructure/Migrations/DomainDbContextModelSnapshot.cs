@@ -60,7 +60,7 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
                     b.Property<Guid>("AddressId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("EDCMExternalID")
+                    b.Property<Guid>("EDCMExternalID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValue(new Guid("00000000-0000-0000-0000-000000000000"));
