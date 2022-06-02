@@ -17,7 +17,7 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-preview.2.22153.1")
+                .HasAnnotation("ProductVersion", "7.0.0-preview.4.22229.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -60,6 +60,11 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
                     b.Property<Guid>("AddressId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("EDCMExternalID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValue(new Guid("00000000-0000-0000-0000-000000000000"));
+
                     b.HasKey("DoctorID");
 
                     b.HasIndex("AddressId");
@@ -80,7 +85,7 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
                             b1.Property<Guid>("DoctorID")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<string>("FirstOrLastname")
+                            b1.Property<string>("Firstname")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 

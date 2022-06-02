@@ -9,5 +9,8 @@ internal class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
         builder.HasKey(doc => doc.DoctorID);
 
         builder.OwnsOne(doc => doc.Name);
+
+        builder.Property(doc => doc.EDCMExternalID)
+            .HasDefaultValue(Guid.Empty);
     }
 }

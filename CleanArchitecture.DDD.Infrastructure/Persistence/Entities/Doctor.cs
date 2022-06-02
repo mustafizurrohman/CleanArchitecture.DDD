@@ -14,6 +14,8 @@ public sealed class Doctor
     [Column("ID")]
     public Guid DoctorID { get; set; }
 
+    public Guid? EDCMExternalID { get; set; }
+
     public Name Name { get; set; }
 
     // Must be init

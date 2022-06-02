@@ -12,18 +12,46 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.DDD.Infrastructure.Migrations
 {
     [DbContext(typeof(DomainDbContext))]
-    [Migration("20220317171900_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220602080126_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-preview.2.22153.1")
+                .HasAnnotation("ProductVersion", "7.0.0-preview.4.22229.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Address", b =>
+                {
+                    b.Property<Guid>("AddressID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ID");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StreetAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AddressID");
+
+                    b.ToTable("Addresses");
+                });
 
             modelBuilder.Entity("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Doctor", b =>
                 {
@@ -32,19 +60,35 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("ID");
 
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("EDCMExternalID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValue(new Guid("00000000-0000-0000-0000-000000000000"));
+
                     b.HasKey("DoctorID");
+
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Doctors");
                 });
 
             modelBuilder.Entity("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Doctor", b =>
                 {
+                    b.HasOne("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("CleanArchitecture.DDD.Domain.ValueObjects.Name", "Name", b1 =>
                         {
                             b1.Property<Guid>("DoctorID")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<string>("FirstOrLastname")
+                            b1.Property<string>("Firstname")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
@@ -53,7 +97,6 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Middlename")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("DoctorID");
@@ -63,6 +106,8 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("DoctorID");
                         });
+
+                    b.Navigation("Address");
 
                     b.Navigation("Name")
                         .IsRequired();
