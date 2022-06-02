@@ -14,6 +14,7 @@ public abstract class BaseAPIController : ControllerBase
     /// 
     /// </summary>
     // ReSharper disable once MemberCanBePrivate.Global
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     protected DomainDbContext DbContext { get; } 
     
     /// <summary>

@@ -12,8 +12,8 @@ namespace CleanArchitecture.DDD.API.Controllers.Fake;
 public class FakeController : BaseAPIController
 {
     private readonly IFakeDataService _fakeDataService;
-
     private static int _attempts = 0;
+
     private static IEnumerable<DoctorDTO> _cachedDoctors = new List<DoctorDTO>();
 
     /// <summary>
@@ -24,14 +24,14 @@ public class FakeController : BaseAPIController
     public FakeController(IAppServices appServices, IFakeDataService fakeDataService) 
         : base(appServices)
     {
-        _fakeDataService = fakeDataService;
+        _fakeDataService = Guard.Against.Null(fakeDataService, nameof(fakeDataService));
     }
 
     [HttpGet("doctors")]
     [SwaggerOperation(
-        Summary = "Retrieves all doctors from database",
+        Summary = "Generates fake doctors",
         Description = "No authentication required",
-        OperationId = "GetAllDoctors",
+        OperationId = "GetFakeDoctors",
         Tags = new[] { "FakeData" }
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<Doctor>))]
@@ -40,8 +40,8 @@ public class FakeController : BaseAPIController
         // Simulate a fake delay here
         Thread.Sleep(2000);
 
-        // Simulate a fake error here
-        if (++_attempts % 2 != 0)
+        // Simulate a fake error here- Fail every 2 out of 3 times
+        if (++_attempts % 3 != 0)
             return StatusCode((int)HttpStatusCode.GatewayTimeout);
         
         if (_cachedDoctors.Any())
@@ -51,8 +51,7 @@ public class FakeController : BaseAPIController
             
             return Ok(updatedDoctors);
         }
-
-
+        
         _cachedDoctors = _fakeDataService.GetDoctors(num);
         return Ok(_cachedDoctors);
     }

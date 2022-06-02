@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.Application.DTO;
-
-namespace CleanArchitecture.DDD.Application.Services;
+﻿namespace CleanArchitecture.DDD.Application.Services;
 
 public interface IEDCMSyncService
 {

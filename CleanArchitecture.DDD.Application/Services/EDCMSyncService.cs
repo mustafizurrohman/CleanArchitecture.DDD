@@ -1,10 +1,4 @@
 ﻿using System.Collections.Immutable;
-using CleanArchitecture.DDD.Application.DTO;
-using CleanArchitecture.DDD.Core.Polly;
-using CleanArchitecture.DDD.Domain.ValueObjects;
-using Hangfire;
-using Polly;
-using Z.EntityFramework.Plus;
 
 namespace CleanArchitecture.DDD.Application.Services;
 
@@ -36,7 +30,10 @@ public class EDCMSyncService : IEDCMSyncService
 
         // TODO: Validate using FluentValidation the recieved data here and infrom if and which data are invalid 
         // TODO: according to business rules
-
+        // See Endpoint- Demo/ValueObject/validation
+        // Vaidation must be performed in a loop against DoctorDTO
+        // List of invalid objects can be sent to contact person using Weischer Email service! 
+        // And the rest saved in the database
 
         // Prepare to save to database
         // We are using a static method here but AutoMapper could also be used
@@ -69,6 +66,8 @@ public class EDCMSyncService : IEDCMSyncService
             }
             else
             {
+                // EF will take care that PK-FK values are correctly set
+                // Since EF is aware that Doctors and Addresses are liked using a PK-FK relationship
                 await _domainDbContext.Doctors.AddAsync(doctor);
             }
         }
@@ -88,6 +87,7 @@ public class EDCMSyncService : IEDCMSyncService
     }
 
     // ReSharper disable once MemberCanBePrivate.Global
+
     public async Task<IEnumerable<DoctorDTO>> SyncDoctorsInBackground(HttpClient httpClient, DomainDbContext domainDbContext)
     {
         Log.Information("Syncing doctors in background");

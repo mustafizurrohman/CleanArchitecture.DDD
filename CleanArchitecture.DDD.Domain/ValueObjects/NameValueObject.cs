@@ -35,7 +35,7 @@ public class NameValueObject : ValueObject
 
 }
 
-public class NameValueObjectValidator : AbstractValidator<NameValueObject>
+internal class NameValueObjectValidator : AbstractValidator<NameValueObject>
 {
     public NameValueObjectValidator()
     {

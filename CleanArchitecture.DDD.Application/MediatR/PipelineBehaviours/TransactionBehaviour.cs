@@ -5,6 +5,7 @@ public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
 {
     private readonly DomainDbContext _domainDbContext;
 
+    // Dependency Injection can be used here
     public TransactionBehaviour(DomainDbContext domainDbContext)
     {
         _domainDbContext = domainDbContext;
