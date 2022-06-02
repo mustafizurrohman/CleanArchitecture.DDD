@@ -34,6 +34,10 @@ public class EDCMSyncService : IEDCMSyncService
 
         var doctorDTOList = await response.Content.ReadAsAsync<IReadOnlyList<DoctorDTO>>();
 
+        // TODO: Validate using FluentValidation the recieved data here and infrom if and which data are invalid 
+        // TODO: according to business rules
+
+
         // Prepare to save to database
         // We are using a static method here but AutoMapper could also be used
         ImmutableList<Doctor> doctors = doctorDTOList
@@ -48,22 +52,20 @@ public class EDCMSyncService : IEDCMSyncService
 
             if (existingDoctor is not null)
             {
+                // Not updating names for the sake of simplicity
+
                 if (existingDoctor.Address != doctor.Address)
                 {
                     await _domainDbContext.Addresses
                         .Where(addr => addr.AddressID == existingDoctor.AddressId)
-                        .UpdateAsync(_ => new Address
+                        .UpdateAsync(_ => new Address()
                         {
                             City = doctor.Address.City,
                             Country = doctor.Address.Country,
                             StreetAddress = doctor.Address.StreetAddress,
                             ZipCode = doctor.Address.ZipCode
                         });
-
                 }
-
-                // For the sake of simplicity we are assuming that Names do not change
-
             }
             else
             {

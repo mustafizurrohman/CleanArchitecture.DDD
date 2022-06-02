@@ -46,20 +46,7 @@ public class DemoController : BaseAPIController
     }
 
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("exception", Name = "loggingException")]
-    [SwaggerOperation(
-        Summary = "Demo of exception logging and support code",
-        Description = "No or default authentication required",
-        OperationId = "Log Exception",
-        Tags = new[] { "Demo" }
-    )]
-    public IActionResult TestExceptionLogging()
-    {
-        throw new NotImplementedException();
-    }
-
-    [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("inputValidation")]
+    [HttpPost("ValueObect/validation/fluentValidationPipeline")]
     [SwaggerOperation(
         Summary = "Demo of input validation using FluentValidation",
         Description = "No or default authentication required",
@@ -72,5 +59,20 @@ public class DemoController : BaseAPIController
     {
         return Ok();
     }
+
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpPost("exception", Name = "loggingException")]
+    [SwaggerOperation(
+        Summary = "Demo of exception logging and support code",
+        Description = "No or default authentication required",
+        OperationId = "Log Exception",
+        Tags = new[] { "Demo" }
+    )]
+    public IActionResult TestExceptionLogging()
+    {
+        throw new NotImplementedException();
+    }
+
+
 
 }

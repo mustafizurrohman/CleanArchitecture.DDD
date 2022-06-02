@@ -77,7 +77,7 @@ public class FakeDataService : IFakeDataService
                 EDCMExternalID = cachedDoctor.EDCMExternalID,
                 // Update Address here 
                 Address = address,
-                Name = Name.Create(cachedDoctor.Name.Firstname, cachedDoctor.Name.Lastname + " M")
+                Name = Name.Create(cachedDoctor.Name.Firstname, cachedDoctor.Name.Lastname + " LNM")
             };
 
             modifiedDoctors.Add(modifiedDoctor);
