@@ -20,7 +20,7 @@ public static class ApplicationBuilderExtensions
             return;
             
         using var context = serviceScope.ServiceProvider.GetService<DomainDbContext>();
-        context?.Database.EnsureCreated();
+        // context?.Database.EnsureCreated();
         try
         {
             Log.Information("Starting database migration ...");

@@ -30,13 +30,20 @@ public class TimingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         var requestProcessingTime = stopwatch.ElapsedMilliseconds;
 
         // Performance monitoring
-        if (requestProcessingTime > 100) {
+        if (requestProcessingTime > 100) 
+        {
             // Here we can use Weischer Email Service for Performance monitoring
             // Or Better still- Azure Application Insights
+            Console.WriteLine();
             Log.Warning("MediatR Timing middleware: Slow request {requestType}! Took {requestProcessingTime} ms. Request url {requestUrl}", request.GetType(), requestProcessingTime, requestUrl);
+            Console.WriteLine();
         }
-        else 
+        else
+        {
+            Console.WriteLine();
             Log.Information("MediatR Timing middleware: Processed request in {requestProcessingTime} ms.", requestProcessingTime);
+            Console.WriteLine();
+        }
 
         return response;
     }

@@ -13,7 +13,6 @@ public class FakeController : BaseAPIController
 {
 
     private static int _attempts = 0;
-
     private static IEnumerable<DoctorDTO> _cachedDoctors = new List<DoctorDTO>();
 
     /// <summary>
@@ -60,7 +59,7 @@ public class FakeController : BaseAPIController
                         City = "Hamburg",
                         Country = cachedDoctor.Address.Country
                     },
-                    Name = cachedDoctor.Name
+                    Name = Name.Copy(cachedDoctor.Name)
                 };
                 
                 modifiedDoctors.Add(modifiedDoctor);

@@ -2,9 +2,9 @@
 
 public class AddressDTO
 {
-    public Guid AddressID { get; set; }
-    public string StreetAddress { get; set; }
-    public string ZipCode { get; set; }
-    public string City { get; set; }
-    public string Country { get; set; }
+    public Guid AddressID { get; init; }
+    public string StreetAddress { get; init; }
+    public string ZipCode { get; init; }
+    public string City { get; init; }
+    public string Country { get; init; }
 }
