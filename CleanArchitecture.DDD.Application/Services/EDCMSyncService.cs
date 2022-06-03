@@ -1,4 +1,6 @@
 ﻿using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
+using CleanArchitecture.DDD.Domain.ValueObjects;
 using FluentValidation;
 using Newtonsoft.Json;
 
@@ -47,39 +49,9 @@ public class EDCMSyncService : IEDCMSyncService
         ImmutableList<Doctor> doctors = doctorDTOList
             .Select(DoctorDTO.ToDoctor)
             .ToImmutableList();
-        
-        foreach (var doctor in doctors)
-        {
-            var existingDoctor = await _domainDbContext.Doctors
-                .Where(doc => doc.EDCMExternalID == doctor.EDCMExternalID)
-                .FirstOrDefaultAsync();
 
-            if (existingDoctor is not null)
-            {
-                // Not updating names for the sake of simplicity
+        await SaveDoctorsInDatabaseAsync(doctors);
 
-                if (existingDoctor.Address != doctor.Address)
-                {
-                    await _domainDbContext.Addresses
-                        .Where(addr => addr.AddressID == existingDoctor.AddressId)
-                        .UpdateAsync(_ => new Address()
-                        {
-                            City = doctor.Address.City,
-                            Country = doctor.Address.Country,
-                            StreetAddress = doctor.Address.StreetAddress,
-                            ZipCode = doctor.Address.ZipCode
-                        });
-                }
-            }
-            else
-            {
-                // EF will take care that PK-FK values are correctly set
-                // Since EF is aware that Doctors and Addresses are liked using a PK-FK relationship
-                await _domainDbContext.Doctors.AddAsync(doctor);
-            }
-        }
-
-        await _domainDbContext.SaveChangesAsync();
         return doctorDTOList;
     }
 
@@ -118,7 +90,8 @@ public class EDCMSyncService : IEDCMSyncService
         return doctorDTOList;
     }
 
-    public async Task<IEnumerable<DoctorCityDTO>> SyncDoctorsWithSomeInvalidData()
+    [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
+    public async Task<IEnumerable<DoctorDTO>> SyncDoctorsWithSomeInvalidData()
     {
         var response = await _httpClient.GetAsync("Fake/doctors/invalid");
         response.EnsureSuccessStatusCode();
@@ -126,35 +99,103 @@ public class EDCMSyncService : IEDCMSyncService
         var parsedResponse = await response.Content.ReadAsAsync<IReadOnlyList<FakeDoctorAddressDTO>>();
 
         if (parsedResponse.Count == 0)
-            return Enumerable.Empty<DoctorCityDTO>();
+            return Enumerable.Empty<DoctorDTO>();
 
         // This is not necessary here but done only as an example
         // to demonstrate Automapper
+        var (validListOfDoctors, invalidListOfDoctors) = ValidateIncomingData(parsedResponse);
+        
+        if (invalidListOfDoctors.Any())
+            NotifyAdminAboutInvalidata(invalidListOfDoctors);
+        
         var doctorDTOList = _automapper
-            .Map<IEnumerable<FakeDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>>(parsedResponse)
+            .Map<IEnumerable<ExternalDoctorAddressDTO>, IEnumerable<DoctorDTO>>(validListOfDoctors)
             .ToList();
 
-        var validatedAndInvadlidatedLists = doctorDTOList
+        // Save valid list in datbase!
+        var doctorList = doctorDTOList
+            .Select(DoctorDTO.ToDoctor)
+            .ToList();
+
+        await SaveDoctorsInDatabaseAsync(doctorList);
+
+        return doctorDTOList;
+    }
+
+    private Tuple<IEnumerable<ExternalDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>> ValidateIncomingData(IEnumerable<FakeDoctorAddressDTO> dataFromExternalSystem)
+    {
+        var externalDoctorDTOList = _automapper
+            .Map<IEnumerable<FakeDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>>(dataFromExternalSystem)
+            .ToList();
+
+        var validatedAndInvadlidatedLists = externalDoctorDTOList
             .GroupBy(doc => _validator.Validate(doc).IsValid)
             .ToList();
-
-        // Convert to html file and send as attachment using Weischer Mailer Service!
-        // To a email ID configured by admin
-        var invalidListOfDoctors = validatedAndInvadlidatedLists
-            .Where(list => !list.Key)
-            .SelectMany(list => list)
-            .ToList();
-
 
         var validListOfDoctors = validatedAndInvadlidatedLists
             .Where(list => list.Key)
             .SelectMany(list => list)
             .ToList();
 
-        // Save valid list in datbase!
+        var invalidListOfDoctors = validatedAndInvadlidatedLists
+            .Where(list => !list.Key)
+            .SelectMany(list => list)
+            .ToList();
         
+        return new Tuple<IEnumerable<ExternalDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>>(validListOfDoctors, invalidListOfDoctors);
 
-        return Enumerable.Empty<DoctorCityDTO>();
+    }
+
+    private void NotifyAdminAboutInvalidata(IEnumerable<ExternalDoctorAddressDTO> externalDoctorAddressDTO)
+    {
+        // Notify admin about invalid data 
+        var validationErrors = externalDoctorAddressDTO
+            .Select(doc => new
+            {
+                ID = doc.EDCMExternalID,
+                ValidationErrors = _validator.Validate(doc).Errors
+            })
+            .ToList();
+
+        // TODO: Save as HTML and send as attachment using Weischer Global Email service 
+        var validationResult = JsonConvert.SerializeObject(validationErrors);
+
+    }
+
+    private async Task SaveDoctorsInDatabaseAsync(IEnumerable<Doctor> doctors)
+    {
+        foreach (var doctor in doctors)
+        {
+            var existingDoctor = await _domainDbContext.Doctors
+                .Where(doc => doc.EDCMExternalID == doctor.EDCMExternalID)
+                .FirstOrDefaultAsync();
+
+            if (existingDoctor is not null)
+            {
+                // Not updating names for the sake of simplicity
+
+                if (existingDoctor.Address != doctor.Address)
+                {
+                    await _domainDbContext.Addresses
+                        .Where(addr => addr.AddressID == existingDoctor.AddressId)
+                        .UpdateAsync(_ => new Address()
+                        {
+                            City = doctor.Address.City,
+                            Country = doctor.Address.Country,
+                            StreetAddress = doctor.Address.StreetAddress,
+                            ZipCode = doctor.Address.ZipCode
+                        });
+                }
+            }
+            else
+            {
+                // EF will take care that PK-FK values are correctly set
+                // Since EF is aware that Doctors and Addresses are liked using a PK-FK relationship
+                await _domainDbContext.Doctors.AddAsync(doctor);
+            }
+        }
+
+        await _domainDbContext.SaveChangesAsync();
     }
     
 
