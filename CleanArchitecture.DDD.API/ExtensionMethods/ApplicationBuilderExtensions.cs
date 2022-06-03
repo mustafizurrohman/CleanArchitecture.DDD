@@ -51,11 +51,15 @@ public static class ApplicationBuilderExtensions
                 var errorFeature = context.Features.Get<IExceptionHandlerFeature>();
                 var exception = errorFeature?.Error ?? new Exception();
 
+                // Log all details of the unhandled exception here
                 Log.Error(exception, exception.Message);
 
                 context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                 context.Response.ContentType = MediaTypeNames.Application.Json;
 
+                // The user only gets a support code and no details of the internal support error. 
+                // We can use this code to filter out the logs for this specific request
+                // Using Kibana? or by explicitely saving this code in Database 
                 var errorMessage = "An internal server error occured. Support code : \'" + context.GetSupportCode() + "\'";
 
                 await context.Response.WriteAsync(JsonSerializer.Serialize(errorMessage), Encoding.UTF8);
