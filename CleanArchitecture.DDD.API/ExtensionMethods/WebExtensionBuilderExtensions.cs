@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CleanArchitecture.DDD.API.Controllers.Fake;
+using CleanArchitecture.DDD.Application;
 using CleanArchitecture.DDD.Application.MediatR.PipelineBehaviours;
 using CleanArchitecture.DDD.Core.Logging;
 using CleanArchitecture.DDD.Core.Polly;
@@ -131,7 +132,8 @@ public static class WebExtensionBuilderExtensions
         builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CoreAssemblyMarker>());
         builder.Services.AddValidatorsFromAssemblies(new[] { typeof(CoreAssemblyMarker).Assembly });
         builder.Services.AddValidatorsFromAssemblies(new[] { typeof(DomainAssemblyMarker).Assembly });
-
+        builder.Services.AddValidatorsFromAssemblies(new[] { typeof(ApplicationAssemblyMarker).Assembly });
+        
         return builder;
     }
 

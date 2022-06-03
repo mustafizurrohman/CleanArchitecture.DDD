@@ -7,4 +7,6 @@ public interface IFakeDataService
     IEnumerable<DoctorDTO> GetDoctors(int num);
 
     IEnumerable<DoctorDTO> GetDoctorsWithUpdatedAddress(IEnumerable<DoctorDTO> doctors);
+
+    IEnumerable<FakeDoctorAddressDTO> GetFakeDoctors(int num);
 }

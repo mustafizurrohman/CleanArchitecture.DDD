@@ -15,6 +15,7 @@ public class FakeController : BaseAPIController
     private static int _attempts = 0;
 
     private static IEnumerable<DoctorDTO> _cachedDoctors = new List<DoctorDTO>();
+    private static IEnumerable<FakeDoctorAddressDTO> _cachedDTOs = new List<FakeDoctorAddressDTO>();
 
     /// <summary>
     /// 
@@ -38,7 +39,7 @@ public class FakeController : BaseAPIController
     public IActionResult GetFakeDoctors(int num = 10, CancellationToken cancellationToken = default)
     {
         // Simulate a fake delay here
-        Thread.Sleep(2000);
+        // Thread.Sleep(2000);
 
         // Simulate a fake error here- Fail every 2 out of 3 times
         if (++_attempts % 3 != 0)
@@ -55,5 +56,31 @@ public class FakeController : BaseAPIController
         _cachedDoctors = _fakeDataService.GetDoctors(num);
         return Ok(_cachedDoctors);
     }
-    
+
+    [HttpGet("doctors/invalid")]
+    [SwaggerOperation(
+        Summary = "Generates fake doctors",
+        Description = "No authentication required",
+        OperationId = "GetFakeDoctors",
+        Tags = new[] { "FakeData" }
+    )]
+    [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<Doctor>))]
+    public IActionResult GetFakeDoctorsWithAddress(int num = 10, CancellationToken cancellationToken = default)
+    {
+        // Simulate a fake delay here
+        // Thread.Sleep(2000);
+
+        // Simulate a fake error here- Fail every 2 out of 3 times
+        if (++_attempts % 3 != 0)
+            return StatusCode((int)HttpStatusCode.GatewayTimeout);
+
+        if (_cachedDoctors.Any())
+        {
+            return Ok(_cachedDTOs);
+        }
+
+        _cachedDTOs = _fakeDataService.GetFakeDoctors(num);
+        return Ok(_cachedDTOs);
+    }
+
 }

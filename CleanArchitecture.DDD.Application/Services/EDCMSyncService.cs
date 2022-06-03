@@ -1,4 +1,6 @@
 ﻿using System.Collections.Immutable;
+using FluentValidation;
+using Newtonsoft.Json;
 
 namespace CleanArchitecture.DDD.Application.Services;
 
@@ -6,14 +8,19 @@ public class EDCMSyncService : IEDCMSyncService
 {
     private readonly HttpClient _httpClient;
     private readonly DomainDbContext _domainDbContext;
+    private readonly IMapper _automapper;
+    private readonly IValidator<ExternalDoctorAddressDTO> _validator;
 
     private readonly IAsyncPolicy<HttpResponseMessage> _retryPolicy;
 
-    public EDCMSyncService(HttpClient httpClient, IPolicyHolder policyHolder, DomainDbContext domainDbContext)
+    public EDCMSyncService(HttpClient httpClient, IPolicyHolder policyHolder, 
+        DomainDbContext domainDbContext, IMapper mapper, IValidator<ExternalDoctorAddressDTO> validator)
     {
         _httpClient = httpClient;
         _domainDbContext = domainDbContext;
-        
+        _automapper = mapper;
+        _validator = validator;
+
         policyHolder.Registry
             .TryGet(HttpPolicyNames.HttpRetryPolicy.ToString(), out _retryPolicy);
         
@@ -110,4 +117,45 @@ public class EDCMSyncService : IEDCMSyncService
 
         return doctorDTOList;
     }
+
+    public async Task<IEnumerable<DoctorCityDTO>> SyncDoctorsWithSomeInvalidData()
+    {
+        var response = await _httpClient.GetAsync("Fake/doctors/invalid");
+        response.EnsureSuccessStatusCode();
+
+        var parsedResponse = await response.Content.ReadAsAsync<IReadOnlyList<FakeDoctorAddressDTO>>();
+
+        if (parsedResponse.Count == 0)
+            return Enumerable.Empty<DoctorCityDTO>();
+
+        // This is not necessary here but done only as an example
+        // to demonstrate Automapper
+        var doctorDTOList = _automapper
+            .Map<IEnumerable<FakeDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>>(parsedResponse)
+            .ToList();
+
+        var validatedAndInvadlidatedLists = doctorDTOList
+            .GroupBy(doc => _validator.Validate(doc).IsValid)
+            .ToList();
+
+        // Convert to html file and send as attachment using Weischer Mailer Service!
+        // To a email ID configured by admin
+        var invalidListOfDoctors = validatedAndInvadlidatedLists
+            .Where(list => !list.Key)
+            .SelectMany(list => list)
+            .ToList();
+
+
+        var validListOfDoctors = validatedAndInvadlidatedLists
+            .Where(list => list.Key)
+            .SelectMany(list => list)
+            .ToList();
+
+        // Save valid list in datbase!
+        
+
+        return Enumerable.Empty<DoctorCityDTO>();
+    }
+    
+
 }
