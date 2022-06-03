@@ -6,9 +6,10 @@ public static class WebApplicationExtensions
 {
     public static WebApplication ConfigureHttpPipeline(this WebApplication app)
     {
+        var isInDevelopment = app.Environment.IsDevelopment();
        
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+        if (isInDevelopment)
         {
             app.UseSwagger();
             app.UseSwaggerUI(setupAction =>

@@ -42,8 +42,11 @@ public static class ApplicationBuilderExtensions
     /// This can also be implemented as a Middleware
     /// </summary>
     /// <param name="applicationBuilder"></param>
-    public static void UseCustomExceptionHandler(this IApplicationBuilder applicationBuilder)
+    /// <param name="isDevelopment"></param>
+    public static void UseCustomExceptionHandler(this WebApplication applicationBuilder, bool? isDevelopment = null)
     {
+        var isInDevelopment = isDevelopment ?? applicationBuilder.Environment.IsDevelopment();
+
         applicationBuilder.UseExceptionHandler(appBuilder =>
         {
             appBuilder.Run(async context =>
@@ -56,11 +59,15 @@ public static class ApplicationBuilderExtensions
 
                 context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                 context.Response.ContentType = MediaTypeNames.Application.Json;
-
-                // The user only gets a support code and no details of the internal support error. 
+                
+                // The user only gets a support code and no details of the internal server exception. 
                 // We can use this code to filter out the logs for this specific request
-                // Using Kibana? or by explicitely saving this code in Database 
+                // Using Kibana? or by explicitely saving this code in Database while logging 
                 var errorMessage = "An internal server error occured. Support code : \'" + context.GetSupportCode() + "\'";
+
+                // Include exception details in development
+                if (isInDevelopment)
+                    errorMessage += Environment.NewLine + exception;
 
                 await context.Response.WriteAsync(JsonSerializer.Serialize(errorMessage), Encoding.UTF8);
             });

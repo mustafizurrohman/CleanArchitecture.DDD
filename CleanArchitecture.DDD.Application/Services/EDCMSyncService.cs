@@ -180,6 +180,9 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
                 .Where(doc => doc.EDCMExternalID == doctor.EDCMExternalID)
                 .FirstOrDefaultAsync();
 
+            // New C# syntax
+            // existingDoctor != null 
+            // will fail if != is overloaded
             if (existingDoctor is not null)
             {
                 // Not updating names for the sake of simplicity
