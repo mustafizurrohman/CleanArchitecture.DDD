@@ -22,5 +22,6 @@ public class ExternalDoctorAddressDTOValidator : AbstractValidator<ExternalDocto
         RuleFor(prop => prop.Lastname)
             .MustBeValidName();
 
+        // Addresses may be validated asynchronously using a third party service
     }
 }

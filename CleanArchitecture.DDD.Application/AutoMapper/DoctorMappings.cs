@@ -16,6 +16,8 @@ public class DoctorMappings : Profile
         //.ForMember(dc => dc.Name, src => src.MapFrom(doc => doc.Name.ToString()))
         //.ForMember(dc => dc.Address, src => src.MapFrom(doc => doc.Address.ToString()));
 
+        // AutoMapper convention- Rest will be automatically mapped because 
+        // they have the same names
         CreateMap<FakeDoctorAddressDTO, ExternalDoctorAddressDTO>()
             .ForMember(doc => doc.ExStreetAddress, src => src.MapFrom(doc => doc.StreetAddress))
             .ForMember(doc => doc.ExZipCode, src => src.MapFrom(doc => doc.ZipCode))
@@ -23,7 +25,6 @@ public class DoctorMappings : Profile
             .ForMember(doc => doc.ExCountry, src => src.MapFrom(doc => doc.Country))
             .ReverseMap();
         
-        // TODO: Investigate why this is not supported!
         CreateMap<ExternalDoctorAddressDTO, DoctorDTO>()
             .ForMember(doc => doc.EDCMExternalID, src => src.MapFrom(doc => doc.EDCMExternalID))
             .ForMember(doc => doc.Name, src => src.MapFrom(doc => Name.Create(doc.Firstname, doc.Lastname, true)))

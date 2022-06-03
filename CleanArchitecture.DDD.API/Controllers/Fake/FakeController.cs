@@ -74,10 +74,9 @@ public class FakeController : BaseAPIController
         if (++_attempts % 3 != 0)
             return StatusCode((int)HttpStatusCode.GatewayTimeout);
 
-        if (_cachedDoctors.Any())
-        {
+        if (_cachedDTOs.Any())
             return Ok(_cachedDTOs);
-        }
+        
 
         _cachedDTOs = _fakeDataService.GetFakeDoctors(num);
         return Ok(_cachedDTOs);

@@ -1,26 +1,22 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
-using CleanArchitecture.DDD.Domain.ValueObjects;
 using FluentValidation;
 using Newtonsoft.Json;
 
 namespace CleanArchitecture.DDD.Application.Services;
 
-public class EDCMSyncService : IEDCMSyncService
+public class EDCMSyncService : BaseService, IEDCMSyncService
 {
     private readonly HttpClient _httpClient;
-    private readonly DomainDbContext _domainDbContext;
-    private readonly IMapper _automapper;
     private readonly IValidator<ExternalDoctorAddressDTO> _validator;
 
     private readonly IAsyncPolicy<HttpResponseMessage> _retryPolicy;
 
     public EDCMSyncService(HttpClient httpClient, IPolicyHolder policyHolder, 
-        DomainDbContext domainDbContext, IMapper mapper, IValidator<ExternalDoctorAddressDTO> validator)
+        IValidator<ExternalDoctorAddressDTO> validator, IAppServices appServices)
+            : base(appServices)
     {
         _httpClient = httpClient;
-        _domainDbContext = domainDbContext;
-        _automapper = mapper;
         _validator = validator;
 
         policyHolder.Registry
@@ -62,7 +58,7 @@ public class EDCMSyncService : IEDCMSyncService
     /// <returns></returns>
     public void SyncDoctorsInBackground()
     {
-        _ = BackgroundJob.Enqueue(() => SyncDoctorsInBackground(_httpClient, _domainDbContext));
+        _ = BackgroundJob.Enqueue(() => SyncDoctorsInBackground(_httpClient, DbContext));
     }
 
     // ReSharper disable once MemberCanBePrivate.Global
@@ -108,7 +104,7 @@ public class EDCMSyncService : IEDCMSyncService
         if (invalidListOfDoctors.Any())
             NotifyAdminAboutInvalidata(invalidListOfDoctors);
         
-        var doctorDTOList = _automapper
+        var doctorDTOList = AutoMapper
             .Map<IEnumerable<ExternalDoctorAddressDTO>, IEnumerable<DoctorDTO>>(validListOfDoctors)
             .ToList();
 
@@ -122,9 +118,10 @@ public class EDCMSyncService : IEDCMSyncService
         return doctorDTOList;
     }
 
+
     private Tuple<IEnumerable<ExternalDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>> ValidateIncomingData(IEnumerable<FakeDoctorAddressDTO> dataFromExternalSystem)
     {
-        var externalDoctorDTOList = _automapper
+        var externalDoctorDTOList = AutoMapper
             .Map<IEnumerable<FakeDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>>(dataFromExternalSystem)
             .ToList();
 
@@ -142,31 +139,43 @@ public class EDCMSyncService : IEDCMSyncService
             .SelectMany(list => list)
             .ToList();
         
-        return new Tuple<IEnumerable<ExternalDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>>(validListOfDoctors, invalidListOfDoctors);
+        return new Tuple<IEnumerable<ExternalDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>>
+            (validListOfDoctors, invalidListOfDoctors);
 
     }
 
     private void NotifyAdminAboutInvalidata(IEnumerable<ExternalDoctorAddressDTO> externalDoctorAddressDTO)
     {
+        externalDoctorAddressDTO = externalDoctorAddressDTO.ToList();
+
+        if (!externalDoctorAddressDTO.Any())
+            return;
+
         // Notify admin about invalid data 
         var validationErrors = externalDoctorAddressDTO
             .Select(doc => new
             {
                 ID = doc.EDCMExternalID,
                 ValidationErrors = _validator.Validate(doc).Errors
+                    .GroupBy(err => err.PropertyName)
             })
             .ToList();
 
         // TODO: Save as HTML and send as attachment using Weischer Global Email service 
-        var validationResult = JsonConvert.SerializeObject(validationErrors);
-
+        // var validationResult = JsonConvert.SerializeObject(validationErrors, Formatting.Indented);
+        Console.WriteLine();
+        // Console.WriteLine(validationResult);
+        Console.WriteLine($"Got {externalDoctorAddressDTO.Count()} invalid data from CRM. Admin must be informed!");
+        Console.WriteLine();
     }
 
     private async Task SaveDoctorsInDatabaseAsync(IEnumerable<Doctor> doctors)
     {
         foreach (var doctor in doctors)
         {
-            var existingDoctor = await _domainDbContext.Doctors
+            var existingDoctor = await DbContext.Doctors
+                // Explicit join using Entity Framework
+                .Include(doc => doc.Address)
                 .Where(doc => doc.EDCMExternalID == doctor.EDCMExternalID)
                 .FirstOrDefaultAsync();
 
@@ -174,9 +183,12 @@ public class EDCMSyncService : IEDCMSyncService
             {
                 // Not updating names for the sake of simplicity
 
-                if (existingDoctor.Address != doctor.Address)
+                if (existingDoctor.Address.StreetAddress != doctor.Address.StreetAddress
+                    || existingDoctor.Address.ZipCode != doctor.Address.ZipCode
+                    || existingDoctor.Address.City != doctor.Address.City
+                    || existingDoctor.Address.Country != doctor.Address.Country)
                 {
-                    await _domainDbContext.Addresses
+                    await DbContext.Addresses
                         .Where(addr => addr.AddressID == existingDoctor.AddressId)
                         .UpdateAsync(_ => new Address()
                         {
@@ -191,12 +203,11 @@ public class EDCMSyncService : IEDCMSyncService
             {
                 // EF will take care that PK-FK values are correctly set
                 // Since EF is aware that Doctors and Addresses are liked using a PK-FK relationship
-                await _domainDbContext.Doctors.AddAsync(doctor);
+                await DbContext.Doctors.AddAsync(doctor);
             }
         }
 
-        await _domainDbContext.SaveChangesAsync();
+        await DbContext.SaveChangesAsync();
     }
     
-
 }
