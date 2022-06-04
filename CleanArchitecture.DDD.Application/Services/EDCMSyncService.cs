@@ -32,14 +32,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         response.EnsureSuccessStatusCode();
 
         var doctorDTOList = await response.Content.ReadAsAsync<IReadOnlyList<DoctorDTO>>();
-
-        // TODO: Validate using FluentValidation the recieved data here and infrom if and which data are invalid 
-        // TODO: according to business rules
-        // See Endpoint- Demo/ValueObject/validation
-        // Vaidation must be performed in a loop against DoctorDTO
-        // List of invalid objects can be sent to contact person using Weischer Email service! 
-        // And the rest saved in the database
-
+        
         // Prepare to save to database
         // We are using a static method here but AutoMapper could also be used
         ImmutableList<Doctor> doctors = doctorDTOList
@@ -62,7 +55,6 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
     }
 
     // ReSharper disable once MemberCanBePrivate.Global
-
     public async Task<IEnumerable<DoctorDTO>> SyncDoctorsInBackground(HttpClient httpClient, DomainDbContext domainDbContext)
     {
         Log.Information("Syncing doctors in background");
@@ -89,6 +81,8 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
     [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
     public async Task<IEnumerable<DoctorDTO>> SyncDoctorsWithSomeInvalidData()
     {
+        Log.Information("Syncing doctors after input validation ... ");
+        
         var response = await _httpClient.GetAsync("Fake/doctors/invalid");
         response.EnsureSuccessStatusCode();
 
@@ -97,28 +91,29 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         if (parsedResponse.Count == 0)
             return Enumerable.Empty<DoctorDTO>();
 
-        // This is not necessary here but done only as an example
-        // to demonstrate Automapper
         var (validListOfDoctors, invalidListOfDoctors) = ValidateIncomingData(parsedResponse);
         
         if (invalidListOfDoctors.Any())
-            NotifyAdminAboutInvalidata(invalidListOfDoctors);
-        
+            NotifyAdminAboutInvalidData(invalidListOfDoctors);
+
+        // This is not necessary here but done only as an example
+        // to demonstrate AutoMapper
         var doctorDTOList = AutoMapper
             .Map<IEnumerable<ExternalDoctorAddressDTO>, IEnumerable<DoctorDTO>>(validListOfDoctors)
             .ToList();
 
-        // Save valid list in datbase!
+        // Save valid list in database!
         var doctorList = doctorDTOList
             .Select(DoctorDTO.ToDoctor)
             .ToList();
 
         await SaveDoctorsInDatabaseAsync(doctorList);
 
+        Log.Information("Sync completed ... ");
+
         return doctorDTOList;
     }
-
-
+    
     private Tuple<IEnumerable<ExternalDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>> ValidateIncomingData(IEnumerable<FakeDoctorAddressDTO> dataFromExternalSystem)
     {
         // Not necessary- It was only to demonstrate use of AutoMapper
@@ -126,16 +121,16 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             .Map<IEnumerable<FakeDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>>(dataFromExternalSystem)
             .ToList();
 
-        var validatedAndInvadlidatedLists = externalDoctorDTOList
+        var validAndInvalidList = externalDoctorDTOList
             .GroupBy(doc => _validator.Validate(doc).IsValid)
             .ToList();
 
-        var validListOfDoctors = validatedAndInvadlidatedLists
+        var validListOfDoctors = validAndInvalidList
             .Where(list => list.Key)
             .SelectMany(list => list)
             .ToList();
 
-        var invalidListOfDoctors = validatedAndInvadlidatedLists
+        var invalidListOfDoctors = validAndInvalidList
             .Where(list => !list.Key)
             .SelectMany(list => list)
             .ToList();
@@ -145,7 +140,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
 
     }
 
-    private void NotifyAdminAboutInvalidata(IEnumerable<ExternalDoctorAddressDTO> externalDoctorAddressDTO)
+    private void NotifyAdminAboutInvalidData(IEnumerable<ExternalDoctorAddressDTO> externalDoctorAddressDTO)
     {
         externalDoctorAddressDTO = externalDoctorAddressDTO.ToList();
 
@@ -163,9 +158,10 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             .ToList();
 
         // TODO: Save as HTML and send as attachment using Weischer Global Email service 
-        // var validationResult = JsonConvert.SerializeObject(validationErrors, Formatting.Indented);
+        var validationResult = JsonConvert.SerializeObject(validationErrors, Formatting.Indented);
+        Log.Warning(validationResult);
+
         Console.WriteLine();
-        // Console.WriteLine(validationResult);
         Console.WriteLine($"Got {externalDoctorAddressDTO.Count()} invalid data from CRM. Admin must be informed!");
         Console.WriteLine();
     }
@@ -180,13 +176,13 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
                 .Where(doc => doc.EDCMExternalID == doctor.EDCMExternalID)
                 .FirstOrDefaultAsync();
 
-            // New C# syntax
+            // New C# syntax (Official recommendation)
             // existingDoctor != null 
-            // will fail if != is overloaded
+            // will fail if '!=' is overloaded
             if (existingDoctor is not null)
             {
                 // Not updating names for the sake of simplicity
-
+                
                 // Can be optimized when using a Value Object
                 if (existingDoctor.Address.StreetAddress != doctor.Address.StreetAddress
                     || existingDoctor.Address.ZipCode != doctor.Address.ZipCode

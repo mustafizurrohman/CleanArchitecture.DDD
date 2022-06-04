@@ -65,7 +65,7 @@ public class FakeController : BaseAPIController
         Tags = new[] { "FakeData" }
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<Doctor>))]
-    public IActionResult GetFakeDoctorsWithAddress(int num = 10, CancellationToken cancellationToken = default)
+    public IActionResult GetDoctorsWithInvalidData(int num = 10, CancellationToken cancellationToken = default)
     {
         // Simulate a fake delay here
         // Thread.Sleep(2000);
@@ -77,7 +77,6 @@ public class FakeController : BaseAPIController
         if (_cachedDTOs.Any())
             return Ok(_cachedDTOs);
         
-
         _cachedDTOs = _fakeDataService.GetFakeDoctors(num);
         return Ok(_cachedDTOs);
     }

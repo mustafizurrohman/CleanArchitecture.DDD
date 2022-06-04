@@ -12,8 +12,11 @@ public class SyncDoctorCommandHandler : BaseHandler, IRequestHandler<SyncDoctorC
 
     public async Task<Unit> Handle(SyncDoctorCommand request, CancellationToken cancellationToken)
     {
-        // await _iedcmSyncService.SyncDoctors();
-        await _iedcmSyncService.SyncDoctorsWithSomeInvalidData();
+        if (request.SimulateError)
+            await _iedcmSyncService.SyncDoctorsWithSomeInvalidData();
+        else
+            await _iedcmSyncService.SyncDoctors();
+        
         return Unit.Value;
     }
 }

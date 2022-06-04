@@ -125,7 +125,7 @@ public class FakeDataService : IFakeDataService
             {
                 EDCMExternalID = i % 2 == 0 ? Guid.Empty : currentDoc.EDCMExternalID,
                 Firstname = currentDoc.Firstname + $" {i}  * ",
-                Lastname = currentDoc.Lastname + $"{DateTime.Now}  3  ",
+                Lastname = currentDoc.Lastname + $"{DateTime.Now}  {i}  ",
                 StreetAddress = currentDoc.StreetAddress,
                 ZipCode = currentDoc.ZipCode,
                 City = currentDoc.City,
