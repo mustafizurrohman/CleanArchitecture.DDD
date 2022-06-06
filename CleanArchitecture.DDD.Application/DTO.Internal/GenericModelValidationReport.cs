@@ -1,8 +1,9 @@
 ﻿namespace CleanArchitecture.DDD.Application.DTO.Internal;
 
-internal class ExternalDoctorAddressDTOModelValidationErrorReport
+internal class GenericModelValidationReport<T>
+    where T : class, new()
 {
-    public ExternalDoctorAddressDTO Doctor { get; init; }
+    public T Model { get; init; }
     public bool Valid { get; init; }
     public IEnumerable<ValidationErrorByProperty> ModelErrors { get; init; }
 }

@@ -127,9 +127,9 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             {
                 var validationResult = _validator.Validate(doc);
 
-                return new ExternalDoctorAddressDTOModelValidationErrorReport()
+                return new ExternalDoctorAddressDTOModelValidationReport()
                 {
-                    Doctor = doc,
+                    Model = doc,
                     Valid = validationResult.IsValid,
                     ModelErrors = validationResult.Errors
                         .Select(e => new {e.PropertyName, e.ErrorMessage})
@@ -145,7 +145,6 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
 
         
         return new ModelValidationReport(errorReport);
-
     }
 
     private void NotifyAdminAboutInvalidData(ModelValidationReport modelValidationReport)
