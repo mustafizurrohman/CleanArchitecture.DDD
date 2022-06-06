@@ -1,21 +1,22 @@
 ﻿namespace CleanArchitecture.DDD.Application.DTO.Internal;
 
-internal class ModelValidationReport : GenericModelValidationReport<ExternalDoctorAddressDTO>
+internal class ModelValidationReport<T> : GenericModelValidationReport<T>
+    where T : class, new()
 {
     
-    public IEnumerable<GenericModelValidationReport<ExternalDoctorAddressDTO>> Report { get; init; }
+    public IEnumerable<GenericModelValidationReport<T>> Report { get; init; }
     
-    public IEnumerable<ExternalDoctorAddressDTO> ValidModels =>
+    public IEnumerable<T> ValidModels =>
         Report.Where(r => r.Valid).Select(r => r.Model).ToList();
 
-    public IEnumerable<ExternalDoctorAddressDTO> InvalidModels =>
+    public IEnumerable<T> InvalidModels =>
         Report.Where(r => !r.Valid).Select(r => r.Model).ToList();
 
     public bool HasInvalidModels => Report.Any(r => !r.Valid);
 
     public bool HasAllValidModels => Report.All(r => r.Valid);
 
-    public ModelValidationReport(IEnumerable<GenericModelValidationReport<ExternalDoctorAddressDTO>> report)
+    public ModelValidationReport(IEnumerable<GenericModelValidationReport<T>> report)
     {
         this.Report = report;
     } 

@@ -92,7 +92,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         if (parsedResponse.Count == 0)
             return Enumerable.Empty<DoctorDTO>();
 
-        ModelValidationReport modelValidationReport = GetModelValidationReport(parsedResponse);
+        ModelValidationReport<ExternalDoctorAddressDTO> modelValidationReport = GetModelValidationReport(parsedResponse);
         
         if (modelValidationReport.HasInvalidModels)
             NotifyAdminAboutInvalidData(modelValidationReport);
@@ -115,7 +115,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         return doctorDTOList;
     }
     
-    private ModelValidationReport GetModelValidationReport(IEnumerable<FakeDoctorAddressDTO> dataFromExternalSystem)
+    private ModelValidationReport<ExternalDoctorAddressDTO> GetModelValidationReport(IEnumerable<FakeDoctorAddressDTO> dataFromExternalSystem)
     {
         // Not necessary- It was only to demonstrate use of AutoMapper
         var externalDoctorDTOList = AutoMapper
@@ -144,10 +144,10 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             .ToList();
 
         
-        return new ModelValidationReport(errorReport);
+        return new ModelValidationReport<ExternalDoctorAddressDTO>(errorReport);
     }
 
-    private void NotifyAdminAboutInvalidData(ModelValidationReport modelValidationReport)
+    private void NotifyAdminAboutInvalidData(ModelValidationReport<ExternalDoctorAddressDTO> modelValidationReport)
     {
         var externalDoctorAddressDTO = modelValidationReport.InvalidModels.ToList();
 
