@@ -115,6 +115,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         return doctorDTOList;
     }
     
+
     private ModelValidationReport<ExternalDoctorAddressDTO> GetModelValidationReport(IEnumerable<FakeDoctorAddressDTO> dataFromExternalSystem)
     {
         // Not necessary- It was only to demonstrate use of AutoMapper
@@ -137,7 +138,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
                         .Select(e => new ValidationErrorByProperty
                         {
                             PropertyName = e.Key,
-                            ErrorMessage = e.Select(err => err.ErrorMessage).ToList()
+                            ErrorMessages = e.Select(err => err.ErrorMessage).ToList()
                         })
                 };
             })
@@ -149,11 +150,11 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
 
     private void NotifyAdminAboutInvalidData(ModelValidationReport<ExternalDoctorAddressDTO> modelValidationReport)
     {
-        var externalDoctorAddressDTO = modelValidationReport.InvalidModels.ToList();
-
-        if (!externalDoctorAddressDTO.Any())
+        if (modelValidationReport.HasAllValidModels)
             return;
         
+        var externalDoctorAddressDTO = modelValidationReport.InvalidModels.ToList();
+
         // TODO: Save as HTML and send as attachment using Weischer Global Email service 
         var validationResult = JsonConvert.SerializeObject(modelValidationReport.Report, Formatting.Indented);
         Log.Warning(validationResult);
@@ -163,7 +164,6 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         Console.WriteLine();
     }
     
-
     private async Task SaveDoctorsInDatabaseAsync(IEnumerable<Doctor> doctors)
     {
         foreach (var doctor in doctors)

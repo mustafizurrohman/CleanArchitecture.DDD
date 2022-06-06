@@ -18,7 +18,7 @@ internal class ModelValidationReport<T> : GenericModelValidationReport<T>
 
     public ModelValidationReport(IEnumerable<GenericModelValidationReport<T>> report)
     {
-        this.Report = report;
+        Report = report;
     } 
 
 }
