@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using CleanArchitecture.DDD.Application.DTO.Internal;
 using FluentValidation;
 using Newtonsoft.Json;
 
@@ -91,15 +92,15 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         if (parsedResponse.Count == 0)
             return Enumerable.Empty<DoctorDTO>();
 
-        var (validListOfDoctors, invalidListOfDoctors) = ValidateIncomingData(parsedResponse);
+        var modelValidationReport = GetModelValidationReport(parsedResponse);
         
-        if (invalidListOfDoctors.Any())
-            NotifyAdminAboutInvalidData(invalidListOfDoctors);
+        if (modelValidationReport.HasInvalidModels)
+            NotifyAdminAboutInvalidData(modelValidationReport);
 
         // This is not necessary here but done only as an example
         // to demonstrate AutoMapper
         var doctorDTOList = AutoMapper
-            .Map<IEnumerable<ExternalDoctorAddressDTO>, IEnumerable<DoctorDTO>>(validListOfDoctors)
+            .Map<IEnumerable<ExternalDoctorAddressDTO>, IEnumerable<DoctorDTO>>(modelValidationReport.ValidModels)
             .ToList();
 
         // Save valid list in database!
@@ -114,7 +115,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         return doctorDTOList;
     }
     
-    private Tuple<IEnumerable<ExternalDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>> ValidateIncomingData(IEnumerable<FakeDoctorAddressDTO> dataFromExternalSystem)
+    private ModelValidationReport GetModelValidationReport(IEnumerable<FakeDoctorAddressDTO> dataFromExternalSystem)
     {
         // Not necessary- It was only to demonstrate use of AutoMapper
         var externalDoctorDTOList = AutoMapper
@@ -126,58 +127,36 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             {
                 var validationResult = _validator.Validate(doc);
 
-                return new
+                return new ExternalDoctorAddressDTOModelValidationErrorReport()
                 {
-                    Doc = doc,
+                    Doctor = doc,
                     Valid = validationResult.IsValid,
                     ModelErrors = validationResult.Errors
                         .Select(e => new {e.PropertyName, e.ErrorMessage})
                         .GroupBy(e => e.PropertyName)
-                        .Select(e => new
+                        .Select(e => new ValidationErrorByProperty
                         {
-                            Property = e.Key,
-                            Errors = e.Select(err => err.ErrorMessage).ToList()
+                            PropertyName = e.Key,
+                            ErrorMessage = e.Select(err => err.ErrorMessage).ToList()
                         })
                 };
             })
             .ToList();
 
-        var errorReportAsString = JsonConvert.SerializeObject(errorReport, Formatting.Indented);
-
-        // Log.Warning(errorReportAsString);
-
-        var validListOfDoctors = errorReport
-            .Where(re => re.Valid)
-            .Select(re => re.Doc);
-
-        var invalidListOfDoctors = errorReport
-            .Where(re => !re.Valid)
-            .Select(re => re.Doc);
         
-        return new Tuple<IEnumerable<ExternalDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>>
-            (validListOfDoctors, invalidListOfDoctors);
+        return new ModelValidationReport(errorReport);
 
     }
 
-    private void NotifyAdminAboutInvalidData(IEnumerable<ExternalDoctorAddressDTO> externalDoctorAddressDTO)
+    private void NotifyAdminAboutInvalidData(ModelValidationReport modelValidationReport)
     {
-        externalDoctorAddressDTO = externalDoctorAddressDTO.ToList();
+        var externalDoctorAddressDTO = modelValidationReport.InvalidModels.ToList();
 
         if (!externalDoctorAddressDTO.Any())
             return;
-
-        // Notify admin about invalid data 
-        var validationErrors = externalDoctorAddressDTO
-            .Select(doc => new
-            {
-                ID = doc.EDCMExternalID,
-                ValidationErrors = _validator.Validate(doc).Errors
-                    .GroupBy(err => err.PropertyName)
-            })
-            .ToList();
-
+        
         // TODO: Save as HTML and send as attachment using Weischer Global Email service 
-        var validationResult = JsonConvert.SerializeObject(validationErrors, Formatting.Indented);
+        var validationResult = JsonConvert.SerializeObject(modelValidationReport.Report, Formatting.Indented);
         Log.Warning(validationResult);
 
         Console.WriteLine();
