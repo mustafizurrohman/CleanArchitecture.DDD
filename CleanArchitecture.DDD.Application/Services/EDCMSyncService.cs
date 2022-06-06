@@ -48,6 +48,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
     /// <summary>
     /// Better Alternative: Implement this as a Azure Serverless function and invoke explicitly from here or
     /// by using a CRON Scheduler
+    /// Hangfire cannot serialize EntityFramework
     /// </summary>
     /// <returns></returns>
     public void SyncDoctorsInBackground()
@@ -153,14 +154,12 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         if (modelValidationReport.HasAllValidModels)
             return;
         
-        var externalDoctorAddressDTO = modelValidationReport.InvalidModels.ToList();
-
         // TODO: Save as HTML and send as attachment using Weischer Global Email service 
         var validationResult = JsonConvert.SerializeObject(modelValidationReport.Report, Formatting.Indented);
         Log.Warning(validationResult);
 
         Console.WriteLine();
-        Console.WriteLine($"Got {externalDoctorAddressDTO.Count()} invalid data from CRM. Admin must be informed!");
+        Console.WriteLine($"Got {modelValidationReport.InvalidModels.Count()} invalid data from CRM / external system.");
         Console.WriteLine();
     }
     
