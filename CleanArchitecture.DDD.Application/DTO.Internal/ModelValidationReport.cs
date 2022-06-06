@@ -3,7 +3,7 @@
 internal class ModelValidationReport : GenericModelValidationReport<ExternalDoctorAddressDTO>
 {
     
-    public IEnumerable<ExternalDoctorAddressDTOModelValidationReport> Report { get; init; }
+    public IEnumerable<GenericModelValidationReport<ExternalDoctorAddressDTO>> Report { get; init; }
     
     public IEnumerable<ExternalDoctorAddressDTO> ValidModels =>
         Report.Where(r => r.Valid).Select(r => r.Model).ToList();
@@ -15,7 +15,7 @@ internal class ModelValidationReport : GenericModelValidationReport<ExternalDoct
 
     public bool HasAllValidModels => Report.All(r => r.Valid);
 
-    public ModelValidationReport(IEnumerable<ExternalDoctorAddressDTOModelValidationReport> report)
+    public ModelValidationReport(IEnumerable<GenericModelValidationReport<ExternalDoctorAddressDTO>> report)
     {
         this.Report = report;
     } 

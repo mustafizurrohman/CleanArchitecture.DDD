@@ -92,7 +92,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         if (parsedResponse.Count == 0)
             return Enumerable.Empty<DoctorDTO>();
 
-        var modelValidationReport = GetModelValidationReport(parsedResponse);
+        ModelValidationReport modelValidationReport = GetModelValidationReport(parsedResponse);
         
         if (modelValidationReport.HasInvalidModels)
             NotifyAdminAboutInvalidData(modelValidationReport);
@@ -127,7 +127,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             {
                 var validationResult = _validator.Validate(doc);
 
-                return new ExternalDoctorAddressDTOModelValidationReport()
+                return new GenericModelValidationReport<ExternalDoctorAddressDTO>()
                 {
                     Model = doc,
                     Valid = validationResult.IsValid,
