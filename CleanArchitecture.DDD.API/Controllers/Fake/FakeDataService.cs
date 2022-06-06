@@ -21,7 +21,7 @@ public class FakeDataService : IFakeDataService
         };
 
         var fakeAddresses = Enumerable.Range(0, num)
-            .Select(_ => new AddressDTO()
+            .Select(_ => new AddressDTO
             {
                 AddressID = Guid.NewGuid(),
                 StreetAddress = Faker.Address.StreetAddress(),
@@ -69,7 +69,7 @@ public class FakeDataService : IFakeDataService
 
         foreach (var cachedDoctor in doctors)
         {
-            var address = new AddressDTO()
+            var address = new AddressDTO
             {
                 StreetAddress = cachedDoctor.Address.StreetAddress + "2",
                 ZipCode = cachedDoctor.Address.ZipCode + "m",
@@ -77,7 +77,7 @@ public class FakeDataService : IFakeDataService
                 Country = "Modified"
             };
 
-            var modifiedDoctor = new DoctorDTO()
+            var modifiedDoctor = new DoctorDTO
             {
                 EDCMExternalID = cachedDoctor.EDCMExternalID,
                 // Update Address here 

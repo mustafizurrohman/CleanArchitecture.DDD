@@ -121,19 +121,38 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             .Map<IEnumerable<FakeDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>>(dataFromExternalSystem)
             .ToList();
 
-        var validAndInvalidList = externalDoctorDTOList
-            .GroupBy(doc => _validator.Validate(doc).IsValid)
+        var errorReport = externalDoctorDTOList
+            .Select(doc =>
+            {
+                var validationResult = _validator.Validate(doc);
+
+                return new
+                {
+                    Doc = doc,
+                    Valid = validationResult.IsValid,
+                    ModelErrors = validationResult.Errors
+                        .Select(e => new {e.PropertyName, e.ErrorMessage})
+                        .GroupBy(e => e.PropertyName)
+                        .Select(e => new
+                        {
+                            Property = e.Key,
+                            Errors = e.Select(err => err.ErrorMessage).ToList()
+                        })
+                };
+            })
             .ToList();
 
-        var validListOfDoctors = validAndInvalidList
-            .Where(list => list.Key)
-            .SelectMany(list => list)
-            .ToList();
+        var errorReportAsString = JsonConvert.SerializeObject(errorReport, Formatting.Indented);
 
-        var invalidListOfDoctors = validAndInvalidList
-            .Where(list => !list.Key)
-            .SelectMany(list => list)
-            .ToList();
+        // Log.Warning(errorReportAsString);
+
+        var validListOfDoctors = errorReport
+            .Where(re => re.Valid)
+            .Select(re => re.Doc);
+
+        var invalidListOfDoctors = errorReport
+            .Where(re => !re.Valid)
+            .Select(re => re.Doc);
         
         return new Tuple<IEnumerable<ExternalDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>>
             (validListOfDoctors, invalidListOfDoctors);
@@ -165,6 +184,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         Console.WriteLine($"Got {externalDoctorAddressDTO.Count()} invalid data from CRM. Admin must be informed!");
         Console.WriteLine();
     }
+    
 
     private async Task SaveDoctorsInDatabaseAsync(IEnumerable<Doctor> doctors)
     {
@@ -203,7 +223,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             else
             {
                 // EF will take care that PK-FK values are correctly set
-                // Since EF is aware that Doctors and Addresses are liked using a PK-FK relationship
+                // Since EF is aware that Doctors and Addresses are linked using a PK-FK relationship
                 await DbContext.Doctors.AddAsync(doctor);
             }
         }
