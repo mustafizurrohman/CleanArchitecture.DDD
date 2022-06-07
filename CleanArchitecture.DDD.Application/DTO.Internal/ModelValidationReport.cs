@@ -19,6 +19,14 @@ internal class ModelValidationReport<T> : GenericModelValidationReport<T>
     public ModelValidationReport(IEnumerable<GenericModelValidationReport<T>> report)
     {
         Report = report;
-    } 
+    }
+
+    public ModelValidationReport(GenericModelValidationReport<T> report)
+    {
+        Report = new List<GenericModelValidationReport<T>>()
+        {
+            report
+        };
+    }
 
 }

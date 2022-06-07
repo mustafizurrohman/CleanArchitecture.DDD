@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using CleanArchitecture.DDD.Application.DTO.Internal;
 using FluentValidation;
@@ -11,7 +11,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
     private readonly HttpClient _httpClient;
     private readonly IValidator<ExternalDoctorAddressDTO> _validator;
 
-    private readonly IAsyncPolicy<HttpResponseMessage> _retryPolicy;
+    private readonly IAsyncPolicy _retryPolicy;
 
     public EDCMSyncService(HttpClient httpClient, IPolicyHolder policyHolder, 
         IValidator<ExternalDoctorAddressDTO> validator, IAppServices appServices)
@@ -21,7 +21,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         _validator = validator;
 
         policyHolder.Registry
-            .TryGet(HttpPolicyNames.HttpRetryPolicy.ToString(), out _retryPolicy);
+            .TryGet(PolicyNames.RetryPolicyWithJitter.ToString(), out _retryPolicy);
         
     }
 
@@ -124,7 +124,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             .Map<IEnumerable<FakeDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>>(dataFromExternalSystem)
             .ToList();
 
-        var errorReport = externalDoctorDTOList
+        List<GenericModelValidationReport<ExternalDoctorAddressDTO>> errorReport = externalDoctorDTOList
             .Select(doc =>
             {
                 var validationResult = _validator.Validate(doc);
@@ -205,7 +205,13 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             }
         }
 
-        await DbContext.SaveChangesAsync();
+        // Wrap Db changes in a Polly Policy
+        // Not strictly necessary
+        // Only used for demonstration
+        await _retryPolicy.ExecuteAsync(async () =>
+        {
+            await DbContext.SaveChangesAsync();
+        });
+        
     }
-    
 }
