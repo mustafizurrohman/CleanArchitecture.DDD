@@ -80,7 +80,6 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         return doctorDTOList;
     }
 
-    [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
     public async Task<IEnumerable<DoctorDTO>> SyncDoctorsWithSomeInvalidData()
     {
         Log.Information("Syncing doctors after input validation ... ");
@@ -129,7 +128,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             {
                 var validationResult = _validator.Validate(doc);
 
-                return new GenericModelValidationReport<ExternalDoctorAddressDTO>()
+                return new GenericModelValidationReport<ExternalDoctorAddressDTO>
                 {
                     Model = doc,
                     Valid = validationResult.IsValid,
@@ -149,7 +148,8 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         return new ModelValidationReport<ExternalDoctorAddressDTO>(errorReport);
     }
 
-    private void NotifyAdminAboutInvalidData(ModelValidationReport<ExternalDoctorAddressDTO> modelValidationReport)
+    private void NotifyAdminAboutInvalidData<T>(ModelValidationReport<T> modelValidationReport)
+        where T : class, new()
     {
         if (modelValidationReport.HasAllValidModels)
             return;
@@ -214,4 +214,5 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         });
         
     }
+
 }

@@ -14,7 +14,11 @@ internal class ModelValidationReport<T> : GenericModelValidationReport<T>
 
     public bool HasInvalidModels => Report.Any(r => !r.Valid);
 
+    public bool HasValidModels => Report.Any(r => r.Valid);
+
     public bool HasAllValidModels => Report.All(r => r.Valid);
+
+    public bool HasAllInvalidModels => Report.Any(r => !r.Valid);
 
     public ModelValidationReport(IEnumerable<GenericModelValidationReport<T>> report)
     {
