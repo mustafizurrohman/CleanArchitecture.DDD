@@ -11,7 +11,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
     private readonly HttpClient _httpClient;
     private readonly IValidator<ExternalDoctorAddressDTO> _validator;
 
-    private readonly IAsyncPolicy _retryPolicy;
+    private readonly IAsyncPolicy _retryPolicyWithJittering;
 
     public EDCMSyncService(HttpClient httpClient, IPolicyHolder policyHolder, 
         IValidator<ExternalDoctorAddressDTO> validator, IAppServices appServices)
@@ -21,7 +21,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         _validator = validator;
 
         policyHolder.Registry
-            .TryGet(PolicyNames.RetryPolicyWithJitter.ToString(), out _retryPolicy);
+            .TryGet(PolicyNames.RetryPolicyWithJitter.ToString(), out _retryPolicyWithJittering);
         
     }
 
@@ -159,7 +159,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         Log.Warning(validationResult);
 
         Console.WriteLine();
-        Console.WriteLine($"Got {modelValidationReport.InvalidModels.Count()} invalid data from CRM / external system.");
+        Log.Warning($"Got {modelValidationReport.InvalidModels.Count()} invalid data from CRM / external system.");
         Console.WriteLine();
     }
     
@@ -208,7 +208,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         // Wrap Db changes in a Polly Policy
         // Not strictly necessary
         // Only used for demonstration
-        await _retryPolicy.ExecuteAsync(async () =>
+        await _retryPolicyWithJittering.ExecuteAsync(async () =>
         {
             await DbContext.SaveChangesAsync();
         });
