@@ -11,82 +11,36 @@ public class FakeDataService : IFakeDataService
         Faker = new Faker("de");
     }
 
-    public IEnumerable<DoctorDTO> GetDoctors(int num)
+    public IEnumerable<FakeDoctorAddressDTO> GetDoctors(int num)
     {
-        var fakeCountries = new List<string>()
-        {
-            "Germany",
-            "Austria",
-            "Switzerland"
-        };
-
-        var fakeAddresses = Enumerable.Range(0, num)
-            .Select(_ => new AddressDTO
-            {
-                AddressID = Guid.NewGuid(),
-                StreetAddress = Faker.Address.StreetAddress(),
-                ZipCode = Faker.Address.ZipCode(),
-                City = Faker.Address.City(),
-                Country = Faker.Random.ArrayElement(fakeCountries.ToArray())
-            })
-            .ToList();
-
-        var fakeNames = Enumerable.Range(0, num)
-            .Select(_ => Name.Create(Faker.Name.FirstName(), Faker.Name.LastName()))
-            .ToList();
-
-        var doctors = Enumerable.Range(0, num)
-            .Select(_ =>
-            {
-                var randomName = Faker.Random.ArrayElement(fakeNames.ToArray());
-                var randomAddress = Faker.Random.ArrayElement(fakeAddresses.ToArray());
-
-                fakeAddresses.Remove(randomAddress);
-                fakeNames.Remove(randomName);
-
-                return new DoctorDTO
-                {
-                    Name = randomName,
-                    Address = randomAddress,
-                    EDCMExternalID = Guid.NewGuid()
-                };
-            })
-            .ToList();
-
-        return doctors;
+        return GetFakeDoctors(num);
     }
 
-    public IEnumerable<DoctorDTO> GetDoctorsWithUpdatedAddress(IEnumerable<DoctorDTO> doctors)
+    public IEnumerable<FakeDoctorAddressDTO> GetDoctorsWithUpdatedAddress(IEnumerable<FakeDoctorAddressDTO> doctors, int iteration)
     {
         doctors = doctors.ToList();
 
         if (!doctors.Any())
         {
-            return Enumerable.Empty<DoctorDTO>();
+            return Enumerable.Empty<FakeDoctorAddressDTO>();
         }
 
-        var modifiedDoctors = new List<DoctorDTO>();
+        var modifiedDoctors = new List<FakeDoctorAddressDTO>();
 
         foreach (var cachedDoctor in doctors)
         {
-            var address = new AddressDTO
-            {
-                StreetAddress = cachedDoctor.Address.StreetAddress + "2",
-                ZipCode = cachedDoctor.Address.ZipCode + "m",
-                City = cachedDoctor.Address.City + "2",
-                Country = "Modified"
-            };
-
-            var modifiedDoctor = new DoctorDTO
+            var modifiedDoctor = new FakeDoctorAddressDTO
             {
                 EDCMExternalID = cachedDoctor.EDCMExternalID,
-                // Update Address here 
-                Address = address,
-                Name = Name.Create(cachedDoctor.Name.Firstname, cachedDoctor.Name.Lastname + " LNM")
+                Firstname = cachedDoctor.Firstname,
+                Lastname = cachedDoctor.Lastname,
+                StreetAddress = Faker.Address.StreetAddress() + iteration,
+                ZipCode = Faker.Address.ZipCode() + iteration,
+                City = Faker.Address.City() + iteration,
+                Country = cachedDoctor.Country + iteration
             };
 
             modifiedDoctors.Add(modifiedDoctor);
-
         }
 
         return modifiedDoctors;

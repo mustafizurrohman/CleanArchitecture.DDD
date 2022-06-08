@@ -14,8 +14,9 @@ public class FakeController : BaseAPIController
     private readonly IFakeDataService _fakeDataService;
     private static int _attempts = 0;
 
-    private static IEnumerable<DoctorDTO> _cachedDoctors = new List<DoctorDTO>();
-    private static IEnumerable<FakeDoctorAddressDTO> _cachedDTOs = new List<FakeDoctorAddressDTO>();
+    private static IEnumerable<FakeDoctorAddressDTO> _cachedDTOsValid = new List<FakeDoctorAddressDTO>();
+    private static IEnumerable<FakeDoctorAddressDTO> _cachedDTOsValidAndInvalid = new List<FakeDoctorAddressDTO>();
+    private static int _iteration = 0;
 
     /// <summary>
     /// 
@@ -35,7 +36,7 @@ public class FakeController : BaseAPIController
         OperationId = "GetFakeDoctors",
         Tags = new[] { "FakeData" }
     )]
-    [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<Doctor>))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<FakeDoctorAddressDTO>))]
     public IActionResult GetFakeDoctors(int num = 10, CancellationToken cancellationToken = default)
     {
         // Simulate a fake delay here
@@ -45,16 +46,16 @@ public class FakeController : BaseAPIController
         if (++_attempts % 3 != 0)
             return StatusCode((int)HttpStatusCode.GatewayTimeout);
         
-        if (_cachedDoctors.Any())
+        if (_cachedDTOsValid.Any())
         {
-            var updatedDoctors = _fakeDataService.GetDoctorsWithUpdatedAddress(_cachedDoctors).ToList();
+            var updatedDoctors = _fakeDataService.GetDoctorsWithUpdatedAddress(_cachedDTOsValid, ++_iteration).ToList();
             updatedDoctors.AddRange(_fakeDataService.GetDoctors(1));
             
             return Ok(updatedDoctors);
         }
-        
-        _cachedDoctors = _fakeDataService.GetDoctors(num);
-        return Ok(_cachedDoctors);
+
+        _cachedDTOsValid = _fakeDataService.GetDoctors(num);
+        return Ok(_cachedDTOsValid);
     }
 
     [HttpGet("doctors/invalid")]
@@ -64,7 +65,7 @@ public class FakeController : BaseAPIController
         OperationId = "GetFakeDoctors",
         Tags = new[] { "FakeData" }
     )]
-    [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<Doctor>))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<FakeDoctorAddressDTO>))]
     public IActionResult GetDoctorsWithInvalidData(int num = 10, CancellationToken cancellationToken = default)
     {
         // Simulate a fake delay here
@@ -74,11 +75,18 @@ public class FakeController : BaseAPIController
         if (++_attempts % 3 != 0)
             return StatusCode((int)HttpStatusCode.GatewayTimeout);
 
-        if (_cachedDTOs.Any())
-            return Ok(_cachedDTOs);
-        
-        _cachedDTOs = _fakeDataService.GetFakeDoctors(num);
-        return Ok(_cachedDTOs);
+        if (_cachedDTOsValidAndInvalid.Any())
+        {
+            var updatedDoctors = _fakeDataService.GetDoctorsWithUpdatedAddress(_cachedDTOsValidAndInvalid, ++_iteration).ToList();
+            updatedDoctors.AddRange(_fakeDataService.GetDoctors(_iteration));
+
+            _cachedDTOsValidAndInvalid = updatedDoctors;
+
+            return Ok(updatedDoctors);
+        }
+
+        _cachedDTOsValidAndInvalid = _fakeDataService.GetFakeDoctors(num);
+        return Ok(_cachedDTOsValidAndInvalid);
     }
 
 }

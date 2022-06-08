@@ -4,9 +4,9 @@ namespace CleanArchitecture.DDD.API.Controllers.Fake;
 
 public interface IFakeDataService
 {
-    IEnumerable<DoctorDTO> GetDoctors(int num);
+    IEnumerable<FakeDoctorAddressDTO> GetDoctors(int num);
 
-    IEnumerable<DoctorDTO> GetDoctorsWithUpdatedAddress(IEnumerable<DoctorDTO> doctors);
+    IEnumerable<FakeDoctorAddressDTO> GetDoctorsWithUpdatedAddress(IEnumerable<FakeDoctorAddressDTO> doctors, int iteration);
 
     IEnumerable<FakeDoctorAddressDTO> GetFakeDoctors(int num);
 }
