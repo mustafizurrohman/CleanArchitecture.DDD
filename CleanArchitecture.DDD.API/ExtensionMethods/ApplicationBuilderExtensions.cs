@@ -57,6 +57,8 @@ public static class ApplicationBuilderExtensions
                 // Log all details of the unhandled exception here
                 Log.Error(exception, exception.Message);
 
+                // TODO: May be we want to inform the Admin here using the Mailer Service?
+
                 context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                 context.Response.ContentType = MediaTypeNames.Application.Json;
                 

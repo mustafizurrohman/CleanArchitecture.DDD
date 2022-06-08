@@ -159,7 +159,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         Log.Warning(validationResult);
 
         Console.WriteLine();
-        Log.Warning($"Got {modelValidationReport.InvalidModels.Count()} invalid data from CRM / external system.");
+        Log.Warning("Got {countOfInvalidModels} invalid data from CRM / external system.", modelValidationReport.InvalidModels.Count());
         Console.WriteLine();
     }
     
