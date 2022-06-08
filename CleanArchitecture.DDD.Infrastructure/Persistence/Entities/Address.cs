@@ -55,6 +55,31 @@ public sealed class Address
                              + City + separator + Country;
     }
 
+    public static bool operator !=(Address left, Address right)
+    {
+        return !(left == right);
+    }
 
+    public static bool operator ==(Address left, Address right)
+    {
+        return left.StreetAddress == right.StreetAddress
+            && left.ZipCode == right.ZipCode
+            && left.City == right.City
+            && left.Country == right.Country;
+    }
+
+    private bool Equals(Address other)
+    {
+        return StreetAddress == other.StreetAddress && ZipCode == other.ZipCode && City == other.City && Country == other.Country;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return ReferenceEquals(this, obj) || obj is Address other && Equals(other);
+    }
+
+    // ReSharper disable NonReadonlyMemberInGetHashCode
+    public override int GetHashCode() => HashCode.Combine(StreetAddress, ZipCode, City, Country);
+    // ReSharper restore NonReadonlyMemberInGetHashCode
 
 }

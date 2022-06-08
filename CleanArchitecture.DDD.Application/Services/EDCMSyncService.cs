@@ -181,10 +181,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
                 // Not updating names for the sake of simplicity
                 
                 // Can be optimized when using a Value Object
-                if (existingDoctor.Address.StreetAddress != doctor.Address.StreetAddress
-                    || existingDoctor.Address.ZipCode != doctor.Address.ZipCode
-                    || existingDoctor.Address.City != doctor.Address.City
-                    || existingDoctor.Address.Country != doctor.Address.Country)
+                if (existingDoctor.Address != doctor.Address)
                 {
                     await DbContext.Addresses
                         .Where(addr => addr.AddressID == existingDoctor.AddressId)
