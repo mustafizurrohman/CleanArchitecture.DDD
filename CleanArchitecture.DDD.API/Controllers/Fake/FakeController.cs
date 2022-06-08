@@ -48,10 +48,7 @@ public class FakeController : BaseAPIController
         
         if (_cachedDTOsValid.Any())
         {
-            var updatedDoctors = _fakeDataService.GetDoctorsWithUpdatedAddress(_cachedDTOsValid, ++_iteration).ToList();
-            updatedDoctors.AddRange(_fakeDataService.GetDoctors(1));
-            
-            return Ok(updatedDoctors);
+            return Ok(_cachedDTOsValid);
         }
 
         _cachedDTOsValid = _fakeDataService.GetDoctors(num);

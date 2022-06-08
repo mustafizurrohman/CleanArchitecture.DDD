@@ -15,8 +15,11 @@ public class SyncDoctorCommandHandler : BaseHandler, IRequestHandler<SyncDoctorC
         if (request.SimulateError)
             await _iedcmSyncService.SyncDoctorsWithSomeInvalidData();
         else
-            await _iedcmSyncService.SyncDoctors();
-        
+        {
+            throw new NotImplementedException();
+            // await _iedcmSyncService.SyncDoctors();
+        }
+
         return Unit.Value;
     }
 }

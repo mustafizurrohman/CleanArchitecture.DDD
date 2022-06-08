@@ -32,15 +32,22 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         var response = await _httpClient.GetAsync("Fake/doctors");
         response.EnsureSuccessStatusCode();
 
-        var doctorDTOList = await response.Content.ReadAsAsync<IReadOnlyList<DoctorDTO>>();
-        
+        var parsedResponse = await response.Content.ReadAsAsync<IReadOnlyList<FakeDoctorAddressDTO>>();
+
+        var externalDoctor = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>, List<ExternalDoctorAddressDTO>>(parsedResponse);
+
+        var doctorDTOList = AutoMapper.Map<IEnumerable<ExternalDoctorAddressDTO>, List<DoctorDTO>>(externalDoctor);
+
         // Prepare to save to database
         // We are using a static method here but AutoMapper could also be used
-        ImmutableList<Doctor> doctors = doctorDTOList
+        var doctors = doctorDTOList
             .Select(DoctorDTO.ToDoctor)
             .ToImmutableList();
 
-        await SaveDoctorsInDatabaseAsync(doctors);
+        // Entity Framework is aware that Doctors an Address have a PK-FK Relationship
+        // So it will take care that the keys are properly created and linked.
+        await DbContext.Doctors.AddRangeAsync(doctors);
+        await DbContext.SaveChangesAsync();
 
         return doctorDTOList;
     }
@@ -64,7 +71,11 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         var response = await httpClient.GetAsync("Fake/doctors");
         response.EnsureSuccessStatusCode();
 
-        var doctorDTOList = await response.Content.ReadAsAsync<IReadOnlyList<DoctorDTO>>();
+        var parsedResponse = await response.Content.ReadAsAsync<IReadOnlyList<FakeDoctorAddressDTO>>();
+
+        var externalDoctor = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>, List<ExternalDoctorAddressDTO>>(parsedResponse);
+
+        var doctorDTOList = AutoMapper.Map<IEnumerable<ExternalDoctorAddressDTO>, List<DoctorDTO>>(externalDoctor);
 
         // Prepare to save to database
         // We are using a static method here but AutoMapper could also be used
