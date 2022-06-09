@@ -108,8 +108,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         if (modelValidationReport.HasInvalidModels)
             NotifyAdminAboutInvalidData(modelValidationReport);
 
-        // This is not necessary here but done only as an example
-        // to demonstrate AutoMapper
+        // This is not necessary here but done only as an example to demonstrate AutoMapper
         var doctorDTOList = AutoMapper
             .Map<IEnumerable<FakeDoctorAddressDTO>, IEnumerable<DoctorDTO>>(modelValidationReport.ValidModels)
             .ToList();

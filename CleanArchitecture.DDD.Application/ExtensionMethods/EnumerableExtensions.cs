@@ -21,11 +21,12 @@ public static class EnumerableExtensions
                     Model = model,
                     Valid = validationResult.IsValid,
                     ModelErrors = validationResult.Errors
-                        .Select(e => new { e.PropertyName, e.ErrorMessage })
+                        .Select(e => new { e.PropertyName, e.ErrorMessage, e.AttemptedValue })
                         .GroupBy(e => e.PropertyName)
                         .Select(e => new ValidationErrorByProperty
                         {
                             PropertyName = e.Key,
+                            AttemptedValue = e.Select(err => err.AttemptedValue).FirstOrDefault(),
                             ErrorMessages = e.Select(err => err.ErrorMessage).ToList()
                         })
                 };
