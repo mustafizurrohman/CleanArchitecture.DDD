@@ -157,21 +157,22 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
                 // Not updating names for the sake of simplicity
                 
                 // Can be optimized when using a Value Object
-                if (existingDoctor.Address != doctor.Address)
-                {
-                    await DbContext.Addresses
-                        .Where(addr => addr.AddressID == existingDoctor.AddressId)
-                        .UpdateAsync(_ => new Address()
-                        {
-                            City = doctor.Address.City,
-                            Country = doctor.Address.Country,
-                            StreetAddress = doctor.Address.StreetAddress,
-                            ZipCode = doctor.Address.ZipCode
-                        });
-
-                    LogWithSpace(() => Log.Information("Updating Address with ID {addressID}", existingDoctor.Address.AddressID));
-                    
+                if (existingDoctor.Address == doctor.Address) {
+                    LogWithSpace(() => Log.Information("Not updating Address with ID {addressID} because it is unchanged.", existingDoctor.Address.City));
+                    continue;
                 }
+
+                await DbContext.Addresses
+                    .Where(addr => addr.AddressID == existingDoctor.AddressId)
+                    .UpdateAsync(_ => new Address()
+                    {
+                        City = doctor.Address.City,
+                        Country = doctor.Address.Country,
+                        StreetAddress = doctor.Address.StreetAddress,
+                        ZipCode = doctor.Address.ZipCode
+                    });
+
+                LogWithSpace(() => Log.Information("Updating Address with ID {addressID}", existingDoctor.Address.AddressID));
             }
             else
             {
