@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace CleanArchitecture.DDD.Application.DTO;
 
-// Must be public otherwise it cannot be injected to the DI Registry
+// Must be public otherwise it cannot be injected automatically to the DI Registry
 public class FakeDoctorAddressDTOValidator : AbstractValidator<FakeDoctorAddressDTO>
 {
     public FakeDoctorAddressDTOValidator()
@@ -24,5 +24,7 @@ public class FakeDoctorAddressDTOValidator : AbstractValidator<FakeDoctorAddress
             .MustBeValidName();
 
         // Addresses may be validated asynchronously using a third party service
+        // Example- https://www.address-validator.net/api.html
+        // There might be free alternatives as well 
     }
 }

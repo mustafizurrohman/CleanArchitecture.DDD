@@ -25,7 +25,7 @@ public static class EnumerableExtensions
                         .Select(e => new ValidationErrorByProperty
                         {
                             PropertyName = e.Key.PropertyName,
-                            AttemptedValue = e.Select(err => err.AttemptedValue).FirstOrDefault(),
+                            AttemptedValue = e.Select(err => err.AttemptedValue).Distinct().Single(),
                             ErrorMessages = e.Select(err => err.ErrorMessage).ToList()
                         })
                 };
