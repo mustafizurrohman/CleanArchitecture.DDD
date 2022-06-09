@@ -135,9 +135,8 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         var validationResult = JsonConvert.SerializeObject(modelValidationReport.Report, Formatting.Indented);
         Log.Warning(validationResult);
 
-        Console.WriteLine();
-        Log.Warning("Got {countOfInvalidModels} invalid data from CRM / external system.", modelValidationReport.InvalidModels.Count());
-        Console.WriteLine();
+        LogWithSpace(() => Log.Warning("Got {countOfInvalidModels} invalid data from CRM / external system.", modelValidationReport.InvalidModels.Count()));
+        
     }
     
     private async Task SaveDoctorsInDatabaseAsync(IEnumerable<Doctor> doctors)
@@ -169,6 +168,9 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
                             StreetAddress = doctor.Address.StreetAddress,
                             ZipCode = doctor.Address.ZipCode
                         });
+
+                    LogWithSpace(() => Log.Information("Updating Address with ID {addressID}", existingDoctor.Address.AddressID));
+                    
                 }
             }
             else
@@ -176,6 +178,8 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
                 // EF will take care that PK-FK values are correctly set
                 // Since EF is aware that Doctors and Addresses are linked using a PK-FK relationship
                 await DbContext.Doctors.AddAsync(doctor);
+                
+                LogWithSpace(() => Log.Information("Inserting Address with ID {addressID}", doctor.Address.AddressID));
             }
         }
 
@@ -187,6 +191,13 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             await DbContext.SaveChangesAsync();
         });
         
+    }
+    
+    private void LogWithSpace(Action action)
+    {
+        Console.WriteLine();
+        action();
+        Console.WriteLine();
     }
 
 }
