@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using CleanArchitecture.DDD.Application.DTO;
 
 namespace CleanArchitecture.DDD.API.Controllers.Fake;
 
@@ -33,7 +32,7 @@ public class FakeController : BaseAPIController
     [SwaggerOperation(
         Summary = "Generates fake doctors",
         Description = "No authentication required",
-        OperationId = "GetFakeDoctors",
+        OperationId = "GetFakeDoctorsWithSomeInvalidData",
         Tags = new[] { "FakeData" }
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<FakeDoctorAddressDTO>))]
@@ -51,7 +50,7 @@ public class FakeController : BaseAPIController
             return Ok(_cachedDTOsValid);
         }
 
-        _cachedDTOsValid = _fakeDataService.GetDoctors(num);
+        _cachedDTOsValid = _fakeDataService.GetValidDoctors(num);
         return Ok(_cachedDTOsValid);
     }
 
@@ -59,7 +58,7 @@ public class FakeController : BaseAPIController
     [SwaggerOperation(
         Summary = "Generates fake doctors",
         Description = "No authentication required",
-        OperationId = "GetFakeDoctors",
+        OperationId = "GetFakeDoctorsWithSomeInvalidData",
         Tags = new[] { "FakeData" }
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<FakeDoctorAddressDTO>))]
@@ -75,14 +74,14 @@ public class FakeController : BaseAPIController
         if (_cachedDTOsValidAndInvalid.Any())
         {
             var updatedDoctors = _fakeDataService.GetDoctorsWithUpdatedAddress(_cachedDTOsValidAndInvalid, ++_iteration).ToList();
-            updatedDoctors.AddRange(_fakeDataService.GetDoctors(_iteration));
+            updatedDoctors.AddRange(_fakeDataService.GetValidDoctors(_iteration));
 
             _cachedDTOsValidAndInvalid = updatedDoctors;
 
             return Ok(updatedDoctors);
         }
 
-        _cachedDTOsValidAndInvalid = _fakeDataService.GetFakeDoctors(num);
+        _cachedDTOsValidAndInvalid = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num);
         return Ok(_cachedDTOsValidAndInvalid);
     }
 

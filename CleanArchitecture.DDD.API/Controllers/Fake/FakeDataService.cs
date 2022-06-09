@@ -1,19 +1,30 @@
-﻿using CleanArchitecture.DDD.Application.DTO;
-
-namespace CleanArchitecture.DDD.API.Controllers.Fake;
+﻿namespace CleanArchitecture.DDD.API.Controllers.Fake;
 
 public class FakeDataService : IFakeDataService
 {
     private Faker Faker { get; }
+    private Faker<FakeDoctorAddressDTO> DoctorFaker { get; }
 
     public FakeDataService()
     {
         Faker = new Faker("de");
+
+        DoctorFaker = new Faker<FakeDoctorAddressDTO>("de")
+            .StrictMode(true)
+            .RuleFor(da => da.EDCMExternalID, _ => Guid.NewGuid())
+            .RuleFor(da => da.Firstname, fake => fake.Name.FirstName())
+            .RuleFor(da => da.Lastname, fake => fake.Name.LastName())
+            .RuleFor(da => da.StreetAddress, fake => fake.Address.StreetAddress())
+            .RuleFor(da => da.ZipCode, fake => fake.Address.ZipCode())
+            .RuleFor(da => da.City, fake => fake.Address.City())
+            .RuleFor(da => da.Country, fake => fake.Address.Country());
     }
 
-    public IEnumerable<FakeDoctorAddressDTO> GetDoctors(int num)
+    public IEnumerable<FakeDoctorAddressDTO> GetValidDoctors(int num)
     {
-        return GetFakeDoctors(num);
+        num = Guard.Against.NegativeOrZero(num, nameof(num));
+
+        return DoctorFaker.Generate(num);
     }
 
     public IEnumerable<FakeDoctorAddressDTO> GetDoctorsWithUpdatedAddress(IEnumerable<FakeDoctorAddressDTO> doctors, int iteration)
@@ -46,21 +57,11 @@ public class FakeDataService : IFakeDataService
         return modifiedDoctors;
     }
 
-    public IEnumerable<FakeDoctorAddressDTO> GetFakeDoctors(int num)
+    public IEnumerable<FakeDoctorAddressDTO> GetFakeDoctorsWithSomeInvalidData(int num)
     {
         num = Guard.Against.NegativeOrZero(num, nameof(num));
 
-        var faker = new Faker<FakeDoctorAddressDTO>("de")
-            .StrictMode(true)
-            .RuleFor(da => da.EDCMExternalID, _ => Guid.NewGuid())
-            .RuleFor(da => da.Firstname, fake => fake.Name.FirstName())
-            .RuleFor(da => da.Lastname, fake => fake.Name.LastName())
-            .RuleFor(da => da.StreetAddress, fake => fake.Address.StreetAddress())
-            .RuleFor(da => da.ZipCode, fake => fake.Address.ZipCode())
-            .RuleFor(da => da.City, fake => fake.Address.City())
-            .RuleFor(da => da.Country, fake => fake.Address.Country());
-
-        var generatedFakeDoctors = faker.Generate(num).ToArray();
+        var generatedFakeDoctors = DoctorFaker.Generate(num).ToArray();
 
         // Invalidate entry in 50% of the cases!
         // ReSharper disable once PossibleLossOfFraction
@@ -97,7 +98,7 @@ public class FakeDataService : IFakeDataService
 
         if (doctorsWithAddress.Count < num)
         {
-            var newValidDoctors = faker.Generate(num - doctorsWithAddress.Count);
+            var newValidDoctors = DoctorFaker.Generate(num - doctorsWithAddress.Count);
             doctorsWithAddress.AddRange(newValidDoctors);
         }
 

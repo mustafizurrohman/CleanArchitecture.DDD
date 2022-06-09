@@ -16,25 +16,19 @@ public class DoctorMappings : Profile
         //.ForMember(dc => dc.Name, src => src.MapFrom(doc => doc.Name.ToString()))
         //.ForMember(dc => dc.Address, src => src.MapFrom(doc => doc.Address.ToString()));
 
-        // AutoMapper convention- Rest will be automatically mapped because 
-        // they have the same names
-        CreateMap<FakeDoctorAddressDTO, ExternalDoctorAddressDTO>()
-            .ForMember(doc => doc.ExStreetAddress, src => src.MapFrom(doc => doc.StreetAddress))
-            .ForMember(doc => doc.ExZipCode, src => src.MapFrom(doc => doc.ZipCode))
-            .ForMember(doc => doc.ExCity, src => src.MapFrom(doc => doc.City))
-            .ForMember(doc => doc.ExCountry, src => src.MapFrom(doc => doc.Country))
-            .ReverseMap();
-        
-        CreateMap<ExternalDoctorAddressDTO, DoctorDTO>()
-            .ForMember(doc => doc.EDCMExternalID, src => src.MapFrom(doc => doc.EDCMExternalID))
-            .ForMember(doc => doc.Name, src => src.MapFrom(doc => Name.Create(doc.Firstname, doc.Lastname, true)))
-            .ForMember(doc => doc.Address, src => src.MapFrom(doc => new AddressDTO()
-            {
-                AddressID = Guid.Empty, 
-                City = doc.ExCity, 
-                StreetAddress = doc.ExStreetAddress, 
-                ZipCode = doc.ExZipCode, 
-                Country = doc.ExCountry
-            }));
+        // 'EDCMExternalID' need not be expicity mapped because the names match
+        CreateMap<FakeDoctorAddressDTO, DoctorDTO>()
+            .ForMember(dest => dest.Name,
+                src => src.MapFrom(doc => Name.Create(doc.Firstname, doc.Lastname, true)))
+            .ForMember(dest => dest.Address,
+                src => src.MapFrom(addr => new AddressDTO()
+                {
+                    AddressID = addr.EDCMExternalID, 
+                    City = addr.City, 
+                    Country = addr.Country, 
+                    StreetAddress = addr.StreetAddress, 
+                    ZipCode = addr.ZipCode
+                }));
+
     }
 }

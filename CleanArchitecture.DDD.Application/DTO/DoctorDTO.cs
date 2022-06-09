@@ -10,8 +10,7 @@ public class DoctorDTO
     public Name Name { get; init; }
 
     public AddressDTO Address { get; init; }
-
-
+    
     public static Doctor ToDoctor(DoctorDTO doctorDTO)
     {
         var addrDTO = doctorDTO.Address;

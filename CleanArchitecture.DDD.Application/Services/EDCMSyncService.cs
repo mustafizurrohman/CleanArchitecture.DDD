@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using CleanArchitecture.DDD.Application.DTO.Internal;
 using FluentValidation;
 using Newtonsoft.Json;
@@ -9,12 +8,12 @@ namespace CleanArchitecture.DDD.Application.Services;
 public class EDCMSyncService : BaseService, IEDCMSyncService
 {
     private readonly HttpClient _httpClient;
-    private readonly IValidator<ExternalDoctorAddressDTO> _validator;
+    private readonly IValidator<FakeDoctorAddressDTO> _validator;
 
     private readonly IAsyncPolicy _retryPolicyWithJittering;
 
     public EDCMSyncService(HttpClient httpClient, IPolicyHolder policyHolder, 
-        IValidator<ExternalDoctorAddressDTO> validator, IAppServices appServices)
+        IValidator<FakeDoctorAddressDTO> validator, IAppServices appServices)
             : base(appServices)
     {
         _httpClient = httpClient;
@@ -34,9 +33,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
 
         var parsedResponse = await response.Content.ReadAsAsync<IReadOnlyList<FakeDoctorAddressDTO>>();
 
-        var externalDoctor = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>, List<ExternalDoctorAddressDTO>>(parsedResponse);
-
-        var doctorDTOList = AutoMapper.Map<IEnumerable<ExternalDoctorAddressDTO>, List<DoctorDTO>>(externalDoctor);
+        var doctorDTOList = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>, List<DoctorDTO>>(parsedResponse);
 
         // Prepare to save to database
         // We are using a static method here but AutoMapper could also be used
@@ -51,6 +48,8 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
 
         return doctorDTOList;
     }
+
+    #region -- BackGround --
 
     /// <summary>
     /// Better Alternative: Implement this as a Azure Serverless function and invoke explicitly from here or
@@ -73,9 +72,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
 
         var parsedResponse = await response.Content.ReadAsAsync<IReadOnlyList<FakeDoctorAddressDTO>>();
 
-        var externalDoctor = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>, List<ExternalDoctorAddressDTO>>(parsedResponse);
-
-        var doctorDTOList = AutoMapper.Map<IEnumerable<ExternalDoctorAddressDTO>, List<DoctorDTO>>(externalDoctor);
+        var doctorDTOList = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>, List<DoctorDTO>>(parsedResponse);
 
         // Prepare to save to database
         // We are using a static method here but AutoMapper could also be used
@@ -91,6 +88,8 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         return doctorDTOList;
     }
 
+    #endregion
+    
     public async Task<IEnumerable<DoctorDTO>> SyncDoctorsWithSomeInvalidData()
     {
         Log.Information("Syncing doctors after input validation ... ");
@@ -102,8 +101,8 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
 
         if (parsedResponse.Count == 0)
             return Enumerable.Empty<DoctorDTO>();
-
-        ModelValidationReport<ExternalDoctorAddressDTO> modelValidationReport = GetModelValidationReport(parsedResponse);
+        
+        ModelValidationReport<FakeDoctorAddressDTO> modelValidationReport = GetModelValidationReport(parsedResponse);
         
         if (modelValidationReport.HasInvalidModels)
             NotifyAdminAboutInvalidData(modelValidationReport);
@@ -111,7 +110,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         // This is not necessary here but done only as an example
         // to demonstrate AutoMapper
         var doctorDTOList = AutoMapper
-            .Map<IEnumerable<ExternalDoctorAddressDTO>, IEnumerable<DoctorDTO>>(modelValidationReport.ValidModels)
+            .Map<IEnumerable<FakeDoctorAddressDTO>, IEnumerable<DoctorDTO>>(modelValidationReport.ValidModels)
             .ToList();
 
         // Save valid list in database!
@@ -126,20 +125,16 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         return doctorDTOList;
     }
     
-
-    private ModelValidationReport<ExternalDoctorAddressDTO> GetModelValidationReport(IEnumerable<FakeDoctorAddressDTO> dataFromExternalSystem)
+    // TODO: Make this generic!
+    private ModelValidationReport<FakeDoctorAddressDTO> GetModelValidationReport(IEnumerable<FakeDoctorAddressDTO> dataFromExternalSystem)
     {
-        // Not necessary- It was only to demonstrate use of AutoMapper
-        var externalDoctorDTOList = AutoMapper
-            .Map<IEnumerable<FakeDoctorAddressDTO>, IEnumerable<ExternalDoctorAddressDTO>>(dataFromExternalSystem)
-            .ToList();
-
-        List<GenericModelValidationReport<ExternalDoctorAddressDTO>> errorReport = externalDoctorDTOList
+        
+        List<GenericModelValidationReport<FakeDoctorAddressDTO>> errorReport = dataFromExternalSystem
             .Select(doc =>
             {
                 var validationResult = _validator.Validate(doc);
 
-                return new GenericModelValidationReport<ExternalDoctorAddressDTO>
+                return new GenericModelValidationReport<FakeDoctorAddressDTO>
                 {
                     Model = doc,
                     Valid = validationResult.IsValid,
@@ -156,7 +151,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             .ToList();
 
         
-        return new ModelValidationReport<ExternalDoctorAddressDTO>(errorReport);
+        return new ModelValidationReport<FakeDoctorAddressDTO>(errorReport);
     }
 
     private void NotifyAdminAboutInvalidData<T>(ModelValidationReport<T> modelValidationReport)

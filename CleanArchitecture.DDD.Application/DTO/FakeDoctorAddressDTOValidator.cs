@@ -3,9 +3,10 @@ using FluentValidation;
 
 namespace CleanArchitecture.DDD.Application.DTO;
 
-public class ExternalDoctorAddressDTOValidator : AbstractValidator<ExternalDoctorAddressDTO>
+// Must be public otherwise it cannot be injected to the DI Registry
+public class FakeDoctorAddressDTOValidator : AbstractValidator<FakeDoctorAddressDTO>
 {
-    public ExternalDoctorAddressDTOValidator()
+    public FakeDoctorAddressDTOValidator()
     {
         SetValidationRules();
     }
