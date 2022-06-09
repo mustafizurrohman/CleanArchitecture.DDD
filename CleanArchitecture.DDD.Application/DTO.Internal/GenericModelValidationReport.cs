@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.DDD.Application.DTO.Internal;
 
-internal class GenericModelValidationReport<T>
+public class GenericModelValidationReport<T>
     where T : class, new()
 {
     public T Model { get; init; }

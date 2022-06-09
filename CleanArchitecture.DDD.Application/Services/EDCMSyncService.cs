@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using CleanArchitecture.DDD.Application.DTO.Internal;
+using CleanArchitecture.DDD.Application.ExtensionMethods;
 using FluentValidation;
 using Newtonsoft.Json;
 
@@ -101,8 +102,8 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
 
         if (parsedResponse.Count == 0)
             return Enumerable.Empty<DoctorDTO>();
-        
-        ModelValidationReport<FakeDoctorAddressDTO> modelValidationReport = GetModelValidationReport(parsedResponse, _validator);
+
+        ModelValidationReport<FakeDoctorAddressDTO> modelValidationReport = parsedResponse.GetModelValidationReport(_validator);
         
         if (modelValidationReport.HasInvalidModels)
             NotifyAdminAboutInvalidData(modelValidationReport);
@@ -125,35 +126,6 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         return doctorDTOList;
     }
     
-    private ModelValidationReport<T> GetModelValidationReport<T>(IEnumerable<T> dataFromExternalSystem, IValidator<T> validator)
-        where T : class, new()
-    {
-
-        List<GenericModelValidationReport<T>> errorReport = dataFromExternalSystem
-            .Select(model =>
-            {
-                var validationResult = validator.Validate(model);
-
-                return new GenericModelValidationReport<T>
-                {
-                    Model = model,
-                    Valid = validationResult.IsValid,
-                    ModelErrors = validationResult.Errors
-                        .Select(e => new { e.PropertyName, e.ErrorMessage })
-                        .GroupBy(e => e.PropertyName)
-                        .Select(e => new ValidationErrorByProperty
-                        {
-                            PropertyName = e.Key,
-                            ErrorMessages = e.Select(err => err.ErrorMessage).ToList()
-                        })
-                };
-            })
-            .ToList();
-
-
-        return new ModelValidationReport<T>(errorReport);
-    }
-
     private void NotifyAdminAboutInvalidData<T>(ModelValidationReport<T> modelValidationReport)
         where T : class, new()
     {

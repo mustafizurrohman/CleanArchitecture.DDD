@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.DDD.Application.DTO.Internal;
 
-internal class ModelValidationReport<T> : GenericModelValidationReport<T>
+public class ModelValidationReport<T> : GenericModelValidationReport<T>
     where T : class, new()
 {
     
