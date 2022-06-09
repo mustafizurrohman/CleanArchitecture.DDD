@@ -130,13 +130,13 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
     {
 
         List<GenericModelValidationReport<T>> errorReport = dataFromExternalSystem
-            .Select(doc =>
+            .Select(model =>
             {
-                var validationResult = validator.Validate(doc);
+                var validationResult = validator.Validate(model);
 
                 return new GenericModelValidationReport<T>
                 {
-                    Model = doc,
+                    Model = model,
                     Valid = validationResult.IsValid,
                     ModelErrors = validationResult.Errors
                         .Select(e => new { e.PropertyName, e.ErrorMessage })
