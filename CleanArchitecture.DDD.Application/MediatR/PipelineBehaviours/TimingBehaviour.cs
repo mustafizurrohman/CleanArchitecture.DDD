@@ -30,7 +30,7 @@ public class TimingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         var requestProcessingTime = stopwatch.ElapsedMilliseconds;
 
         // Performance monitoring
-        if (requestProcessingTime > 100) 
+        if (requestProcessingTime > 750) 
         {
             // Here we can use Weischer Email Service for Performance monitoring
             // Or Better still- Azure Application Insights

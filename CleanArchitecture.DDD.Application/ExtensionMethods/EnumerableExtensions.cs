@@ -21,7 +21,6 @@ public static class EnumerableExtensions
                     Model = model,
                     Valid = validationResult.IsValid,
                     ModelErrors = validationResult.Errors
-                        .Select(e => new { e.PropertyName, e.ErrorMessage, e.AttemptedValue })
                         .GroupBy(e => new { e.PropertyName, e.AttemptedValue } )
                         .Select(e => new ValidationErrorByProperty
                         {
@@ -32,8 +31,7 @@ public static class EnumerableExtensions
                 };
             })
             .ToList();
-
-
+        
         return new ModelValidationReport<T>(errorReport);
     }
 
