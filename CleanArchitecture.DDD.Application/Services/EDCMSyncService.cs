@@ -102,7 +102,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         if (parsedResponse.Count == 0)
             return Enumerable.Empty<DoctorDTO>();
         
-        ModelValidationReport<FakeDoctorAddressDTO> modelValidationReport = GetModelValidationReport(parsedResponse);
+        ModelValidationReport<FakeDoctorAddressDTO> modelValidationReport = GetModelValidationReport(parsedResponse, _validator);
         
         if (modelValidationReport.HasInvalidModels)
             NotifyAdminAboutInvalidData(modelValidationReport);
@@ -125,21 +125,21 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         return doctorDTOList;
     }
     
-    // TODO: Make this generic!
-    private ModelValidationReport<FakeDoctorAddressDTO> GetModelValidationReport(IEnumerable<FakeDoctorAddressDTO> dataFromExternalSystem)
+    private ModelValidationReport<T> GetModelValidationReport<T>(IEnumerable<T> dataFromExternalSystem, IValidator<T> validator)
+        where T : class, new()
     {
-        
-        List<GenericModelValidationReport<FakeDoctorAddressDTO>> errorReport = dataFromExternalSystem
+
+        List<GenericModelValidationReport<T>> errorReport = dataFromExternalSystem
             .Select(doc =>
             {
-                var validationResult = _validator.Validate(doc);
+                var validationResult = validator.Validate(doc);
 
-                return new GenericModelValidationReport<FakeDoctorAddressDTO>
+                return new GenericModelValidationReport<T>
                 {
                     Model = doc,
                     Valid = validationResult.IsValid,
                     ModelErrors = validationResult.Errors
-                        .Select(e => new {e.PropertyName, e.ErrorMessage})
+                        .Select(e => new { e.PropertyName, e.ErrorMessage })
                         .GroupBy(e => e.PropertyName)
                         .Select(e => new ValidationErrorByProperty
                         {
@@ -150,8 +150,8 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             })
             .ToList();
 
-        
-        return new ModelValidationReport<FakeDoctorAddressDTO>(errorReport);
+
+        return new ModelValidationReport<T>(errorReport);
     }
 
     private void NotifyAdminAboutInvalidData<T>(ModelValidationReport<T> modelValidationReport)
