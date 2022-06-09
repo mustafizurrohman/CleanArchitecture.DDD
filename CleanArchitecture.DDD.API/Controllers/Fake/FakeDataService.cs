@@ -72,15 +72,15 @@ public class FakeDataService : IFakeDataService
 
         var doctorsWithAddress = new List<FakeDoctorAddressDTO>();
 
-        for (int i = 0; i < numberOfNamesToInvalidate; i++)
+        for (var i = 0; i < numberOfNamesToInvalidate; i++)
         {
             var currentDoc = generatedFakeDoctors[i];
 
             var updated = new FakeDoctorAddressDTO()
             {
                 EDCMExternalID = i % 2 == 0 ? Guid.Empty : currentDoc.EDCMExternalID,
-                Firstname = currentDoc.Firstname + $" {i}  * ",
-                Lastname = currentDoc.Lastname + $"{DateTime.Now}  {i}  ",
+                Firstname = currentDoc.Firstname + (i % 3 == 0 ? "" : $" {i}  * "),
+                Lastname = currentDoc.Lastname + (i % 3 == 0 ? "" : $"{DateTime.Now}  {i}  "),
                 StreetAddress = currentDoc.StreetAddress,
                 ZipCode = currentDoc.ZipCode,
                 City = currentDoc.City,
