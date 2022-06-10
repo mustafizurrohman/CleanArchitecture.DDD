@@ -25,12 +25,4 @@ public class ModelCollectionValidationReport<T>
         ValidationReport = validationReport;
     }
 
-    public ModelCollectionValidationReport(ModelValidationReport<T> report)
-    {
-        ValidationReport = new List<ModelValidationReport<T>>()
-        {
-            report
-        };
-    }
-
 }
