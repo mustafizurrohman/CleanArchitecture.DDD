@@ -1,6 +1,4 @@
 ﻿using System.Security.Cryptography;
-using System.Text;
-using CleanArchitecture.DDD.Core.ExtensionMethods;
 
 namespace CleanArchitecture.DDD.Application.Services;
 
@@ -20,7 +18,7 @@ public class PasswordService : IPasswordService
         // Can be made configurable
         // Recommendation: Double every 2 years
         // 100K is recommended for now!
-        NumberOfRounds = 100000;
+        NumberOfRounds = 1000000;
         Separator = ".";
     }
 
@@ -34,8 +32,6 @@ public class PasswordService : IPasswordService
             NumberOfRounds,
             HashAlgorithmName,
             OutputLength);
-        
-        var passwordAsString = Encoding.UTF8.GetString(hashedPassword);
         
         return ComputePassword(
             Convert.ToBase64String(hashedPassword), 
@@ -51,8 +47,18 @@ public class PasswordService : IPasswordService
 
     public bool VerifyPassword(string password, string hashedPassword)
     {
-        throw new NotImplementedException();
+        var origHashedParts = hashedPassword.Split(Separator);
+        var origSalt = Convert.FromBase64String(origHashedParts[1]);
+        var origIterations = int.Parse(origHashedParts[2]);
+        var origHash = origHashedParts[0];
+
+        var pbkdf2 = Rfc2898DeriveBytes.Pbkdf2(password, origSalt, origIterations, HashAlgorithmName, OutputLength);
+        
+        var base64Hashed = Convert.ToBase64String(pbkdf2);
+
+        return base64Hashed == origHash;
+
     }
 
-    
+
 }

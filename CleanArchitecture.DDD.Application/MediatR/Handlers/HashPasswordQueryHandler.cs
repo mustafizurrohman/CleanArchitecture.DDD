@@ -1,12 +1,9 @@
-﻿using System.Security.Cryptography;
-
-namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
+﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
 public class HashPasswordQueryHandler : IRequestHandler<HashPasswordQuery, string>
 {
     private readonly IPasswordService _passwordService;
     
-
     public HashPasswordQueryHandler(IPasswordService passwordService)
     {
         _passwordService = passwordService;

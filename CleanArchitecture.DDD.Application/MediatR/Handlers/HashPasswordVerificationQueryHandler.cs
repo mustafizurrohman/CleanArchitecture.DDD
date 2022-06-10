@@ -1,35 +1,17 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-
-namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
+﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
 public class HashPasswordVerificationQueryHandler : IRequestHandler<HashPasswordVerificationQuery, bool>
 {
-    public async Task<bool> Handle(HashPasswordVerificationQuery request, CancellationToken cancellationToken)
+    private readonly IPasswordService _passwordService;
+
+    public HashPasswordVerificationQueryHandler(IPasswordService passwordService)
     {
-        var parts = request.HashedPassword.Split(".");
-
-        if (parts.Length != 3)
-            throw new InvalidDataException();
-
-        var hashedPassword = parts[0];
-        var salt = parts[1];
-        var rounds = Int32.Parse(parts[2]);
-
-        var computedHash = Rfc2898DeriveBytes.Pbkdf2(
-            ToByteArray(request.Password),
-            ToByteArray(salt),
-            rounds,
-            HashAlgorithmName.SHA256,
-            32);
-
-        var computedHashedPassword = Convert.ToBase64String(computedHash);
-
-        return computedHashedPassword == hashedPassword;
+        _passwordService = passwordService;
     }
 
-    private byte[] ToByteArray(string input)
+
+    public Task<bool> Handle(HashPasswordVerificationQuery request, CancellationToken cancellationToken)
     {
-        return Encoding.ASCII.GetBytes(input);
+        return Task.FromResult(_passwordService.VerifyPassword(request.Password, request.HashedPassword));
     }
 }
