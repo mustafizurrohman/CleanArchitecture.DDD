@@ -51,7 +51,7 @@ public static class WebExtensionBuilderExtensions
     private static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-        builder.Services.AddMediatR(typeof(Application.ApplicationAssemblyMarker).Assembly);
+        builder.Services.AddMediatR(typeof(ApplicationAssemblyMarker).Assembly);
         builder.Services.AddSingleton<IPolicyHolder, PolicyHolder>();
         
         builder.Services.AddHttpContextAccessor();
@@ -128,11 +128,13 @@ public static class WebExtensionBuilderExtensions
 
     private static WebApplicationBuilder ConfigureInputValidation(this WebApplicationBuilder builder)
     {
-        // builder.Services.AddSingleton<IValidator<Name>, NameValidator>();
-        builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CoreAssemblyMarker>());
-        builder.Services.AddValidatorsFromAssemblies(new[] { typeof(CoreAssemblyMarker).Assembly });
-        builder.Services.AddValidatorsFromAssemblies(new[] { typeof(DomainAssemblyMarker).Assembly });
-        builder.Services.AddValidatorsFromAssemblies(new[] { typeof(ApplicationAssemblyMarker).Assembly });
+        builder.Services.AddFluentValidation();
+        builder.Services.AddValidatorsFromAssemblies(new[]
+        {
+            typeof(CoreAssemblyMarker).Assembly,
+            typeof(ApplicationAssemblyMarker).Assembly,
+            typeof(DomainAssemblyMarker).Assembly
+        });
         
         return builder;
     }
