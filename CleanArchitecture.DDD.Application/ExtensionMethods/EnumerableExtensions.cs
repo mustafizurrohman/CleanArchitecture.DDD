@@ -22,7 +22,7 @@ public static class EnumerableExtensions
 
         var errorReport = models
             .Select(async model => await model.GetModelValidationReportAsync(validator))
-            .Select(result => result.Result);
+            .Select(modelValidationResult => modelValidationResult.Result);
 
         return Task.FromResult(new ModelCollectionValidationReport<T>(errorReport));
     }
