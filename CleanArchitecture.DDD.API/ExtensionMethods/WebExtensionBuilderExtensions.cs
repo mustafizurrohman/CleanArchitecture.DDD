@@ -59,6 +59,7 @@ public static class WebExtensionBuilderExtensions
         builder.Services.AddTransient<IAppServices, AppServices>();
 
         builder.Services.AddTransient<IFakeDataService, FakeDataService>();
+        builder.Services.AddTransient<IPasswordService, PasswordService>();
 
         // MediatR Configuration
         // TODO: Use Scrutor here!

@@ -145,12 +145,18 @@ public static class StringExtensions
     /// <summary>
     /// Converts to bytearray.
     /// </summary>
-    /// <param name="sourceStrimg">The source strimg.</param>
+    /// <param name="sourceString">The source string.</param>
     /// <returns>System.Byte[].</returns>
-    public static byte[] ToByteArray(this string sourceStrimg)
+    public static byte[] ToByteArray(this string sourceString)
     {
-        return Encoding.UTF8.GetBytes(sourceStrimg);
+        return Encoding.UTF8.GetBytes(sourceString);
     }
+
+    public static string ToBase64String(this string inputString)
+    {
+        return Convert.ToBase64String(inputString.ToByteArray());
+    }
+
 
 
 
