@@ -14,7 +14,7 @@ public class PasswordController : BaseAPIController
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("hash", Name = "Hash Password")]
     [SwaggerOperation(
-        Summary = "Gets doc from a fake external data service",
+        Summary = "Hash a password",
         Description = "No or default authentication required",
         OperationId = "Hash Password",
         Tags = new[] { "Password" }
@@ -27,4 +27,28 @@ public class PasswordController : BaseAPIController
 
         return Ok(result);
     }
+
+    /// <summary>
+    /// TODO: Finish this
+    /// </summary>
+    /// <param name="password">Password</param>
+    /// <param name="hashedPassword">Hashed password</param>
+    /// <returns></returns>
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpGet("hash/verify", Name = "Verify Hash Password")]
+    [SwaggerOperation(
+        Summary = "Verify a password with provided hash value",
+        Description = "No or default authentication required",
+        OperationId = "Verify Hashed Password",
+        Tags = new[] { "Password" }
+    )]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> VerifyHashPassword(string password, string hashedPassword)
+    {
+        var hashPasswordVerificationQuery = new HashPasswordVerificationQuery(password, hashedPassword);
+        var result = await Mediator.Send(hashPasswordVerificationQuery);
+
+        return Ok(result);
+    }
+
 }

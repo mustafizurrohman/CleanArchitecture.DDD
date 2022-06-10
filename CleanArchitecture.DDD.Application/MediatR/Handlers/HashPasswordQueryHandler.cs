@@ -2,12 +2,11 @@
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
-public class HashPasswordQueryHandler : BaseHandler, IRequestHandler<HashPasswordQuery, string>
+public class HashPasswordQueryHandler : IRequestHandler<HashPasswordQuery, string>
 {
     private int NumberOfRounds { get; }
 
-    public HashPasswordQueryHandler(IAppServices appServices)
-        : base(appServices)
+    public HashPasswordQueryHandler()
     {
         // Can be made configurable
         // Recommendation: Double every 2 years
