@@ -8,11 +8,23 @@ public static class EnumerableExtensions
         models = Guard.Against.Null(models, nameof(models));
         validator = Guard.Against.Null(validator, nameof(validator));
 
-        List<ModelValidationReport<T>> errorReport = models
-            .Select(model => model.GetModelValidationReport(validator))
-            .ToList();
+        var errorReport = models
+            .Select(model => model.GetModelValidationReport(validator));
         
         return new ModelCollectionValidationReport<T>(errorReport);
+    }
+
+    public static Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this IEnumerable<T> models, IValidator<T> validator)
+        where T : class, new()
+    {
+        models = Guard.Against.Null(models, nameof(models));
+        validator = Guard.Against.Null(validator, nameof(validator));
+
+        var errorReport = models
+            .Select(async model => await model.GetModelValidationReportAsync(validator))
+            .Select(result => result.Result);
+
+        return Task.FromResult(new ModelCollectionValidationReport<T>(errorReport));
     }
 
 }

@@ -101,7 +101,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         if (parsedResponse.Count == 0)
             return Enumerable.Empty<DoctorDTO>();
 
-        ModelCollectionValidationReport<FakeDoctorAddressDTO> modelCollectionValidationReport = parsedResponse.GetModelValidationReport(_validator);
+        var modelCollectionValidationReport = await parsedResponse.GetModelValidationReportAsync(_validator);
         
         if (modelCollectionValidationReport.HasInvalidModels)
             NotifyAdminAboutInvalidData(modelCollectionValidationReport);
@@ -110,11 +110,10 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         var doctorDTOList = AutoMapper
             .Map<IEnumerable<FakeDoctorAddressDTO>, IEnumerable<DoctorDTO>>(modelCollectionValidationReport.ValidModels)
             .ToList();
-
+        
         // Save valid list in database!
         var doctorList = doctorDTOList
-            .Select(DoctorDTO.ToDoctor)
-            .ToList();
+            .Select(DoctorDTO.ToDoctor);
 
         await SaveDoctorsInDatabaseAsync(doctorList);
 
