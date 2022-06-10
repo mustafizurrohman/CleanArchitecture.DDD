@@ -1,5 +1,4 @@
 ﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
-using FluentValidation;
 
 namespace CleanArchitecture.DDD.Application.DTO;
 

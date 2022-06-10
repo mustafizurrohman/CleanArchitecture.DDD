@@ -1,7 +1,4 @@
-﻿using CleanArchitecture.DDD.Application.DTO.Internal;
-using FluentValidation;
-
-namespace CleanArchitecture.DDD.Application.ExtensionMethods;
+﻿namespace CleanArchitecture.DDD.Application.ExtensionMethods;
 
 public static class EnumerableExtensions
 {
@@ -12,24 +9,7 @@ public static class EnumerableExtensions
         validator = Guard.Against.Null(validator, nameof(validator));
 
         List<ModelValidationReport<T>> errorReport = models
-            .Select(model =>
-            {
-                var validationResult = validator.Validate(model);
-
-                return new ModelValidationReport<T>
-                {
-                    Model = model,
-                    Valid = validationResult.IsValid,
-                    ModelErrors = validationResult.Errors
-                        .GroupBy(e => new { e.PropertyName, e.AttemptedValue } )
-                        .Select(e => new ValidationErrorByProperty
-                        {
-                            PropertyName = e.Key.PropertyName,
-                            AttemptedValue = e.Select(err => err.AttemptedValue).Distinct().Single(),
-                            ErrorMessages = e.Select(err => err.ErrorMessage).ToList()
-                        })
-                };
-            })
+            .Select(model => model.GetModelValidationReport(validator))
             .ToList();
         
         return new ModelCollectionValidationReport<T>(errorReport);

@@ -21,5 +21,7 @@ global using CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
 
 global using CleanArchitecture.DDD.Domain.DTOs;
 
+global using CleanArchitecture.DDD.Application.DTO.Internal;
+global using FluentValidation;
 
 

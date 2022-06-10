@@ -1,6 +1,5 @@
 ﻿using CleanArchitecture.DDD.Application.ExtensionMethods;
 using CleanArchitecture.DDD.Domain.ValueObjects;
-using FluentValidation;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
