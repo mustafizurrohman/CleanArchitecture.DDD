@@ -5,18 +5,18 @@ namespace CleanArchitecture.DDD.Application.ExtensionMethods;
 
 public static class EnumerableExtensions
 {
-    public static ModelValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models, IValidator<T> validator)
+    public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models, IValidator<T> validator)
         where T : class, new()
     {
         models = Guard.Against.Null(models, nameof(models));
         validator = Guard.Against.Null(validator, nameof(validator));
 
-        List<GenericModelValidationReport<T>> errorReport = models
+        List<ModelValidationReport<T>> errorReport = models
             .Select(model =>
             {
                 var validationResult = validator.Validate(model);
 
-                return new GenericModelValidationReport<T>
+                return new ModelValidationReport<T>
                 {
                     Model = model,
                     Valid = validationResult.IsValid,
@@ -32,7 +32,7 @@ public static class EnumerableExtensions
             })
             .ToList();
         
-        return new ModelValidationReport<T>(errorReport);
+        return new ModelCollectionValidationReport<T>(errorReport);
     }
 
 }

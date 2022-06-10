@@ -103,14 +103,14 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         if (parsedResponse.Count == 0)
             return Enumerable.Empty<DoctorDTO>();
 
-        ModelValidationReport<FakeDoctorAddressDTO> modelValidationReport = parsedResponse.GetModelValidationReport(_validator);
+        ModelCollectionValidationReport<FakeDoctorAddressDTO> modelCollectionValidationReport = parsedResponse.GetModelValidationReport(_validator);
         
-        if (modelValidationReport.HasInvalidModels)
-            NotifyAdminAboutInvalidData(modelValidationReport);
+        if (modelCollectionValidationReport.HasInvalidModels)
+            NotifyAdminAboutInvalidData(modelCollectionValidationReport);
 
         // This is not necessary here but done only as an example to demonstrate AutoMapper
         var doctorDTOList = AutoMapper
-            .Map<IEnumerable<FakeDoctorAddressDTO>, IEnumerable<DoctorDTO>>(modelValidationReport.ValidModels)
+            .Map<IEnumerable<FakeDoctorAddressDTO>, IEnumerable<DoctorDTO>>(modelCollectionValidationReport.ValidModels)
             .ToList();
 
         // Save valid list in database!
@@ -125,17 +125,17 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         return doctorDTOList;
     }
     
-    private void NotifyAdminAboutInvalidData<T>(ModelValidationReport<T> modelValidationReport)
+    private void NotifyAdminAboutInvalidData<T>(ModelCollectionValidationReport<T> modelCollectionValidationReport)
         where T : class, new()
     {
-        if (modelValidationReport.HasAllValidModels)
+        if (modelCollectionValidationReport.HasAllValidModels)
             return;
         
         // TODO: Save as HTML and send as attachment using Weischer Global Email service 
-        var validationResult = JsonConvert.SerializeObject(modelValidationReport.Report, Formatting.Indented);
+        var validationResult = JsonConvert.SerializeObject(modelCollectionValidationReport.Report, Formatting.Indented);
         Log.Warning(validationResult);
 
-        LogWithSpace(() => Log.Warning("Got {countOfInvalidModels} invalid data from CRM / external system.", modelValidationReport.InvalidModels.Count()));
+        LogWithSpace(() => Log.Warning("Got {countOfInvalidModels} invalid data from CRM / external system.", modelCollectionValidationReport.InvalidModels.Count()));
         
     }
     
@@ -200,5 +200,6 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         action();
         Console.WriteLine();
     }
+    
 
 }
