@@ -132,7 +132,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             return;
         
         // TODO: Save as HTML and send as attachment using Weischer Global Email service 
-        var validationResult = JsonConvert.SerializeObject(modelCollectionValidationReport.Report, Formatting.Indented);
+        var validationResult = JsonConvert.SerializeObject(modelCollectionValidationReport.ValidationReport, Formatting.Indented);
         Log.Warning(validationResult);
 
         LogWithSpace(() => Log.Warning("Got {countOfInvalidModels} invalid data from CRM / external system.", modelCollectionValidationReport.InvalidModels.Count()));

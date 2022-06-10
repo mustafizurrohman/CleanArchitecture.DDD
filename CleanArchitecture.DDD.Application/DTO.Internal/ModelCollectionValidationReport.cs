@@ -4,30 +4,30 @@ public class ModelCollectionValidationReport<T>
     where T : class, new()
 {
     
-    public IEnumerable<ModelValidationReport<T>> Report { get; init; }
+    public IEnumerable<ModelValidationReport<T>> ValidationReport { get; init; }
     
     public IEnumerable<T> ValidModels =>
-        Report.Where(r => r.Valid).Select(r => r.Model).ToList();
+        ValidationReport.Where(model => model.Valid).Select(model => model.Model);
 
     public IEnumerable<T> InvalidModels =>
-        Report.Where(r => !r.Valid).Select(r => r.Model).ToList();
+        ValidationReport.Where(model => !model.Valid).Select(model => model.Model);
 
-    public bool HasInvalidModels => Report.Any(r => !r.Valid);
+    public bool HasValidModels => ValidationReport.Any(model => model.Valid);
 
-    public bool HasValidModels => Report.Any(r => r.Valid);
+    public bool HasInvalidModels => ValidationReport.Any(model => !model.Valid);
+    
+    public bool HasAllValidModels => ValidationReport.All(model => model.Valid);
 
-    public bool HasAllValidModels => Report.All(r => r.Valid);
+    public bool HasAllInvalidModels => ValidationReport.All(model => !model.Valid);
 
-    public bool HasAllInvalidModels => Report.All(r => !r.Valid);
-
-    public ModelCollectionValidationReport(IEnumerable<ModelValidationReport<T>> report)
+    public ModelCollectionValidationReport(IEnumerable<ModelValidationReport<T>> validationReport)
     {
-        Report = report;
+        ValidationReport = validationReport;
     }
 
     public ModelCollectionValidationReport(ModelValidationReport<T> report)
     {
-        Report = new List<ModelValidationReport<T>>()
+        ValidationReport = new List<ModelValidationReport<T>>()
         {
             report
         };
