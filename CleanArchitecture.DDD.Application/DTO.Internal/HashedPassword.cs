@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.Application.DTO.Internal;
+﻿using CleanArchitecture.DDD.Application.Exceptions;
+
+namespace CleanArchitecture.DDD.Application.DTO.Internal;
 
 internal class HashedPassword
 {
@@ -24,7 +26,7 @@ internal class HashedPassword
         var hashParts = passwordAsHashString.Split(Separator);
 
         if (hashParts.Length != 3)
-            throw new ArgumentException("String does not represent a hashed password");
+            throw new InvalidHashedPasswordException();
 
         Hash = hashParts[0]; 
         Salt = hashParts[1];
@@ -36,7 +38,7 @@ internal class HashedPassword
         catch (Exception ex)
         {
             if (ex is ArgumentException or FormatException or OverflowException)
-                throw new ArgumentException("String does not represent a hashed password");
+                throw new InvalidHashedPasswordException();
         }
 
     }
