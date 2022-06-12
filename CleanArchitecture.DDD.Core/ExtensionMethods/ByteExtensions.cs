@@ -13,4 +13,9 @@ public static class ByteExtensions
     {
         return Convert.ToBase64String(input);
     }
+
+    public static byte[] ByeArrayFromBase64String(this string base64String)
+    {
+        return Convert.FromBase64String(base64String);
+    }
 }
