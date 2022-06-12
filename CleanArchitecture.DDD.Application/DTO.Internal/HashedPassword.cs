@@ -43,14 +43,21 @@ internal class HashedPassword
 
     }
 
+    /// <summary>
+    /// Hash.Salt.NumberOfRounds
+    /// </summary>
+    /// <returns></returns>
     public override string ToString()
     {
+        // Local function- Available from C# 7.0 
+        string ComputePassword(params string[] parts)
+        {
+            return parts
+                .Aggregate((p1, p2) => p1 + Separator + p2);
+        }
+
         return ComputePassword(Hash, Salt, NumberOfRounds.ToString());
     }
 
-    private string ComputePassword(params string[] parts)
-    {
-        return parts
-            .Aggregate((p1, p2) => p1 + Separator + p2);
-    }
+
 }

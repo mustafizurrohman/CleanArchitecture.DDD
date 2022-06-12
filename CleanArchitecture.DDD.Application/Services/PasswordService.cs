@@ -12,6 +12,8 @@ public class PasswordService : IPasswordService
 
     public PasswordService()
     {
+        // Reference- https://www.youtube.com/watch?v=cMykd0jScSY
+
         // Can be made configurable
         HashAlgorithmName = HashAlgorithmName.SHA256;
         OutputLength = 128;
