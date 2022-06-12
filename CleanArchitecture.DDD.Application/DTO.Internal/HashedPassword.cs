@@ -39,6 +39,8 @@ internal class HashedPassword
         {
             if (ex is ArgumentException or FormatException or OverflowException)
                 throw new InvalidHashedPasswordException();
+
+            throw;
         }
 
     }
