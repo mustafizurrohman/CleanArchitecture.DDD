@@ -27,8 +27,18 @@ internal class HashedPassword
             throw new ArgumentException("String does not represent a hashed password");
 
         Hash = hashParts[0]; 
-        Salt = hashParts[1]; 
-        NumberOfRounds = int.Parse(hashParts[2]);
+        Salt = hashParts[1];
+
+        try
+        {
+            NumberOfRounds = int.Parse(hashParts[2]);
+        }
+        catch (Exception ex)
+        {
+            if (ex is ArgumentException or FormatException or OverflowException)
+                throw new ArgumentException("String does not represent a hashed password");
+        }
+
     }
 
     public override string ToString()
