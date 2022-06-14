@@ -57,17 +57,30 @@ public static class EnumerableExtensions
 
     public static IValidator<T> GetValidator<T>(this T model)
     {
-        var validatorType = typeof(AbstractValidator<>);
-        var evt = validatorType.MakeGenericType(typeof(T));
+        IValidator<T> validatorInstance;
 
-        var validatorTypeInstance = Assembly.GetExecutingAssembly()
-            .GetTypes()
-            .FirstOrDefault(typ => typ.IsSubclassOf(evt));
+        try
+        {
+            var validatorType = typeof(AbstractValidator<>);
+            var evt = validatorType.MakeGenericType(typeof(T));
 
-        if (validatorTypeInstance is null)
-            throw new ValidatorNotFoundException(typeof(T));
+            var validatorTypeInstance = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .FirstOrDefault(typ => typ.IsSubclassOf(evt));
 
-        var validatorInstance = (IValidator<T>)Activator.CreateInstance(validatorTypeInstance)!;
+            if (validatorTypeInstance is null)
+                throw new ValidatorNotFoundException(typeof(T));
+
+            validatorInstance = (IValidator<T>) Activator.CreateInstance(validatorTypeInstance)!;
+
+        }
+        catch (Exception ex)
+        {
+            if (ex is ValidatorNotFoundException)
+                throw;
+
+            throw new ValidatorInitializationException(typeof(T));
+        }
 
         return validatorInstance;
     }

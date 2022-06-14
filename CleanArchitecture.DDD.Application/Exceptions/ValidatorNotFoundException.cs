@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.Domain.ValueObjects;
-
-namespace CleanArchitecture.DDD.Application.Exceptions;
+﻿namespace CleanArchitecture.DDD.Application.Exceptions;
 
 internal class ValidatorNotFoundException : ApplicationException
 {
@@ -13,5 +11,5 @@ internal class ValidatorNotFoundException : ApplicationException
         ClassName = $"AbstractValidator<{typ.FullName}>";
     }
 
-    public override string Message => $"Validator for type {TypeName} not found. Please create a class which inherits from {ClassName}";
+    public override string Message => $"Validator for type {TypeName} not found. Please define a class which inherits from {ClassName}";
 }
