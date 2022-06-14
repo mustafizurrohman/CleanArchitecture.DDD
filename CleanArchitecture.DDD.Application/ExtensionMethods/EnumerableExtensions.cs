@@ -22,21 +22,11 @@ public static class EnumerableExtensions
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models)
         where T : class, new()
     {
-        models = Guard.Against.Null(models, nameof(models));
+        models = Guard.Against.NullOrEmpty(models, nameof(models));
+        models = models.ToList();
 
-        var validatorType = typeof(AbstractValidator<>);
-        var evt = validatorType.MakeGenericType(typeof(T));
-
-        var validatorTypeInstance = Assembly.GetExecutingAssembly()
-            .GetTypes()
-            .FirstOrDefault(typ => typ.IsSubclassOf(evt));
-
-        if (validatorTypeInstance is null)
-            throw new ValidatorNotFoundException(typeof(T));
-
-        var validatorInstance = (IValidator<T>)Activator.CreateInstance(validatorTypeInstance)!;
-
-        return GetModelValidationReport(models, validatorInstance);
+        var validator = models.First().GetValidator();
+        return GetModelValidationReport(models, validator);
     }
 
     public static Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this IEnumerable<T> models, IValidator<T> validator)
