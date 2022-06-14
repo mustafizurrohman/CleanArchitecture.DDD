@@ -76,6 +76,8 @@ public static class EnumerableExtensions
         }
         catch (Exception ex)
         {
+            Log.Error(ex, ex.Message);
+
             if (ex is ValidatorNotFoundException)
                 throw;
 

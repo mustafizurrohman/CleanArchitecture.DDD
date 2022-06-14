@@ -66,6 +66,4 @@ public static class GenericExtensions
         return await GetModelValidationReportAsync(model, validator);
     }
 
-
-
 }

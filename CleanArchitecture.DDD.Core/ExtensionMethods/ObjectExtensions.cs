@@ -6,7 +6,7 @@ public static class ObjectExtensions
 {
     public static string ToFormattedJson(this object? objectInstance)
     {
-        var serializerSettings = new JsonSerializerSettings()
+        var serializerSettings = new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         };
