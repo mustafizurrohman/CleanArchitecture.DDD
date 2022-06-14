@@ -25,6 +25,15 @@ public static class GenericExtensions
         };
     }
 
+    public static ModelValidationReport<T> GetModelValidationReport<T>(this T model)
+        where T : class, new()
+    {
+        model = Guard.Against.Null(model, nameof(model));
+
+        var validator = model.GetValidator();
+        return GetModelValidationReport(model, validator);
+    }
+
     public static async Task<ModelValidationReport<T>> GetModelValidationReportAsync<T>(this T model, IValidator<T> validator)
         where T : class, new()
     {
@@ -47,4 +56,16 @@ public static class GenericExtensions
                 })
         };
     }
+
+    public static async Task<ModelValidationReport<T>> GetModelValidationReportAsync<T>(this T model)
+        where T : class, new()
+    {
+        model = Guard.Against.Null(model, nameof(model));
+
+        var validator = model.GetValidator();
+        return await GetModelValidationReportAsync(model, validator);
+    }
+
+
+
 }

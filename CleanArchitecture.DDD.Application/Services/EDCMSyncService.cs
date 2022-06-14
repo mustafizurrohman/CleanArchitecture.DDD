@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using CleanArchitecture.DDD.Application.ExtensionMethods;
+using CleanArchitecture.DDD.Core.ExtensionMethods;
 using Newtonsoft.Json;
 
 namespace CleanArchitecture.DDD.Application.Services;
@@ -101,6 +102,9 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         if (parsedResponse.Count == 0)
             return Enumerable.Empty<DoctorDTO>();
 
+        var testExtensionMethod = await parsedResponse.GetModelValidationReportAsync();
+        var testResult = testExtensionMethod.ToFormattedJson();
+
         var modelCollectionValidationReport = await parsedResponse.GetModelValidationReportAsync(_validator);
         
         if (modelCollectionValidationReport.HasInvalidModels)
@@ -129,7 +133,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             return;
         
         // TODO: Save as HTML and send as attachment using Weischer Global Email service 
-        var validationResult = JsonConvert.SerializeObject(modelCollectionValidationReport.ValidationReport, Formatting.Indented);
+        var validationResult = modelCollectionValidationReport.ValidationReport.ToFormattedJson();
         Log.Warning(validationResult);
 
         LogWithSpace(() => Log.Warning("Got {countOfInvalidModels} invalid data from CRM / external system.", modelCollectionValidationReport.InvalidModels.Count()));
