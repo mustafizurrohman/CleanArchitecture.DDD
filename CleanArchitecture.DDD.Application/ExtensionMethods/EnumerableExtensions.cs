@@ -1,4 +1,7 @@
-﻿namespace CleanArchitecture.DDD.Application.ExtensionMethods;
+﻿using System.Reflection;
+using CleanArchitecture.DDD.Application.Exceptions;
+
+namespace CleanArchitecture.DDD.Application.ExtensionMethods;
 
 public static class EnumerableExtensions
 {
@@ -27,23 +30,26 @@ public static class EnumerableExtensions
         return Task.FromResult(new ModelCollectionValidationReport<T>(errorReport));
     }
 
-    //public static Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this IEnumerable<T> models)
-    //    where T : class, new()
-    //{
-    //    models = Guard.Against.Null(models, nameof(models));
+    public static async Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this IEnumerable<T> models)
+        where T : class, new()
+    {
+        models = Guard.Against.Null(models, nameof(models));
 
-    //    var validatorUsingReflection = AppDomain.CurrentDomain
-    //        .GetAssemblies()
-    //        .SelectMany(asm => asm.GetTypes())
-    //        .FirstOrDefault(typ => typ.IsAssignableFrom(typeof(AbstractValidator<T>)));
+        var validatorType = typeof(AbstractValidator<>);
+        var evt = validatorType.MakeGenericType(typeof(T));
 
-    //    var activatedValidator = Activator.CreateInstance<AbstractValidator<T>>();
+        var validatorTypeInstance = Assembly.GetExecutingAssembly()
+            .GetTypes()
+            .FirstOrDefault(typ => typ.IsSubclassOf(evt));
 
-    //    var validationReport = activatedValidator.Validate(models.First());
+        if (validatorTypeInstance is null)
+            throw new ValidatorNotFoundException(T);
 
-    //    var errorReport = models
-    //        .Select(model => model.GetModelValidationReport(activatedValidator));
+        var validatorInstance = (IValidator<T>)Activator.CreateInstance(validatorTypeInstance)!;
 
-    //    return new ModelCollectionValidationReport<T>(errorReport);
-    //}
+        return await GetModelValidationReportAsync(models, validatorInstance);
+
+    }
+
+    
 }
