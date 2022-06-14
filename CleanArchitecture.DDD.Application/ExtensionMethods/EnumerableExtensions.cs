@@ -30,6 +30,7 @@ public static class EnumerableExtensions
         return Task.FromResult(new ModelCollectionValidationReport<T>(errorReport));
     }
 
+    // TODO: Test this throughly!
     public static async Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this IEnumerable<T> models)
         where T : class, new()
     {
@@ -43,7 +44,7 @@ public static class EnumerableExtensions
             .FirstOrDefault(typ => typ.IsSubclassOf(evt));
 
         if (validatorTypeInstance is null)
-            throw new ValidatorNotFoundException(T);
+            throw new ValidatorNotFoundException(typeof(T));
 
         var validatorInstance = (IValidator<T>)Activator.CreateInstance(validatorTypeInstance)!;
 
