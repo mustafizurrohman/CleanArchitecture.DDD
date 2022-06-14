@@ -22,7 +22,7 @@ public static class EnumerableExtensions
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models)
         where T : class, new()
     {
-        models = Guard.Against.NullOrEmpty(models, nameof(models));
+        models = Guard.Against.Null(models, nameof(models));
 
         var validatorType = typeof(AbstractValidator<>);
         var evt = validatorType.MakeGenericType(typeof(T));
