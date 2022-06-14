@@ -39,9 +39,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         var doctors = doctorDTOList
             .Select(DoctorDTO.ToDoctor)
             .ToImmutableList();
-
-        var exception = doctors.GetModelValidationReport();
-
+        
         // Entity Framework is aware that Doctors an Address have a PK-FK Relationship
         // So it will take care that the keys are properly created and linked.
         await DbContext.Doctors.AddRangeAsync(doctors);
