@@ -22,7 +22,7 @@ public static class EnumerableExtensions
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models)
         where T : class, new()
     {
-        models = Guard.Against.Null(models, nameof(models));
+        models = Guard.Against.NullOrEmpty(models, nameof(models));
 
         var validatorType = typeof(AbstractValidator<>);
         var evt = validatorType.MakeGenericType(typeof(T));
@@ -42,7 +42,7 @@ public static class EnumerableExtensions
     public static Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this IEnumerable<T> models, IValidator<T> validator)
         where T : class, new()
     {
-        models = Guard.Against.Null(models, nameof(models));
+        models = Guard.Against.NullOrEmpty(models, nameof(models));
         validator = Guard.Against.Null(validator, nameof(validator));
 
         var errorReport = models
@@ -53,11 +53,13 @@ public static class EnumerableExtensions
     }
 
     // TODO: Test this throughly!
+    // TestUseCase: Test when the validator uses DI
     // If this does not work then use the version from above after injecting the validator using DI
     public static async Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this IEnumerable<T> models)
         where T : class, new()
     {
-        models = Guard.Against.Null(models.ToList(), nameof(models));
+        models = Guard.Against.NullOrEmpty(models, nameof(models));
+        models = models.ToList();
 
         var validatorInstance = models.First().GetValidator();
         return await GetModelValidationReportAsync(models, validatorInstance);

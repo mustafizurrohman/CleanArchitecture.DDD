@@ -22,7 +22,7 @@ public class ModelCollectionValidationReport<T>
 
     public ModelCollectionValidationReport(IEnumerable<ModelValidationReport<T>> validationReport)
     {
-        ValidationReport = validationReport;
+        ValidationReport = Guard.Against.NullOrEmpty(validationReport, nameof(validationReport));
     }
 
 }
