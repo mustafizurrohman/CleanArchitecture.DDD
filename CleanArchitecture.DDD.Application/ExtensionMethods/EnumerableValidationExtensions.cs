@@ -64,6 +64,7 @@ public static class EnumerableValidationExtensions
             var validatorType = typeof(AbstractValidator<>);
             var evt = validatorType.MakeGenericType(typeof(T));
 
+            // TODO: GetEntryAssembly? 
             var validatorTypeInstance = Assembly.GetExecutingAssembly()
                 .GetTypes()
                 .FirstOrDefault(typ => typ.IsSubclassOf(evt));
