@@ -3,7 +3,7 @@ using CleanArchitecture.DDD.Application.Exceptions;
 
 namespace CleanArchitecture.DDD.Application.ExtensionMethods;
 
-public static class EnumerableExtensions
+public static class EnumerableValidationExtensions
 {
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models, IValidator<T> validator)
         where T : class, new()
@@ -81,11 +81,10 @@ public static class EnumerableExtensions
             if (ex is ValidatorNotFoundException)
                 throw;
 
-            throw new ValidatorInitializationException(typeof(T));
+            throw new ValidatorInitializationException(typeof(T), ex);
         }
 
         return validatorInstance;
     }
-
 
 }

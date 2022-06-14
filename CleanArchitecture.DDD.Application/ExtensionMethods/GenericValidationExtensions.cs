@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.DDD.Application.ExtensionMethods;
 
-public static class GenericExtensions
+public static class GenericValidationExtensions
 {
     public static ModelValidationReport<T> GetModelValidationReport<T>(this T model, IValidator<T> validator)
         where T : class, new()
