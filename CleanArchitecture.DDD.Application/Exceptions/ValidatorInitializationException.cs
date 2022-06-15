@@ -8,12 +8,17 @@ internal class ValidatorInitializationException : Exception
 
     public ValidatorInitializationException(Type typ, Exception? ex = null) :
         base($"Could not initialize a validator for type {typ.FullName}. " +
-             $"Please provide a validator of type FluentValidation.AbstractValidator<{typ.FullName}> as a second parameter.", ex)
+             "Please provide a validator of type " +
+             $"FluentValidation.AbstractValidator<{typ.FullName}> as a second parameter." +
+             "Dependency Injection can be used for this purpose", ex)
     {
         TypeName = typ.FullName;
         ValidatorClassName = $"FluentValidation.AbstractValidator<{TypeName}>";
+
         CustomMessage = $"Could not initialize a validator for type {TypeName}. " +
-                        $"Please provide a validator which has {ValidatorClassName} as base class as a second parameter.";
+                        $"Please provide a validator which has {ValidatorClassName} " +
+                        "as base class as a second parameter." +
+                        "Dependency Injection can be used for this purpose";
     }
     
     public override string Message => CustomMessage;
