@@ -62,12 +62,11 @@ public static class EnumerableValidationExtensions
         try
         {
             var validatorType = typeof(AbstractValidator<>);
-            var evt = validatorType.MakeGenericType(typeof(T));
+            var genericType = validatorType.MakeGenericType(typeof(T));
 
-            // TODO: GetEntryAssembly? 
-            var validatorTypeInstance = Assembly.GetExecutingAssembly()
+            var validatorTypeInstance = Assembly.GetCallingAssembly()
                 .GetTypes()
-                .FirstOrDefault(typ => typ.IsSubclassOf(evt));
+                .FirstOrDefault(typ => typ.IsSubclassOf(genericType));
 
             if (validatorTypeInstance is null)
                 throw new ValidatorNotFoundException(typeof(T));
@@ -81,7 +80,7 @@ public static class EnumerableValidationExtensions
 
             if (ex is ValidatorNotFoundException)
                 throw;
-
+            
             throw new ValidatorInitializationException(typeof(T), ex);
         }
 

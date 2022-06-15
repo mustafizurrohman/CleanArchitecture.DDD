@@ -3,13 +3,14 @@
 internal class ValidatorNotFoundException : ApplicationException
 {
     private string? TypeName { get; } 
-    private string ClassName { get; }
+    private string ValidatorClassName { get; }
 
     public ValidatorNotFoundException(Type typ)
     {
         TypeName = typ.FullName;
-        ClassName = $"AbstractValidator<{typ.FullName}>";
+        ValidatorClassName = $"FluentValidation.AbstractValidator<{TypeName}>";
     }
 
-    public override string Message => $"Validator for type {TypeName} not found. Please define a class which inherits from {ClassName}";
+    public override string Message => $"Validator for type {TypeName} not defined. " +
+                                      $"Please define a class which has {ValidatorClassName} as base class.";
 }
