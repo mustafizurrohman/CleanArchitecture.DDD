@@ -1,9 +1,17 @@
-﻿namespace CleanArchitecture.DDD.API.Controllers;
+﻿using CleanArchitecture.DDD.API.Controllers.Fake;
+using CleanArchitecture.DDD.Application.ExtensionMethods;
+using CleanArchitecture.DDD.Core.ExtensionMethods;
+
+namespace CleanArchitecture.DDD.API.Controllers;
 
 public class ValidationController : BaseAPIController
 {
-    public ValidationController(IAppServices appServices) : base(appServices)
+    private readonly IFakeDataService _fakeDataService;
+
+    public ValidationController(IAppServices appServices, IFakeDataService fakeDataService) 
+        : base(appServices)
     {
+        _fakeDataService = fakeDataService;
     }
 
     [ApiExplorerSettings(IgnoreApi = false)]
@@ -37,5 +45,25 @@ public class ValidationController : BaseAPIController
     public IActionResult CreateName([FromBody] Name name)
     {
         return Ok();
+    }
+
+    // TODO: Debug and fix this!
+    [ApiExplorerSettings(IgnoreApi = true)]
+    [HttpPost("validation/extensionMethod")]
+    [SwaggerOperation(
+        Summary = "Demo of Extension method",
+        Description = "No or default authentication required",
+        OperationId = "Extension Method Validation",
+        Tags = new[] { "Validation" }
+    )]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> DemoExtensionMethod([FromBody] int num)
+    {
+        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num);
+
+        var validationReport = await fakeDoctors.GetModelValidationReportAsync();
+
+        return Ok(validationReport.ToFormattedJson());
     }
 }
