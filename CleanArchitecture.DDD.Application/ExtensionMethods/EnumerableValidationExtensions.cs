@@ -69,7 +69,7 @@ public static class EnumerableValidationExtensions
                 .FirstOrDefault(typ => typ.IsSubclassOf(genericType));
 
             if (validatorTypeInstance is null)
-                throw new ValidatorNotFoundException(typeof(T));
+                throw new ValidatorNotDefinedException(typeof(T));
 
             validatorInstance = (IValidator<T>) Activator.CreateInstance(validatorTypeInstance)!;
 
@@ -78,7 +78,7 @@ public static class EnumerableValidationExtensions
         {
             Log.Error(ex, ex.Message);
 
-            if (ex is ValidatorNotFoundException)
+            if (ex is ValidatorNotDefinedException)
                 throw;
             
             throw new ValidatorInitializationException(typeof(T), ex);

@@ -1,13 +1,13 @@
 ﻿namespace CleanArchitecture.DDD.Application.Exceptions;
 
-internal class ValidatorNotFoundException : ApplicationException
+internal class ValidatorNotDefinedException : ApplicationException
 {
     private string? TypeName { get; } 
     private string ValidatorClassName { get; }
 
-    public ValidatorNotFoundException(Type typ)
+    public ValidatorNotDefinedException(Type typ)
     {
-        TypeName = typ.FullName;
+        TypeName = typ.GenericTypeArguments.FirstOrDefault()?.Name ?? typ.Name;
         ValidatorClassName = $"FluentValidation.AbstractValidator<{TypeName}>";
     }
 

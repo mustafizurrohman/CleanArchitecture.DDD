@@ -49,9 +49,8 @@ public class ValidationController : BaseAPIController
         return Ok();
     }
 
-    // TODO: Debug and fix this!
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("demo/extensionMethod")]
+    [HttpGet("demo/extensionMethod")]
     [SwaggerOperation(
         Summary = "Demo of Extension method",
         Description = "No or default authentication required",
@@ -62,6 +61,8 @@ public class ValidationController : BaseAPIController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DemoExtensionMethod([FromQuery] int num = 10)
     {
+        num = Guard.Against.NegativeOrZero(num, nameof(num));
+
         var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
 
         var doctorsToValidate = AutoMapper.Map<IEnumerable<ExternalFakeDoctorAddressDTO>, IEnumerable<FakeDoctorAddressDTO>>
@@ -72,4 +73,26 @@ public class ValidationController : BaseAPIController
 
         return Ok(validationReportAsString);
     }
+
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpGet("demo/extensionMethod/error")]
+    [SwaggerOperation(
+        Summary = "Demo of incorrect usage of Extension method",
+        Description = "No or default authentication required",
+        OperationId = "Extension Method Validation Incorrect usage",
+        Tags = new[] { "Validation" }
+    )]
+    public async Task<IActionResult> DemoExtensionMethodError()
+    {
+        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(10).ToList();
+        
+        // We have not defined a validator for ExternalFakeDoctorAddressDTO
+        // So this  will throw an exception at runtime
+        var validationReport = await fakeDoctors.GetModelValidationReportAsync();
+        var validationReportAsString = validationReport.ToFormattedJson();
+
+        return Ok(validationReportAsString);
+    }
+
+
 }
