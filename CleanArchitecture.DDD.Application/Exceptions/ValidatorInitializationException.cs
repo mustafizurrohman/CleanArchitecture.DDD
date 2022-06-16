@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.Application.Exceptions;
+﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
+
+namespace CleanArchitecture.DDD.Application.Exceptions;
 
 internal class ValidatorInitializationException : Exception
 {
@@ -7,13 +9,13 @@ internal class ValidatorInitializationException : Exception
     private string CustomMessage { get; }
 
     public ValidatorInitializationException(Type typ, Exception? ex = null) :
-        base($"Could not initialize a validator for type {typ.FullName}. " +
+        base($"Could not initialize a validator for type {typ.GetTypeNameForFluentValidation()}. " +
              "Please provide a validator of type " +
-             $"FluentValidation.AbstractValidator<{typ.FullName}> as a second parameter." +
+             $"FluentValidation.AbstractValidator<{typ.GetTypeNameForFluentValidation()}> as a second parameter." +
              "Dependency Injection can be used for this purpose", ex)
     {
-        TypeName = typ.FullName;
-        ValidatorClassName = $"FluentValidation.AbstractValidator<{TypeName}>";
+        TypeName = typ.GetTypeNameForFluentValidation();
+        ValidatorClassName = typ.GetFluentValidationBaseClassName();
 
         CustomMessage = $"Could not initialize a validator for type {TypeName}. " +
                         $"Please provide a validator which has {ValidatorClassName} " +

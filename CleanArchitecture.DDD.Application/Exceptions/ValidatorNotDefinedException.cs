@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CleanArchitecture.DDD.Core.ExtensionMethods;
 
 namespace CleanArchitecture.DDD.Application.Exceptions;
 
@@ -10,22 +11,17 @@ internal class ValidatorNotDefinedException : ApplicationException
 
     public ValidatorNotDefinedException(Type typ)
     {
-        
-        TypeName = typ.GenericTypeArguments.FirstOrDefault()?.Name ?? typ.Name;
-        ValidatorClassName = $"FluentValidation.AbstractValidator<{TypeName}>";
+
+        TypeName = typ.GetTypeNameForFluentValidation();
+        ValidatorClassName = typ.GetFluentValidationBaseClassName();
         
         AssemblyName = typ.GenericTypeArguments.Any()
-            ? GetAssemblyName(typ.GenericTypeArguments.First())
-            : GetAssemblyName(typ);
+            ? typ.GenericTypeArguments.First().GetAssemblyName()
+            : typ.GetAssemblyName();
     }
-
-    private string GetAssemblyName(Type type)
-    {
-        return Assembly.GetAssembly(type)?.GetName().Name ?? string.Empty;
-    }
-
+    
     public override string Message => $"Validator for type {TypeName} not defined. " + Environment.NewLine +
                                       $"Please define a class which has {ValidatorClassName} as base class " + 
-                                      $"in the Assembly '{AssemblyName}' where {TypeName} is defined  " + Environment.NewLine +
-                                      "Alternatively provide the validator explicitely as an argument of the extension method.";
+                                      $"in the Assembly '{AssemblyName}' where '{TypeName}' is defined  " + Environment.NewLine +
+                                      "Alternatively provide the validator explicitly as an argument of the extension method.";
 }
