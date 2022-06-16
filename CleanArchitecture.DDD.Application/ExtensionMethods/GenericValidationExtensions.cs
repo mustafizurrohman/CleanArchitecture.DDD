@@ -19,7 +19,7 @@ public static class GenericValidationExtensions
                 .Select(e => new ValidationErrorByProperty
                 {
                     PropertyName = e.Key.PropertyName,
-                    AttemptedValue = e.Select(err => err.AttemptedValue).Distinct().Single(),
+                    ProvidedValue = e.Select(err => err.AttemptedValue).Distinct().Single(),
                     ErrorMessages = e.Select(err => err.ErrorMessage).ToList()
                 })
         };
@@ -51,7 +51,7 @@ public static class GenericValidationExtensions
                 .Select(e => new ValidationErrorByProperty
                 {
                     PropertyName = e.Key.PropertyName,
-                    AttemptedValue = e.Select(err => err.AttemptedValue).Distinct().Single(),
+                    ProvidedValue = e.Select(err => err.AttemptedValue).Distinct().Single(),
                     ErrorMessages = e.Select(err => err.ErrorMessage).ToList()
                 })
         };

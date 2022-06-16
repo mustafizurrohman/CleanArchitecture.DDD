@@ -3,7 +3,7 @@
 public class ValidationErrorByProperty
 {
     public string PropertyName { get; init; }
-    public object? AttemptedValue { get; init; }
+    public object? ProvidedValue { get; init; }
     public IEnumerable<string> ErrorMessages { get; init; }
     
 }

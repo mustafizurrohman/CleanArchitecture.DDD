@@ -17,7 +17,7 @@ public class ValidationController : BaseAPIController
     }
 
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("ValueObject/validation", Name = "valueObjectValidation")]
+    [HttpPost("ValueObject", Name = "valueObjectValidation")]
     [SwaggerOperation(
         Summary = "Demo of validation of Value Object",
         Description = "No or default authentication required",
@@ -35,7 +35,7 @@ public class ValidationController : BaseAPIController
     }
 
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("ValueObect/validation/fluentValidationPipeline")]
+    [HttpPost("ValueObect/fluentValidationPipeline")]
     [SwaggerOperation(
         Summary = "Demo of input validation using FluentValidation",
         Description = "No or default authentication required",
@@ -51,7 +51,7 @@ public class ValidationController : BaseAPIController
 
     // TODO: Debug and fix this!
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("validation/extensionMethod")]
+    [HttpPost("demo/extensionMethod")]
     [SwaggerOperation(
         Summary = "Demo of Extension method",
         Description = "No or default authentication required",
@@ -60,16 +60,16 @@ public class ValidationController : BaseAPIController
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DemoExtensionMethod([FromBody] int num = 10)
+    public async Task<IActionResult> DemoExtensionMethod([FromQuery] int num = 10)
     {
-        List<ExternalFakeDoctorAddressDTO> fakeDoctors =
-            _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
+        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
 
-        var doctorsToValidate =
-            AutoMapper.Map<IEnumerable<ExternalFakeDoctorAddressDTO>, IEnumerable<FakeDoctorAddressDTO>>(fakeDoctors);
+        var doctorsToValidate = AutoMapper.Map<IEnumerable<ExternalFakeDoctorAddressDTO>, IEnumerable<FakeDoctorAddressDTO>>
+                (fakeDoctors);
 
         var validationReport = await doctorsToValidate.GetModelValidationReportAsync();
+        var validationReportAsString = validationReport.ToFormattedJson();
 
-        return Ok(validationReport.ToFormattedJson());
+        return Ok(validationReportAsString);
     }
 }

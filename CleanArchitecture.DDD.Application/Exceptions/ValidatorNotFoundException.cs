@@ -12,5 +12,6 @@ internal class ValidatorNotFoundException : ApplicationException
     }
 
     public override string Message => $"Validator for type {TypeName} not defined. " +
-                                      $"Please define a class which has {ValidatorClassName} as base class.";
+                                      $"Please define a class which has {ValidatorClassName} as base class in the same assembly where {TypeName} is defined " +
+                                      $"or provide the validator explicitely as an argument of the extension method.";
 }
