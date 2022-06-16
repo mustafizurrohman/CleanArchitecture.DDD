@@ -1,15 +1,17 @@
-﻿namespace CleanArchitecture.DDD.API.Controllers.Fake;
+﻿using CleanArchitecture.DDD.Application.DTO;
+
+namespace CleanArchitecture.DDD.API.Controllers.Fake;
 
 public class FakeDataService : IFakeDataService
 {
     private Faker Faker { get; }
-    private Faker<FakeDoctorAddressDTO> DoctorFaker { get; }
+    private Faker<ExternalFakeDoctorAddressDTO> DoctorFaker { get; }
 
     public FakeDataService()
     {
         Faker = new Faker("de");
 
-        DoctorFaker = new Faker<FakeDoctorAddressDTO>("de")
+        DoctorFaker = new Faker<ExternalFakeDoctorAddressDTO>("de")
             .StrictMode(true)
             .RuleFor(da => da.EDCMExternalID, _ => Guid.NewGuid())
             .RuleFor(da => da.Firstname, fake => fake.Name.FirstName())
@@ -20,27 +22,27 @@ public class FakeDataService : IFakeDataService
             .RuleFor(da => da.Country, fake => fake.Address.Country());
     }
 
-    public IEnumerable<FakeDoctorAddressDTO> GetValidDoctors(int num)
+    public IEnumerable<ExternalFakeDoctorAddressDTO> GetValidDoctors(int num)
     {
         num = Guard.Against.NegativeOrZero(num, nameof(num));
 
         return DoctorFaker.Generate(num);
     }
 
-    public IEnumerable<FakeDoctorAddressDTO> GetDoctorsWithUpdatedAddress(IEnumerable<FakeDoctorAddressDTO> doctors, int iteration)
+    public IEnumerable<ExternalFakeDoctorAddressDTO> GetDoctorsWithUpdatedAddress(IEnumerable<ExternalFakeDoctorAddressDTO> doctors, int iteration)
     {
         doctors = doctors.ToList();
 
         if (!doctors.Any())
         {
-            return Enumerable.Empty<FakeDoctorAddressDTO>();
+            return Enumerable.Empty<ExternalFakeDoctorAddressDTO>();
         }
 
-        var modifiedDoctors = new List<FakeDoctorAddressDTO>();
+        var modifiedDoctors = new List<ExternalFakeDoctorAddressDTO>();
 
         foreach (var cachedDoctor in doctors)
         {
-            var modifiedDoctor = new FakeDoctorAddressDTO
+            var modifiedDoctor = new ExternalFakeDoctorAddressDTO
             {
                 EDCMExternalID = cachedDoctor.EDCMExternalID,
                 Firstname = cachedDoctor.Firstname,
@@ -57,7 +59,7 @@ public class FakeDataService : IFakeDataService
         return modifiedDoctors;
     }
 
-    public IEnumerable<FakeDoctorAddressDTO> GetFakeDoctorsWithSomeInvalidData(int num)
+    public IEnumerable<ExternalFakeDoctorAddressDTO> GetFakeDoctorsWithSomeInvalidData(int num)
     {
         num = Guard.Against.NegativeOrZero(num, nameof(num));
 
@@ -70,13 +72,13 @@ public class FakeDataService : IFakeDataService
             ? (int)Math.Ceiling((double)(num / 2))
             : generatedFakeDoctors.Length;
 
-        var doctorsWithAddress = new List<FakeDoctorAddressDTO>();
+        var doctorsWithAddress = new List<ExternalFakeDoctorAddressDTO>();
 
         for (var i = 0; i < numberOfNamesToInvalidate; i++)
         {
             var currentDoc = generatedFakeDoctors[i];
 
-            var updated = new FakeDoctorAddressDTO()
+            var updated = new ExternalFakeDoctorAddressDTO()
             {
                 EDCMExternalID = i % 2 == 0 ? Guid.Empty : currentDoc.EDCMExternalID,
                 Firstname = currentDoc.Firstname + (i % 3 == 0 ? "" : $" {i}  * "),

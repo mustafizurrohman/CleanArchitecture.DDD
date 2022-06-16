@@ -1,6 +1,8 @@
 ﻿using CleanArchitecture.DDD.API.Controllers.Fake;
+using CleanArchitecture.DDD.Application.DTO;
 using CleanArchitecture.DDD.Application.ExtensionMethods;
 using CleanArchitecture.DDD.Core.ExtensionMethods;
+using FakeDTO = CleanArchitecture.DDD.Application.DTO.FakeDoctorAddressDTO;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
@@ -48,7 +50,7 @@ public class ValidationController : BaseAPIController
     }
 
     // TODO: Debug and fix this!
-    [ApiExplorerSettings(IgnoreApi = true)]
+    [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("validation/extensionMethod")]
     [SwaggerOperation(
         Summary = "Demo of Extension method",
@@ -58,11 +60,15 @@ public class ValidationController : BaseAPIController
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DemoExtensionMethod([FromBody] int num)
+    public async Task<IActionResult> DemoExtensionMethod([FromBody] int num = 10)
     {
-        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num);
+        List<ExternalFakeDoctorAddressDTO> fakeDoctors =
+            _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
 
-        var validationReport = await fakeDoctors.GetModelValidationReportAsync();
+        var doctorsToValidate =
+            AutoMapper.Map<IEnumerable<ExternalFakeDoctorAddressDTO>, IEnumerable<FakeDoctorAddressDTO>>(fakeDoctors);
+
+        var validationReport = await doctorsToValidate.GetModelValidationReportAsync();
 
         return Ok(validationReport.ToFormattedJson());
     }

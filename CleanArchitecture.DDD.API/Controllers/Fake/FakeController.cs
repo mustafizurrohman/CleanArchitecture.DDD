@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using CleanArchitecture.DDD.Application.DTO;
 
 namespace CleanArchitecture.DDD.API.Controllers.Fake;
 
@@ -13,8 +14,8 @@ public class FakeController : BaseAPIController
     private readonly IFakeDataService _fakeDataService;
     private static int _attempts = 0;
 
-    private static IEnumerable<FakeDoctorAddressDTO> _cachedDTOsValid = new List<FakeDoctorAddressDTO>();
-    private static IEnumerable<FakeDoctorAddressDTO> _cachedDTOsValidAndInvalid = new List<FakeDoctorAddressDTO>();
+    private static IEnumerable<ExternalFakeDoctorAddressDTO> _cachedDTOsValid = new List<ExternalFakeDoctorAddressDTO>();
+    private static IEnumerable<ExternalFakeDoctorAddressDTO> _cachedDTOsValidAndInvalid = new List<ExternalFakeDoctorAddressDTO>();
     private static int _iteration = 0;
 
     /// <summary>
@@ -35,7 +36,7 @@ public class FakeController : BaseAPIController
         OperationId = "GetFakeDoctorsWithSomeInvalidData",
         Tags = new[] { "FakeData" }
     )]
-    [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<FakeDoctorAddressDTO>))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<ExternalFakeDoctorAddressDTO>))]
     public IActionResult GetFakeDoctors(int num = 10, CancellationToken cancellationToken = default)
     {
         // Simulate a fake delay here
@@ -61,7 +62,7 @@ public class FakeController : BaseAPIController
         OperationId = "GetFakeDoctorsWithSomeInvalidData",
         Tags = new[] { "FakeData" }
     )]
-    [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<FakeDoctorAddressDTO>))]
+    [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<ExternalFakeDoctorAddressDTO>))]
     public IActionResult GetDoctorsWithInvalidData(int num = 10, CancellationToken cancellationToken = default)
     {
         // Simulate a fake delay here

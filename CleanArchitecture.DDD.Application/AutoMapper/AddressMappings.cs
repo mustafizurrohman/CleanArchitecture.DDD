@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.DDD.Application.AutoMapper;
 
-public class AddressMappings
+public class AddressMappings : Profile
 {
     public AddressMappings()
     {
@@ -8,6 +8,7 @@ public class AddressMappings
     }
     private void CreateMappings()
     {
+        CreateMap<ExternalFakeDoctorAddressDTO, FakeDoctorAddressDTO>();
 
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace CleanArchitecture.DDD.API.Controllers.Fake;
+﻿namespace CleanArchitecture.DDD.Application.DTO;
 
-public class FakeDoctorAddressDTO
+public class ExternalFakeDoctorAddressDTO
 {
     public Guid EDCMExternalID { get; init; }
 
