@@ -1,6 +1,4 @@
-﻿using Bogus;
-
-namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
+﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
 public class SeedAddressCommandHandler : BaseHandler, IRequestHandler<SeedAddressCommand>
 {

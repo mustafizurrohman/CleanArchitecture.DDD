@@ -1,6 +1,4 @@
-﻿using Bogus;
-using CleanArchitecture.DDD.Application.Exceptions;
-using CleanArchitecture.DDD.Domain.ValueObjects;
+﻿using CleanArchitecture.DDD.Application.Exceptions;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 

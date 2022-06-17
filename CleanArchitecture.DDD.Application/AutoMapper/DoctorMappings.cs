@@ -1,7 +1,4 @@
-﻿using CleanArchitecture.DDD.Domain.ValueObjects;
-using JetBrains.Annotations;
-
-namespace CleanArchitecture.DDD.Application.AutoMapper;
+﻿namespace CleanArchitecture.DDD.Application.AutoMapper;
 
 [UsedImplicitly]
 public class DoctorMappings : Profile

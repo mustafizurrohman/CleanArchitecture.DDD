@@ -1,5 +1,4 @@
-﻿using CleanArchitecture.DDD.Domain.ValueObjects;
-using EntityAddress = CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Address;
+﻿using EntityAddress = CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Address;
 
 namespace CleanArchitecture.DDD.Application.DTO;
 

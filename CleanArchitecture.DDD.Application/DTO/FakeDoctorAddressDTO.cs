@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace CleanArchitecture.DDD.Application.DTO;
+﻿namespace CleanArchitecture.DDD.Application.DTO;
 
 [UsedImplicitly]
 public class FakeDoctorAddressDTO

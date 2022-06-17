@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace CleanArchitecture.DDD.Application.DTO;
+﻿namespace CleanArchitecture.DDD.Application.DTO;
 
 // Must be public otherwise it cannot be injected automatically to the DI Registry
 [UsedImplicitly]

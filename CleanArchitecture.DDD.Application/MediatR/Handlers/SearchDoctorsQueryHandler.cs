@@ -1,7 +1,4 @@
-﻿using CleanArchitecture.DDD.Application.ExtensionMethods;
-using CleanArchitecture.DDD.Domain.ValueObjects;
-
-namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
+﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
 public class SearchDoctorsQueryHandler : BaseHandler, IRequestHandler<SearchDoctorsQuery, IEnumerable<DoctorCityDTO>>
 {

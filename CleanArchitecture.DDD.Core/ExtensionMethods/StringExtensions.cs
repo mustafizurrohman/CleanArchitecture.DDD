@@ -1,5 +1,4 @@
 ﻿using System.Net.Mail;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace CleanArchitecture.DDD.Core.ExtensionMethods;

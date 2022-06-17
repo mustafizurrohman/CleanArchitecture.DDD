@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.Domain.ValueObjects;
-
-namespace CleanArchitecture.DDD.Application.ExtensionMethods;
+﻿namespace CleanArchitecture.DDD.Application.ExtensionMethods;
 
 public static class QueryableExtensions
 {

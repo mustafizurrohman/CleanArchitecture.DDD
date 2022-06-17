@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace CleanArchitecture.DDD.Core.ExtensionMethods;
+﻿namespace CleanArchitecture.DDD.Core.ExtensionMethods;
 
 public static class ByteExtensions
 {

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using CleanArchitecture.DDD.Domain.ValueObjects;
+﻿using CleanArchitecture.DDD.Domain.ValueObjects;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
 //[StronglyTypedId(converters: StronglyTypedIdConverter.SystemTextJson)]

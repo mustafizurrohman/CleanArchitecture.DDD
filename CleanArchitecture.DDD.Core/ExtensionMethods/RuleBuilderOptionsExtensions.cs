@@ -1,7 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Validators;
-
-namespace CleanArchitecture.DDD.Core.ExtensionMethods;
+﻿namespace CleanArchitecture.DDD.Core.ExtensionMethods;
 
 public static class RuleBuilderOptionsExtensions
 {

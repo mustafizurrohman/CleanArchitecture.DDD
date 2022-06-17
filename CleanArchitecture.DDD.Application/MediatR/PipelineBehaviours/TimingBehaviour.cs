@@ -44,6 +44,7 @@ public class TimingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         return response;
     }
 
+    // ReSharper disable once MemberCanBeMadeStatic.Local
     private void LogWithSpace(Action action)
     {
         Console.WriteLine();

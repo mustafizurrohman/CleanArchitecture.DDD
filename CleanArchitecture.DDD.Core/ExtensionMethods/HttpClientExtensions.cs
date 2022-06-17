@@ -1,8 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Mime;
-using System.Text.Json;
-
-namespace CleanArchitecture.DDD.Core.ExtensionMethods;
+﻿namespace CleanArchitecture.DDD.Core.ExtensionMethods;
 
 public static class HttpClientExtensions
 {
