@@ -20,7 +20,7 @@ public static class RuleBuilderOptionsExtensions
             .WithMessage("'{PropertyName}' cannot have more than 30 characters")
             .NotContainNumbersOrSpecialCharacters()
             .MustNotStartOrEndWithWhiteSpace()
-            .MustNotContainConsequitiveSpaces();
+            .MustNotContainConsecutiveSpaces();
     }
 
     /// <summary>
@@ -90,15 +90,15 @@ public static class RuleBuilderOptionsExtensions
     }
 
     /// <summary>
-    /// Checks if a property contains consequitive spaces
+    /// Checks if a property contains consecutive spaces
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="ruleBuilder"></param>
     /// <returns></returns>
-    private static IRuleBuilderOptions<T, string> MustNotContainConsequitiveSpaces<T>(this IRuleBuilder<T, string> ruleBuilder)
+    private static IRuleBuilderOptions<T, string> MustNotContainConsecutiveSpaces<T>(this IRuleBuilder<T, string> ruleBuilder)
     {
         return ruleBuilder.Must(name => !name.Contains("  "))
-            .WithMessage("'{PropertyName}' must not contain more than 1 consequitive spaces");
+            .WithMessage("'{PropertyName}' must not contain more than 1 consecutive spaces");
         
     }
 

@@ -1,7 +1,4 @@
-﻿using System.Net;
-using CleanArchitecture.DDD.Core.ExtensionMethods;
-
-namespace CleanArchitecture.DDD.API.Controllers;
+﻿namespace CleanArchitecture.DDD.API.Controllers;
 
 public class EDCMController : BaseAPIController
 {

@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using CleanArchitecture.DDD.Application.ExtensionMethods;
-using CleanArchitecture.DDD.Core.ExtensionMethods;
 
 namespace CleanArchitecture.DDD.Application.Services;
 

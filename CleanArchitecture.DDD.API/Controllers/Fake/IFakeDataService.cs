@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.Application.DTO;
-
-namespace CleanArchitecture.DDD.API.Controllers.Fake;
+﻿namespace CleanArchitecture.DDD.API.Controllers.Fake;
 
 public interface IFakeDataService
 {

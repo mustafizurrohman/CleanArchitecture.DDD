@@ -1,8 +1,4 @@
-﻿using System.Net;
-using System.Text;
-using System.Text.Json;
-using CleanArchitecture.DDD.Core.ExtensionMethods;
-using Microsoft.AspNetCore.Diagnostics;
+﻿using Microsoft.AspNetCore.Diagnostics;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
@@ -61,11 +57,11 @@ public static class ApplicationBuilderExtensions
 
                 context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                 context.Response.ContentType = MediaTypeNames.Application.Json;
-                
+
                 // The user only gets a support code and no details of the internal server exception. 
                 // We can use this code to filter out the logs for this specific request
-                // Using Kibana? or by explicitely saving this code in Database while logging 
-                var errorMessage = "An internal server error occured. Support code : \'" + context.GetSupportCode() + "\'";
+                // Using Kibana? or by explicitly saving this code in Database while logging 
+                var errorMessage = "An internal server error occurred. Please contact Support with code : \'" + context.GetSupportCode() + "\'";
 
                 // Include exception details in development
                 if (isInDevelopment)

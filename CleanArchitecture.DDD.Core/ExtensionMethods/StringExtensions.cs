@@ -91,11 +91,11 @@ public static class StringExtensions
     }
 
     /// <summary>
-    /// Removes the consequtive spaces.
+    /// Removes the consecutive spaces.
     /// </summary>
     /// <param name="input">The input string.</param>
     /// <returns>System.String.</returns>
-    public static string RemoveConsequtiveSpaces(this string input)
+    public static string RemoveConsecutiveSpaces(this string input)
     {
         return Regex.Replace(input.Trim(), @"\s+", " ");
     }

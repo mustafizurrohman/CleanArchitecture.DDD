@@ -1,5 +1,4 @@
 ﻿using System.Security.Cryptography;
-using CleanArchitecture.DDD.Core.ExtensionMethods;
 
 namespace CleanArchitecture.DDD.Application.Services;
 

@@ -1,8 +1,9 @@
-﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
+﻿using JetBrains.Annotations;
 
 namespace CleanArchitecture.DDD.Application.DTO;
 
 // Must be public otherwise it cannot be injected automatically to the DI Registry
+[UsedImplicitly]
 public class FakeDoctorAddressDTOValidator : AbstractValidator<FakeDoctorAddressDTO>
 {
     public FakeDoctorAddressDTOValidator()

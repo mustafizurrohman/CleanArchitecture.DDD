@@ -1,8 +1,4 @@
-﻿using CleanArchitecture.DDD.API.Controllers.Fake;
-using CleanArchitecture.DDD.Application.DTO;
-using CleanArchitecture.DDD.Application.ExtensionMethods;
-using CleanArchitecture.DDD.Core.ExtensionMethods;
-using FakeDTO = CleanArchitecture.DDD.Application.DTO.FakeDoctorAddressDTO;
+﻿using FakeDTO = CleanArchitecture.DDD.Application.DTO.FakeDoctorAddressDTO;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
@@ -35,7 +31,7 @@ public class ValidationController : BaseAPIController
     }
 
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("ValueObect/fluentValidationPipeline")]
+    [HttpPost("ValueObject/fluentValidationPipeline")]
     [SwaggerOperation(
         Summary = "Demo of input validation using FluentValidation",
         Description = "No or default authentication required",

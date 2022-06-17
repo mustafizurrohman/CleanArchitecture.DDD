@@ -1,7 +1,9 @@
 ﻿using CleanArchitecture.DDD.Domain.ValueObjects;
+using JetBrains.Annotations;
 
 namespace CleanArchitecture.DDD.Application.AutoMapper;
 
+[UsedImplicitly]
 public class DoctorMappings : Profile
 {
     public DoctorMappings()
@@ -16,7 +18,7 @@ public class DoctorMappings : Profile
         //.ForMember(dc => dc.Name, src => src.MapFrom(doc => doc.Name.ToString()))
         //.ForMember(dc => dc.Address, src => src.MapFrom(doc => doc.Address.ToString()));
 
-        // 'EDCMExternalID' need not be expicity mapped because the names match
+        // 'EDCMExternalID' need not be explicitly mapped because the names match
         CreateMap<FakeDoctorAddressDTO, DoctorDTO>()
             .ForMember(dest => dest.Name,
                 src => src.MapFrom(doc => Name.Create(doc.Firstname, doc.Lastname, true)))

@@ -1,7 +1,4 @@
-﻿using System.Reflection;
-using CleanArchitecture.DDD.Core.ExtensionMethods;
-
-namespace CleanArchitecture.DDD.Application.Exceptions;
+﻿namespace CleanArchitecture.DDD.Application.Exceptions;
 
 internal class ValidatorNotDefinedException : ApplicationException
 {

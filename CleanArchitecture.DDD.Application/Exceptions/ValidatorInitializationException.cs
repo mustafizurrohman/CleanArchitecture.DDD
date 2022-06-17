@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
-
-namespace CleanArchitecture.DDD.Application.Exceptions;
+﻿namespace CleanArchitecture.DDD.Application.Exceptions;
 
 internal class ValidatorInitializationException : Exception
 {

@@ -52,11 +52,11 @@ public static class Errors
 {
     public static class General
     {
-        public static Error ValueIsRequired() =>
-            new Error("value.is.required", "Value is required");
+        public static Error ValueIsRequired() 
+            => new("value.is.required", "Value is required");
 
-        public static Error InvalidValueObject(IEnumerable<ValidationFailure> validationFailures) =>
-            new Error(validationFailures);
+        public static Error InvalidValueObject(IEnumerable<ValidationFailure> validationFailures) 
+            => new(validationFailures);
 
 
 

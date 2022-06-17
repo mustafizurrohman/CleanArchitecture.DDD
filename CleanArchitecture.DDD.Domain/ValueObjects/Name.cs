@@ -41,7 +41,7 @@
 
      public override string ToString()
      {
-         return (Firstname + " " + Middlename + " " + Lastname).RemoveConsequtiveSpaces();
+         return (Firstname + " " + Middlename + " " + Lastname).RemoveConsecutiveSpaces();
      }
        
      public static Name Copy(Name name, bool validate = true)
@@ -49,6 +49,7 @@
          if (validate)
             Validate(name);
 
+         // ReSharper disable once UseWithExpressionToCopyRecord
          return new Name(name.Firstname, name.Middlename ?? string.Empty, name.Lastname);
      }
 

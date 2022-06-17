@@ -1,7 +1,4 @@
-﻿using System.Net;
-using CleanArchitecture.DDD.Application.DTO;
-
-namespace CleanArchitecture.DDD.API.Controllers.Fake;
+﻿namespace CleanArchitecture.DDD.API.Controllers.Fake;
 
 /// <summary>
 /// Fake Controller

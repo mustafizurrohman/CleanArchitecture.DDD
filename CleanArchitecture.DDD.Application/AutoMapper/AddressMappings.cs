@@ -1,5 +1,8 @@
-﻿namespace CleanArchitecture.DDD.Application.AutoMapper;
+﻿using JetBrains.Annotations;
 
+namespace CleanArchitecture.DDD.Application.AutoMapper;
+
+[UsedImplicitly]
 public class AddressMappings : Profile
 {
     public AddressMappings()

@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-using CleanArchitecture.DDD.API.Controllers.Fake;
-using CleanArchitecture.DDD.Application;
+﻿using CleanArchitecture.DDD.Application;
 using CleanArchitecture.DDD.Application.MediatR.PipelineBehaviours;
 using CleanArchitecture.DDD.Core.Logging;
 using CleanArchitecture.DDD.Core.Polly;
@@ -176,7 +174,7 @@ public static class WebExtensionBuilderExtensions
     private static WebApplicationBuilder ConfigureSerilog(this WebApplicationBuilder builder)
     {
         // We can also use appSettings to configure logging
-        builder.Host.UseSerilog((provider, contextBoundObject, loggerConfig) =>
+        builder.Host.UseSerilog((_, _, loggerConfig) =>
         {
             var assemblyName = Assembly.GetExecutingAssembly().GetName();
 

@@ -3,7 +3,7 @@ namespace CleanArchitecture.DDD.API.Controllers;
 [ApiExplorerSettings(IgnoreApi = false)]
 public class DemoController : BaseAPIController
 {
-    public DemoController(IValidator<Name> nameValidator, IAppServices appServices)
+    public DemoController(IAppServices appServices)
         : base(appServices)
     {
     }
