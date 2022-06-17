@@ -23,10 +23,8 @@ public class ReleaseNumberEnricher : ILogEventEnricher
     private LogEventProperty GetLogEventProperty(ILogEventPropertyFactory propertyFactory)
     {
         // Don't care about thread-safety, in the worst case the field gets overwritten and one property will be GCed
-        if (_cachedProperty is null)
-            _cachedProperty = CreateProperty(propertyFactory);
-
-        return _cachedProperty;
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        return _cachedProperty ??= CreateProperty(propertyFactory);
     }
 
     // Qualify as uncommon-path
