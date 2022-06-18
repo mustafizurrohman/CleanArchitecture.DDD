@@ -59,39 +59,21 @@ public static class WebExtensionBuilderExtensions
         // builder.Services.AddTransient<IFakeDataService, FakeDataService>();
 
         // Initial implementation- See usage of extension method below
-        //builder.Services.Scan(scan => scan
+        // builder.Services.Scan(scan => scan
         //    .FromAssemblyOf<APIAssemblyMarker>()
         //    .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Service")))
         //        .AsImplementedInterfaces()
         //        .WithTransientLifetime());
 
-        // Implemented code above as an extension method. See usage below!
+        // Scrutor Will slightly increase the application startup time because it uses reflection
+
+        // Reference- https://andrewlock.net/using-scrutor-to-automatically-register-your-services-with-the-asp-net-core-di-container/
+
+        // Implemented code above as an extension method. 
         builder.Services
             .RegisterServicesFromAssemblyWithTransientLifetime<APIAssemblyMarker>();
 
-
-        // builder.Services.AddTransient<IPasswordService, PasswordService>();
-        // We are excluding EDCM Service here
-        // But all other services which follow IXXXService, and XXXService Pattern 
-        // will automatically get registered using Scrutor
-        // Will slightly increase the application startup time because it uses reflection
-        
-        // Reference- https://andrewlock.net/using-scrutor-to-automatically-register-your-services-with-the-asp-net-core-di-container/
-        // Initial implementation- See usage of extension method below
-        //builder.Services
-        //    .Scan(scan => scan
-        //        .FromAssemblyOf<ApplicationAssemblyMarker>()
-        //        .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Service") 
-        //                                                     && type.Name != nameof(EDCMSyncService)))
-        //        .AsImplementedInterfaces()
-        //        .WithTransientLifetime()
-        //    );
-
-        var excludedTypes = new List<Type>
-        {
-            typeof(EDCMSyncService)
-        };
-
+        var excludedTypes = new List<Type> { typeof(EDCMSyncService) };
         builder.Services
             .RegisterServicesFromAssemblyWithTransientLifetime<ApplicationAssemblyMarker>(excludedTypes: excludedTypes);
 

@@ -18,6 +18,15 @@ public static class ServiceCollectionExtensions
         );
     }
 
+    /// <summary>
+    /// Register all services using Scrutor with name ending with 'Service' or a specified string 
+    /// in a specified assembly optionally excluding specific types 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="serviceCollection"></param>
+    /// <param name="endMarker"></param>
+    /// <param name="excludedTypes"></param>
+    /// <returns></returns>
     public static IServiceCollection RegisterServicesFromAssemblyWithTransientLifetime<T>(
         this IServiceCollection serviceCollection,
         string endMarker = "Service",
