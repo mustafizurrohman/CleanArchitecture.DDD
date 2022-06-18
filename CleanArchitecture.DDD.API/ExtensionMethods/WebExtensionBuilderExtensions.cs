@@ -56,8 +56,24 @@ public static class WebExtensionBuilderExtensions
         builder.Services.AddTransient<UserNameEnricher>();
         builder.Services.AddTransient<IAppServices, AppServices>();
 
-        builder.Services.AddTransient<IFakeDataService, FakeDataService>();
-        builder.Services.AddTransient<IPasswordService, PasswordService>();
+        // builder.Services.AddTransient<IFakeDataService, FakeDataService>();
+        builder.Services.Scan(scan => scan
+            .FromAssemblyOf<APIAssemblyMarker>()
+            .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Service")))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
+
+        // builder.Services.AddTransient<IPasswordService, PasswordService>();
+        // We are excluding EDCM Service here
+        // But all other services which follow IXXXService, and XXXService Pattern 
+        // will automatically get registered
+        builder.Services.Scan(scan => scan
+            .FromAssemblyOf<ApplicationAssemblyMarker>()
+            .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Service") 
+                                                         && type.Name != nameof(EDCMSyncService)))
+            .AsImplementedInterfaces()
+            .WithTransientLifetime());
+
 
         // MediatR Configuration
         // TODO: Use Scrutor here!

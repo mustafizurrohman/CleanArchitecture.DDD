@@ -26,9 +26,7 @@ public class DemoController : BaseAPIController
 
         return Ok(name1 == name2);
     }
-
-
-
+    
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("exception", Name = "loggingException")]
     [SwaggerOperation(
@@ -40,6 +38,19 @@ public class DemoController : BaseAPIController
     public IActionResult TestExceptionLogging()
     {
         throw new NotImplementedException();
+    }
+
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpPost("scrutor", Name = "ScrutorTest")]
+    [SwaggerOperation(
+        Summary = "Demo of DI using scrutor",
+        Description = "No or default authentication required",
+        OperationId = "Test Scrutor",
+        Tags = new[] { "Demo" }
+    )]
+    public IActionResult TestScrutor([FromServices] ICachedEDCMSyncService cachedEDCMSyncService)
+    {
+        return Ok(cachedEDCMSyncService.HelloWorld());
     }
 
 
