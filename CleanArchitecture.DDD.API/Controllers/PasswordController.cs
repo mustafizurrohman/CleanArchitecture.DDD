@@ -29,7 +29,7 @@ public class PasswordController : BaseAPIController
     }
 
     /// <summary>
-    /// TODO: Finish this
+    /// 
     /// </summary>
     /// <param name="password">Password</param>
     /// <param name="hashedPassword">Hashed password</param>

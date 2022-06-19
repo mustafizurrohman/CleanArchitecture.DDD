@@ -12,7 +12,8 @@ WebAPI using .NET 7 (Preview)
 	- Performance Monitoring
 - API Documentation mit Swagger
 - AutoMapper
-- Hangfire (für Background Jobs) [Noch nicht reif genug]
+- Hangfire (for Background Jobs) [Does not support DI completely]
 - Use of ValueObjects
 - Input Validation with FluentValidation
 - Use of IHttpClientFactory (with Dependency Injection und Polly)
+- Scrutor 
