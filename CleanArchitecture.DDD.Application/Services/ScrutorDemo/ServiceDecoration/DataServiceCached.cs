@@ -26,9 +26,11 @@ public class DataServiceCached : IDataService
         // Trivial implementation- Not suitable for production 
         var cacheKey = "DemoData";
 
-        if (MemoryCache.TryGetValue(cacheKey, out List<DemoData>? demoData)) 
+        if (MemoryCache.TryGetValue(cacheKey, out List<DemoData>? demoData)) {
+            Log.Information("Returning cached data ...");
             return demoData!;
-        
+        }
+
         demoData = (await DataService.GetDemoDataAsync(num)).ToList();
         if (!demoData.Any())
             demoData = new List<DemoData>();
@@ -47,6 +49,8 @@ public class DataServiceCached : IDataService
         }
 
         SetMemoryCache(cacheKey, demoDataCached);
+
+        Log.Information("Returning real data ...");
 
         return demoData;
     }

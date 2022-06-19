@@ -40,11 +40,15 @@ public class DependencyInjectionController : BaseAPIController
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public IActionResult TestScrutorMultipleServices([FromServices] IEnumerable<ITestService> testServices)
     {
-        var combinedString = testServices
-            .Select(svc => svc.HelloWorld())
-            .Aggregate((a, b) => a + Environment.NewLine + b);
+        var serviceOutputs = testServices
+            .Select(svc => new
+            {
+                ServiceType = svc.GetType().Name, 
+                ServiceOutput = svc.HelloWorld()
+            })
+            .ToList();
 
-        return Ok(combinedString);
+        return Ok(serviceOutputs);
     }
 
     [ApiExplorerSettings(IgnoreApi = false)]

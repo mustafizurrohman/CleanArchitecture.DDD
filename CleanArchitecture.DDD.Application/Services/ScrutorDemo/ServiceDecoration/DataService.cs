@@ -20,6 +20,8 @@ public class DataService : IDataService
             .RuleFor(da => da.Lastname, fake => fake.Name.LastName())
             .RuleFor(da => da.Cached, _ => false);
 
+        Log.Information($"Generating {num} DemoData ... ");
+
         return Task.FromResult(demoDataFaker.Generate(num).AsEnumerable());
     }
 }

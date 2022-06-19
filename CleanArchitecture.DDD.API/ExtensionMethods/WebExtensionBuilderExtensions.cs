@@ -64,9 +64,9 @@ public static class WebExtensionBuilderExtensions
             .RegisterServicesFromAssemblyWithTransientLifetime<ApplicationAssemblyMarker>(excludedTypes: excludedTypes);
 
         // Not using Scrutor here for clarity
-        builder.Services.AddMemoryCache();
         // Already injected above
         // builder.Services.AddTransient<IDataService, DataService>();
+        builder.Services.AddMemoryCache();
         builder.Services.Decorate<IDataService, DataServiceCached>();
 
         // MediatR Configuration

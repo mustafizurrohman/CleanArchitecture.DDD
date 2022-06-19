@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.DDD.Application.ExtensionMethods;
 
-public static class ServiceCollectionExtensions
+public static class ServiceCollectionScrutorExtensions
 {
     private static IServiceCollection RegisterClassesFromAssemblyWithTransientLifetime<T>(
         this IServiceCollection serviceCollection,

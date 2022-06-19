@@ -7,7 +7,7 @@ public class PasswordController : BaseAPIController
     }
 
     /// <summary>
-    /// 
+    /// Hashes a password
     /// </summary>
     /// <param name="password"></param>
     /// <returns></returns>
@@ -29,7 +29,7 @@ public class PasswordController : BaseAPIController
     }
 
     /// <summary>
-    /// 
+    /// Verifies a hashed password
     /// </summary>
     /// <param name="password">Password</param>
     /// <param name="hashedPassword">Hashed password</param>
