@@ -31,5 +31,7 @@ global using CleanArchitecture.DDD.Domain.DTOs;
 
 global using CleanArchitecture.DDD.Application.DTO.Internal;
 global using FluentValidation;
+global using Microsoft.Extensions.DependencyInjection;
+global using Scrutor;
 
 

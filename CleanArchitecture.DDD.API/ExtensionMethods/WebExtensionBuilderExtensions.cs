@@ -1,6 +1,5 @@
 ﻿using CleanArchitecture.DDD.Application;
 using CleanArchitecture.DDD.Application.MediatR.PipelineBehaviours;
-using CleanArchitecture.DDD.Application.Services.ScrutorDemo.ServiceDecoration;
 using CleanArchitecture.DDD.Core.Logging;
 using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Domain;
@@ -66,7 +65,8 @@ public static class WebExtensionBuilderExtensions
 
         // Not using Scrutor here for clarity
         builder.Services.AddMemoryCache();
-        // builder.Services.AddTransient<IDataService, DataServiceReal>();
+        // Already injected above
+        // builder.Services.AddTransient<IDataService, DataService>();
         builder.Services.Decorate<IDataService, DataServiceCached>();
 
         // MediatR Configuration

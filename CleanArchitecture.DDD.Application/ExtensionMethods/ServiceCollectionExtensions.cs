@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Scrutor;
-
-namespace CleanArchitecture.DDD.Application.ExtensionMethods;
+﻿namespace CleanArchitecture.DDD.Application.ExtensionMethods;
 
 public static class ServiceCollectionExtensions
 {

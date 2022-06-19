@@ -33,5 +33,7 @@ global using CleanArchitecture.DDD.Application.MediatR.Commands;
 global using CleanArchitecture.DDD.Application.Services;
 
 global using CleanArchitecture.DDD.Application.MediatR.Queries;
+global using CleanArchitecture.DDD.Application.Services.ScrutorDemo.AssemblyScanning;
+global using CleanArchitecture.DDD.Application.Services.ScrutorDemo.ServiceDecoration;
 global using CleanArchitecture.DDD.Application.ServicesAggregate;
 global using Swashbuckle.AspNetCore.Annotations;
