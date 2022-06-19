@@ -1,9 +1,9 @@
 ﻿namespace CleanArchitecture.DDD.Application.Services;
 
-internal class CachedEDCMSyncService : ICachedEDCMSyncService
+public class ThreeTestService : ITestService
 {
     public string HelloWorld()
     {
-        return "HelloWorld";
+        return "Hello World from Test Service Three (3)";
     }
 }

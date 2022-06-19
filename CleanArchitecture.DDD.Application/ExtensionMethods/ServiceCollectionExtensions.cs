@@ -21,7 +21,7 @@ public static class ServiceCollectionExtensions
     // Reference- https://andrewlock.net/using-scrutor-to-automatically-register-your-services-with-the-asp-net-core-di-container/
 
     /// <summary>
-    /// Register all services using Scrutor with name ending with 'Service' or a specified string 
+    /// Register all services (using Scrutor) with name ending with 'Service' or a specified string 
     /// in a specified assembly optionally excluding specific types 
     /// </summary>
     /// <typeparam name="T"></typeparam>

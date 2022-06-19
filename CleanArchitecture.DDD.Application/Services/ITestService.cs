@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.DDD.Application.Services;
 
-public interface ICachedEDCMSyncService
+public interface ITestService
 {
     public string HelloWorld();
 }

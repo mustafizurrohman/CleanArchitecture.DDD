@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Formatting;
+using CleanArchitecture.DDD.Core.ExtensionMethods;
 using Polly.Contrib.WaitAndRetry;
 using Polly.Extensions.Http;
 using Polly.Timeout;
@@ -12,8 +13,6 @@ public class PolicyHolder : IPolicyHolder
     public PolicyRegistry Registry => _pollyPolicyRegistry;
 
     private PolicyRegistry _pollyPolicyRegistry;
-
-    private readonly string dateTimeFormat = "dd.MM.yyyy HH:mm:ss";
 
     public PolicyHolder()
     {
@@ -110,8 +109,8 @@ public class PolicyHolder : IPolicyHolder
                     var nextTry = now.Add(waitingTime);
                     Log.Information("Polly RetryAttempt# {@attempts} at {@now}. Next try at {@nextTry} if current attempt fails",
                         ++attempts,
-                        now.ToString(dateTimeFormat),
-                        nextTry.ToString(dateTimeFormat));
+                        now.ToLocalDateTime(),
+                        nextTry.ToLocalDateTime());
                 });
     }
     
@@ -144,8 +143,8 @@ public class PolicyHolder : IPolicyHolder
                     var nextTry = now.Add(waitingTime);
                     Log.Information("Polly RetryAttempt# {@attempts} at {@now}. Next try at {@nextTry} if current attempt fails", 
                         ++attempts, 
-                        now.ToString(dateTimeFormat), 
-                        nextTry.ToString(dateTimeFormat));
+                        now.ToLocalDateTime(), 
+                        nextTry.ToLocalDateTime());
                 });
     }
 
