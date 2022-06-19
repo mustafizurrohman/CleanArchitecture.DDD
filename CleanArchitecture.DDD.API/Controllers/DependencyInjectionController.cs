@@ -1,4 +1,7 @@
-﻿namespace CleanArchitecture.DDD.API.Controllers;
+﻿using CleanArchitecture.DDD.Application.Services.ScrutorDemo.AssemblyScanning;
+using CleanArchitecture.DDD.Application.Services.ScrutorDemo.ServiceDecoration;
+
+namespace CleanArchitecture.DDD.API.Controllers;
 
 public class DependencyInjectionController : BaseAPIController
 {
@@ -44,4 +47,17 @@ public class DependencyInjectionController : BaseAPIController
         return Ok(combinedString);
     }
 
+    [ApiExplorerSettings(IgnoreApi = true)]
+    [HttpGet("scrutor/decoration", Name = "ScrutorTestDecoration")]
+    [SwaggerOperation(
+        Summary = "Demo of Decoration of multiple services using scrutor",
+        Description = "No or default authentication required",
+        OperationId = "Test Scrutor Decoration",
+        Tags = new[] { "DependencyInjection" }
+    )]
+    public IActionResult TestScrutorDecoration([FromServices] IDataService dataService)
+    {
+        var data = dataService.GetDemoData(10);
+        return Ok(data);
+    }
 }

@@ -1,0 +1,9 @@
+﻿namespace CleanArchitecture.DDD.Application.DTO.Internal;
+
+public class DemoData
+{
+    public bool Cached { get; set; }
+    public DateTime CreatedDateTime { get; init; }
+    public string Firstname { get; init; }
+    public string Lastname { get; init; }
+}

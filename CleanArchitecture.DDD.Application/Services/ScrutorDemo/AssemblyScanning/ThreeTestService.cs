@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.DDD.Application.Services;
+﻿namespace CleanArchitecture.DDD.Application.Services.ScrutorDemo.AssemblyScanning;
 
 public class ThreeTestService : ITestService
 {

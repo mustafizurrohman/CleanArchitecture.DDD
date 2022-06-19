@@ -1,10 +1,12 @@
 ﻿using CleanArchitecture.DDD.Application;
 using CleanArchitecture.DDD.Application.MediatR.PipelineBehaviours;
+using CleanArchitecture.DDD.Application.Services.ScrutorDemo.ServiceDecoration;
 using CleanArchitecture.DDD.Core.Logging;
 using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Domain;
 using Hangfire;
 using Hangfire.SqlServer;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Serilog.Events;
@@ -62,6 +64,10 @@ public static class WebExtensionBuilderExtensions
         var excludedTypes = new List<Type> { typeof(EDCMSyncService) };
         builder.Services
             .RegisterServicesFromAssemblyWithTransientLifetime<ApplicationAssemblyMarker>(excludedTypes: excludedTypes);
+
+        builder.Services.AddMemoryCache();
+        builder.Services.AddTransient<IDataService, DataServiceReal>();
+        builder.Services.Decorate<IDataService, DataServiceCached>();
 
         // MediatR Configuration
         // TODO: Use Scrutor here!
