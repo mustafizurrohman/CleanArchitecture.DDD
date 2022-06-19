@@ -2,9 +2,9 @@
 
 namespace CleanArchitecture.DDD.Application.Services.ScrutorDemo.ServiceDecoration;
 
-public class DataServiceReal : IDataService
+public class DataService : IDataService
 {
-    public DataServiceReal()
+    public DataService()
     {
         Log.Information("DataService REAL- Initialized service...");
     }

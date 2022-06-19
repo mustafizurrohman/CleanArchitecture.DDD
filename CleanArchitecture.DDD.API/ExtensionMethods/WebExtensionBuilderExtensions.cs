@@ -66,7 +66,7 @@ public static class WebExtensionBuilderExtensions
 
         // Not using Scrutor here for clarity
         builder.Services.AddMemoryCache();
-        builder.Services.AddTransient<IDataService, DataServiceReal>();
+        // builder.Services.AddTransient<IDataService, DataServiceReal>();
         builder.Services.Decorate<IDataService, DataServiceCached>();
 
         // MediatR Configuration
