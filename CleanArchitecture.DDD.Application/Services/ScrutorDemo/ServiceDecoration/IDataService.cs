@@ -2,5 +2,5 @@
 
 public interface IDataService
 {
-    public Task<IEnumerable<DemoData>> GetDemoData(int num);
+    public Task<IEnumerable<DemoData>> GetDemoDataAsync(int num);
 }

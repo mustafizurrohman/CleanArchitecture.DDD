@@ -47,7 +47,7 @@ public class DependencyInjectionController : BaseAPIController
         return Ok(combinedString);
     }
 
-    [ApiExplorerSettings(IgnoreApi = true)]
+    [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("scrutor/decoration", Name = "ScrutorTestDecoration")]
     [SwaggerOperation(
         Summary = "Demo of Decoration of multiple services using scrutor",
@@ -55,9 +55,9 @@ public class DependencyInjectionController : BaseAPIController
         OperationId = "Test Scrutor Decoration",
         Tags = new[] { "DependencyInjection" }
     )]
-    public IActionResult TestScrutorDecoration([FromServices] IDataService dataService)
+    public async Task<IActionResult> TestScrutorDecoration([FromServices] IDataService dataService)
     {
-        var data = dataService.GetDemoData(10);
+        var data = await dataService.GetDemoDataAsync(10);
         return Ok(data);
     }
 }

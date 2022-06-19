@@ -2,7 +2,7 @@
 
 public class DataServiceReal : IDataService
 {
-    public Task<IEnumerable<DemoData>> GetDemoData(int num)
+    public Task<IEnumerable<DemoData>> GetDemoDataAsync(int num)
     {
         num = Guard.Against.NegativeOrZero(num, nameof(num));
 

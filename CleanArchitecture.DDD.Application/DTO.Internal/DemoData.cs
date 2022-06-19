@@ -2,7 +2,7 @@
 
 public class DemoData
 {
-    public bool Cached { get; set; }
+    public bool Cached { get; init; }
     public DateTime CreatedDateTime { get; init; }
     public string Firstname { get; init; }
     public string Lastname { get; init; }

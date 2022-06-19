@@ -18,21 +18,26 @@ public class DataServiceCached : IDataService
         DataService = Guard.Against.Null(dataService, nameof(dataService));
     }
 
-    public async Task<IEnumerable<DemoData>> GetDemoData(int num)
+    public async Task<IEnumerable<DemoData>> GetDemoDataAsync(int num)
     {
         var cacheKey = num.ToString();
 
         var demoData = new List<DemoData>();
         if (!MemoryCache.TryGetValue(cacheKey, out demoData!))
         {
-            demoData = (await DataService.GetDemoData(num)).ToList();
+            demoData = (await DataService.GetDemoDataAsync(num)).ToList();
 
             var demoDataCached = new List<DemoData>();
 
             foreach (var data in demoData)
             {
-                data.Cached = true;
-                demoDataCached.Add(data);
+                demoDataCached.Add(new DemoData()
+                {
+                    Cached = true,
+                    CreatedDateTime = data.CreatedDateTime,
+                    Firstname = data.Firstname,
+                    Lastname = data.Lastname
+                });
             }
 
             SetMemoryCache(cacheKey, demoDataCached);
