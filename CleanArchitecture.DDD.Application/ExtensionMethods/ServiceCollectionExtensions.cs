@@ -3,7 +3,6 @@ using Scrutor;
 
 namespace CleanArchitecture.DDD.Application.ExtensionMethods;
 
-// TODO: Implement and test this!
 public static class ServiceCollectionExtensions
 {
     private static IServiceCollection RegisterClassesFromAssemblyWithTransientLifetime<T>(
@@ -17,6 +16,9 @@ public static class ServiceCollectionExtensions
                 .WithTransientLifetime()
         );
     }
+
+    // Scrutor Will slightly increase the application startup time because it uses reflection
+    // Reference- https://andrewlock.net/using-scrutor-to-automatically-register-your-services-with-the-asp-net-core-di-container/
 
     /// <summary>
     /// Register all services using Scrutor with name ending with 'Service' or a specified string 
@@ -37,7 +39,7 @@ public static class ServiceCollectionExtensions
         return serviceCollection.Scan(scan =>
             scan.FromAssemblyOf<T>()
                 .AddClasses(classes => classes.Where(type => type.Name.EndsWith(endMarker)
-                    && !excludedTypes.DefaultIfEmpty().GetType().Name.ToLower().Contains(type.Name.ToLower())))
+                                    && !excludedTypes.GetType().Name.ToLower().Contains(type.Name.ToLower())))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime()
         );

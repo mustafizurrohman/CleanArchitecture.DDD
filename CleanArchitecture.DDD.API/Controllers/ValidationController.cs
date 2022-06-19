@@ -23,10 +23,10 @@ public class ValidationController : BaseAPIController
     public IActionResult TestNameValueObject(string name)
     {
         var createdName = NameValueObject.Create(name);
-
-        if (createdName.Error is not null)
+        
+        if (createdName.IsFailure)
             return BadRequest(createdName.Error.Message);
-
+        
         return Ok(createdName.Value);
     }
 
