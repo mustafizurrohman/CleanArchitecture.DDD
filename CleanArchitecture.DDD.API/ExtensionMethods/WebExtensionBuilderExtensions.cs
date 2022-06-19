@@ -6,7 +6,6 @@ using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Domain;
 using Hangfire;
 using Hangfire.SqlServer;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Serilog.Events;
@@ -65,6 +64,7 @@ public static class WebExtensionBuilderExtensions
         builder.Services
             .RegisterServicesFromAssemblyWithTransientLifetime<ApplicationAssemblyMarker>(excludedTypes: excludedTypes);
 
+        // Not using Scrutor here for clarity
         builder.Services.AddMemoryCache();
         builder.Services.AddTransient<IDataService, DataServiceReal>();
         builder.Services.Decorate<IDataService, DataServiceCached>();

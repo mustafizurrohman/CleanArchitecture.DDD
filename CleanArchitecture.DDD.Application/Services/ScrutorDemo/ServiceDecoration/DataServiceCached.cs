@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using System.Threading;
 
 namespace CleanArchitecture.DDD.Application.Services.ScrutorDemo.ServiceDecoration;
 
@@ -11,37 +10,43 @@ public class DataServiceCached : IDataService
 
     public DataServiceCached(IMemoryCache memoryCache, IDataService dataService)
     {
+        var timeSpan = TimeSpan.FromSeconds(15);
+        
         MemoryCacheEntryOptions = new MemoryCacheEntryOptions()
             .SetSlidingExpiration(TimeSpan.FromSeconds(15));
 
         MemoryCache = Guard.Against.Null(memoryCache, nameof(memoryCache));
         DataService = Guard.Against.Null(dataService, nameof(dataService));
+
+        Log.Information($"DECORATED DataService CACHED- Initialized service... Cache valid until {DateTime.Now.Add(timeSpan).ToLocalDateTime()}");
     }
 
     public async Task<IEnumerable<DemoData>> GetDemoDataAsync(int num)
     {
-        var cacheKey = num.ToString();
+        // Trivial implementation- Not suitable for production 
+        var cacheKey = "DemoData";
 
-        var demoData = new List<DemoData>();
-        if (!MemoryCache.TryGetValue(cacheKey, out demoData!))
+        if (MemoryCache.TryGetValue(cacheKey, out List<DemoData>? demoData)) 
+            return demoData!;
+        
+        demoData = (await DataService.GetDemoDataAsync(num)).ToList();
+        if (!demoData.Any())
+            demoData = new List<DemoData>();
+
+        var demoDataCached = new List<DemoData>();
+
+        foreach (var data in demoData)
         {
-            demoData = (await DataService.GetDemoDataAsync(num)).ToList();
-
-            var demoDataCached = new List<DemoData>();
-
-            foreach (var data in demoData)
+            demoDataCached.Add(new DemoData
             {
-                demoDataCached.Add(new DemoData()
-                {
-                    Cached = true,
-                    CreatedDateTime = data.CreatedDateTime,
-                    Firstname = data.Firstname,
-                    Lastname = data.Lastname
-                });
-            }
-
-            SetMemoryCache(cacheKey, demoDataCached);
+                Cached = true,
+                CreatedDateTime = data.CreatedDateTime,
+                Firstname = data.Firstname,
+                Lastname = data.Lastname
+            });
         }
+
+        SetMemoryCache(cacheKey, demoDataCached);
 
         return demoData;
     }

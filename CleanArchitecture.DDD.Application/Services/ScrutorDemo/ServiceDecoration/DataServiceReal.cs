@@ -1,7 +1,14 @@
-﻿namespace CleanArchitecture.DDD.Application.Services.ScrutorDemo.ServiceDecoration;
+﻿using System;
+
+namespace CleanArchitecture.DDD.Application.Services.ScrutorDemo.ServiceDecoration;
 
 public class DataServiceReal : IDataService
 {
+    public DataServiceReal()
+    {
+        Log.Information("DataService REAL- Initialized service...");
+    }
+
     public Task<IEnumerable<DemoData>> GetDemoDataAsync(int num)
     {
         num = Guard.Against.NegativeOrZero(num, nameof(num));
