@@ -69,10 +69,6 @@ public static class WebExtensionBuilderExtensions
         builder.Services.Decorate<IDataService, DataServiceCached>();
 
         // MediatR Configuration
-        // TODO: Use Scrutor here!
-        //builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
-        //builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TimingBehaviour<,>));
-
         builder.Services.Scan(scan => 
             scan.FromAssemblyOf<ApplicationAssemblyMarker>()
                 .AddClasses(classes => classes.AssignableTo(typeof(IPipelineBehavior<,>)))
