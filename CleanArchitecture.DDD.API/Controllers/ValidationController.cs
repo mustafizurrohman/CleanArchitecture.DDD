@@ -16,7 +16,7 @@ public class ValidationController : BaseAPIController
     [HttpPost("ValueObject", Name = "valueObjectValidation")]
     [SwaggerOperation(
         Summary = "Demo of validation of Value Object",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Validate Value Object",
         Tags = new[] { "Validation" }
     )]
@@ -34,7 +34,7 @@ public class ValidationController : BaseAPIController
     [HttpPost("ValueObject/fluentValidationPipeline")]
     [SwaggerOperation(
         Summary = "Demo of input validation using FluentValidation",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Input Validation",
         Tags = new[] { "Validation" }
     )]
@@ -49,7 +49,7 @@ public class ValidationController : BaseAPIController
     [HttpGet("demo/extensionMethod")]
     [SwaggerOperation(
         Summary = "Demo of Extension method",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Extension Method Validation",
         Tags = new[] { "Validation" }
     )]
@@ -74,7 +74,7 @@ public class ValidationController : BaseAPIController
     [HttpGet("demo/extensionMethod/error/")]
     [SwaggerOperation(
         Summary = "Demo of incorrect usage of Extension method",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Extension Method Validation Incorrect usage",
         Tags = new[] { "Validation" }
     )]
@@ -96,7 +96,7 @@ public class ValidationController : BaseAPIController
     [HttpGet("demo/extensionMethod/error/collection")]
     [SwaggerOperation(
         Summary = "Demo of incorrect usage of Extension method for IEnumerable",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Extension Method IEnumerable Incorrect usage",
         Tags = new[] { "Validation" }
     )]

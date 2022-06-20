@@ -27,7 +27,7 @@ public class SeedController : BaseAPIController
     [HttpPost("address", Name = "seedAddress")]
     [SwaggerOperation(
         Summary = "Seed specified number of address in database",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Seed Addresses",
         Tags = new[] { "Seed" }
     )]
@@ -58,7 +58,7 @@ public class SeedController : BaseAPIController
     [HttpPost("doctors", Name = "seedDoctors")]
     [SwaggerOperation(
         Summary = "Seed specified number of doctors in database",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Seed Doctors",
         Tags = new[] { "Seed" }
     )]

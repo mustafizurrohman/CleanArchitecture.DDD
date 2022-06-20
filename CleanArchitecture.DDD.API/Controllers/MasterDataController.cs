@@ -17,7 +17,7 @@ public class MasterDataController : BaseAPIController
     [HttpGet("doctors")]
     [SwaggerOperation(
         Summary = "Retrieves all doctors from database",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Get All Doctors",
         Tags = new[] { "MasterData" }
     )]

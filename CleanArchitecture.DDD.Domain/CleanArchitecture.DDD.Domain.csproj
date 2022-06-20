@@ -20,7 +20,7 @@
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.29.3" />
     <PackageReference Include="FluentValidation" Version="11.0.3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.0-preview.4.22229.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.0-preview.5.22302.2" />
     <PackageReference Include="ValueOf" Version="2.0.31" />
   </ItemGroup>
 

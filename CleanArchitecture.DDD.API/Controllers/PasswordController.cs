@@ -15,7 +15,7 @@ public class PasswordController : BaseAPIController
     [HttpGet("hash", Name = "Hash Password")]
     [SwaggerOperation(
         Summary = "Hash a password",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Hash Password",
         Tags = new[] { "Password" }
     )]
@@ -38,7 +38,7 @@ public class PasswordController : BaseAPIController
     [HttpGet("hash/verify", Name = "Verify Hash Password")]
     [SwaggerOperation(
         Summary = "Verify a password with provided hash value",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Verify Hashed Password",
         Tags = new[] { "Password" }
     )]

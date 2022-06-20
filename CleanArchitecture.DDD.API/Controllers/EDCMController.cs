@@ -24,7 +24,7 @@ public class EDCMController : BaseAPIController
     [HttpGet("syncDoc", Name = "Sync Doctors")]
     [SwaggerOperation(
         Summary = "Gets doc from a fake external data service",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Sync Doctors",
         Tags = new[] { "EDCM" }
     )]
@@ -54,7 +54,7 @@ public class EDCMController : BaseAPIController
     [HttpGet("syncDoc/background", Name = "syncDocBackground")]
     [SwaggerOperation(
         Summary = "Gets doc from a fake external data service as a Background task",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "SyncDocBackground",
         Tags = new[] { "EDCM" }
     )]

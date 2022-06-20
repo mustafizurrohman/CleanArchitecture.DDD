@@ -10,6 +10,8 @@
 [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public abstract class BaseAPIController : ControllerBase
 {
+    protected const string DefaultDescription = "No or default authentication required";
+
     /// <summary>
     /// 
     /// </summary>

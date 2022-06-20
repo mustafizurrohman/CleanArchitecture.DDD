@@ -20,7 +20,7 @@ public class DependencyInjectionController : BaseAPIController
     [HttpGet("", Name = "ScrutorDemoInjection")]
     [SwaggerOperation(
         Summary = "Demo of DI using scrutor",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Test Scrutor",
         Tags = new[] { "DependencyInjection" }
     )]
@@ -33,7 +33,7 @@ public class DependencyInjectionController : BaseAPIController
     [HttpGet("multiple", Name = "ScrutorDemoMultipleInjection")]
     [SwaggerOperation(
         Summary = "Demo of DI of multiple services using scrutor",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Test Scrutor Multiple",
         Tags = new[] { "DependencyInjection" }
     )]
@@ -55,7 +55,7 @@ public class DependencyInjectionController : BaseAPIController
     [HttpGet("decoration", Name = "ScrutorDemoDecoration")]
     [SwaggerOperation(
         Summary = "Demo of Decoration of services using scrutor",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Test Scrutor Decoration",
         Tags = new[] { "DependencyInjection" }
     )]

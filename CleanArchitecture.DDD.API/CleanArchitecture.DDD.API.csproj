@@ -21,12 +21,12 @@
 	  <PackageReference Include="MediatR" Version="10.0.1" />
 	  <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
 	  <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
-	  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.0-preview.4.22251.1" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-preview.4.22229.2">
+	  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.0-preview.5.22303.8" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-preview.5.22302.2">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
-	  <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="7.0.0-preview.4.22251.1" />
+	  <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="7.0.0-preview.5.22303.8" />
 	  <PackageReference Include="Scrutor" Version="4.2.0" />
 	  <PackageReference Include="Scrutor.AspNetCore" Version="3.3.0" />
 	  <PackageReference Include="Serilog.AspNetCore" Version="6.0.0-dev-00265" />

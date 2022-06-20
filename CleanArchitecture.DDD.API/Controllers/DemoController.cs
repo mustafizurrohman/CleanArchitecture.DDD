@@ -11,7 +11,7 @@ public class DemoController : BaseAPIController
     [HttpPost("ValueObject/equality", Name = "valueObjectEquality")]
     [SwaggerOperation(
         Summary = "Demo of equality of Value Object",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Check Value Object for equality",
         Tags = new[] { "Demo" }
     )]
@@ -30,7 +30,7 @@ public class DemoController : BaseAPIController
     [HttpPost("exception", Name = "loggingException")]
     [SwaggerOperation(
         Summary = "Demo of exception logging and support code",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Log Exception",
         Tags = new[] { "Demo" }
     )]

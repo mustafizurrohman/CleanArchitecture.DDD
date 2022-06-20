@@ -27,7 +27,7 @@ public class SearchController : BaseAPIController
     [HttpGet("doctor")]
     [SwaggerOperation(
         Summary = "Searches for doctors from database",
-        Description = "No or default authentication required",
+        Description = DefaultDescription,
         OperationId = "Search Doctors",
         Tags = new[] { "Search" }
     )]

@@ -35,7 +35,7 @@ public static class ServiceCollectionScrutorExtensions
 
         return serviceCollection.Scan(scan =>
             scan.FromAssemblyOf<T>()
-                .AddClasses(classes => classes.Where(type => type.Name.EndsWith(endMarker)
+                .AddClasses(classes => classes.Where(type => type.Name.ToLower().EndsWith(endMarker.ToLower())
                                     && !excludedTypes.GetType().Name.ToLower().Contains(type.Name.ToLower())))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime()

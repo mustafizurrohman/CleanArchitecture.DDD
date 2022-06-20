@@ -63,7 +63,6 @@ public static class WebExtensionBuilderExtensions
         builder.Services
             .RegisterServicesFromAssemblyWithTransientLifetime<ApplicationAssemblyMarker>(excludedTypes: excludedTypes);
 
-        // Not using Scrutor here for clarity
         // Already injected above
         // builder.Services.AddTransient<IDataService, DataService>();
         builder.Services.AddMemoryCache();
@@ -87,7 +86,7 @@ public static class WebExtensionBuilderExtensions
             {
                 Version = "1.0.0",
                 Title = "Demo API using .NET 7 (Preview)",
-                Description = "Sample API",
+                Description = "Sample API to illustrate multiple features of the .NET Framework and C#",
                 TermsOfService = new Uri("https://www.gnu.org/licenses/gpl-3.0.en.html"),
                 Contact = new OpenApiContact()
                 {
