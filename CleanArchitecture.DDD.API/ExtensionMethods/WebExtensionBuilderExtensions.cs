@@ -70,8 +70,15 @@ public static class WebExtensionBuilderExtensions
 
         // MediatR Configuration
         // TODO: Use Scrutor here!
-        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
-        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TimingBehaviour<,>));
+        //builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
+        //builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TimingBehaviour<,>));
+
+        builder.Services.Scan(scan => 
+            scan.FromAssemblyOf<ApplicationAssemblyMarker>()
+                .AddClasses(classes => classes.AssignableTo(typeof(IPipelineBehavior<,>)))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime()
+        );
         
         return builder;
     }
