@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.Application.ExtensionMethods;
+﻿using CleanArchitecture.DDD.Core.Scrutor.Attributes;
+
+namespace CleanArchitecture.DDD.Application.ExtensionMethods;
 
 public static class ServiceCollectionScrutorExtensions
 {
@@ -16,7 +18,7 @@ public static class ServiceCollectionScrutorExtensions
 
     // Scrutor Will slightly increase the application startup time because it uses reflection
     // Reference- https://andrewlock.net/using-scrutor-to-automatically-register-your-services-with-the-asp-net-core-di-container/
-
+    
     /// <summary>
     /// Register all services (using Scrutor) with name ending with 'Service' or a specified string 
     /// in a specified assembly optionally excluding specific types 
@@ -42,6 +44,37 @@ public static class ServiceCollectionScrutorExtensions
                 .AsImplementedInterfaces()
                 .WithLifetime(lifeTime)
         );
+    }
+
+    /// <summary>
+    /// Registers the service by attribute
+    /// Reference- https://alimozdemir.medium.com/better-di-service-registration-with-assembly-scan-3e0329e8e30a
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="serviceCollection"></param>
+    /// <returns></returns>
+    public static IServiceCollection RegisterServiceByAttribute<T>(this IServiceCollection serviceCollection)
+    {
+        return serviceCollection.Scan(scan =>
+        {
+            scan.FromAssemblyOf<T>()
+                .AddClasses(classes => classes.WithoutAttribute<TransientAttribute>())
+                .AsImplementedInterfaces()
+                .WithTransientLifetime();
+
+            scan.FromAssemblyOf<T>()
+                .AddClasses(classes => classes.WithoutAttribute<ScopedAttribute>())
+                .AsImplementedInterfaces()
+                .WithScopedLifetime();
+
+
+            scan.FromAssemblyOf<T>()
+                .AddClasses(classes => classes.WithoutAttribute<SingletonAttribute>())
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime();
+        });
+
+
     }
 
 }

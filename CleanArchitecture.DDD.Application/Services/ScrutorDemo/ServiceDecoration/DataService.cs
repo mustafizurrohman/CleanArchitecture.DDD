@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CleanArchitecture.DDD.Application.Services.ScrutorDemo.ServiceDecoration;
+﻿namespace CleanArchitecture.DDD.Application.Services.ScrutorDemo.ServiceDecoration;
 
 public class DataService : IDataService
 {
