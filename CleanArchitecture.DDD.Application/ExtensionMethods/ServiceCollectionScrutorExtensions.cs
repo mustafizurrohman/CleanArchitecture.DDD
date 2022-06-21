@@ -25,11 +25,13 @@ public static class ServiceCollectionScrutorExtensions
     /// <param name="serviceCollection"></param>
     /// <param name="endMarker"></param>
     /// <param name="excludedTypes"></param>
+    /// <param name="lifeTime"></param>
     /// <returns></returns>
-    public static IServiceCollection RegisterServicesFromAssemblyWithTransientLifetime<T>(
+    public static IServiceCollection RegisterServicesFromAssembly<T>(
         this IServiceCollection serviceCollection,
         string endMarker = "Service",
-        IEnumerable<Type>? excludedTypes = null)
+        IEnumerable<Type>? excludedTypes = null,
+        ServiceLifetime lifeTime = ServiceLifetime.Transient)
     {
         excludedTypes ??= Enumerable.Empty<Type>();
 
@@ -38,7 +40,7 @@ public static class ServiceCollectionScrutorExtensions
                 .AddClasses(classes => classes.Where(type => type.Name.ToLower().EndsWith(endMarker.ToLower())
                                     && !excludedTypes.GetType().Name.ToLower().Contains(type.Name.ToLower())))
                 .AsImplementedInterfaces()
-                .WithTransientLifetime()
+                .WithLifetime(lifeTime)
         );
     }
 

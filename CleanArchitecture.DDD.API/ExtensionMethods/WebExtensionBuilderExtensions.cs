@@ -57,11 +57,11 @@ public static class WebExtensionBuilderExtensions
         builder.Services.AddTransient<IAppServices, AppServices>();
         
         builder.Services
-            .RegisterServicesFromAssemblyWithTransientLifetime<APIAssemblyMarker>();
+            .RegisterServicesFromAssembly<APIAssemblyMarker>();
 
         var excludedTypes = new List<Type> { typeof(EDCMSyncService) };
         builder.Services
-            .RegisterServicesFromAssemblyWithTransientLifetime<ApplicationAssemblyMarker>(excludedTypes: excludedTypes);
+            .RegisterServicesFromAssembly<ApplicationAssemblyMarker>(excludedTypes: excludedTypes);
 
         // Already injected above
         // builder.Services.AddTransient<IDataService, DataService>();
@@ -69,6 +69,7 @@ public static class WebExtensionBuilderExtensions
         builder.Services.Decorate<IDataService, DataServiceCached>();
 
         // MediatR Configuration
+        // TODO: Order of injection matters here. How can it be influenced?
         builder.Services.Scan(scan => 
             scan.FromAssemblyOf<ApplicationAssemblyMarker>()
                 .AddClasses(classes => classes.AssignableTo(typeof(IPipelineBehavior<,>)))
