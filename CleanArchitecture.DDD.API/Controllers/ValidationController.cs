@@ -80,11 +80,9 @@ public class ValidationController : BaseAPIController
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DemoExtensionMethodForCollection([FromQuery] int num = 10)
+    public async Task<IActionResult> DemoExtensionMethodForCollection()
     {
-        num = Guard.Against.NegativeOrZero(num, nameof(num));
-
-        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
+        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(100).ToList();
 
         var doctorsToValidate = AutoMapper.Map<IEnumerable<ExternalFakeDoctorAddressDTO>, IEnumerable<FakeDoctorAddressDTO>>
                 (fakeDoctors);
@@ -106,7 +104,7 @@ public class ValidationController : BaseAPIController
     )]
     public async Task<IActionResult> DemoExtensionMethodErrorForObject()
     {
-        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(10).ToList();
+        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(100).ToList();
 
         var doctorToValidate = fakeDoctors.First();
 
@@ -127,7 +125,7 @@ public class ValidationController : BaseAPIController
     )]
     public async Task<IActionResult> DemoExtensionMethodErrorForCollection()
     {
-        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(10).ToList();
+        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(100).ToList();
         
         // We have not defined a validator for ExternalFakeDoctorAddressDTO
         // So this  will throw an exception at runtime
