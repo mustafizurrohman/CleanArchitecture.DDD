@@ -55,22 +55,19 @@ public class ValidationController : BaseAPIController
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DemoExtensionMethod()
+    public IActionResult DemoExtensionMethod(bool withModelError = false)
     {
-        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(1).ToList();
+        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(100).ToList();
 
         var doctorsToValidate = AutoMapper.Map<IEnumerable<ExternalFakeDoctorAddressDTO>, IEnumerable<FakeDoctorAddressDTO>>
             (fakeDoctors).ToList();
 
-        var doctorToValidate = doctorsToValidate
-            .OrderBy(_ => Guid.NewGuid())
-            .DefaultIfEmpty()
-            .First();
-
-        var validationReport = await doctorToValidate!.GetModelValidationReportAsync();
-        var validationReportAsString = validationReport.ToFormattedJson();
-
-        return Ok(validationReportAsString);
+        var validationReport = doctorsToValidate
+            .Where(doc => withModelError ? !doc.GetModelValidationReport().Valid : doc.GetModelValidationReport().Valid)
+            .Select(doc => doc.GetModelValidationReport())
+            .FirstOrDefault();
+        
+        return Ok(validationReport);
     }
 
     [ApiExplorerSettings(IgnoreApi = false)]
@@ -93,9 +90,8 @@ public class ValidationController : BaseAPIController
                 (fakeDoctors);
 
         var validationReport = await doctorsToValidate.GetModelValidationReportAsync();
-        var validationReportAsString = validationReport.ToFormattedJson();
-
-        return Ok(validationReportAsString);
+        
+        return Ok(validationReport);
     }
 
     [ApiExplorerSettings(IgnoreApi = false)]
@@ -115,9 +111,8 @@ public class ValidationController : BaseAPIController
         // We have not defined a validator for ExternalFakeDoctorAddressDTO
         // So this  will throw an exception at runtime
         var validationReport = await doctorToValidate.GetModelValidationReportAsync();
-        var validationReportAsString = validationReport.ToFormattedJson();
-
-        return Ok(validationReportAsString);
+        
+        return Ok(validationReport);
     }
 
     [ApiExplorerSettings(IgnoreApi = false)]
@@ -135,9 +130,8 @@ public class ValidationController : BaseAPIController
         // We have not defined a validator for ExternalFakeDoctorAddressDTO
         // So this  will throw an exception at runtime
         var validationReport = await fakeDoctors.GetModelValidationReportAsync();
-        var validationReportAsString = validationReport.ToFormattedJson();
-
-        return Ok(validationReportAsString);
+        
+        return Ok(validationReport);
     }
 
 }
