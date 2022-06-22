@@ -21,13 +21,13 @@ public class ModelCollectionValidationReport<T>
 
     public bool HasAllValidModels => ValidationReportInternal.All(model => model.Valid);
     public bool HasAllInvalidModels => ValidationReportInternal.All(model => !model.Valid);
-    public int TotalNumberOfModels => ValidationReportInternal.Count();
+    public int TotalNumberOfModels => ValidationReportInternal.Count;
 
     public ModelCollectionValidationReport(IEnumerable<ModelValidationReport<T>> validationReport)
     {
         ValidationReportInternal = Guard.Against.NullOrEmpty(validationReport, nameof(validationReport)).ToList();
         
-        ValidationReport = new ValidationReport<T>()
+        ValidationReport = new ValidationReport<T>
         {
             ValidModelsReport = ValidationReportInternal.Where(vr => vr.Valid),
             InvalidModelsReport = ValidationReportInternal.Where(vr => !vr.Valid)
