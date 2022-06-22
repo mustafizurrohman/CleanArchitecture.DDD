@@ -32,24 +32,12 @@ public class DataServiceCached : IDataService
         }
 
         demoData = (await DataService.GetDemoDataAsync(num)).ToList();
-        if (!demoData.Any())
-            demoData = new List<DemoData>();
-
-        var demoDataCached = new List<DemoData>();
-
-        foreach (var data in demoData)
-        {
-            demoDataCached.Add(new DemoData
-            {
-                Cached = true,
-                CreatedDateTime = data.CreatedDateTime,
-                Firstname = data.Firstname,
-                Lastname = data.Lastname
-            });
-        }
-
+        
+        var demoDataCached = demoData
+            .Select(data => data.GetCachedVersion())
+            .ToList();
+        
         SetMemoryCache(cacheKey, demoDataCached);
-
         Log.Information("Returning real data ...");
 
         return demoData;
