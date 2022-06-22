@@ -90,7 +90,9 @@ public class ValidationController : BaseAPIController
                 (fakeDoctors);
 
         var validationReport = await doctorsToValidate.GetModelValidationReportAsync();
-        
+
+        var toDebugAsString = validationReport.ToFormattedJson();
+
         return Ok(validationReport);
     }
 
