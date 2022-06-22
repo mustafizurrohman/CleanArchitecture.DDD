@@ -20,6 +20,10 @@ public class ModelCollectionValidationReport<T>
 
     public bool HasAllInvalidModels => ValidationReport.All(model => !model.Valid);
 
+    public int TotalNumberOfModels => ValidationReport.Count();
+    public int NumberOfValidModels => ValidationReport.Count(model => model.Valid);
+    public int NumberOfInvalidModels => ValidationReport.Count(model => !model.Valid);
+
     public ModelCollectionValidationReport(IEnumerable<ModelValidationReport<T>> validationReport)
     {
         ValidationReport = Guard.Against.NullOrEmpty(validationReport, nameof(validationReport));
