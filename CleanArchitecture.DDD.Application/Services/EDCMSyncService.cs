@@ -99,9 +99,6 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         if (parsedResponse.Count == 0)
             return Enumerable.Empty<DoctorDTO>();
 
-        var testExtensionMethod = await parsedResponse.GetModelValidationReportAsync();
-        var testResult = testExtensionMethod.ToFormattedJson();
-
         var modelCollectionValidationReport = await parsedResponse.GetModelValidationReportAsync(_validator);
         
         if (modelCollectionValidationReport.HasInvalidModels)

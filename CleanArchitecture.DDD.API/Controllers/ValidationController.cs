@@ -48,14 +48,42 @@ public class ValidationController : BaseAPIController
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("demo/extensionMethod")]
     [SwaggerOperation(
-        Summary = "Demo of Extension method",
+        Summary = "Demo of Extension method for a single object",
         Description = DefaultDescription,
         OperationId = "Extension Method Validation",
         Tags = new[] { "Validation" }
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DemoExtensionMethod([FromQuery] int num = 10)
+    public async Task<IActionResult> DemoExtensionMethod()
+    {
+        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(1).ToList();
+
+        var doctorsToValidate = AutoMapper.Map<IEnumerable<ExternalFakeDoctorAddressDTO>, IEnumerable<FakeDoctorAddressDTO>>
+            (fakeDoctors).ToList();
+
+        var doctorToValidate = doctorsToValidate
+            .OrderBy(_ => Guid.NewGuid())
+            .DefaultIfEmpty()
+            .First();
+
+        var validationReport = await doctorToValidate!.GetModelValidationReportAsync();
+        var validationReportAsString = validationReport.ToFormattedJson();
+
+        return Ok(validationReportAsString);
+    }
+
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpGet("demo/extensionMethod/collection")]
+    [SwaggerOperation(
+        Summary = "Demo of Extension method for IEnumerable",
+        Description = DefaultDescription,
+        OperationId = "Extension Method IEnumerable Validation",
+        Tags = new[] { "Validation" }
+    )]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> DemoExtensionMethodForCollection([FromQuery] int num = 10)
     {
         num = Guard.Against.NegativeOrZero(num, nameof(num));
 

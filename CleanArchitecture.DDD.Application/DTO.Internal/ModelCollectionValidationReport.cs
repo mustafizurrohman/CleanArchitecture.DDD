@@ -13,16 +13,14 @@ public class ModelCollectionValidationReport<T>
         ValidationReport.Where(model => !model.Valid).Select(model => model.Model);
 
     public bool HasValidModels => ValidationReport.Any(model => model.Valid);
+    public int NumberOfValidModels => ValidationReport.Count(model => model.Valid);
 
     public bool HasInvalidModels => ValidationReport.Any(model => !model.Valid);
-    
-    public bool HasAllValidModels => ValidationReport.All(model => model.Valid);
-
-    public bool HasAllInvalidModels => ValidationReport.All(model => !model.Valid);
-
-    public int TotalNumberOfModels => ValidationReport.Count();
-    public int NumberOfValidModels => ValidationReport.Count(model => model.Valid);
     public int NumberOfInvalidModels => ValidationReport.Count(model => !model.Valid);
+
+    public bool HasAllValidModels => ValidationReport.All(model => model.Valid);
+    public bool HasAllInvalidModels => ValidationReport.All(model => !model.Valid);
+    public int TotalNumberOfModels => ValidationReport.Count();
 
     public ModelCollectionValidationReport(IEnumerable<ModelValidationReport<T>> validationReport)
     {
