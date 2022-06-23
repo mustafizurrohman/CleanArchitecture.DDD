@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.DDD.Application.DTO.Internal;
+﻿namespace CleanArchitecture.DDD.Application.ExtensionMethods;
 
 internal static class DemoDataExtensions
 {
