@@ -6,7 +6,7 @@ internal class ValidatorNotDefinedException : ApplicationException
     private string ValidatorClassName { get; }
     private string AssemblyName { get; }
 
-    public ValidatorNotDefinedException(Type typ)
+    public ValidatorNotDefinedException(Type typ) 
     {
 
         TypeName = typ.GetTypeNameForFluentValidation();

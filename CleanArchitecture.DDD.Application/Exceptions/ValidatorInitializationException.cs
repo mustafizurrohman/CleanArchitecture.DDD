@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.DDD.Application.Exceptions;
 
-internal class ValidatorInitializationException : Exception
+internal class ValidatorInitializationException : ApplicationException
 {
     private string? TypeName { get; }
     private string ValidatorClassName { get; }

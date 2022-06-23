@@ -67,7 +67,7 @@ public static class ApplicationBuilderExtensions
                 if (isInDevelopment)
                     errorMessage += Environment.NewLine + exception.Message + Environment.NewLine + exception;
 
-                await context.Response.WriteAsync(JsonSerializer.Serialize(errorMessage), Encoding.UTF8);
+                await context.Response.WriteAsync(errorMessage.ToFormattedJson(), Encoding.UTF8);
             });
         });
     }
