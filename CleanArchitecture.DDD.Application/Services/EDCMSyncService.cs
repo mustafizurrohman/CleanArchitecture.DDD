@@ -127,10 +127,11 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             return;
         
         // TODO: Save as HTML and send as attachment using Weischer Global Email service 
-        var validationResult = modelCollectionValidationReport.ValidationReport.ToFormattedJson();
+        var validationResult = modelCollectionValidationReport.ValidationReport.InvalidModelsReport.ToFormattedJson();
         Log.Warning(validationResult);
 
         LogWithSpace(() => Log.Warning("Got {countOfInvalidModels} invalid data from CRM / external system.", modelCollectionValidationReport.InvalidModels.Count()));
+        LogWithSpace(() => Log.Information("In prod the admin must be informed or properly logged to gain attention ..."));
         
     }
     
@@ -153,7 +154,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
                 
                 // Can be optimized when using a Value Object
                 if (existingDoctor.Address == doctor.Address) {
-                    LogWithSpace(() => Log.Information("Not updating Address with ID {addressID} because it is unchanged.", existingDoctor.Address.City));
+                    LogWithSpace(() => Log.Information("Not updating Address with ID {addressID} because it is unchanged.", existingDoctor.Address.AddressID));
                     continue;
                 }
 

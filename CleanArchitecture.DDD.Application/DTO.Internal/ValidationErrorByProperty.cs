@@ -2,7 +2,7 @@
 
 public class ValidationErrorByProperty
 {
-    public string PropertyName { get; init; }
-    public object? ProvidedValue { get; init; }
-    public IEnumerable<string> ErrorMessages { get; init; }
+    public string PropertyName { [UsedImplicitly] get; init; }
+    public object? ProvidedValue { [UsedImplicitly] get; init; }
+    public IEnumerable<string> ErrorMessages { [UsedImplicitly] get; init; }
 }

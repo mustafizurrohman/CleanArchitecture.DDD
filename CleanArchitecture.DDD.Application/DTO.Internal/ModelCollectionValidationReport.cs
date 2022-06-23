@@ -3,9 +3,9 @@
 public class ModelCollectionValidationReport<T> 
     where T : class, new()
 {
-    private List<ModelValidationReport<T>> ValidationReportInternal { get; }
+    private IEnumerable<ModelValidationReport<T>> ValidationReportInternal { get; }
     
-    public ValidationReport<T> ValidationReport { get; init; } 
+    public ValidationReport<T> ValidationReport { get; } 
 
     public IEnumerable<T> ValidModels =>
         ValidationReportInternal.Where(model => model.Valid).Select(model => model.Model);
@@ -21,7 +21,7 @@ public class ModelCollectionValidationReport<T>
 
     public bool HasAllValidModels => ValidationReportInternal.All(model => model.Valid);
     public bool HasAllInvalidModels => ValidationReportInternal.All(model => !model.Valid);
-    public int TotalNumberOfModels => ValidationReportInternal.Count;
+    public int TotalNumberOfModels => ValidationReportInternal.Count();
 
     public ModelCollectionValidationReport(IEnumerable<ModelValidationReport<T>> validationReport)
     {
