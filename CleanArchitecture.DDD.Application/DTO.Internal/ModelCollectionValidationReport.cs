@@ -3,7 +3,7 @@
 public class ModelCollectionValidationReport<T> 
     where T : class, new()
 {
-    protected List<ModelValidationReport<T>> ValidationReportInternal { private get; init; }
+    private List<ModelValidationReport<T>> ValidationReportInternal { get; }
     
     public ValidationReport<T> ValidationReport { get; init; } 
 
