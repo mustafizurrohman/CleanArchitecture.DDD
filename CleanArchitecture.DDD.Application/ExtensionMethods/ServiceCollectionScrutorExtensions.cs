@@ -58,18 +58,18 @@ public static class ServiceCollectionScrutorExtensions
         return serviceCollection.Scan(scan =>
         {
             scan.FromAssemblyOf<T>()
-                .AddClasses(classes => classes.WithAttribute<TransientAttribute>())
+                .AddClasses(classes => classes.WithAttribute<TransientServiceAttribute>())
                 .AsImplementedInterfaces()
                 .WithTransientLifetime();
 
             scan.FromAssemblyOf<T>()
-                .AddClasses(classes => classes.WithAttribute<ScopedAttribute>())
+                .AddClasses(classes => classes.WithAttribute<ScopedServiceAttribute>())
                 .AsImplementedInterfaces()
                 .WithScopedLifetime();
 
 
             scan.FromAssemblyOf<T>()
-                .AddClasses(classes => classes.WithAttribute<SingletonAttribute>())
+                .AddClasses(classes => classes.WithAttribute<SingletonServiceAttribute>())
                 .AsImplementedInterfaces()
                 .WithSingletonLifetime();
         });
