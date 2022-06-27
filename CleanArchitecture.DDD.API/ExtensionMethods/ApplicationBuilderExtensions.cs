@@ -10,6 +10,9 @@ public static class ApplicationBuilderExtensions
     /// <param name="applicationBuilder">The application builder.</param>
     public static void MigrateDatabase(this IApplicationBuilder applicationBuilder)
     {
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
         using IServiceScope? serviceScope = applicationBuilder.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope();
 
         if (serviceScope is null) 
@@ -29,7 +32,8 @@ public static class ApplicationBuilderExtensions
         }
         finally
         {
-            Log.Information("Database Migration completed ...");
+            stopwatch.Stop();
+            Log.Information("Database Migration completed in {TimeTakenForDbMigration} milliseconds ...", stopwatch.ElapsedMilliseconds);
         }
     }
 
