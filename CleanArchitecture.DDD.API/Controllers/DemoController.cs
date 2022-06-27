@@ -7,6 +7,11 @@ public class DemoController : BaseAPIController
     {
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("ValueObject/equality", Name = "valueObjectEquality")]
     [SwaggerOperation(
@@ -26,6 +31,11 @@ public class DemoController : BaseAPIController
         return Ok(name1 == name2);
     }
     
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("exception", Name = "loggingException")]
     [SwaggerOperation(

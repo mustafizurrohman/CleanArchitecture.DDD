@@ -12,6 +12,11 @@ public class ValidationController : BaseAPIController
         _fakeDataService = fakeDataService;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("ValueObject", Name = "valueObjectValidation")]
     [SwaggerOperation(
@@ -30,6 +35,11 @@ public class ValidationController : BaseAPIController
         return Ok(createdName.Value);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("ValueObject/fluentValidationPipeline")]
     [SwaggerOperation(
@@ -45,6 +55,11 @@ public class ValidationController : BaseAPIController
         return Ok();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="withModelError"></param>
+    /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("demo/extensionMethod")]
     [SwaggerOperation(
@@ -70,6 +85,10 @@ public class ValidationController : BaseAPIController
         return Ok(validationReport);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("demo/extensionMethod/collection")]
     [SwaggerOperation(
@@ -94,6 +113,10 @@ public class ValidationController : BaseAPIController
         return Ok(validationReport);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("demo/extensionMethod/error/")]
     [SwaggerOperation(
@@ -115,6 +138,10 @@ public class ValidationController : BaseAPIController
         return Ok(validationReport);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("demo/extensionMethod/error/collection")]
     [SwaggerOperation(

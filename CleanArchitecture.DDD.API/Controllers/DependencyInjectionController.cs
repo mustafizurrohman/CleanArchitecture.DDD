@@ -17,6 +17,11 @@ public class DependencyInjectionController : BaseAPIController
     {
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="testService"></param>
+    /// <returns></returns>
     [HttpGet("", Name = "ScrutorDemoInjection")]
     [SwaggerOperation(
         Summary = "Demo of DI using scrutor",
@@ -30,6 +35,11 @@ public class DependencyInjectionController : BaseAPIController
         return Ok(testService.HelloWorld());
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="testServices"></param>
+    /// <returns></returns>
     [HttpGet("multiple", Name = "ScrutorDemoMultipleInjection")]
     [SwaggerOperation(
         Summary = "Demo of DI of multiple services using scrutor",
@@ -51,6 +61,11 @@ public class DependencyInjectionController : BaseAPIController
         return Ok(serviceOutputs);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dataService"></param>
+    /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("decoration", Name = "ScrutorDemoDecoration")]
     [SwaggerOperation(
