@@ -25,6 +25,9 @@ public class DemoController : BaseAPIController
         var createdName1 = NameValueObject.Create(name);
         var createdName2 = NameValueObject.Create(name);
 
+        if (createdName1.IsFailure || createdName2.IsFailure)
+            return BadRequest(createdName2.Error.Message);
+
         var name1 = createdName1.Value;
         var name2 = createdName2.Value;
 
