@@ -1,7 +1,7 @@
 var stopwatch = new Stopwatch();
 stopwatch.Start();
 
-Console.WriteLine($"{DateTime.Now.ToLocalDateTime()}- Starting API ...");
+Console.WriteLine($"{DateTime.Now.ToLocalDEDateTime()}- Starting API ...");
 Console.WriteLine();
 
 // Add services to the container
@@ -12,5 +12,6 @@ var app = builder.Build().ConfigureHttpPipeline();
 stopwatch.Stop();
 
 Console.WriteLine();
-Console.WriteLine($"{DateTime.Now.ToLocalDateTime()}- API Startup completed in {stopwatch.ElapsedMilliseconds} milliseconds ...");
+var startupCompletionTime = DateTime.Now;
+Log.Information("{ApplicationStartupCompletionTime}- API Startup completed in {ApplicationStartupDuration} milliseconds ...", startupCompletionTime.ToLocalDEDateTime(), stopwatch.ElapsedMilliseconds);
 app.Run();

@@ -18,7 +18,7 @@ public class DataServiceCached : IDataService
         MemoryCache = Guard.Against.Null(memoryCache, nameof(memoryCache));
         DataService = Guard.Against.Null(dataService, nameof(dataService));
 
-        Log.Information($"DECORATED DataService CACHED- Initialized service... Cache valid until {DateTime.Now.Add(timeSpan).ToLocalDateTime()}");
+        Log.Information($"DECORATED DataService CACHED- Initialized service... Cache valid until {DateTime.Now.Add(timeSpan).ToLocalDEDateTime()}");
     }
 
     public async Task<IEnumerable<DemoData>> GetDemoDataAsync(int num)

@@ -2,7 +2,8 @@
 
 public static class DateTimeExtensions
 {
-    public static string ToLocalDateTime(this DateTime dateTime)
+    // ReSharper disable once InconsistentNaming
+    public static string ToLocalDEDateTime(this DateTime dateTime)
     {
         return dateTime.ToString("dd.MM.yyyy HH:mm:ss");
     }

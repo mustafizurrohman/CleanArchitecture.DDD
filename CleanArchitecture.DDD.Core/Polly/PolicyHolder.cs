@@ -109,8 +109,8 @@ public class PolicyHolder : IPolicyHolder
                     var nextTry = now.Add(waitingTime);
                     Log.Information("Polly RetryAttempt# {@attempts} at {@now}. Next try at {@nextTry} if current attempt fails",
                         ++attempts,
-                        now.ToLocalDateTime(),
-                        nextTry.ToLocalDateTime());
+                        now.ToLocalDEDateTime(),
+                        nextTry.ToLocalDEDateTime());
                 });
     }
     
@@ -143,8 +143,8 @@ public class PolicyHolder : IPolicyHolder
                     var nextTry = now.Add(waitingTime);
                     Log.Information("Polly RetryAttempt# {@attempts} at {@now}. Next try at {@nextTry} if current attempt fails", 
                         ++attempts, 
-                        now.ToLocalDateTime(), 
-                        nextTry.ToLocalDateTime());
+                        now.ToLocalDEDateTime(), 
+                        nextTry.ToLocalDEDateTime());
                 });
     }
 
