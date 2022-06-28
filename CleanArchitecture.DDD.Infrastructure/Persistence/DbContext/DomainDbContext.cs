@@ -58,6 +58,50 @@ public partial class DomainDbContext : DatabaseContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var entries = ChangeTracker
+            .Entries()
+            .Where(e => e.Entity is BaseEntity 
+                        && e.State is EntityState.Added or EntityState.Modified);
+
+        foreach (var entityEntry in entries)
+        {
+            if (entityEntry.State == EntityState.Added)
+            {
+                ((BaseEntity)entityEntry.Entity).CreatedOn = DateTime.Now;
+            }
+            else
+            {
+                ((BaseEntity)entityEntry.Entity).UpdatedOn = DateTime.Now;
+            }
+        }
+
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    public override int SaveChanges()
+    {
+        var entries = ChangeTracker
+            .Entries()
+            .Where(e => e.Entity is BaseEntity 
+                        && e.State is EntityState.Added or EntityState.Modified);
+
+        foreach (var entityEntry in entries)
+        {
+            if (entityEntry.State == EntityState.Added)
+            {
+                ((BaseEntity)entityEntry.Entity).CreatedOn = DateTime.Now;
+            }
+            else
+            {
+                ((BaseEntity)entityEntry.Entity).UpdatedOn = DateTime.Now;
+            }
+        }
+
+        return base.SaveChanges();
+    }
+
     private bool IsConnectionStringValid(string connectionString)
     {
         string RemoveDatabaseFromConnectionString(string connStr)
