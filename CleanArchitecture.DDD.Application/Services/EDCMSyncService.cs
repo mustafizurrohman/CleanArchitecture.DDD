@@ -40,7 +40,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         
         // Entity Framework is aware that Doctors an Address have a PK-FK Relationship
         // So it will take care that the keys are properly created and linked.
-        await DbContext.Doctors.AddRangeAsync(doctors);
+        await DbContext.AddRangeAsync(doctors);
         await DbContext.SaveChangesAsync();
 
         return doctorDTOList;
@@ -142,8 +142,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             var existingDoctor = await DbContext.Doctors
                 // Explicit join using Entity Framework
                 .Include(doc => doc.Address)
-                .Where(doc => doc.EDCMExternalID == doctor.EDCMExternalID)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(doc => doc.EDCMExternalID == doctor.EDCMExternalID);
 
             // New C# syntax (Official recommendation)
             // existingDoctor != null 
@@ -152,13 +151,12 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             {
                 // Not updating names for the sake of simplicity
                 
-                // Can be optimized when using a Value Object
                 if (existingDoctor.Address == doctor.Address) {
                     LogWithSpace(() => Log.Information("Not updating Address with ID {addressID} because it is unchanged.", existingDoctor.Address.AddressID));
                     continue;
                 }
 
-                // TODO: Investiage why this thorws a null reference exception
+                // TODO: Investigate why this throws a null reference exception
                 //await DbContext.Addresses
                 //    .Where(addr => addr.AddressID == existingDoctor.AddressId)
                 //    .UpdateAsync(_ => new Address()
@@ -170,8 +168,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
                 //    });
 
                 var address = await DbContext.Addresses
-                    .Where(addr => addr.AddressID == existingDoctor.AddressId)
-                    .SingleAsync();
+                    .SingleAsync(addr => addr.AddressID == existingDoctor.AddressId);
 
                 address.City = doctor.Address.City;
                 address.Country = doctor.Address.Country;
@@ -184,7 +181,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             {
                 // EF will take care that PK-FK values are correctly set
                 // Since EF is aware that Doctors and Addresses are linked using a PK-FK relationship
-                await DbContext.Doctors.AddAsync(doctor);
+                await DbContext.AddAsync(doctor);
                 
                 LogWithSpace(() => Log.Information("Inserting Address with ID {addressID}", doctor.Address.AddressID));
             }

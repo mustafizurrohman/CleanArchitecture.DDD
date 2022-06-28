@@ -58,47 +58,33 @@ public partial class DomainDbContext : DatabaseContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    private void SetAuditingData()
     {
         var entries = ChangeTracker
             .Entries()
-            .Where(e => e.Entity is BaseEntity 
+            .Where(e => e.Entity is BaseEntity
                         && e.State is EntityState.Added or EntityState.Modified);
+
+        var now = DateTime.Now;
 
         foreach (var entityEntry in entries)
         {
             if (entityEntry.State == EntityState.Added)
-            {
-                ((BaseEntity)entityEntry.Entity).CreatedOn = DateTime.Now;
-            }
+                ((BaseEntity)entityEntry.Entity).CreatedOn = now;
             else
-            {
-                ((BaseEntity)entityEntry.Entity).UpdatedOn = DateTime.Now;
-            }
+                ((BaseEntity)entityEntry.Entity).UpdatedOn = now;
         }
+    }
 
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        SetAuditingData();
         return base.SaveChangesAsync(cancellationToken);
     }
 
     public override int SaveChanges()
     {
-        var entries = ChangeTracker
-            .Entries()
-            .Where(e => e.Entity is BaseEntity 
-                        && e.State is EntityState.Added or EntityState.Modified);
-
-        foreach (var entityEntry in entries)
-        {
-            if (entityEntry.State == EntityState.Added)
-            {
-                ((BaseEntity)entityEntry.Entity).CreatedOn = DateTime.Now;
-            }
-            else
-            {
-                ((BaseEntity)entityEntry.Entity).UpdatedOn = DateTime.Now;
-            }
-        }
-
+        SetAuditingData();
         return base.SaveChanges();
     }
 
