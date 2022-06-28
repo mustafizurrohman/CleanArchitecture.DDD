@@ -58,6 +58,18 @@ public partial class DomainDbContext : DatabaseContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        SetAuditingData();
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    public override int SaveChanges()
+    {
+        SetAuditingData();
+        return base.SaveChanges();
+    }
+
     private void SetAuditingData()
     {
         var entries = ChangeTracker
@@ -74,18 +86,6 @@ public partial class DomainDbContext : DatabaseContext
             else
                 ((BaseEntity)entityEntry.Entity).UpdatedOn = now;
         }
-    }
-
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        SetAuditingData();
-        return base.SaveChangesAsync(cancellationToken);
-    }
-
-    public override int SaveChanges()
-    {
-        SetAuditingData();
-        return base.SaveChanges();
     }
 
     private bool IsConnectionStringValid(string connectionString)
