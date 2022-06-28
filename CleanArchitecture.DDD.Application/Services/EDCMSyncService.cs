@@ -158,16 +158,26 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
                     continue;
                 }
 
-                await DbContext.Addresses
-                    .Where(addr => addr.AddressID == existingDoctor.AddressId)
-                    .UpdateAsync(_ => new Address()
-                    {
-                        City = doctor.Address.City,
-                        Country = doctor.Address.Country,
-                        StreetAddress = doctor.Address.StreetAddress,
-                        ZipCode = doctor.Address.ZipCode
-                    });
+                // TODO: Investiage why this thorws a null reference exception
+                //await DbContext.Addresses
+                //    .Where(addr => addr.AddressID == existingDoctor.AddressId)
+                //    .UpdateAsync(_ => new Address()
+                //    {
+                //        City = doctor.Address.City,
+                //        Country = doctor.Address.Country,
+                //        StreetAddress = doctor.Address.StreetAddress,
+                //        ZipCode = doctor.Address.ZipCode
+                //    });
 
+                var address = await DbContext.Addresses
+                    .Where(addr => addr.AddressID == existingDoctor.AddressId)
+                    .SingleAsync();
+
+                address.City = doctor.Address.City;
+                address.Country = doctor.Address.Country;
+                address.StreetAddress = doctor.Address.StreetAddress;
+                address.ZipCode = doctor.Address.ZipCode;
+                
                 LogWithSpace(() => Log.Information("Updating Address with ID {addressID}", existingDoctor.Address.AddressID));
             }
             else
