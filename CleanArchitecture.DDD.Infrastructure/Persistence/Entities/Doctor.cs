@@ -4,7 +4,7 @@ namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
 //[StronglyTypedId(converters: StronglyTypedIdConverter.SystemTextJson)]
 //public partial struct DoctorID{}
 
-public sealed class Doctor
+public sealed class Doctor : BaseEntity
 {
 
     [Key]
