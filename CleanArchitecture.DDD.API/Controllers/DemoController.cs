@@ -1,3 +1,5 @@
+using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
+
 namespace CleanArchitecture.DDD.API.Controllers;
 
 public class DemoController : BaseAPIController
@@ -58,16 +60,32 @@ public class DemoController : BaseAPIController
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("camelCase", Name = "camelCase")]
+    [HttpPost("extension", Name = "extension")]
     [SwaggerOperation(
         Summary = "Demo of extension method",
         Description = DefaultDescription,
         OperationId = "Demo Extension Method",
         Tags = new[] { "Demo" }
     )]
-    public IActionResult DemoExtensionMethod(string input)
+    public IActionResult DemoExtensionMethod()
     {
-        return Ok(input.CamelCaseToSentence());
+        var randomSpecializations = Enumerable.Range(0, 1000)
+            .Select(_ => SpecializationEnumExtensions.GetRandomSpecialization())
+            .Select(sp => new
+            {
+                Specialization = sp,
+                SpecializationAsString = sp.ToReadableString()
+            })
+            .GroupBy(sp => sp.Specialization)
+            .Select(sp => new
+            {
+                SpAsString = sp.Key.ToReadableString(),
+                Count = sp.Count()
+            })
+            .OrderBy(sp => sp.SpAsString)
+            .ToList();
+
+        return Ok(randomSpecializations);
     }
 
 }

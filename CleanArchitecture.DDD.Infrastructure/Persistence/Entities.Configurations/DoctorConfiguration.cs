@@ -9,10 +9,13 @@ internal class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
     {
         builder.HasKey(doc => doc.DoctorID);
 
+
         builder.OwnsOne(doc => doc.Name);
+
 
         builder.Property(doc => doc.EDCMExternalID)
             .HasDefaultValue(Guid.Empty);
+
 
         builder.Property(doc => doc.Specialization)
             .HasDefaultValue(Specialization.Unknown);
@@ -25,6 +28,8 @@ internal class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
 
     }
 
+    // Can be made inline but this is to demonstrate that it is possible to write complex
+    // conversion logic like this
     private Specialization ParseSpecialization(string input)
     {
         return input.ToSpecialization();
