@@ -58,7 +58,7 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
 
                     b.HasKey("AddressID");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Doctor", b =>
@@ -97,7 +97,7 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctors", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Doctor", b =>
@@ -108,7 +108,7 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("CleanArchitecture.DDD.Domain.ValueObjects.Name", "Name", b1 =>
+                    b.OwnsOne("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Doctor.Name#CleanArchitecture.DDD.Domain.ValueObjects.Name", "Name", b1 =>
                         {
                             b1.Property<Guid>("DoctorID")
                                 .HasColumnType("uniqueidentifier");
@@ -126,7 +126,7 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
 
                             b1.HasKey("DoctorID");
 
-                            b1.ToTable("Doctors");
+                            b1.ToTable("Doctors", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("DoctorID");
