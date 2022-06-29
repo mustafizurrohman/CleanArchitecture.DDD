@@ -169,11 +169,8 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
 
                 var address = await DbContext.Addresses
                     .SingleAsync(addr => addr.AddressID == existingDoctor.AddressId);
-
-                address.City = doctor.Address.City;
-                address.Country = doctor.Address.Country;
-                address.StreetAddress = doctor.Address.StreetAddress;
-                address.ZipCode = doctor.Address.ZipCode;
+                
+                address.UpdateAddress(doctor.Address);
                 
                 LogWithSpace(() => Log.Information("Updating Address with ID {addressID}", existingDoctor.Address.AddressID));
             }

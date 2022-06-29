@@ -43,6 +43,14 @@ public sealed class Address : BaseEntity
         };
     }
 
+    public void UpdateAddress(Address updatedAddress)
+    {
+        StreetAddress = updatedAddress.StreetAddress;
+        City = updatedAddress.City;
+        Country = updatedAddress.Country;
+        ZipCode = updatedAddress.ZipCode;
+    }
+
     public override string ToString()
     {
         const string separator = ", ";
