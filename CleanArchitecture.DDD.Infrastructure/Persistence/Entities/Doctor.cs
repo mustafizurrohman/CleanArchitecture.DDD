@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.DDD.Domain.ValueObjects;
+using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
 //[StronglyTypedId(converters: StronglyTypedIdConverter.SystemTextJson)]
@@ -21,6 +22,8 @@ public sealed class Doctor : BaseEntity
     [ForeignKey("Address")]
     public Guid AddressId { get; set; }
 
+    public Specialization Specialization { get; set; }
+
     /// <summary>
     /// Required for EntityFramework
     /// </summary>
@@ -40,7 +43,8 @@ public sealed class Doctor : BaseEntity
         {
             DoctorID = doctor.DoctorID,
             Name = doctor.Name,
-            Address = doctor.Address
+            Address = doctor.Address,
+            Specialization = doctor.Specialization
         };
     }
 
@@ -52,30 +56,32 @@ public sealed class Doctor : BaseEntity
         };
     }
 
-    public static Doctor Create(Name name, Address address, Guid EDCMExternalID)
+    public static Doctor Create(Name name, Address address, Guid EDCMExternalID, Specialization specialization = Specialization.Unknown)
     {
         var doc = new Doctor
         {
             Name = Name.Copy(name),
             Address = Address.Copy(address),
-            EDCMExternalID = EDCMExternalID
+            EDCMExternalID = EDCMExternalID,
+            Specialization = specialization
         };
 
         return doc;
     }
 
-    public static Doctor Create(Name name, Address address)
+    public static Doctor Create(Name name, Address address, Specialization specialization = Specialization.Unknown)
     {                  
         var doc =  new Doctor
         {
             Name = Name.Copy(name),
-            Address = Address.Copy(address)
+            Address = Address.Copy(address),
+            Specialization = specialization
         };
 
         return doc;
     }
 
-    public static Doctor Create(Name name, Guid addressId)
+    public static Doctor Create(Name name, Guid addressId, Specialization specialization = Specialization.Unknown)
     {
         var doc = new Doctor
         {
@@ -85,7 +91,8 @@ public sealed class Doctor : BaseEntity
             // Should be fixed in a future version 
             // 'Copy' is workaround for now. 
             Name = Name.Copy(name),
-            AddressId = addressId
+            AddressId = addressId,
+            Specialization = specialization
         };
 
         return doc;

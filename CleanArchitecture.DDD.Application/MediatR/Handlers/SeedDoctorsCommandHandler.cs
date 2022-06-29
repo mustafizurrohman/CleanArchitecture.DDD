@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.DDD.Application.Exceptions;
+using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
@@ -36,10 +37,14 @@ public class SeedDoctorsCommandHandler : BaseHandler, IRequestHandler<SeedDoctor
             {
                 var randomName = faker.Random.ArrayElement(names);
                 var randomAddressGuid = faker.Random.ArrayElement(addressIds.ToArray());
+                var randomSpecialization = (Specialization)Enum.GetValues(typeof(Specialization))
+                    .ToListDynamic()
+                    .OrderBy(_ => Guid.NewGuid())
+                    .First();
 
                 addressIds.Remove(randomAddressGuid);
 
-                return Doctor.Create(randomName, randomAddressGuid);
+                return Doctor.Create(randomName, randomAddressGuid, randomSpecialization);
             })
             .ToList();
 

@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.Application.AutoMapper;
+﻿using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
+
+namespace CleanArchitecture.DDD.Application.AutoMapper;
 
 [UsedImplicitly]
 public class DoctorMappings : Profile
@@ -10,10 +12,11 @@ public class DoctorMappings : Profile
 
     private void CreateMappings()
     {
-        CreateMap<Doctor, DoctorCityDTO>();
-        // ToString is implicit and it follows AutoMapper Convention
-        //.ForMember(dc => dc.Name, src => src.MapFrom(doc => doc.Name.ToString()))
-        //.ForMember(dc => dc.Address, src => src.MapFrom(doc => doc.Address.ToString()));
+        CreateMap<Doctor, DoctorCityDTO>()
+            // ToString is implicit and it follows AutoMapper Convention
+            //.ForMember(dc => dc.Name, src => src.MapFrom(doc => doc.Name.ToString()))
+            //.ForMember(dc => dc.Address, src => src.MapFrom(doc => doc.Address.ToString()));
+            .ForMember(doc => doc.Specialization, src => src.MapFrom(doc => doc.Specialization.ToReadableString()));
 
         // 'EDCMExternalID' need not be explicitly mapped because the names match
         CreateMap<FakeDoctorAddressDTO, DoctorDTO>()

@@ -52,6 +52,22 @@ public class DemoController : BaseAPIController
         throw new NotImplementedException();
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpPost("camelCase", Name = "camelCase")]
+    [SwaggerOperation(
+        Summary = "Demo of extension method",
+        Description = DefaultDescription,
+        OperationId = "Demo Extension Method",
+        Tags = new[] { "Demo" }
+    )]
+    public IActionResult DemoExtensionMethod(string input)
+    {
+        return Ok(input.CamelCaseToSentence());
+    }
 
 }

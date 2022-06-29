@@ -156,6 +156,11 @@ public static class StringExtensions
         return Convert.ToBase64String(inputString.ToByteArray());
     }
 
+    public static string CamelCaseToSentence(this string inputString)
+    {
+        return Regex.Replace(inputString, "([A-Z])", " $1").Trim();
+    }
+
 
 
 
