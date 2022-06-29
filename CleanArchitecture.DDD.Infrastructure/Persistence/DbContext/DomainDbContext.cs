@@ -56,10 +56,13 @@ public partial class DomainDbContext : DatabaseContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {      
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        
+        var allEntityTypes = modelBuilder.Model
+            .GetEntityTypes()
+            .ToList();
 
         // Set default value of SoftDeletedProperty in all entities
-        var allSoftDeletedProperties = modelBuilder.Model
-            .GetEntityTypes()
+        var allSoftDeletedProperties = allEntityTypes
             .SelectMany(type => type.GetProperties())
             .Where(p => p.Name == nameof(BaseEntity.SoftDeleted))
             .ToList();
@@ -68,6 +71,13 @@ public partial class DomainDbContext : DatabaseContext
         {
             prop.SetDefaultValue(false);
         }
+        
+        // TODO: Can this be done using reflection?
+        modelBuilder.Entity<Doctor>()
+            .HasQueryFilter(doc => !doc.SoftDeleted);
+
+        modelBuilder.Entity<Address>()
+            .HasQueryFilter(addr => !addr.SoftDeleted);
 
     }
 
