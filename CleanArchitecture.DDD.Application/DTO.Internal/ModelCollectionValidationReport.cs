@@ -1,5 +1,8 @@
-﻿namespace CleanArchitecture.DDD.Application.DTO.Internal;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace CleanArchitecture.DDD.Application.DTO.Internal;
+
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class ModelCollectionValidationReport<T> 
     where T : class, new()
 {
