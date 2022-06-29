@@ -20,8 +20,15 @@ internal class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
         builder.Property(doc => doc.Specialization)
             .HasConversion(
                 specialization => specialization.ToReadableString(),
-                specializationAsString => (Specialization) Enum.Parse(typeof(Specialization), specializationAsString.Replace(" ", string.Empty))
+                specializationAsString =>  ParseSpecialization(specializationAsString)
             );
 
+    }
+
+    private Specialization ParseSpecialization(string input)
+    {
+        return Enum.TryParse<Specialization>(input, true, out var parsedSpecialization) 
+            ? parsedSpecialization
+            : Specialization.Unknown;
     }
 }
