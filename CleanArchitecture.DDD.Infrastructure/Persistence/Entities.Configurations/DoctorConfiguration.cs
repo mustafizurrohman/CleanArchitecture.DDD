@@ -27,8 +27,6 @@ internal class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
 
     private Specialization ParseSpecialization(string input)
     {
-        return Enum.TryParse<Specialization>(input, true, out var parsedSpecialization) 
-            ? parsedSpecialization
-            : Specialization.Unknown;
+        return input.ToSpecialization();
     }
 }
