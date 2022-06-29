@@ -56,6 +56,19 @@ public partial class DomainDbContext : DatabaseContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {      
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        // Set default value of SoftDeletedProperty in all entities
+        var allSoftDeletedProperties = modelBuilder.Model
+            .GetEntityTypes()
+            .SelectMany(type => type.GetProperties())
+            .Where(p => p.Name == nameof(BaseEntity.SoftDeleted))
+            .ToList();
+
+        foreach (var prop in allSoftDeletedProperties)
+        {
+            prop.SetDefaultValue(false);
+        }
+
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
