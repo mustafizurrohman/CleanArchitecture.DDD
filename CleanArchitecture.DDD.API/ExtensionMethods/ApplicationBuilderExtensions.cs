@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using CleanArchitecture.DDD.API.Models;
+using Microsoft.AspNetCore.Diagnostics;
+using Newtonsoft.Json;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
@@ -65,13 +67,9 @@ public static class ApplicationBuilderExtensions
                 // The user only gets a support code and no details of the internal server exception. 
                 // We can use this code to filter out the logs for this specific request
                 // Using Kibana? or by explicitly saving this code in Database while logging 
-                var errorMessage = "An internal server error occurred. Please contact Support with code : \'" + context.GetSupportCode() + "\'";
+                var exceptionReportModel = new ExceptionReportModel(exception, context.GetSupportCode(), isInDevelopment);
 
-                // Include exception details in development
-                if (isInDevelopment)
-                    errorMessage += Environment.NewLine + exception.Message + Environment.NewLine + exception;
-
-                await context.Response.WriteAsync(errorMessage.ToFormattedJson(), Encoding.UTF8);
+                await context.Response.WriteAsync(exceptionReportModel.ToFormattedJson(), Encoding.UTF8);
             });
         });
     }
