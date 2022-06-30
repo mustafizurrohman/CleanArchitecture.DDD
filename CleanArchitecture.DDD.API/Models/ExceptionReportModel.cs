@@ -10,10 +10,10 @@ public class ExceptionReportModel
     public Exception? Exception { get; }
     public string SupportCode { get; }
 
-    public ExceptionReportModel(Exception ex, string supportCode, bool isDevelopment)
+    public ExceptionReportModel(Exception ex, string supportCode)
     {
         ExceptionTime = DateTime.Now;
-        Exception = !isDevelopment ? null : ex;
+        Exception = ex;
         SupportCode = supportCode;
     }
 }
