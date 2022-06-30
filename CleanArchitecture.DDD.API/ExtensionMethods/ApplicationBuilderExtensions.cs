@@ -74,8 +74,8 @@ public static class ApplicationBuilderExtensions
                 var exceptionReportModel = new ExceptionReportModel(exception, supportCode, isInDevelopment);
 
                 var response = isInDevelopment
-                    ? JsonConvert.SerializeObject(exceptionReportModel)
-                    : JsonConvert.SerializeObject(productionErrorMessage);
+                    ? exceptionReportModel.ToFormattedJson()
+                    : productionErrorMessage.ToFormattedJson();
 
                 await context.Response.WriteAsync(response, Encoding.UTF8);
             });
