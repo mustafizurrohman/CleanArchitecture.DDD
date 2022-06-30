@@ -16,7 +16,12 @@ public partial class DomainDbContext : DatabaseContext
         _connectionString = connectionString;
 
         if (!IsConnectionStringValid(_connectionString))
-            throw new Exception("Invalid database connection string or database is not reachable ... ");
+        {
+            const string message = "Invalid database connection string or database is not reachable ... ";
+            
+            Log.Fatal(message);
+            throw new Exception(message);
+        }
 
         _useLogger = useLogger;
     }
@@ -56,7 +61,9 @@ public partial class DomainDbContext : DatabaseContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {      
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        
+
+        #region -- Soft Deletion Configuration --
+
         var allEntityTypes = modelBuilder.Model
             .GetEntityTypes()
             .ToList();
@@ -71,7 +78,11 @@ public partial class DomainDbContext : DatabaseContext
         {
             prop.SetDefaultValue(false);
         }
-        
+
+        #endregion
+
+        #region -- Global Query Filter Configuration --
+
         // TODO: Can this be done using reflection?
         modelBuilder.Entity<Doctor>()
             .HasQueryFilter(doc => !doc.SoftDeleted);
@@ -79,6 +90,7 @@ public partial class DomainDbContext : DatabaseContext
         modelBuilder.Entity<Address>()
             .HasQueryFilter(addr => !addr.SoftDeleted);
 
+        #endregion
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -135,7 +147,6 @@ public partial class DomainDbContext : DatabaseContext
         }
         catch (Exception)
         {
-            Log.Fatal("Database not reachable ... ");
             return false;
         }
         finally

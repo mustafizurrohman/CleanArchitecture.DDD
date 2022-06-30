@@ -12,6 +12,7 @@ public class MasterDataController : BaseAPIController
     /// <summary>
     /// 
     /// </summary>
+    /// <param name="includeSoftDeleted"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("doctors")]
@@ -22,12 +23,18 @@ public class MasterDataController : BaseAPIController
         Tags = new[] { "MasterData" }
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<Doctor>))]
-    public async Task<IActionResult> GetAllDoctors(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllDoctors(CancellationToken cancellationToken, bool includeSoftDeleted = false)
     {
-        var command = new GetAllDoctorsQuery();
-        var result = await Mediator.Send(command, cancellationToken);
+        var command = new GetAllDoctorsQuery(includeSoftDeleted);
+        var result = (await Mediator.Send(command, cancellationToken)).ToList();
 
-        return Ok(result);
+        var response = new
+        {
+            Doctors = result, 
+            result.Count
+        };
+
+        return Ok(response);
     }
 
     

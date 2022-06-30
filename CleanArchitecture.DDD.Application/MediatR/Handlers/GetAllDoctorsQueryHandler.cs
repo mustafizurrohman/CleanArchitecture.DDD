@@ -10,8 +10,13 @@ public class GetAllDoctorsQueryHandler : BaseHandler, IRequestHandler<GetAllDoct
 
     public async Task<IEnumerable<DoctorCityDTO>> Handle(GetAllDoctorsQuery request, CancellationToken cancellationToken)
     {
+        var doctorsQuery = DbContext.Doctors.AsNoTracking();
+
+        if (request.IncludeDeleted)
+            doctorsQuery = doctorsQuery.IgnoreQueryFilters();
+
         // A join will be performed automatically by AutoMapper using Entity Framework
-        var doctors = await DbContext.Doctors.AsNoTracking()
+        var doctors = await doctorsQuery
             .ProjectTo<DoctorCityDTO>(AutoMapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
         

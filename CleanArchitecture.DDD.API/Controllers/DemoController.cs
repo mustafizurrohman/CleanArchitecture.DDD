@@ -82,7 +82,7 @@ public class DemoController : BaseAPIController
                 SpAsString = sp.Key.ToReadableString(),
                 Count = sp.Count()
             })
-            .OrderBy(sp => sp.SpAsString)
+            .OrderByDescending(sp => sp.Count)
             .ToList();
 
         return Ok(randomSpecializations);
