@@ -6,6 +6,12 @@ public static class HttpContextExtensions
 {
     public static string GetSupportCode(this AspNetHttpContext httpContent)
     {
-        return httpContent.Connection.Id;
+        var correlationId = httpContent.Request.HttpContext.Items
+            .Where(item => item.Key.ToString()!.Contains("CorrelationId"))
+            .Select(item => item.Value)
+            .First()
+            .ToString();
+
+        return correlationId!;
     }
 }
