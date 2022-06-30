@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.DDD.Application;
+using CleanArchitecture.DDD.Application;
 using CleanArchitecture.DDD.Core.Logging;
 using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Domain;
@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
+using Serilog.Formatting.Json;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
@@ -200,6 +201,7 @@ public static class WebExtensionBuilderExtensions
                 .Enrich.WithCorrelationId()
                 .Enrich.WithCorrelationIdHeader()
                 .Enrich.FromLogContext()
+                .Enrich.WithTraceIdentifier()
                 .Enrich.WithExceptionDetails()
                 .Enrich.WithMachineName()
                 .Enrich.WithProcessId()
