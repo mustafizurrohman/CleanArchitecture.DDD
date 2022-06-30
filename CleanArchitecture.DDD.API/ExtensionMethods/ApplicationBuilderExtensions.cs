@@ -1,6 +1,5 @@
 ﻿using CleanArchitecture.DDD.API.Models;
 using Microsoft.AspNetCore.Diagnostics;
-using Newtonsoft.Json;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
@@ -57,7 +56,7 @@ public static class ApplicationBuilderExtensions
                 var exception = errorFeature?.Error ?? new Exception();
 
                 // Log all details of the unhandled exception here
-                // Log.Error(exception, exception.Message);
+                Log.Error(exception, exception.Message);
 
                 // TODO: May be we want to inform the Admin here using the Mailer Service?
 
@@ -72,8 +71,7 @@ public static class ApplicationBuilderExtensions
                     "An unexpected error occured. Please contact support with code \'" + supportCode + "\'.";
 
                 var exceptionReportModel = new ExceptionReportModel(exception, supportCode);
-                Log.Error(exceptionReportModel.ToFormattedJson());
-
+                
                 var response = isInDevelopment
                     ? exceptionReportModel.ToFormattedJson()
                     : productionErrorMessage.ToFormattedJson();

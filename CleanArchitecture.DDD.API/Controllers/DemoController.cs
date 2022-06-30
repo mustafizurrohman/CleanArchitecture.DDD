@@ -1,3 +1,4 @@
+using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
 namespace CleanArchitecture.DDD.API.Controllers;
@@ -60,7 +61,7 @@ public class DemoController : BaseAPIController
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("extension", Name = "extension")]
+    [HttpGet("extension", Name = "extension")]
     [SwaggerOperation(
         Summary = "Demo of extension method",
         Description = DefaultDescription,
@@ -86,6 +87,33 @@ public class DemoController : BaseAPIController
             .ToList();
 
         return Ok(randomSpecializations);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpPost("softdelete", Name = "softdelete")]
+    [SwaggerOperation(
+        Summary = "Demo of softdelete extension method",
+        Description = DefaultDescription,
+        OperationId = "Demo softdelete Extension Method",
+        Tags = new[] { "Demo" }
+    )]
+    public async Task<IActionResult> DemoSoftDelete(Guid doctorGuid, CancellationToken cancellationToken)
+    {
+        var doctor = await DbContext.Doctors
+            .FindAsync(doctorGuid);
+
+        if (doctor is null)
+            return BadRequest("Invalid doctor Guid.");
+
+        doctor.SoftDelete();
+        await DbContext.SaveChangesAsync(cancellationToken);
+
+        return Ok(doctor);
     }
 
 }

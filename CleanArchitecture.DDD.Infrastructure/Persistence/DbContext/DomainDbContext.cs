@@ -1,4 +1,5 @@
-﻿using DatabaseContext = Microsoft.EntityFrameworkCore.DbContext;
+﻿using CleanArchitecture.DDD.Infrastructure.Exceptions;
+using DatabaseContext = Microsoft.EntityFrameworkCore.DbContext;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 
@@ -20,7 +21,7 @@ public partial class DomainDbContext : DatabaseContext
             const string message = "Invalid database connection string or database is not reachable ... ";
             
             Log.Fatal(message);
-            throw new Exception(message);
+            throw new DatabaseNotReachableException();
         }
 
         _useLogger = useLogger;
