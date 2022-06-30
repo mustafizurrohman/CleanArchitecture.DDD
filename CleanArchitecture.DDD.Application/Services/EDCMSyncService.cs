@@ -6,15 +6,18 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
 {
     private readonly HttpClient _httpClient;
     private readonly IValidator<FakeDoctorAddressDTO> _validator;
+    private readonly INotificationService _notificationService;
 
     private readonly IAsyncPolicy _retryPolicyWithJittering;
 
     public EDCMSyncService(HttpClient httpClient, IPolicyHolder policyHolder, 
-        IValidator<FakeDoctorAddressDTO> validator, IAppServices appServices)
+        IValidator<FakeDoctorAddressDTO> validator, IAppServices appServices,
+        INotificationService notificationService)
             : base(appServices)
     {
         _httpClient = httpClient;
         _validator = validator;
+        _notificationService = notificationService;
 
         policyHolder.Registry
             .TryGet(PolicyNames.RetryPolicyWithJitter.ToString(), out _retryPolicyWithJittering);
@@ -100,9 +103,9 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
             return Enumerable.Empty<DoctorDTO>();
 
         var modelCollectionValidationReport = await parsedResponse.GetModelValidationReportAsync(_validator);
-        
+
         if (modelCollectionValidationReport.HasInvalidModels)
-            NotifyAdminAboutInvalidData(modelCollectionValidationReport);
+            await _notificationService.NotifyAdminAboutInvalidData(modelCollectionValidationReport);
 
         // This is not necessary here but done only as an example to demonstrate AutoMapper
         var doctorDTOList = AutoMapper
@@ -118,21 +121,6 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         Log.Information("Sync completed ... ");
 
         return doctorDTOList;
-    }
-    
-    private void NotifyAdminAboutInvalidData<T>(ModelCollectionValidationReport<T> modelCollectionValidationReport)
-        where T : class, new()
-    {
-        if (modelCollectionValidationReport.HasAllValidModels)
-            return;
-        
-        // TODO: Save as HTML and send as attachment using Weischer Global Email service 
-        var validationResult = modelCollectionValidationReport.ValidationReport.InvalidModelsReport.ToFormattedJson();
-        Log.Warning(validationResult);
-
-        LogWithSpace(() => Log.Warning("Got {countOfInvalidModels} invalid data from CRM / external system.", modelCollectionValidationReport.InvalidModels.Count()));
-        LogWithSpace(() => Log.Information("In prod the admin must be informed or properly logged to gain attention ..."));
-        
     }
     
     private async Task SaveDoctorsInDatabaseAsync(IEnumerable<Doctor> doctors)

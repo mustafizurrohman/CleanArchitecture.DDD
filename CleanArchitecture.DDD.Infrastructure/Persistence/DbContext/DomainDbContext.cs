@@ -27,9 +27,13 @@ public partial class DomainDbContext : DatabaseContext
         _useLogger = useLogger;
     }
 
+    #region -- Entities --
+
     public virtual DbSet<Doctor> Doctors { get; set; }
     public virtual DbSet<Address> Addresses { get; set; }
 
+    #endregion
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(_connectionString);
