@@ -13,6 +13,8 @@ public sealed class Doctor : BaseEntity
     [Column("ID")]
     public Guid DoctorID { get; set; }
 
+    // If this is not am Empty Guid it means that it came from an external system
+    // Otherwise it was inserted using the API / Empty Guid is the default value
     public Guid EDCMExternalID { get; set; }
 
     public Name Name { get; set; }

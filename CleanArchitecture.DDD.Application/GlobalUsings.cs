@@ -34,4 +34,4 @@ global using FluentValidation;
 global using Microsoft.Extensions.DependencyInjection;
 global using Scrutor;
 
-
+global using CleanArchitecture.DDD.Core.Helpers;

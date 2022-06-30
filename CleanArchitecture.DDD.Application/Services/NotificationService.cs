@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.Application.Services;
+﻿using CleanArchitecture.DDD.Core.Helpers;
+
+namespace CleanArchitecture.DDD.Application.Services;
 
 public class NotificationService : INotificationService
 {
@@ -11,16 +13,10 @@ public class NotificationService : INotificationService
         var validationResult = modelCollectionValidationReport.ValidationReport.InvalidModelsReport.ToFormattedJson();
         Log.Warning(validationResult);
 
-        LogWithSpace(() => Log.Warning("Got {countOfInvalidModels} invalid data from CRM / external system.", modelCollectionValidationReport.InvalidModels.Count()));
-        LogWithSpace(() => Log.Information("In prod the admin must be informed or properly logged to gain attention ..."));
+        LoggingHelper.LogWithSpace(() => Log.Warning("Got {countOfInvalidModels} invalid data from CRM / external system.", modelCollectionValidationReport.InvalidModels.Count()));
+        LoggingHelper.LogWithSpace(() => Log.Information("In prod the admin must be informed or properly logged to gain attention ..."));
 
         await Task.Delay(0);
     }
 
-    private void LogWithSpace(Action action)
-    {
-        Console.WriteLine();
-        action();
-        Console.WriteLine();
-    }
 }
