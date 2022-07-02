@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.DDD.Infrastructure.Exceptions;
+﻿using CleanArchitecture.DDD.Core.Helpers;
+using CleanArchitecture.DDD.Infrastructure.Exceptions;
 using DatabaseContext = Microsoft.EntityFrameworkCore.DbContext;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
@@ -110,22 +111,28 @@ public partial class DomainDbContext : DatabaseContext
         return base.SaveChanges();
     }
 
+    /// <summary>
+    /// Warning: This can degrade the performance
+    /// </summary>
     private void SetAuditingData()
     {
-        var entries = ChangeTracker
+        Helper.Benchmark(() =>
+        {
+            var entries = ChangeTracker
             .Entries()
             .Where(e => e.Entity is BaseEntity
                         && e.State is EntityState.Added or EntityState.Modified);
 
-        var now = DateTime.Now;
+            var now = DateTime.Now;
 
-        foreach (var entityEntry in entries)
-        {
-            if (entityEntry.State == EntityState.Added)
-                ((BaseEntity)entityEntry.Entity).CreatedOn = now;
-            else
-                ((BaseEntity)entityEntry.Entity).UpdatedOn = now;
-        }
+            foreach (var entityEntry in entries)
+            {
+                if (entityEntry.State == EntityState.Added)
+                    ((BaseEntity)entityEntry.Entity).CreatedOn = now;
+                else
+                    ((BaseEntity)entityEntry.Entity).UpdatedOn = now;
+            }
+        });                
     }
 
     private bool IsConnectionStringValid(string connectionString)

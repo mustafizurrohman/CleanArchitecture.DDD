@@ -13,8 +13,8 @@ public class NotificationService : INotificationService
         var validationResult = modelCollectionValidationReport.ValidationReport.InvalidModelsReport.ToFormattedJson();
         Log.Warning(validationResult);
 
-        LoggingHelper.LogWithSpace(() => Log.Warning("Got {countOfInvalidModels} invalid data from CRM / external system.", modelCollectionValidationReport.InvalidModels.Count()));
-        LoggingHelper.LogWithSpace(() => Log.Information("In prod the admin must be informed or properly logged to gain attention ..."));
+        Helper.LogWithSpace(() => Log.Warning("Got {countOfInvalidModels} invalid data from CRM / external system.", modelCollectionValidationReport.InvalidModels.Count()));
+        Helper.LogWithSpace(() => Log.Information("In prod the admin must be informed or properly logged to gain attention ..."));
 
         await Task.Delay(0);
     }
