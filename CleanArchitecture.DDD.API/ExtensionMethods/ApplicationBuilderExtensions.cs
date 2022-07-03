@@ -18,7 +18,8 @@ public static class ApplicationBuilderExtensions
 
         if (serviceScope is null) 
             return;
-            
+        
+        // TODO: Debug and fix the exception thrown here ... 
         using var context = serviceScope.ServiceProvider.GetService<DomainDbContext>();
         context?.Database.EnsureCreated();
         try
