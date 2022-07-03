@@ -9,18 +9,15 @@ internal class AddressConfiguration : IEntityTypeConfiguration<Address>
     {
         builder.HasKey(address => address.AddressID);
 
-        var addr = GetAddresses();
-        builder.HasData(addr);
+        // Seeding data!
+        var parsedAddresses = GetAddresses();
+        builder.HasData(parsedAddresses);
     }
 
     public IEnumerable<Address> GetAddresses()
     {
         var fileContents = File.ReadAllText("../CleanArchitecture.DDD.Infrastructure/Seed/address.json");
-
         var addressList = JsonConvert.DeserializeObject<IEnumerable<Address>>(fileContents);
-
-        addressList = addressList
-            .ToList();
 
         return addressList;
     }
