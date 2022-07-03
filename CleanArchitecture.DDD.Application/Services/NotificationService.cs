@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.Core.Helpers;
-
-namespace CleanArchitecture.DDD.Application.Services;
+﻿namespace CleanArchitecture.DDD.Application.Services;
 
 public class NotificationService : INotificationService
 {

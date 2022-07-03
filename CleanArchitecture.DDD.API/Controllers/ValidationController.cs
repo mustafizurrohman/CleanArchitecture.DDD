@@ -1,6 +1,4 @@
-﻿using FakeDTO = CleanArchitecture.DDD.Application.DTO.FakeDoctorAddressDTO;
-
-namespace CleanArchitecture.DDD.API.Controllers;
+﻿namespace CleanArchitecture.DDD.API.Controllers;
 
 public class ValidationController : BaseAPIController
 {

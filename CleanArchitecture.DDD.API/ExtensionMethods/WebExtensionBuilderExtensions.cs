@@ -9,7 +9,6 @@ using Newtonsoft.Json;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
-using Serilog.Formatting.Json;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 

@@ -86,5 +86,43 @@ public class SeedController : BaseAPIController
 
         return Ok(new Tuple<int, long>(num, stopWatch.ElapsedMilliseconds));
     }
-    
+
+    /// <summary>
+    /// Seed specified number of doctors with address in database
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <param name="num"></param>
+    /// <returns></returns>
+    [HttpPost("doctorsWithAddress", Name = "seedDoctorsWithAddress")]
+    [SwaggerOperation(
+        Summary = "Seed specified number of doctors with address in database",
+        Description = DefaultDescription,
+        OperationId = "Seed Doctors with Address",
+        Tags = new[] { "Seed" }
+    )]
+    [ProducesResponseType(typeof(Tuple<int, long>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreateDoctorsWithAddress(CancellationToken cancellationToken, int num = 100)
+    {
+        if (num <= 0)
+            return BadRequest(nameof(num) + " must be positive");
+
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
+
+        try
+        {
+            var command = new SeedDoctorsWithAddressesCommand(num);
+            await Mediator.Send(command, cancellationToken);
+        }
+        catch (UniqueAddressesNotAvailable ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
+        stopWatch.Stop();
+
+        return Ok(new Tuple<int, long>(num, stopWatch.ElapsedMilliseconds));
+    }
+
 }
