@@ -4,8 +4,15 @@ namespace CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
 public static class SpecializationEnumExtensions
 {
+    //TODO: Optimize this!
     public static string ToReadableString(this Specialization specialization)
     {
+        //return specialization switch
+        //{
+        //    Specialization.GeneralPractice => "General Practice",
+        //    _ => "Unknown"
+        //};
+
         return specialization.ToString().CamelCaseToSentence();
     }
 
