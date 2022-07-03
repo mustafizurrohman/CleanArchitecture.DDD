@@ -119,9 +119,9 @@ public partial class DomainDbContext : DatabaseContext
         Helper.Benchmark(() =>
         {
             var entries = ChangeTracker
-            .Entries()
-            .Where(e => e.Entity is BaseEntity
-                        && e.State is EntityState.Added or EntityState.Modified);
+                .Entries()
+                .Where(e => e.Entity is BaseEntity
+                            && e.State is EntityState.Added or EntityState.Modified);
 
             var now = DateTime.Now;
 

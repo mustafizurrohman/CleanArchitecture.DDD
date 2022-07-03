@@ -144,6 +144,8 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
                     continue;
                 }
 
+                #region -- EF Extensions (To be fixed) --
+
                 // TODO: Investigate why this throws a null reference exception
                 //await DbContext.Addresses
                 //    .Where(addr => addr.AddressID == existingDoctor.AddressId)
@@ -154,6 +156,8 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
                 //        StreetAddress = doctor.Address.StreetAddress,
                 //        ZipCode = doctor.Address.ZipCode
                 //    });
+
+                #endregion
 
                 var address = await DbContext.Addresses
                     .SingleAsync(addr => addr.AddressID == existingDoctor.AddressId);
@@ -173,8 +177,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         }
 
         // Wrap Db changes in a Polly Policy
-        // Not strictly necessary
-        // Only used for demonstration
+        // Not strictly necessary- Only used for demonstration
         await _retryPolicyWithJittering.ExecuteAsync(async () =>
         {
             await DbContext.SaveChangesAsync();

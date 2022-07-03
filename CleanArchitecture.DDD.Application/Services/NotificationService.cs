@@ -4,7 +4,8 @@ namespace CleanArchitecture.DDD.Application.Services;
 
 public class NotificationService : INotificationService
 {
-    public async Task NotifyAdminAboutInvalidData<T>(ModelCollectionValidationReport<T> modelCollectionValidationReport) where T : class, new()
+    public async Task NotifyAdminAboutInvalidData<T>(ModelCollectionValidationReport<T> modelCollectionValidationReport) 
+        where T : class, new()
     {
         if (modelCollectionValidationReport.HasAllValidModels)
             return;
