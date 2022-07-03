@@ -23,6 +23,8 @@ public class SeedAddressCommandHandler : BaseHandler, IRequestHandler<SeedAddres
             .Select(_ => Address.Create(faker.Address.StreetName(), faker.Address.ZipCode(), faker.Address.City(), faker.Random.ArrayElement(fakeCountries.ToArray())))
             .ToList();
 
+        var addressJSON = addresses.ToFormattedJson();
+
         await DbContext.AddRangeAsync(addresses, cancellationToken);
         await DbContext.SaveChangesAsync(cancellationToken);
         
