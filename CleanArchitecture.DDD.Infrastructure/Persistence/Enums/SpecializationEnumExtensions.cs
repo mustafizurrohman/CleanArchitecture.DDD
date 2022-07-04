@@ -4,16 +4,18 @@ namespace CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
 public static class SpecializationEnumExtensions
 {
-    //TODO: Optimize this!
-    public static string ToReadableString(this Specialization specialization)
-    {
-        //return specialization switch
-        //{
-        //    Specialization.GeneralPractice => "General Practice",
-        //    _ => "Unknown"
-        //};
 
-        return specialization.ToString().CamelCaseToSentence();
+    private static readonly Dictionary<Enum, string> enumStringValues = new();
+    public static string ToStringCached(this Specialization specialization)
+    {
+        if (enumStringValues.TryGetValue(specialization, out var textValue))
+            return textValue;
+        else
+        {
+            textValue = specialization.ToString().CamelCaseToSentence();
+            enumStringValues[specialization] = textValue;
+            return textValue;
+        }
     }
 
     public static Specialization ToSpecialization(this string inputString)

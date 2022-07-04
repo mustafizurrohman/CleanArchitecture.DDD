@@ -22,7 +22,7 @@ internal class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
 
         builder.Property(doc => doc.Specialization)
             .HasConversion(
-                specialization => specialization.ToReadableString(),
+                specialization => specialization.ToStringCached(),
                 specializationAsString =>  ParseSpecialization(specializationAsString)
             );
 

@@ -59,13 +59,12 @@ public class DemoController : BaseAPIController
     /// 
     /// </summary>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("extension", Name = "extension")]
     [SwaggerOperation(
-        Summary = "Demo of extension method",
+        Summary = "Test of random specialization as text",
         Description = DefaultDescription,
-        OperationId = "Demo Extension Method",
+        OperationId = "Demo Specialization Enum",
         Tags = new[] { "Demo" }
     )]
     public IActionResult DemoExtensionMethod()
@@ -75,12 +74,12 @@ public class DemoController : BaseAPIController
             .Select(sp => new
             {
                 Specialization = sp,
-                SpecializationAsString = sp.ToReadableString()
+                SpecializationAsString = sp.ToStringCached()
             })
             .GroupBy(sp => sp.Specialization)
             .Select(sp => new
             {
-                SpAsString = sp.Key.ToReadableString(),
+                SpAsString = sp.Key.ToStringCached(),
                 Count = sp.Count()
             })
             .OrderByDescending(sp => sp.Count)
