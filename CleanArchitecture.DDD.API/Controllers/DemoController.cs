@@ -115,4 +115,31 @@ public class DemoController : BaseAPIController
         return Ok(doctor);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpPost("softdelete/collection", Name = "softdeleteCollecton")]
+    [SwaggerOperation(
+        Summary = "Demo of softdelete extension method on IEnumerable",
+        Description = DefaultDescription,
+        OperationId = "Demo softdelete Extension Method on IEnumerable",
+        Tags = new[] { "Demo" }
+    )]
+    public async Task<IActionResult> DemoSoftDeleteCollection(CancellationToken cancellationToken)
+    {
+        var doctors = await DbContext.Doctors
+            // This query will select only not deleted entires due to Global filter of Doctors
+            .OrderBy(doc => Guid.NewGuid())
+            .Take(20)
+            .ToListAsync(cancellationToken);
+           
+        doctors = doctors.SoftDelete().ToList();
+        await DbContext.SaveChangesAsync(cancellationToken);
+
+        return Ok(doctors);
+    }
+
 }

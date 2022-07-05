@@ -7,4 +7,14 @@ public static class BaseEntityExtensions
         baseEntity.SoftDeleted = true;
         return baseEntity;
     }
+
+    public static IEnumerable<T> SoftDelete<T>(this IEnumerable<T> baseEntities)
+            where T : BaseEntity
+    {
+        return baseEntities
+            .Select(be => {
+                be.SoftDeleted = true;
+                return be;
+            });
+    }
 }
