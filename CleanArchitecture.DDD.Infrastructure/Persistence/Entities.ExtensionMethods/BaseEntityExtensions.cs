@@ -17,4 +17,20 @@ public static class BaseEntityExtensions
                 return be;
             });
     }
+
+    public static BaseEntity UndoSoftDelete(this BaseEntity baseEntity)
+    {
+        baseEntity.SoftDeleted = false;
+        return baseEntity;
+    }
+
+    public static IEnumerable<T> UndoSoftDelete<T>(this IEnumerable<T> baseEntities)
+            where T : BaseEntity
+    {
+        return baseEntities
+            .Select(be => {
+                be.SoftDeleted = false;
+                return be;
+            });
+    }
 }
