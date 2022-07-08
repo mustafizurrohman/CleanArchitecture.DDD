@@ -4,7 +4,7 @@ using DatabaseContext = Microsoft.EntityFrameworkCore.DbContext;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 
-public partial class DomainDbContext : DatabaseContext
+public class DomainDbContext : DatabaseContext
 {
     private readonly string _connectionString;
     private readonly bool _useLogger;

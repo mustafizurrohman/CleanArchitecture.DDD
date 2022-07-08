@@ -96,9 +96,9 @@ public class DemoController : BaseAPIController
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("softdelete", Name = "softdelete")]
     [SwaggerOperation(
-        Summary = "Demo of softdelete extension method",
+        Summary = "Demo of soft delete extension method",
         Description = DefaultDescription,
-        OperationId = "Demo softdelete Extension Method",
+        OperationId = "Demo soft delete Extension Method",
         Tags = new[] { "Demo" }
     )]
     public async Task<IActionResult> DemoSoftDelete(Guid doctorGuid, CancellationToken cancellationToken)
@@ -123,9 +123,9 @@ public class DemoController : BaseAPIController
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("softdelete/collection", Name = "softdeleteCollecton")]
     [SwaggerOperation(
-        Summary = "Demo of softdelete extension method on IEnumerable",
+        Summary = "Demo of soft delete extension method on IEnumerable",
         Description = DefaultDescription,
-        OperationId = "Demo softdelete Extension Method on IEnumerable",
+        OperationId = "Demo soft delete Extension Method on IEnumerable",
         Tags = new[] { "Demo" }
     )]
     public async Task<IActionResult> DemoSoftDeleteCollection(CancellationToken cancellationToken)
@@ -150,9 +150,9 @@ public class DemoController : BaseAPIController
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("softdelete/collection/undo", Name = "UndoSoftdeleteCollecton")]
     [SwaggerOperation(
-        Summary = "Demo of undo softdelete extension method on IEnumerable",
+        Summary = "Demo of undo soft delete extension method on IEnumerable",
         Description = DefaultDescription,
-        OperationId = "Demo undo softdelete Extension Method on IEnumerable",
+        OperationId = "Demo undo soft delete Extension Method on IEnumerable",
         Tags = new[] { "Demo" }
     )]
     public async Task<IActionResult> DemoUndoSoftDeleteCollection(CancellationToken cancellationToken)

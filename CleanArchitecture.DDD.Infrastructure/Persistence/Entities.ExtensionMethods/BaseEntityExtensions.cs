@@ -1,5 +1,8 @@
-﻿namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
+
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public static class BaseEntityExtensions
 {
     public static BaseEntity SoftDelete(this BaseEntity baseEntity)

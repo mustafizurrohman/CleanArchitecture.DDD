@@ -1,5 +1,8 @@
-﻿namespace CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
+
+[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public enum Specialization
 {
     Unknown,

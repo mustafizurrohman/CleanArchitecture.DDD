@@ -12,7 +12,6 @@ global using Serilog;
 global using Hangfire;
 global using AutoMapper;
 global using Ardalis.GuardClauses;
-global using Z.EntityFramework.Plus;
 global using Microsoft.EntityFrameworkCore;
 global using AutoMapper.QueryableExtensions;
 

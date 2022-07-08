@@ -1,5 +1,4 @@
-﻿using CleanArchitecture.DDD.Application.Exceptions;
-using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
+﻿using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 

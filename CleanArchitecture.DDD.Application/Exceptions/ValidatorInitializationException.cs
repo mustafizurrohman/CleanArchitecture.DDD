@@ -10,7 +10,7 @@ internal class ValidatorInitializationException : ApplicationException
         base($"Could not initialize a validator for type {typ.GetTypeNameForFluentValidation()}. " +
              "Please provide a validator of type " +
              $"FluentValidation.AbstractValidator<{typ.GetTypeNameForFluentValidation()}> as a second parameter." +
-             "Dependency Injection can be used for this purpose", ex)
+             "Dependency Injection can be used for this purpose", innerException: ex)
     {
         TypeName = typ.GetTypeNameForFluentValidation();
         ValidatorClassName = typ.GetFluentValidationBaseClassName();
