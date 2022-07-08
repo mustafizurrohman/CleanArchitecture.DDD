@@ -57,6 +57,7 @@ public class ValidationController : BaseAPIController
     /// 
     /// </summary>
     /// <param name="withModelError"></param>
+    /// <param name="num"></param>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("demo/extensionMethod")]
@@ -68,9 +69,12 @@ public class ValidationController : BaseAPIController
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult DemoExtensionMethod(bool withModelError = false)
+    public IActionResult DemoExtensionMethod(bool withModelError = false, int num = 100)
     {
-        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(100).ToList();
+        if (num <= 0)
+            return BadRequest(nameof(num) + " must be positive");
+
+        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
 
         var doctorsToValidate = AutoMapper.Map<IEnumerable<ExternalFakeDoctorAddressDTO>, IEnumerable<FakeDoctorAddressDTO>>
             (fakeDoctors).ToList();
@@ -86,6 +90,7 @@ public class ValidationController : BaseAPIController
     /// <summary>
     /// 
     /// </summary>
+    /// <param name="num"></param>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("demo/extensionMethod/collection")]
@@ -97,16 +102,19 @@ public class ValidationController : BaseAPIController
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DemoExtensionMethodForCollection()
+    public async Task<IActionResult> DemoExtensionMethodForCollection(int num = 100)
     {
-        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(100).ToList();
+        if (num <= 0)
+            return BadRequest(nameof(num) + " must be positive");
+
+        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
 
         var doctorsToValidate = AutoMapper.Map<IEnumerable<ExternalFakeDoctorAddressDTO>, IEnumerable<FakeDoctorAddressDTO>>
                 (fakeDoctors);
 
         var validationReport = await doctorsToValidate.GetModelValidationReportAsync();
 
-        var toDebugAsString = validationReport.ToFormattedJson();
+        var validationReportAsJsonString = validationReport.ToFormattedJson();
 
         return Ok(validationReport);
     }
@@ -114,6 +122,7 @@ public class ValidationController : BaseAPIController
     /// <summary>
     /// 
     /// </summary>
+    /// <param name="num"></param>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("demo/extensionMethod/error/")]
@@ -123,9 +132,12 @@ public class ValidationController : BaseAPIController
         OperationId = "Extension Method Validation Incorrect usage",
         Tags = new[] { "Validation" }
     )]
-    public async Task<IActionResult> DemoExtensionMethodErrorForObject()
+    public async Task<IActionResult> DemoExtensionMethodErrorForObject(int num = 100)
     {
-        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(100).ToList();
+        if (num <= 0)
+            return BadRequest(nameof(num) + " must be positive");
+
+        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
 
         var doctorToValidate = fakeDoctors.First();
 
@@ -139,6 +151,7 @@ public class ValidationController : BaseAPIController
     /// <summary>
     /// 
     /// </summary>
+    /// <param name="num"></param>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("demo/extensionMethod/error/collection")]
@@ -148,9 +161,12 @@ public class ValidationController : BaseAPIController
         OperationId = "Extension Method IEnumerable Incorrect usage",
         Tags = new[] { "Validation" }
     )]
-    public async Task<IActionResult> DemoExtensionMethodErrorForCollection()
+    public async Task<IActionResult> DemoExtensionMethodErrorForCollection(int num = 100)
     {
-        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(100).ToList();
+        if (num <= 0)
+            return BadRequest(nameof(num) + " must be positive");
+
+        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
         
         // We have not defined a validator for ExternalFakeDoctorAddressDTO
         // So this  will throw an exception at runtime

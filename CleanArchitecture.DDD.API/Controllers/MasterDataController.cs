@@ -1,4 +1,5 @@
-﻿namespace CleanArchitecture.DDD.API.Controllers;
+﻿
+namespace CleanArchitecture.DDD.API.Controllers;
 
 public class MasterDataController : BaseAPIController
 {

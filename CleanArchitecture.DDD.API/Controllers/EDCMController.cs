@@ -19,6 +19,7 @@ public class EDCMController : BaseAPIController
     /// 
     /// </summary>
     /// <param name="simulateError"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("syncDoc", Name = "Sync Doctors")]
@@ -30,12 +31,12 @@ public class EDCMController : BaseAPIController
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status504GatewayTimeout)]
-    public async Task<IActionResult> SyncDoctors(bool simulateError)
+    public async Task<IActionResult> SyncDoctors(bool simulateError, CancellationToken cancellationToken)
     {
         try
         {
             var syncDoctorCommand = new SyncDoctorCommand(simulateError);
-            await Mediator.Send(syncDoctorCommand);
+            await Mediator.Send(syncDoctorCommand, cancellationToken);
 
             return Ok();
         }

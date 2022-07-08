@@ -159,6 +159,7 @@ public class DemoController : BaseAPIController
     {
         var doctors = await DbContext.Doctors
             // This query will select only not deleted entires due to Global filter of Doctors
+            // Unless 'IgnoreQueryFilters' is specified
             .IgnoreQueryFilters()
             .Where(doc => doc.SoftDeleted)
             .OrderBy(doc => Guid.NewGuid())

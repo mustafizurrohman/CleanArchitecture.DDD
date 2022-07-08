@@ -10,6 +10,7 @@ public class PasswordController : BaseAPIController
     /// Hashes a password
     /// </summary>
     /// <param name="password"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("hash", Name = "Hash Password")]
@@ -20,10 +21,10 @@ public class PasswordController : BaseAPIController
         Tags = new[] { "Password" }
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> HashPassword(string password)
+    public async Task<IActionResult> HashPassword(string password, CancellationToken cancellationToken)
     {
         var hashPasswordQuery = new HashPasswordQuery(password);
-        var result = await Mediator.Send(hashPasswordQuery);
+        var result = await Mediator.Send(hashPasswordQuery, cancellationToken);
 
         return Ok(result);
     }
@@ -33,6 +34,7 @@ public class PasswordController : BaseAPIController
     /// </summary>
     /// <param name="password">Password</param>
     /// <param name="hashedPassword">Hashed password</param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("hash/verify", Name = "Verify Hash Password")]
@@ -43,10 +45,10 @@ public class PasswordController : BaseAPIController
         Tags = new[] { "Password" }
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> VerifyHashPassword(string password, string hashedPassword)
+    public async Task<IActionResult> VerifyHashPassword(string password, string hashedPassword, CancellationToken cancellationToken)
     {
         var hashPasswordVerificationQuery = new HashPasswordVerificationQuery(password, hashedPassword);
-        var result = await Mediator.Send(hashPasswordVerificationQuery);
+        var result = await Mediator.Send(hashPasswordVerificationQuery, cancellationToken);
 
         return Ok(result);
     }
