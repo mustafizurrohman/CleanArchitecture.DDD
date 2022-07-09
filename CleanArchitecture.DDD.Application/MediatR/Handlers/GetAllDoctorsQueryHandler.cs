@@ -15,7 +15,7 @@ public class GetAllDoctorsQueryHandler : BaseHandler, IRequestHandler<GetAllDoct
         if (request.IncludeDeleted)
             doctorsQuery = doctorsQuery.IgnoreQueryFilters();
 
-        // A join will be performed automatically by AutoMapper using Entity Framework
+        // A join will be performed implicitly by AutoMapper using Entity Framework
         var doctors = await doctorsQuery
             .ProjectTo<DoctorCityDTO>(AutoMapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);

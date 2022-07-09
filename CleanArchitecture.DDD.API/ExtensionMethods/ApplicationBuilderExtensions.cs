@@ -60,6 +60,7 @@ public static class ApplicationBuilderExtensions
                 Log.Error(exception, exception.Message);
 
                 // TODO: May be we want to inform the Admin here using the Mailer Service?
+                // Or as a message in Teams using Serilog.Sinks.MicrosoftTeams
 
                 context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                 context.Response.ContentType = MediaTypeNames.Application.Json;

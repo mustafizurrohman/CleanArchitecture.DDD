@@ -30,11 +30,8 @@ public class DemoController : BaseAPIController
 
         if (createdName1.IsFailure || createdName2.IsFailure)
             return BadRequest(createdName2.Error.Message);
-
-        var name1 = createdName1.Value;
-        var name2 = createdName2.Value;
-
-        return Ok(name1 == name2);
+        
+        return Ok(createdName1.Value == createdName2.Value);
     }
     
     /// <summary>
@@ -121,7 +118,7 @@ public class DemoController : BaseAPIController
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("softdelete/collection", Name = "softdeleteCollecton")]
+    [HttpPost("softdelete/collection", Name = "softDeleteCollection")]
     [SwaggerOperation(
         Summary = "Demo of soft delete extension method on IEnumerable",
         Description = DefaultDescription,
@@ -131,7 +128,7 @@ public class DemoController : BaseAPIController
     public async Task<IActionResult> DemoSoftDeleteCollection(CancellationToken cancellationToken)
     {
         var doctors = await DbContext.Doctors
-            // This query will select only not deleted entires due to Global filter of Doctors
+            // This query will select only not deleted entries due to Global filter of Doctors
             .OrderBy(doc => Guid.NewGuid())
             .Take(20)
             .ToListAsync(cancellationToken);
@@ -148,7 +145,7 @@ public class DemoController : BaseAPIController
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("softdelete/collection/undo", Name = "UndoSoftdeleteCollecton")]
+    [HttpPost("softdelete/collection/undo", Name = "UndoSoftDeleteCollection")]
     [SwaggerOperation(
         Summary = "Demo of undo soft delete extension method on IEnumerable",
         Description = DefaultDescription,
