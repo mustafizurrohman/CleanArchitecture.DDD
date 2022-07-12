@@ -56,6 +56,17 @@ public static class ApplicationBuilderExtensions
                 var errorFeature = context.Features.Get<IExceptionHandlerFeature>();
                 var exception = errorFeature?.Error ?? new Exception();
 
+                context.Response.ContentType = MediaTypeNames.Application.Json;
+
+                // TaskCanceledException Handling
+                if (exception is TaskCanceledException)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.OK;
+                    var message = "Request was cancelled";
+                    
+                    await context.Response.WriteAsync(message.ToFormattedJson(), Encoding.UTF8);
+                }
+
                 // Log all details of the unhandled exception here
                 Log.Error(exception, exception.Message);
 
@@ -63,8 +74,7 @@ public static class ApplicationBuilderExtensions
                 // Or as a message in Teams using Serilog.Sinks.MicrosoftTeams
 
                 context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
-                context.Response.ContentType = MediaTypeNames.Application.Json;
-
+                
                 // The user only gets a support code and no details of the internal server exception. 
                 // We can use this code to filter out the logs for this specific request
                 // Using Kibana? or by explicitly saving this code in Database while logging 
