@@ -81,11 +81,9 @@ public static class ApplicationBuilderExtensions
                 var supportCode = context.GetSupportCode();
                 var productionErrorMessage =
                     "An unexpected error occured. Please contact support with code \'" + supportCode + "\'.";
-
-                var exceptionReportModel = new ExceptionReportModel(exception, supportCode);
                 
                 var response = isInDevelopment
-                    ? exceptionReportModel.ToFormattedJson()
+                    ? new ExceptionReportModel(exception, supportCode).ToFormattedJson()
                     : productionErrorMessage.ToFormattedJson();
 
                 await context.Response.WriteAsync(response, Encoding.UTF8);
