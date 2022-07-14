@@ -38,7 +38,6 @@ public class DemoController : BaseAPIController
     /// 
     /// </summary>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("exception", Name = "loggingException")]
     [SwaggerOperation(
@@ -89,7 +88,6 @@ public class DemoController : BaseAPIController
     /// 
     /// </summary>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("softdelete", Name = "softdelete")]
     [SwaggerOperation(
@@ -101,7 +99,7 @@ public class DemoController : BaseAPIController
     public async Task<IActionResult> DemoSoftDelete(Guid doctorGuid, CancellationToken cancellationToken)
     {
         var doctor = await DbContext.Doctors
-            .FindAsync(doctorGuid);
+            .FindAsync(doctorGuid, cancellationToken);
 
         if (doctor is null)
             return BadRequest("Invalid doctor Guid.");
@@ -116,7 +114,6 @@ public class DemoController : BaseAPIController
     /// 
     /// </summary>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("softdelete/collection", Name = "softDeleteCollection")]
     [SwaggerOperation(
@@ -143,7 +140,6 @@ public class DemoController : BaseAPIController
     /// 
     /// </summary>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("softdelete/collection/undo", Name = "UndoSoftDeleteCollection")]
     [SwaggerOperation(
@@ -173,7 +169,6 @@ public class DemoController : BaseAPIController
     /// 
     /// </summary>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("weischer", Name = "DemoWeischer")]
     [SwaggerOperation(
