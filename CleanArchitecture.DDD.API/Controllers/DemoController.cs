@@ -155,7 +155,7 @@ public class DemoController : BaseAPIController
     public async Task<IActionResult> DemoUndoSoftDeleteCollection(CancellationToken cancellationToken)
     {
         var doctors = await DbContext.Doctors
-            // This query will select only not deleted entires due to Global filter of Doctors
+            // This query will select only not deleted entries due to Global filter of Doctors
             // Unless 'IgnoreQueryFilters' is specified
             .IgnoreQueryFilters()
             .Where(doc => doc.SoftDeleted)
@@ -166,6 +166,33 @@ public class DemoController : BaseAPIController
         doctors = doctors.UndoSoftDelete().ToList();
         await DbContext.SaveChangesAsync(cancellationToken);
 
+        return Ok(doctors);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpPost("weischer", Name = "DemoWeischer")]
+    [SwaggerOperation(
+        Summary = "Placeholder for demo for Weischer Colleagues",
+        Description = DefaultDescription,
+        OperationId = "Demo for Weischer",
+        Tags = new[] { "Demo" }
+    )]
+    public async Task<IActionResult> WeischerDemo(CancellationToken cancellationToken)
+    {
+        var doctors = await DbContext.Doctors
+            // This query will select only not deleted entries due to Global filter of Doctors
+            // Unless 'IgnoreQueryFilters' is specified
+            .IgnoreQueryFilters()
+            .Where(doc => doc.SoftDeleted)
+            .OrderBy(doc => Guid.NewGuid())
+            .Take(20)
+            .ToListAsync(cancellationToken);
+        
         return Ok(doctors);
     }
 

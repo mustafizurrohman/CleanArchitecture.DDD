@@ -10,12 +10,10 @@ public static class SpecializationEnumExtensions
     {
         if (enumStringValues.TryGetValue(specialization, out var textValue))
             return textValue;
-        else
-        {
-            textValue = specialization.ToString().CamelCaseToSentence();
-            enumStringValues[specialization] = textValue;
-            return textValue;
-        }
+        
+        textValue = specialization.ToString().CamelCaseToSentence();
+        enumStringValues[specialization] = textValue;
+        return textValue;
     }
 
     public static Specialization ToSpecialization(this string inputString)
