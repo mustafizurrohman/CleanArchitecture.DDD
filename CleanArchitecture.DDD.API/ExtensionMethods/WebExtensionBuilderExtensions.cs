@@ -4,6 +4,7 @@ using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Domain;
 using Hangfire;
 using Hangfire.SqlServer;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Serilog.Events;
@@ -31,12 +32,23 @@ public static class WebExtensionBuilderExtensions
             .ConfigureInputValidation()
             .ConfigureSwagger()
             .ConfigureHttpClientFactory()
+            .AddProblemDetails()
             // .ConfigureHangfire()
             .ConfigureControllers();
         
         return builder;
     }
-    
+
+    private static WebApplicationBuilder AddProblemDetails(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddProblemDetails(setup =>
+        {
+            setup.IncludeExceptionDetails = (ctx, env) => builder.Environment.IsDevelopment();
+        });
+
+        return builder;
+    }
+
     private static WebApplicationBuilder ConfigureControllers(this WebApplicationBuilder builder)
     {
         builder.Services.AddControllers()

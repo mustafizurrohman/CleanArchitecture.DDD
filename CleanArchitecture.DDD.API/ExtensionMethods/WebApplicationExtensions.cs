@@ -1,4 +1,5 @@
-﻿using Swashbuckle.AspNetCore.SwaggerUI;
+﻿using Hellang.Middleware.ProblemDetails;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
@@ -32,7 +33,8 @@ public static class WebApplicationExtensions
                 .AllowAnyOrigin();
         });
 
-        app.UseCustomExceptionHandler();
+        // app.UseCustomExceptionHandler();
+        app.UseProblemDetails();
 
         app.MigrateDatabase();
 

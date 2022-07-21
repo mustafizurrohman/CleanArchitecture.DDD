@@ -13,32 +13,33 @@
 	  <PackageReference Include="Ardalis.GuardClauses" Version="4.0.1" />
 	  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 	  <PackageReference Include="Bogus" Version="34.0.2" />
-	  <PackageReference Include="FluentValidation.AspNetCore" Version="11.0.3" />
-	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.0.3" />
+	  <PackageReference Include="FluentValidation.AspNetCore" Version="11.1.2" />
+	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.1.0" />
 	  <PackageReference Include="Hangfire" Version="1.8.0-rc1" />
 	  <PackageReference Include="Hangfire.Core" Version="1.8.0-rc1" />
 	  <PackageReference Include="Hangfire.SqlServer" Version="1.8.0-rc1" />
+	  <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.4.2" />
 	  <PackageReference Include="MediatR" Version="10.0.1" />
 	  <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
 	  <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
-	  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.0-preview.5.22303.8" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-preview.5.22302.2">
+	  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.0-preview.6.22330.3" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-preview.6.22329.4">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
-	  <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="7.0.0-preview.5.22303.8" />
+	  <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="7.0.0-preview.6.22330.3" />
 	  <PackageReference Include="Scrutor" Version="4.2.0" />
 	  <PackageReference Include="Scrutor.AspNetCore" Version="3.3.0" />
-	  <PackageReference Include="Serilog.AspNetCore" Version="6.0.0-dev-00265" />
+	  <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
 	  <PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
 	  <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.1-dev-00787" />
 	  <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.2" />
 	  <PackageReference Include="Serilog.Enrichers.Thread" Version="3.2.0-dev-00752" />
 	  <PackageReference Include="Serilog.Enrichers.TraceIdentifier" Version="1.0.2" />
-	  <PackageReference Include="Serilog.Exceptions" Version="8.2.0" />
+	  <PackageReference Include="Serilog.Exceptions" Version="8.3.0" />
 	  <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.1-dev-00337" />
-	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
-	  <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.3.1" />
+	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+	  <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
