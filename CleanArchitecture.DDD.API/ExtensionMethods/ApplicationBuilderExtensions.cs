@@ -45,6 +45,7 @@ public static class ApplicationBuilderExtensions
     /// </summary>
     /// <param name="applicationBuilder"></param>
     /// <param name="isDevelopment"></param>
+    /// TODO: Just log the exception here and do nothing else. UseProblemDetails() takes care of the rest.
     public static void UseCustomExceptionHandler(this WebApplication applicationBuilder, bool? isDevelopment = null)
     {
         var isInDevelopment = isDevelopment ?? applicationBuilder.Environment.IsDevelopment();
