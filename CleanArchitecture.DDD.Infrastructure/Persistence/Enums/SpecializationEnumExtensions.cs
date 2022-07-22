@@ -5,14 +5,14 @@ namespace CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 public static class SpecializationEnumExtensions
 {
 
-    private static readonly Dictionary<Enum, string> enumStringValues = new();
+    private static readonly Dictionary<Enum, string> EnumStringValues = new();
     public static string ToStringCached(this Specialization specialization)
     {
-        if (enumStringValues.TryGetValue(specialization, out var textValue))
+        if (EnumStringValues.TryGetValue(specialization, out var textValue))
             return textValue;
         
         textValue = specialization.ToString().CamelCaseToSentence();
-        enumStringValues[specialization] = textValue;
+        EnumStringValues[specialization] = textValue;
         return textValue;
     }
 

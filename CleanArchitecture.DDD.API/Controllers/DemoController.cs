@@ -48,6 +48,7 @@ public class DemoController : BaseAPIController
     )]
     public IActionResult TestExceptionLogging()
     {
+        Log.Error("Logging before throwing an exception .... ");
         throw new NotImplementedException();
     }
 

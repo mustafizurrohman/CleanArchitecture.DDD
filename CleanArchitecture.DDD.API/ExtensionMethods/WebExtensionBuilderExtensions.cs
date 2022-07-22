@@ -43,7 +43,7 @@ public static class WebExtensionBuilderExtensions
     {
         builder.Services.AddProblemDetails(setup =>
         {
-            setup.IncludeExceptionDetails = (ctx, env) => builder.Environment.IsDevelopment();
+            setup.IncludeExceptionDetails = (httpContext, exception) => builder.Environment.IsDevelopment();
         });
 
         return builder;
@@ -228,7 +228,7 @@ public static class WebExtensionBuilderExtensions
             loggerConfig
                 .WriteTo.Console()
                 .WriteTo.File(new RenderedCompactJsonFormatter(), 
-                    @"C:\dev\Serilog\logs.json", 
+                    @"C:\dev\Serilog\APILogs.json", 
                     rollingInterval: RollingInterval.Day, 
                     retainedFileCountLimit: 7);
         });
