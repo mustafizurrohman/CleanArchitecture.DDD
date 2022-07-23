@@ -1,3 +1,5 @@
+using CleanArchitecture.DDD.API.Startup;
+
 var stopwatch = new Stopwatch();
 stopwatch.Start();
 

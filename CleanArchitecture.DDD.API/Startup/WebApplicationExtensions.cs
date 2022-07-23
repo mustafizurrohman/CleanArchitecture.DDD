@@ -1,14 +1,14 @@
 ﻿using Hellang.Middleware.ProblemDetails;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-namespace CleanArchitecture.DDD.API.ExtensionMethods;
+namespace CleanArchitecture.DDD.API.Startup;
 
 public static class WebApplicationExtensions
 {
     public static WebApplication ConfigureHttpPipeline(this WebApplication app)
     {
         var isInDevelopment = app.Environment.IsDevelopment();
-       
+
         // Configure the HTTP request pipeline.
         if (isInDevelopment)
         {
@@ -25,7 +25,7 @@ public static class WebApplicationExtensions
             });
         }
 
-        // Must be configurable in a real application
+        // TODO: Make this configurable
         app.UseCors(options =>
         {
             options.AllowAnyHeader()
@@ -33,15 +33,15 @@ public static class WebApplicationExtensions
                 .AllowAnyOrigin();
         });
 
-        // app.UseCustomExceptionHandler();
         app.UseProblemDetails();
+        app.UseExceptionLoggingMiddleware();
 
         app.MigrateDatabase();
 
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
-        
+
         app.UseRouting();
 
         // GlobalConfiguration.Configuration.UseActivator(new HangfireActivator(app.Services));
@@ -53,7 +53,7 @@ public static class WebApplicationExtensions
         });
 
         app.UseSerilogRequestLogging();
-        
+
         return app;
-    }   
+    }
 }
