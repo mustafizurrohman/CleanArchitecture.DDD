@@ -34,7 +34,7 @@ public static class WebApplicationExtensions
         });
 
         app.UseProblemDetails();
-        app.UseExceptionLoggingMiddleware();
+        // app.UseExceptionLoggingMiddleware();
 
         app.MigrateDatabase();
 
