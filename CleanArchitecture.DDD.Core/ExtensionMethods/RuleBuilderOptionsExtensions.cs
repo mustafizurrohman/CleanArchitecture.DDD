@@ -1,4 +1,7 @@
-﻿namespace CleanArchitecture.DDD.Core.ExtensionMethods;
+﻿using CleanArchitecture.DDD.Core.ValueObjects;
+using CSharpFunctionalExtensions;
+
+namespace CleanArchitecture.DDD.Core.ExtensionMethods;
 
 public static class RuleBuilderOptionsExtensions
 {
@@ -97,6 +100,22 @@ public static class RuleBuilderOptionsExtensions
         return ruleBuilder.Must(name => !name.Contains("  "))
             .WithMessage("'{PropertyName}' must not contain more than 1 consecutive spaces");
         
+    }
+
+    public static IRuleBuilderOptions<T, string> MustBeValueObject<T, TValueObject>(
+        this IRuleBuilder<T, string> ruleBuilder,
+        Func<string, Result<TValueObject, Error>> factoryMethod)
+        where TValueObject : ValueObject
+    {
+        return (IRuleBuilderOptions<T, string>)ruleBuilder.Custom((value, context) =>
+        {
+            Result<TValueObject, Error> result = factoryMethod(value);
+
+            if (result.IsFailure)
+            {
+                context.AddFailure(result.Error.Serialize());
+            }
+        });
     }
 
 }

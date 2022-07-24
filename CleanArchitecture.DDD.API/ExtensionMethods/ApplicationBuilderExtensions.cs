@@ -1,5 +1,4 @@
-﻿using CleanArchitecture.DDD.API.Models;
-using Microsoft.AspNetCore.Diagnostics;
+﻿using Microsoft.AspNetCore.Diagnostics;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 

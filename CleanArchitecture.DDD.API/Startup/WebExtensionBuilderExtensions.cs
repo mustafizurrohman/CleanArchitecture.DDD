@@ -1,4 +1,3 @@
-using CleanArchitecture.DDD.API.Startup;
 using CleanArchitecture.DDD.Application;
 using CleanArchitecture.DDD.Core.Logging;
 using CleanArchitecture.DDD.Core.Polly;
