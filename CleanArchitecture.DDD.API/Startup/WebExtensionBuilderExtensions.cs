@@ -197,7 +197,9 @@ public static class WebExtensionBuilderExtensions
 
     private static WebApplicationBuilder ConfigureLogging(this WebApplicationBuilder builder)
     {
-        // We can also use appSettings to configure logging
+        // We can also use appSettings or any ConfigurationProvider to configure logging
+        // Usage of a ConfigurationProvider is recommended
+        // because it allows changes during run-time.
         builder.Host.UseSerilog((_, _, loggerConfig) =>
         {
             var assemblyName = Assembly.GetExecutingAssembly().GetName();
