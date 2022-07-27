@@ -44,6 +44,12 @@ public static class WebExtensionBuilderExtensions
         builder.Services.AddProblemDetails(setup =>
         {
             setup.IncludeExceptionDetails = (httpContext, exception) => builder.Environment.IsDevelopment();
+            setup.OnBeforeWriteDetails = (httpContext, details) =>
+            {
+                details.Detail = "An error occurred in our API. " +
+                                 "Please use the trace id for contacting us";
+            };
+            // setup.Rethrow<Exception>();
         });
 
         return builder;
