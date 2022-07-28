@@ -38,7 +38,7 @@ public class TimingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         }
         else
         {
-            LogWithSpace(() => Log.Information("MediatR Timing middleware: Processed request in {requestProcessingTime} ms.", requestProcessingTime));
+            LogWithSpace(() => Log.Information("MediatR Timing middleware: Processed request {displayUrl} in {requestProcessingTime} ms.", displayUrl, requestProcessingTime));
         }
 
         return response;

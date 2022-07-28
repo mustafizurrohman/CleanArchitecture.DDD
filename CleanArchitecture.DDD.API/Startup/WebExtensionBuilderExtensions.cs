@@ -234,12 +234,15 @@ public static class WebExtensionBuilderExtensions
                 .Enrich.WithProperty("Version", $"{assemblyName.Version}");
 
             loggerConfig
+                // Console configuration
                 .WriteTo.Console()
+                // File configuration
                 .WriteTo.File(new RenderedCompactJsonFormatter(),
                     @"C:\dev\Serilog\APILogs.json",
                     rollingInterval: RollingInterval.Day,
                     retainedFileCountLimit: 7)
-                .WriteTo.Seq("http://localhost:5341/");
+                // Seq Configuration
+                .WriteTo.Seq("http://localhost:5341/", LogEventLevel.Debug);
         });
 
         return builder;
