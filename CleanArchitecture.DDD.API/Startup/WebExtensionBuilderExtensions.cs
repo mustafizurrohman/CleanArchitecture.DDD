@@ -238,7 +238,8 @@ public static class WebExtensionBuilderExtensions
                 .WriteTo.File(new RenderedCompactJsonFormatter(),
                     @"C:\dev\Serilog\APILogs.json",
                     rollingInterval: RollingInterval.Day,
-                    retainedFileCountLimit: 7);
+                    retainedFileCountLimit: 7)
+                .WriteTo.Seq("http://localhost:5341/");
         });
 
         return builder;
