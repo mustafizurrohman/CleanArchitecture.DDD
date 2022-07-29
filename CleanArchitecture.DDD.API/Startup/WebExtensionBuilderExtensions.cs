@@ -7,6 +7,7 @@ using Hangfire.SqlServer;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using Serilog.Enrichers.Span;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
@@ -226,6 +227,7 @@ public static class WebExtensionBuilderExtensions
                 .Enrich.WithProcessId()
                 .Enrich.WithProcessName()
                 .Enrich.WithEnvironmentName()
+                .Enrich.With<ActivityEnricher>()
                 // Custom serilog enricher to append release number
                 .Enrich.WithReleaseNumber()
                 // Custom serilog enricher to append logged in username
