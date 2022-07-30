@@ -195,4 +195,24 @@ public class DemoController : BaseAPIController
         return Ok(doctors);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpGet("log", Name = "DemoLogging")]
+    [SwaggerOperation(
+        Summary = "Demo for Generation of logs for Seq Visualization",
+        Description = DefaultDescription,
+        OperationId = "Demo of log generation",
+        Tags = new[] { "Demo" }
+    )]
+    public async Task<IActionResult> LogGenerationDemo(CancellationToken cancellationToken, int iterations = 10, bool withDelay = false)
+    {
+        var generateLogsCommand = new GenerateLogsCommand(iterations, withDelay);
+        await Mediator.Send(generateLogsCommand, cancellationToken);
+
+        return Ok();
+    }
+
 }
