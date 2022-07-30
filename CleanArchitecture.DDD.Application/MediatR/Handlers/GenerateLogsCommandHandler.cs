@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Cryptography;
+using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
@@ -35,56 +36,46 @@ public class GenerateLogsCommandHandler : BaseHandler, IRequestHandler<GenerateL
     {
         IEnumerable<Action> GetSetOfLogs()
         {
+            Action GetLog(LogLevel logLevel)
+            {
+                return logLevel switch
+                {
+                    LogLevel.Trace => () => Log.Verbose("[TRACE] " + RandomText),
+                    LogLevel.Debug => () => Log.Debug("[DEBUG] " + RandomText),
+                    LogLevel.Information => () => Log.Information("[INFORMATION] " + RandomText),
+                    LogLevel.Warning => () => Log.Warning("[WARNING] " + RandomText),
+                    LogLevel.Error => () => Log.Error("[ERROR] " + RandomText),
+                    LogLevel.Critical => () => Log.Fatal("[CRITICAL] " + RandomText),
+                    LogLevel.None => () => { },
+                    _ => () => { }
+                };
+            }
+
             return new List<Action>
             {
-                () =>
-                {
-                    Log.Verbose("[VERBOSE] " + RandomText);
-                },
-                () =>
-                {
-                    Log.Debug("[DEBUG] " + RandomText);
-                },
-                () =>
-                {
-                    Log.Information("[INFORMATION] " + RandomText);
-                },
-                () =>
-                {
-                    Log.Warning("[WARNING] " + RandomText);
-                },
-                () =>
-                {
-                    Log.Warning("[WARNING] " + RandomText);
-                },
-                () =>
-                {
-                    Log.Warning("[WARNING] " + RandomText);
-                },
-                () =>
-                {
-                    Log.Error("[ERROR] " + RandomText);
-                },
-                () =>
-                {
-                    Log.Error("[ERROR] " + RandomText);
-                },
-                () =>
-                {
-                    Log.Fatal("[CRITICAL] " + RandomText);
-                },
-                () =>
-                {
-                    Log.Information("[INFORMATION] " + RandomText);
-                },
-                () =>
-                {
-                    Log.Information("[INFORMATION] " + RandomText);
-                },
-                () =>
-                {
-                    Log.Information("[INFORMATION] " + RandomText);
-                }
+                GetLog(LogLevel.Trace),
+                GetLog(LogLevel.Trace),
+                
+                GetLog(LogLevel.Debug),
+                GetLog(LogLevel.Debug),
+                GetLog(LogLevel.Debug),
+                GetLog(LogLevel.Debug),
+                GetLog(LogLevel.Debug),
+
+                GetLog(LogLevel.Information),
+                GetLog(LogLevel.Information),
+                GetLog(LogLevel.Information),
+                GetLog(LogLevel.Information),
+                GetLog(LogLevel.Information),
+                
+                GetLog(LogLevel.Warning),
+                GetLog(LogLevel.Warning),
+                GetLog(LogLevel.Warning),
+                
+                GetLog(LogLevel.Error),
+                GetLog(LogLevel.Error),
+                
+                GetLog(LogLevel.Critical)
             };
         }
 
