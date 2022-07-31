@@ -66,21 +66,27 @@ public static class WebApplicationExtensions
             endpoints.MapHealthChecks("/health", new HealthCheckOptions
             {
                 ResultStatusCodes = mappedStatus,
-                ResponseWriter = WriteOverallHealthCheckResponse
+                ResponseWriter = WriteOverallHealthCheckResponse,
+                AllowCachingResponses = false
             });
 
             endpoints.MapHealthChecks("/health/ready", new HealthCheckOptions
             {
                 ResultStatusCodes = mappedStatus,
                 ResponseWriter = WriteHealthCheckResponse,
-                Predicate = check => check.Tags.Contains("ready")
+                Predicate = check => check.Tags.Contains("ready"),
+                AllowCachingResponses = false
             });
 
+            // .RequireAuthorization()
+            // .RequireCors()
+            // .RequireHost()
             endpoints.MapHealthChecks("/health/live", new HealthCheckOptions
             {
                 ResultStatusCodes = mappedStatus,
                 ResponseWriter = WriteHealthCheckResponse,
-                Predicate = check => check.Tags.Contains("live")
+                Predicate = check => check.Tags.Contains("live"),
+                AllowCachingResponses = false
             });
 
             //endpoints.MapHealthChecks("health/ui", new HealthCheckOptions
