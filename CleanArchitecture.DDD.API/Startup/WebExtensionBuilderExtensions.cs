@@ -65,8 +65,12 @@ public static class WebExtensionBuilderExtensions
                 timeout: TimeSpan.FromSeconds(15), 
                 tags: new[] { "live" });
 
-        //builder.Services.AddHealthChecksUI()
+        // builder.Services.AddHealthChecksUI()
         //    .AddInMemoryStorage();
+
+        // Health check reports can be published by a class which inherits from IHealthCheckPublisher
+        // TODO: Implement this
+        // https://app.pluralsight.com/course-player?clipId=b93c3372-74d7-4623-9506-2d851b2522a9
 
         return builder;
     }

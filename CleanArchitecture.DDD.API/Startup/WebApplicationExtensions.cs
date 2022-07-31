@@ -106,6 +106,7 @@ public static class WebApplicationExtensions
     {
         httpContext.Response.ContentType = MediaTypeNames.Application.Json;
 
+        //TODO: Use a class here
         var json = new JObject(
             new JProperty("OverallStatus", healthReport.Status.ToString()),
             new JProperty("TotalChecksDuration", healthReport.TotalDuration.TotalSeconds.ToString("0:0.00")),
@@ -127,6 +128,7 @@ public static class WebApplicationExtensions
     {
         httpContext.Response.ContentType = "application/json";
 
+        //TODO: Use a class here
         var json = new JObject(
             new JProperty("OverallStatus", result.Status.ToString()),
             new JProperty("TotalChecksDuration", result.TotalDuration.TotalSeconds.ToString("0:0.00"))
