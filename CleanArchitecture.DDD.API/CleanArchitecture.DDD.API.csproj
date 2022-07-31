@@ -11,6 +11,7 @@
 	  <ProjectCapability Include="DynamicDependentFile" />
 	  <ProjectCapability Include="DynamicFileNesting" />
 	  <PackageReference Include="Ardalis.GuardClauses" Version="4.0.1" />
+	  <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="6.0.3" />
 	  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 	  <PackageReference Include="Bogus" Version="34.0.2" />
 	  <PackageReference Include="FluentValidation.AspNetCore" Version="11.1.2" />

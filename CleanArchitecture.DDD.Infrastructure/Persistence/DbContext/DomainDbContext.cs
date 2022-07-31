@@ -17,7 +17,7 @@ public class DomainDbContext : DatabaseContext
     {
         _connectionString = connectionString;
 
-        if (!IsConnectionStringValid(_connectionString))
+        if (!IsDatabaseReachable(_connectionString))
         {
             const string message = "Invalid database connection string or database is not reachable ... ";
             
@@ -135,7 +135,7 @@ public class DomainDbContext : DatabaseContext
         });                
     }
 
-    private bool IsConnectionStringValid(string connectionString)
+    public static bool IsDatabaseReachable(string connectionString)
     {
         string RemoveDatabaseFromConnectionString(string connStr)
         {

@@ -5,6 +5,7 @@ using CleanArchitecture.DDD.Domain;
 using Hangfire;
 using Hangfire.SqlServer;
 using Hellang.Middleware.ProblemDetails;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Serilog.Enrichers.Span;
@@ -34,8 +35,30 @@ public static class WebExtensionBuilderExtensions
             .ConfigureSwagger()
             .ConfigureHttpClientFactory()
             .ConfigureExceptionHandling()
+            .ConfigureHealthChecks()
             // .ConfigureHangfire()
             .ConfigureControllers();
+
+        return builder;
+    }
+
+    private static WebApplicationBuilder ConfigureHealthChecks(this WebApplicationBuilder builder)
+    {
+        // Note: This can be done using AspNetCore.Diagnostics.HealthChecks nuget package
+        // https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks
+        builder.Services.AddHealthChecks()
+            .AddCheck("SQL Database Health Check", () =>
+            {
+                var connectionString = builder.GetDatabaseConnectionString();
+                
+                return DomainDbContext.IsDatabaseReachable(connectionString) 
+                    ? HealthCheckResult.Healthy() 
+                    : HealthCheckResult.Unhealthy();
+            });
+
+        var seqUrl = builder.Configuration.GetConnectionString("Seq")!;
+        builder.Services.AddHealthChecks()
+            .AddUrlGroup(new Uri(seqUrl), "SEQ Health Check", HealthStatus.Degraded, timeout: TimeSpan.FromSeconds(15)); 
 
         return builder;
     }
@@ -171,8 +194,7 @@ public static class WebExtensionBuilderExtensions
 
     private static WebApplicationBuilder ConfigureEntityFramework(this WebApplicationBuilder builder)
     {
-        var connectionString = builder.Configuration.GetConnectionString("DDD_Db") ?? string.Empty;
-
+        var connectionString = builder.GetDatabaseConnectionString();
         builder.Services.AddScoped(_ => new DomainDbContext(connectionString, builder.Environment.IsDevelopment()));
 
         return builder;
@@ -235,6 +257,8 @@ public static class WebExtensionBuilderExtensions
                 .Enrich.WithProperty("Assembly", $"{assemblyName.Name}")
                 .Enrich.WithProperty("Version", $"{assemblyName.Version}");
 
+            var seqUrl = builder.Configuration.GetConnectionString("Seq")!;
+
             loggerConfig
                 // Console configuration
                 .WriteTo.Console()
@@ -244,7 +268,7 @@ public static class WebExtensionBuilderExtensions
                     rollingInterval: RollingInterval.Day,
                     retainedFileCountLimit: 7)
                 // Seq Configuration
-                .WriteTo.Seq("http://localhost:5341/", LogEventLevel.Debug);
+                .WriteTo.Seq(seqUrl, LogEventLevel.Debug);
         });
 
         return builder;
@@ -265,6 +289,11 @@ public static class WebExtensionBuilderExtensions
             .AddPolicyHandler(retryPolicy);
 
         return builder;
+    }
+
+    private static string GetDatabaseConnectionString(this WebApplicationBuilder builder)
+    {
+        return builder.Configuration.GetConnectionString("DDD_Db") ?? string.Empty;
     }
 
 }
