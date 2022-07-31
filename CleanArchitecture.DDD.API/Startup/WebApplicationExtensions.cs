@@ -90,7 +90,7 @@ public static class WebApplicationExtensions
             //});
         });
 
-        // app.UseHealthChecksUI();
+        //app.UseHealthChecksUI();
         app.UseSerilogRequestLogging();
 
         return app;

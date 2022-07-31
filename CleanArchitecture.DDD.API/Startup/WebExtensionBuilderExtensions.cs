@@ -65,7 +65,8 @@ public static class WebExtensionBuilderExtensions
                 timeout: TimeSpan.FromSeconds(15), 
                 tags: new[] { "live" });
 
-        // builder.Services.AddHealthChecksUI();
+        //builder.Services.AddHealthChecksUI()
+        //    .AddInMemoryStorage();
 
         return builder;
     }
