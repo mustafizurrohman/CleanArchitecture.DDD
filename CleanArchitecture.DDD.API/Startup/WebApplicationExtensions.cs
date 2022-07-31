@@ -1,5 +1,7 @@
-﻿using Hellang.Middleware.ProblemDetails;
+﻿using HealthChecks.UI.Client;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -53,25 +55,48 @@ public static class WebApplicationExtensions
         {
             // endpoints.MapHangfireDashboard();
             endpoints.MapControllers();
-            endpoints.MapHealthChecks("/health", new HealthCheckOptions()
-            {
-                ResultStatusCodes =
-                {
-                    [HealthStatus.Healthy] = StatusCodes.Status200OK,
-                    [HealthStatus.Degraded] = StatusCodes.Status500InternalServerError,
-                    [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
-                },
-                ResponseWriter = WriteHealthCheckResponse
-            });
-        });
-        
 
+            var mappedStatus = new Dictionary<HealthStatus, int>
+            {
+                {HealthStatus.Healthy, StatusCodes.Status200OK},
+                {HealthStatus.Degraded, StatusCodes.Status500InternalServerError},
+                {HealthStatus.Unhealthy, StatusCodes.Status503ServiceUnavailable}
+            };
+            
+            endpoints.MapHealthChecks("/health", new HealthCheckOptions
+            {
+                ResultStatusCodes = mappedStatus,
+                ResponseWriter = WriteOverallHealthCheckResponse
+            });
+
+            endpoints.MapHealthChecks("/health/ready", new HealthCheckOptions
+            {
+                ResultStatusCodes = mappedStatus,
+                ResponseWriter = WriteHealthCheckResponse,
+                Predicate = check => check.Tags.Contains("ready")
+            });
+
+            endpoints.MapHealthChecks("/health/live", new HealthCheckOptions
+            {
+                ResultStatusCodes = mappedStatus,
+                ResponseWriter = WriteHealthCheckResponse,
+                Predicate = check => check.Tags.Contains("live")
+            });
+
+            //endpoints.MapHealthChecks("health/ui", new HealthCheckOptions
+            //{
+            //    Predicate = _ => true,
+            //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            //});
+        });
+
+        // app.UseHealthChecksUI();
         app.UseSerilogRequestLogging();
 
         return app;
     }
 
-    private static Task WriteHealthCheckResponse(HttpContext httpContext, HealthReport healthReport)
+    private static Task WriteOverallHealthCheckResponse(HttpContext httpContext, HealthReport healthReport)
     {
         httpContext.Response.ContentType = MediaTypeNames.Application.Json;
 
@@ -87,6 +112,18 @@ public static class WebApplicationExtensions
                         new JProperty(dicData.Key, dicData.Value))))
                 ))
             )))
+        );
+
+        return httpContext.Response.WriteAsync(json.ToFormattedJson());
+    }
+
+    private static Task WriteHealthCheckResponse(HttpContext httpContext, HealthReport result)
+    {
+        httpContext.Response.ContentType = "application/json";
+
+        var json = new JObject(
+            new JProperty("OverallStatus", result.Status.ToString()),
+            new JProperty("TotalChecksDuration", result.TotalDuration.TotalSeconds.ToString("0:0.00"))
         );
 
         return httpContext.Response.WriteAsync(json.ToFormattedJson());

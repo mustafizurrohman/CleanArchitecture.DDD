@@ -46,6 +46,7 @@ public static class WebExtensionBuilderExtensions
     {
         // Note: This can be done using AspNetCore.Diagnostics.HealthChecks nuget package
         // https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks
+        // Custom implementation possible when class inherits from IHealthCheck
         builder.Services.AddHealthChecks()
             .AddCheck("SQL Database Health Check", () =>
             {
@@ -54,11 +55,17 @@ public static class WebExtensionBuilderExtensions
                 return DomainDbContext.IsDatabaseReachable(connectionString) 
                     ? HealthCheckResult.Healthy() 
                     : HealthCheckResult.Unhealthy();
-            });
+            }, tags: new[] { "ready" });
 
         var seqUrl = builder.Configuration.GetConnectionString("Seq")!;
         builder.Services.AddHealthChecks()
-            .AddUrlGroup(new Uri(seqUrl), "SEQ Health Check", HealthStatus.Degraded, timeout: TimeSpan.FromSeconds(15)); 
+            .AddUrlGroup(new Uri(seqUrl), 
+                "SEQ Health Check", 
+                HealthStatus.Degraded, 
+                timeout: TimeSpan.FromSeconds(15), 
+                tags: new[] { "live" });
+
+        // builder.Services.AddHealthChecksUI();
 
         return builder;
     }
