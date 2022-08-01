@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props
 		README.md = README.md
+		SEQQueries.md = SEQQueries.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.DDD.API", "CleanArchitecture.DDD.API\CleanArchitecture.DDD.API.csproj", "{A600724A-4ACD-4904-A175-37A229844FFE}"

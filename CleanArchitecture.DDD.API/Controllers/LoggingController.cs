@@ -59,7 +59,7 @@ public class LoggingController : BaseAPIController
         OperationId = "Log Generation Demo",
         Tags = new[] { "Logging" }
     )]
-    public async Task<IActionResult> LogGenerationDemo(CancellationToken cancellationToken, int iterations = 10, bool withDelay = false)
+    public async Task<IActionResult> LogGenerationDemo(CancellationToken cancellationToken, int iterations = 10, bool withDelay = true)
     {
         var generateLogsCommand = new GenerateLogsCommand(iterations, withDelay);
         await Mediator.Send(generateLogsCommand, cancellationToken);
