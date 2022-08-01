@@ -12,7 +12,6 @@ using Serilog.Enrichers.Span;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
-using System.Diagnostics;
 
 namespace CleanArchitecture.DDD.API.Startup;
 
@@ -89,16 +88,19 @@ public static class WebExtensionBuilderExtensions
                 var traceIdentifier = Activity.Current?.Id ?? httpContext?.TraceIdentifier ?? string.Empty;
                 var traceIdentifierParts = traceIdentifier.Split('-');
 
-                if (traceIdentifierParts.Length == 4)
+                if (traceIdentifierParts.Length >= 2)
                     supportCode = traceIdentifierParts[1];
 
                 if (supportCode == string.Empty)
                     supportCode = httpContext!.TraceIdentifier;
 
-                details.Detail = "An error occurred in our API. " 
-                                + $"Please use the Support Code {supportCode} for contacting us";
+                details.Detail = "An internal error occurred in our API. " 
+                                + $"Please use the Support Code \'{supportCode}\' for contacting us";
 
-                Log.Fatal("TICKET::: Support Code is {supportCode}", supportCode);
+                // TODO: May be we will want to log the user and other information here as well
+                // Or generate a push notification / email / 1 aggregated email per hour 
+                // May be SEQ can do something about this as a notification or as dashboard item
+                Log.Fatal("[TICKET] Support Code: \'{supportCode}\'", supportCode);
             };
             // setup.Rethrow<Exception>();
         });

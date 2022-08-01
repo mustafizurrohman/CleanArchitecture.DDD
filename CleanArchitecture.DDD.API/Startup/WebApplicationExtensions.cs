@@ -1,7 +1,5 @@
-﻿using HealthChecks.UI.Client;
-using Hellang.Middleware.ProblemDetails;
+﻿using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.SwaggerUI;

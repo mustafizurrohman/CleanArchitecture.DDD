@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
