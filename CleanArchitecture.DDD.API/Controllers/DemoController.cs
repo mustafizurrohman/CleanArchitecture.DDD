@@ -48,6 +48,8 @@ public class DemoController : BaseAPIController
     )]
     public IActionResult TestExceptionLogging()
     {
+        var faker = new Faker();
+        Log.Information("Testing if logs are corelated. {param} is a random parameter", faker.Lorem.Word());
         Log.Error("Logging before throwing an exception .... ");
         throw new NotImplementedException();
     }
