@@ -97,6 +97,8 @@ public static class WebExtensionBuilderExtensions
 
                 details.Detail = "An error occurred in our API. " 
                                 + $"Please use the Support Code {supportCode} for contacting us";
+
+                Log.Fatal("TICKET::: Support Code is {supportCode}", supportCode);
             };
             // setup.Rethrow<Exception>();
         });
