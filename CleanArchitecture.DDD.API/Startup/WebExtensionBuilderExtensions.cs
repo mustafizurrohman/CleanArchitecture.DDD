@@ -12,6 +12,7 @@ using Serilog.Enrichers.Span;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Formatting.Compact;
+using System.Diagnostics;
 
 namespace CleanArchitecture.DDD.API.Startup;
 
@@ -82,8 +83,20 @@ public static class WebExtensionBuilderExtensions
             setup.IncludeExceptionDetails = (httpContext, exception) => builder.Environment.IsDevelopment();
             setup.OnBeforeWriteDetails = (httpContext, details) =>
             {
-                details.Detail = "An error occurred in our API. " +
-                                 "Please use the trace id for contacting us";
+                // TODO: Support code calculation as an extension method and a serilog enricher
+                var supportCode = string.Empty;
+
+                var traceIdentifier = Activity.Current?.Id ?? httpContext?.TraceIdentifier ?? string.Empty;
+                var traceIdentifierParts = traceIdentifier.Split('-');
+
+                if (traceIdentifierParts.Length == 4)
+                    supportCode = traceIdentifierParts[1];
+
+                if (supportCode == string.Empty)
+                    supportCode = httpContext!.TraceIdentifier;
+
+                details.Detail = "An error occurred in our API. " 
+                                + $"Please use the Support Code {supportCode} for contacting us";
             };
             // setup.Rethrow<Exception>();
         });
