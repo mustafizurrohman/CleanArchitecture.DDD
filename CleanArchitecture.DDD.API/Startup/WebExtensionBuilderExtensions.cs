@@ -100,7 +100,7 @@ public static class WebExtensionBuilderExtensions
                 // TODO: May be we will want to log the user and other information here as well
                 // Or generate a push notification / email / 1 aggregated email per hour 
                 // May be SEQ can do something about this as a notification or as dashboard item
-                Log.Fatal("[TICKET] Support Code: \'{supportCode}\'", supportCode);
+                Log.Error("[TICKET] Support Code: \'{supportCode}\'", supportCode);
             };
             // setup.Rethrow<Exception>();
         });
