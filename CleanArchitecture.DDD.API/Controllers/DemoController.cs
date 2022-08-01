@@ -1,10 +1,13 @@
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
+using System.Security.Cryptography;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
 public class DemoController : BaseAPIController
 {
+    private int RandomDelay => RandomNumberGenerator.GetInt32(750, 1000);
+
     public DemoController(IAppServices appServices)
         : base(appServices)
     {
@@ -39,9 +42,9 @@ public class DemoController : BaseAPIController
     /// </summary>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("exception", Name = "loggingException")]
+    [HttpPost("loggingCorrelation", Name = "loggingCorrelation")]
     [SwaggerOperation(
-        Summary = "Demo of exception logging and support code",
+        Summary = "Demo of exception logging and tracibility and support code",
         Description = DefaultDescription,
         OperationId = "Log Exception",
         Tags = new[] { "Demo" }
@@ -49,8 +52,23 @@ public class DemoController : BaseAPIController
     public IActionResult TestExceptionLogging()
     {
         var faker = new Faker();
+
+        Thread.Sleep(RandomDelay);
         Log.Information("Testing if logs are corelated. {param} is a random parameter", faker.Lorem.Word());
+        
+        Thread.Sleep(RandomDelay);
+        Log.Verbose("A verbose log message");
+        
+        Thread.Sleep(RandomDelay);
+        Log.Debug("Here is a debug message with param {message}", "debug message param");
+        
+        Thread.Sleep(RandomDelay);
+        Log.Fatal("This should actually never happen {param}", faker.Lorem.Sentence());
+        
+        Thread.Sleep(RandomDelay);
         Log.Error("Logging before throwing an exception .... ");
+        
+        Thread.Sleep(RandomDelay);
         throw new NotImplementedException();
     }
 
