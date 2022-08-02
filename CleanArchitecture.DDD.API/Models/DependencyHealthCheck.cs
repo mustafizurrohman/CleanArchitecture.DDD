@@ -23,4 +23,13 @@ public class DependencyHealthCheck
         Exception = exception;
         Data = data;
     }
+
+    public DependencyHealthCheck(KeyValuePair<string, HealthReportEntry> healthReportEntryKeyValuePair)
+        : this(healthReportEntryKeyValuePair.Key, 
+               healthReportEntryKeyValuePair.Value.Status, 
+               healthReportEntryKeyValuePair.Value.Duration,
+               healthReportEntryKeyValuePair.Value.Exception, 
+               healthReportEntryKeyValuePair.Value.Data)
+    {
+    }
 }

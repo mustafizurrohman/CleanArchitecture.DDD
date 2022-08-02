@@ -10,7 +10,7 @@ public class HealthCheckDetailedResponse : HealthCheckResponse
         : base(healthReport)
     {
         DependencyHealthChecks = healthReport.Entries
-            .Select(ent => new DependencyHealthCheck(ent.Key, ent.Value.Status, ent.Value.Duration, ent.Value.Exception, ent.Value.Data));
+            .Select(ent => new DependencyHealthCheck(ent));
     }
 
 }

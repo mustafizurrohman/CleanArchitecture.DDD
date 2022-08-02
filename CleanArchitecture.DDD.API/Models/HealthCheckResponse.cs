@@ -5,12 +5,12 @@ namespace CleanArchitecture.DDD.API.Models;
 public class HealthCheckResponse
 {
     public string OverallStatus { get; }
-    public string TotalChecksDuration { get; }
+    public TimeSpan TotalChecksDuration { get; }
 
     public HealthCheckResponse(HealthReport healthReport)
     {
         OverallStatus = healthReport.Status.ToString();
         
-        TotalChecksDuration = healthReport.TotalDuration.TotalSeconds.ToString("00:0.00");
+        TotalChecksDuration = healthReport.TotalDuration;
     }
 }
