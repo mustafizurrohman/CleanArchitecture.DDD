@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace CleanArchitecture.DDD.API.Models;
 
@@ -11,8 +10,7 @@ public class HealthCheckDetailedResponse : HealthCheckResponse
         : base(healthReport)
     {
         DependencyHealthChecks = healthReport.Entries
-            .Select(ent => ent.Value)
-            .Select(hre => new DependencyHealthCheck(hre.Status, hre.Duration, hre.Exception, hre.Data));
+            .Select(ent => new DependencyHealthCheck(ent.Key, ent.Value.Status, ent.Value.Duration, ent.Value.Exception, ent.Value.Data));
     }
 
 }

@@ -1,6 +1,5 @@
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
-using System.Security.Cryptography;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 

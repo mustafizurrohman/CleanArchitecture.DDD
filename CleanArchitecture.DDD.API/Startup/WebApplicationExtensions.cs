@@ -2,7 +2,6 @@
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace CleanArchitecture.DDD.API.Startup;

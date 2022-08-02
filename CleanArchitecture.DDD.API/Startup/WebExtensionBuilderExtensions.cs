@@ -1,3 +1,4 @@
+using CleanArchitecture.DDD.API.HealthCheckReporter;
 using CleanArchitecture.DDD.Application;
 using CleanArchitecture.DDD.Core.Logging;
 using CleanArchitecture.DDD.Core.Polly;
@@ -71,6 +72,20 @@ public static class WebExtensionBuilderExtensions
         // Health check reports can be published by a class which inherits from IHealthCheckPublisher
         // TODO: Implement this
         // https://app.pluralsight.com/course-player?clipId=b93c3372-74d7-4623-9506-2d851b2522a9
+
+        builder.Services.Configure<HealthCheckPublisherOptions>(options =>
+        {
+            // Wait for 10 seconds after application start up. Default is 5 seconds
+            options.Delay = TimeSpan.FromSeconds(10);
+            // Run every minute
+            options.Period = TimeSpan.FromSeconds(10);
+            // Run all health checks
+            options.Predicate = (_) => true;
+            // Timeout after 20 seconds
+            options.Timeout = TimeSpan.FromSeconds(20);
+        });
+
+        builder.Services.AddSingleton<IHealthCheckPublisher, HealthCheckPublisher>();
 
         return builder;
     }
