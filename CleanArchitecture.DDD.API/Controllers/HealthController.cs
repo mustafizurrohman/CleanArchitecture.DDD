@@ -4,6 +4,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
+// TODO: Best practice???
 [AllowAnonymous]
 public class HealthController : BaseAPIController
 {
@@ -26,9 +27,11 @@ public class HealthController : BaseAPIController
         OperationId = "Health Check Endpoint",
         Tags = new[] { "Health" }
     )]
-    public async Task<ActionResult> GetHealth()
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
+    public async Task<IActionResult> GetHealth(CancellationToken cancellationToken)
     {
-        var report = await this._healthCheckService.CheckHealthAsync();
+        var report = await _healthCheckService.CheckHealthAsync(cancellationToken);
         var result = new HealthCheckDetailedResponse(report);
 
         return report.Status == HealthStatus.Healthy 
