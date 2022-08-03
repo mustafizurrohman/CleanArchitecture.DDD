@@ -6,8 +6,8 @@ namespace CleanArchitecture.DDD.API.HealthCheckReporter;
 public class HealthCheckPublisher : IHealthCheckPublisher
 {
     /// <summary>
-    /// Results can be publisehed to a Application Performance Monitoring System
-    /// Or ApplicationInsights, Datadog or Seq
+    /// Results can be published to a Application Performance Monitoring System
+    /// Or Azure Application Insights, DataDog or Seq
     /// </summary>
     /// <param name="report"></param>
     /// <param name="cancellationToken"></param>
