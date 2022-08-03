@@ -1,25 +1,40 @@
 ﻿using CleanArchitecture.DDD.API.Models;
-using HealthChecks.UI.Core;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace CleanArchitecture.DDD.API.HealthCheckReporter;
 
 public class HealthCheckPublisher : IHealthCheckPublisher
 {
+    /// <summary>
+    /// Results can be publisehed to a Application Performance Monitoring System
+    /// Or ApplicationInsights, Datadog or Seq
+    /// </summary>
+    /// <param name="report"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
     {
-        Log.Verbose("Running health check ...");
+        var healthCheckDetailedResponse = new HealthCheckDetailedResponse(report);
 
-        if (report.Status != HealthStatus.Healthy)
+        switch (report)
         {
-            var healthCheckDetailedResponse = new HealthCheckDetailedResponse(report);
-            Log.Warning("Unhealthy {healthStatus}", healthCheckDetailedResponse.ToFormattedJson());
+            case { Status: HealthStatus.Healthy }:
+                {
+                    Log.Verbose("[HEALTHY]");
+                    break;
+                }
+            case { Status: HealthStatus.Unhealthy }:
+                {
+                    Log.Error("[UNHEALTHY] {healthReport}", healthCheckDetailedResponse.ToFormattedJson());
+                    break;
+                }
+            case { Status: HealthStatus.Degraded }:
+                {
+                    Log.Warning("[DEGRADED] {healthReport}", healthCheckDetailedResponse.ToFormattedJson());
+                    break;
+                }
         }
-        else
-        {
-            Log.Verbose("Healthy ...");
-        }
-        
+
         return Task.CompletedTask;
     }
 }
