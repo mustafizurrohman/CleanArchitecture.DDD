@@ -166,9 +166,6 @@ public class DemoController : BaseAPIController
     )]
     public async Task<IActionResult> WeischerDemo(CancellationToken cancellationToken)
     {
-        Thread.Sleep(10000);
-
-        
         var doctors = await DbContext.Doctors
             // This query will select only not deleted entries due to Global filter of Doctors
             // Unless 'IgnoreQueryFilters' is specified
