@@ -170,10 +170,11 @@ public class DemoController : BaseAPIController
             // This query will select only not deleted entries due to Global filter of Doctors
             // Unless 'IgnoreQueryFilters' is specified
             .IgnoreQueryFilters()
-            .Where(doc => doc.SoftDeleted)
             .OrderBy(doc => Guid.NewGuid())
             .Take(20)
             .ToListAsync(cancellationToken);
+
+        var doctorJson = doctors.ToJsonFailsafe();
         
         return Ok(doctors);
     }
