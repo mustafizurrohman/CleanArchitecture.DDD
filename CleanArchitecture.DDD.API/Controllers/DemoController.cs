@@ -174,7 +174,7 @@ public class DemoController : BaseAPIController
             .Take(20)
             .ToListAsync(cancellationToken);
 
-        var doctorJson = doctors.ToJsonFailsafe();
+        var doctorJson = doctors.ToFormattedJsonFailsafe();
         
         return Ok(doctors);
     }
