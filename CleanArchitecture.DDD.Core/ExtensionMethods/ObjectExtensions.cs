@@ -15,7 +15,7 @@ public static class ObjectExtensions
         return JsonConvert.SerializeObject(objectInstance, Formatting.Indented, serializerSettings);
     }
 
-    public static string ToFormattedJsonFailsafe(this object o, JsonSerializerSettings? serializerSettings = null)
+    public static string ToFormattedJsonFailSafe(this object o, JsonSerializerSettings? serializerSettings = null)
     {
         var stringBuilder = new StringBuilder();
         var stringWriter = new StringWriter(stringBuilder);
@@ -29,7 +29,6 @@ public static class ObjectExtensions
             serializer.Serialize(textWriter, o);
         }
 
-        // Fertigen JSON String zurückgeben
         return stringBuilder.ToString();
     }
 }
