@@ -15,19 +15,18 @@ public static class ObjectExtensions
         return JsonConvert.SerializeObject(objectInstance, Formatting.Indented, serializerSettings);
     }
 
-    public static string ToFormattedJsonFailSafe(this object o, JsonSerializerSettings? serializerSettings = null)
+    public static string ToFormattedJsonFailSafe(this object objectInstance, JsonSerializerSettings? serializerSettings = null)
     {
         var stringBuilder = new StringBuilder();
         var stringWriter = new StringWriter(stringBuilder);
 
-        using (JsonWriter textWriter = new JsonTextWriter(stringWriter))
-        {
-            var serializer = JsonSerializer.CreateDefault(serializerSettings);
-            serializer.Formatting = Formatting.Indented;
-            serializer.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        using JsonWriter textWriter = new JsonTextWriter(stringWriter);
 
-            serializer.Serialize(textWriter, o);
-        }
+        var serializer = JsonSerializer.CreateDefault(serializerSettings);
+        serializer.Formatting = Formatting.Indented;
+        serializer.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+
+        serializer.Serialize(textWriter, objectInstance);
 
         return stringBuilder.ToString();
     }
