@@ -25,12 +25,12 @@ public class HealthCheckPublisher : IHealthCheckPublisher
                 }
             case { Status: HealthStatus.Unhealthy }:
                 {
-                    Log.Error("[UNHEALTHY] {healthReport}", healthCheckDetailedResponse.ToFormattedJson());
+                    Log.Error("[UNHEALTHY] {healthReport}", healthCheckDetailedResponse.ToFormattedJsonFailSafe());
                     break;
                 }
             case { Status: HealthStatus.Degraded }:
                 {
-                    Log.Warning("[DEGRADED] {healthReport}", healthCheckDetailedResponse.ToFormattedJson());
+                    Log.Warning("[DEGRADED] {healthReport}", healthCheckDetailedResponse.ToFormattedJsonFailSafe());
                     break;
                 }
         }

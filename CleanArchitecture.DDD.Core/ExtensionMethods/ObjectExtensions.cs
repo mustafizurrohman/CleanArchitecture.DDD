@@ -5,17 +5,17 @@ namespace CleanArchitecture.DDD.Core.ExtensionMethods;
 
 public static class ObjectExtensions
 {
-    public static string ToFormattedJson(this object? objectInstance)
+    [Obsolete("Please use \'ToFormattedJsonFailSafe()\' to avoid OutOfMemoryException")]
+    public static string ToFormattedJson(this object? objectInstance,JsonSerializerSettings? serializerSettings = null)
     {
-        var serializerSettings = new JsonSerializerSettings
-        {
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-        };
+        var serializer = JsonSerializer.CreateDefault(serializerSettings);
+        serializer.Formatting = Formatting.Indented;
+        serializer.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 
         return JsonConvert.SerializeObject(objectInstance, Formatting.Indented, serializerSettings);
     }
 
-    public static string ToFormattedJsonFailSafe(this object objectInstance, JsonSerializerSettings? serializerSettings = null)
+    public static string ToFormattedJsonFailSafe(this object? objectInstance, JsonSerializerSettings? serializerSettings = null)
     {
         var stringBuilder = new StringBuilder();
         var stringWriter = new StringWriter(stringBuilder);

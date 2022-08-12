@@ -105,7 +105,7 @@ public static class WebApplicationExtensions
         httpContext.Response.ContentType = MediaTypeNames.Application.Json;
         var healthCheckDetailedResponse = new HealthCheckDetailedResponse(healthReport);
 
-        return httpContext.Response.WriteAsync(healthCheckDetailedResponse.ToFormattedJson());
+        return httpContext.Response.WriteAsync(healthCheckDetailedResponse.ToFormattedJsonFailSafe());
     }
 
     private static Task WriteHealthCheckResponse(HttpContext httpContext, HealthReport result)
@@ -113,6 +113,6 @@ public static class WebApplicationExtensions
         httpContext.Response.ContentType = MediaTypeNames.Application.Json;
         var healthCheckResponse = new HealthCheckResponse(result);
 
-        return httpContext.Response.WriteAsync(healthCheckResponse.ToFormattedJson());
+        return httpContext.Response.WriteAsync(healthCheckResponse.ToFormattedJsonFailSafe());
     }
 }

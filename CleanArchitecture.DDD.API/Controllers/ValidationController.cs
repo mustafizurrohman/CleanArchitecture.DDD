@@ -114,7 +114,7 @@ public class ValidationController : BaseAPIController
 
         var validationReport = await doctorsToValidate.GetModelValidationReportAsync();
 
-        var validationReportAsJsonString = validationReport.ToFormattedJson();
+        var validationReportAsJsonString = validationReport.ToFormattedJsonFailSafe();
 
         return Ok(validationReport);
     }

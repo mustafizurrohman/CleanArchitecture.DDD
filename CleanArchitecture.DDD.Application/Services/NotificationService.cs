@@ -9,7 +9,7 @@ public class NotificationService : INotificationService
             return;
 
         // TODO: Save as HTML and send as attachment using Weischer Global Email service 
-        var validationResult = modelCollectionValidationReport.ValidationReport.InvalidModelsReport.ToFormattedJson();
+        var validationResult = modelCollectionValidationReport.ValidationReport.InvalidModelsReport.ToFormattedJsonFailSafe();
         Log.Warning(validationResult);
 
         Helper.LogWithSpace(() => Log.Warning("Got {countOfInvalidModels} invalid data from CRM / external system.", modelCollectionValidationReport.InvalidModels.Count()));
