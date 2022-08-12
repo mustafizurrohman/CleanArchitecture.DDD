@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.DDD.Core.Helpers;
 using CleanArchitecture.DDD.Infrastructure.Exceptions;
+using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 using DatabaseContext = Microsoft.EntityFrameworkCore.DbContext;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;

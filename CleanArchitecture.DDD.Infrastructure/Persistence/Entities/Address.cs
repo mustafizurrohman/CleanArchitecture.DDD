@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
+﻿using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
+
+namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
 
 public sealed class Address : BaseEntity
 {

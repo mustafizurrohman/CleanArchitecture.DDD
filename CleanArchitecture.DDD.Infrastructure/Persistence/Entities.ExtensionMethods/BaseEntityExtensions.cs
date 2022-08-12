@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
 

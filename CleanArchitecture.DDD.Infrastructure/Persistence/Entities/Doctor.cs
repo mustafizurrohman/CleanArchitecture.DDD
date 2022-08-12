@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.DDD.Domain.ValueObjects;
+using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
