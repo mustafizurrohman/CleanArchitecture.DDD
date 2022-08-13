@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
+using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
@@ -111,14 +112,34 @@ public class EntityFrameworkDemoController : BaseAPIController
             .Select(grp => new
             {
                 City = grp.Key,
-                Doctors = grp.Select(x => x.FullName),
+                Doctors = grp.Select(doc => new
+                {
+                    doc.FullName, 
+                    Specialization = doc.Specialization.ToString()
+                }),
                 Count = grp.Count()
             })
             .OrderByDescending(doc => doc.Count)
             .ToListAsync(cancellationToken))
-            .Select(groupedDoctors => groupedDoctors with
+            .Select(groupedDoctors => new
             {
-                Doctors = groupedDoctors.Doctors.OrderBy(docName => docName)
+                groupedDoctors.City,
+                groupedDoctors.Count,
+                DoctorsBySpecialization = groupedDoctors.Doctors
+                    .Select(doc =>
+                    {
+                        doc.Specialization.ToSpecialization().ToStringCached();
+                        return doc;
+                    })
+                    .OrderBy(doc => doc.Specialization)
+                    .ThenBy(doc => doc.FullName)
+                    .GroupBy(doc => doc.Specialization)
+                    .Select(docSp => new 
+                    {
+                        Specialization = docSp.Key.ToSpecialization().ToStringCached(),
+                        Doctors = docSp.Select(dsp => dsp.FullName),
+                        Count = docSp.Count()
+                    })
             });
 
         return Ok(result);
