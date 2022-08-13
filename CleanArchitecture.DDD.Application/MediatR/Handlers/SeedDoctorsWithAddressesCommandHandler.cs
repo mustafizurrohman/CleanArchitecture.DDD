@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
+﻿using System.Collections.Immutable;
+using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
@@ -20,10 +21,27 @@ public class SeedDoctorsWithAddressesCommandHandler
             "Deutschland",
             "Osterreich",
             "Schweiz"
-        };
+        }.ToImmutableArray();
+
+        var fakeCities = new List<string>()
+        {
+            "Berlin",
+            "Bern",
+            "Vienna",
+            "Hamburg",
+            "Köln",
+            "Munich",
+            "Stuttgart",
+            "Zurich",
+            "Graz",
+            "Bonn",
+            "Göttingen",
+            "Rome",
+            "Venice"
+        }.ToImmutableArray();
 
         var addresses = Enumerable.Range(0, request.Num)
-            .Select(_ => Address.Create(faker.Address.StreetName(), faker.Address.ZipCode(), faker.Address.City(), faker.Random.ArrayElement(fakeCountries.ToArray())))
+            .Select(_ => Address.Create(faker.Address.StreetName(), faker.Address.ZipCode(), faker.Random.ArrayElement(fakeCities.ToArray()), faker.Random.ArrayElement(fakeCountries.ToArray())))
             .ToList();
 
         var names = Enumerable.Range(0, request.Num)

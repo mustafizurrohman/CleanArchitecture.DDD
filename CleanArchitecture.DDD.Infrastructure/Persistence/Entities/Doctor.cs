@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.DDD.Domain.ValueObjects;
+﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
+using CleanArchitecture.DDD.Domain.ValueObjects;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
@@ -26,6 +27,10 @@ public sealed class Doctor : BaseEntity
     public Guid AddressId { get; set; }
 
     public Specialization Specialization { get; set; }
+
+    [NotMapped]
+    public string FullName => (this.Name.Firstname + " " + this.Name.Middlename + " " + this.Name.Lastname)
+        .RemoveConsecutiveSpaces();
 
     /// <summary>
     /// Required for EntityFramework
