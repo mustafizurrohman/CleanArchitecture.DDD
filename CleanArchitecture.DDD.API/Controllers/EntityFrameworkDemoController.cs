@@ -107,6 +107,7 @@ public class EntityFrameworkDemoController : BaseAPIController
     {
         var result = (await DbContext.Doctors
             .Include(doc => doc.Address)
+            .AsNoTracking()
             .OrderBy(doc => doc.Address.City)
             .GroupBy(doc => doc.Address.City)
             .Select(grp => new
