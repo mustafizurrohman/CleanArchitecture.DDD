@@ -32,6 +32,9 @@ public sealed class Doctor : BaseEntity
     public string FullName => (this.Name.Firstname + " " + this.Name.Middlename + " " + this.Name.Lastname)
         .RemoveConsecutiveSpaces();
 
+    [NotMapped] 
+    public string SpecializationAsString => Specialization.ToStringCached();
+
     /// <summary>
     /// Required for EntityFramework
     /// </summary>
