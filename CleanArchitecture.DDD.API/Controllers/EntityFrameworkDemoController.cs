@@ -105,6 +105,9 @@ public class EntityFrameworkDemoController : BaseAPIController
     )]
     public async Task<IActionResult> GroupDoctorsByCity(CancellationToken cancellationToken)
     {
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
         var result = (await DbContext.Doctors
             .Include(doc => doc.Address)
             .AsNoTracking()
@@ -127,11 +130,6 @@ public class EntityFrameworkDemoController : BaseAPIController
                 groupedDoctors.City,
                 groupedDoctors.Count,
                 DoctorsBySpecialization = groupedDoctors.Doctors
-                    .Select(doc =>
-                    {
-                        doc.Specialization.ToSpecialization().ToStringCached();
-                        return doc;
-                    })
                     .OrderBy(doc => doc.Specialization)
                     .ThenBy(doc => doc.FullName)
                     .GroupBy(doc => doc.Specialization)
@@ -142,6 +140,9 @@ public class EntityFrameworkDemoController : BaseAPIController
                         Count = docSp.Count()
                     })
             });
+
+        stopwatch.Stop();
+        Log.Information("Query took {executionTime} ms", stopwatch.ElapsedMilliseconds);
 
         return Ok(result);
     }

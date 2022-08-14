@@ -48,6 +48,8 @@ public static class WebExtensionBuilderExtensions
         // Note: This can be done using AspNetCore.Diagnostics.HealthChecks nuget package
         // https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks
         // Custom implementation possible when class inherits from IHealthCheck
+        // TODO: Refactor! Refer to Chapter 4 of
+        // https://app.pluralsight.com/library/courses/implementing-cross-cutting-concerns-asp-dot-net-core-microservices/table-of-contents
         builder.Services.AddHealthChecks()
             .AddCheck("SQL Database Health Check", () =>
             {
