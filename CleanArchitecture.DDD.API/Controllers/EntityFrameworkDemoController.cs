@@ -162,13 +162,14 @@ public class EntityFrameworkDemoController : BaseAPIController
         OperationId = "EntityFramework streaming Demo",
         Tags = new[] { "EntityFramework" }
     )]
-    public async Task<IActionResult> GetDoctorsStreaming(CancellationToken cancellationToken)
+    public IActionResult GetDoctorsStreaming(CancellationToken cancellationToken)
     {
         var result = DbContext.Doctors
             .AsNoTracking()
-            .Select(doc => doc.FullName)
-            .AsAsyncEnumerable();
-        
+            .AsAsyncEnumerable()
+            .Select(doc => doc.Name.Firstname + " " + doc.Name.Lastname);
+
+
         return Ok(result);
     }
 }
