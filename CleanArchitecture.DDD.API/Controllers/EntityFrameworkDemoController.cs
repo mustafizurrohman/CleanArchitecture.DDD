@@ -149,4 +149,26 @@ public class EntityFrameworkDemoController : BaseAPIController
 
         return Ok(result);
     }
+
+    /// <summary>
+    /// TODO: Implement using MediatR
+    /// </summary>
+    /// <returns></returns>
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpGet("streaming", Name = "DemoStreaming")]
+    [SwaggerOperation(
+        Summary = "Streaming using Entity Framework",
+        Description = DefaultDescription,
+        OperationId = "EntityFramework streaming Demo",
+        Tags = new[] { "EntityFramework" }
+    )]
+    public async Task<IActionResult> GetDoctorsStreaming(CancellationToken cancellationToken)
+    {
+        var result = DbContext.Doctors
+            .AsNoTracking()
+            .Select(doc => doc.FullName)
+            .AsAsyncEnumerable();
+        
+        return Ok(result);
+    }
 }

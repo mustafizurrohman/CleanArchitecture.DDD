@@ -60,13 +60,13 @@ public static class WebExtensionBuilderExtensions
                     : HealthCheckResult.Unhealthy();
             }, tags: new[] { "ready" });
 
-        var seqUrl = builder.Configuration.GetConnectionString("Seq")!;
-        builder.Services.AddHealthChecks()
-            .AddUrlGroup(new Uri(seqUrl), 
-                "SEQ Health Check", 
-                HealthStatus.Degraded, 
-                timeout: TimeSpan.FromSeconds(15), 
-                tags: new[] { "live" });
+        //var seqUrl = builder.Configuration.GetConnectionString("Seq")!;
+        //builder.Services.AddHealthChecks()
+        //    .AddUrlGroup(new Uri(seqUrl), 
+        //        "SEQ Health Check", 
+        //        HealthStatus.Degraded, 
+        //        timeout: TimeSpan.FromSeconds(15), 
+        //        tags: new[] { "live" });
 
         // builder.Services.AddHealthChecksUI()
         //    .AddInMemoryStorage();
