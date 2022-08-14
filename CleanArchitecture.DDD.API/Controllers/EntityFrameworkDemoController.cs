@@ -92,7 +92,7 @@ public class EntityFrameworkDemoController : BaseAPIController
     }
 
     /// <summary>
-    /// 
+    /// TODO: Implement using MediatR
     /// </summary>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
@@ -108,7 +108,7 @@ public class EntityFrameworkDemoController : BaseAPIController
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        var result = (await DbContext.Doctors
+        var result0 = DbContext.Doctors
             .Include(doc => doc.Address)
             .AsNoTracking()
             .OrderBy(doc => doc.Address.City)
@@ -118,13 +118,16 @@ public class EntityFrameworkDemoController : BaseAPIController
                 City = grp.Key,
                 Doctors = grp.Select(doc => new
                 {
-                    doc.FullName, 
+                    doc.FullName,
                     Specialization = doc.Specialization.ToString()
                 }),
                 Count = grp.Count()
             })
             .OrderByDescending(doc => doc.Count)
-            .ToListAsync(cancellationToken))
+            .AsAsyncEnumerable();
+        
+        // Work with streaming results using EF Core!
+        var result = result0
             .Select(groupedDoctors => new
             {
                 groupedDoctors.City,
