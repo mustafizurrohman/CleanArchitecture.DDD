@@ -153,7 +153,7 @@ public class EntityFrameworkDemoController : BaseAPIController
         stopwatch.Stop();
         Log.Information("Query took {executionTime} ms", stopwatch.ElapsedMilliseconds);
 
-        return Ok(result);
+        return Ok(await result.ToListAsync(cancellationToken));
     }
 
     /// <summary>
@@ -168,14 +168,20 @@ public class EntityFrameworkDemoController : BaseAPIController
         OperationId = "EntityFramework streaming Demo",
         Tags = new[] { "EntityFramework" }
     )]
-    public IActionResult GetDoctorsStreaming(CancellationToken cancellationToken)
+    public async IAsyncEnumerable<OkObjectResult> GetDoctorsStreaming(CancellationToken cancellationToken)
     {
-        var result = DbContext.Doctors
+        var doctors = DbContext.Doctors
             .AsNoTracking()
             .AsAsyncEnumerable()
             .Select(doc => doc.Name.Firstname + " " + doc.Name.Lastname);
 
+        await foreach (var doctor in doctors.WithCancellation(cancellationToken))
+        {
+            // await Task.Delay(1, cancellationToken);
+            Console.WriteLine(doctor);
+            yield return Ok(doctor);
+        }
 
-        return Ok(result);
+        
     }
 }
