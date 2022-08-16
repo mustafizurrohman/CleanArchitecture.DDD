@@ -110,9 +110,15 @@ public class EntityFrameworkDemoController : BaseAPIController
 
         var result0 = DbContext.Doctors
             .Include(doc => doc.Address)
+            .Select(doc => new
+            {
+                doc.FullName,
+                doc.Specialization,
+                doc.Address.City
+            })
             .AsNoTracking()
-            .OrderBy(doc => doc.Address.City)
-            .GroupBy(doc => doc.Address.City)
+            .OrderBy(doc => doc.City)
+            .GroupBy(doc => doc.City)
             .Select(grp => new
             {
                 City = grp.Key,
