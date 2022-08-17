@@ -168,20 +168,14 @@ public class EntityFrameworkDemoController : BaseAPIController
         OperationId = "EntityFramework streaming Demo",
         Tags = new[] { "EntityFramework" }
     )]
-    public async IAsyncEnumerable<OkObjectResult> GetDoctorsStreaming(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetDoctorsStreaming(CancellationToken cancellationToken)
     {
         var doctors = DbContext.Doctors
             .AsNoTracking()
             .AsAsyncEnumerable()
-            .Select(doc => doc.Name.Firstname + " " + doc.Name.Lastname);
+            .Select(doc => doc.Name.Firstname + " " + doc.Name.Lastname)
+            .AsAsyncEnumerable();
 
-        await foreach (var doctor in doctors.WithCancellation(cancellationToken))
-        {
-            // await Task.Delay(1, cancellationToken);
-            Console.WriteLine(doctor);
-            yield return Ok(doctor);
-        }
-
-        
+        return Ok(doctors);
     }
 }
