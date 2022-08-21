@@ -13,18 +13,22 @@ public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
 
     public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
     {
-        await using var transaction = await _domainDbContext.Database.BeginTransactionAsync(cancellationToken);
+        return await next();
 
-        try
-        {
-            var response = await next();
-            await transaction.CommitAsync(cancellationToken);
-            return response;
-        }
-        catch (Exception)
-        {
-            await transaction.RollbackAsync(cancellationToken);
-            throw;
-        }
+        // TODO: Improve this. Not applicable in all situations! Disabling for now.
+        // For example- We do not need transactions when reading from database
+        //await using var transaction = await _domainDbContext.Database.BeginTransactionAsync(cancellationToken);
+
+        //try
+        //{
+        //    var response = await next();
+        //    await transaction.CommitAsync(cancellationToken);
+        //    return response;
+        //}
+        //catch (Exception)
+        //{
+        //    await transaction.RollbackAsync(cancellationToken);
+        //    throw;
+        //}
     }
 }
