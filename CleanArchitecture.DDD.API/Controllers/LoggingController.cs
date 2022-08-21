@@ -6,8 +6,6 @@ namespace CleanArchitecture.DDD.API.Controllers;
 
 public class LoggingController : BaseAPIController
 {
-    private int RandomDelay => RandomNumberGenerator.GetInt32(750, 1000);
-
     public LoggingController(IAppServices appServices)
         : base(appServices)
     {
@@ -15,13 +13,39 @@ public class LoggingController : BaseAPIController
     }
 
     /// <summary>
-    /// 
+    /// Demo 1
+    /// </summary>
+    /// <returns></returns>
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpPost("param", Name = "param")]
+    [SwaggerOperation(
+        Summary = "Demo for logging using param",
+        Description = DefaultDescription,
+        OperationId = "Log Generation Demo with Parameter",
+        Tags = new[] { "Logging" }
+    )]
+    public IActionResult LogDemo(CancellationToken cancellationToken, string? randomParameter)
+    {
+        if (string.IsNullOrWhiteSpace(randomParameter))
+            randomParameter = new Faker().Random.Word();
+
+        // Correct. Refer SEQ entry
+        Log.Information("Correct way of logging with parameter. Param value is {param}", randomParameter);
+
+        // Incorrect with string interpolation. Refer SEQ entry
+        Log.Information($"Incorrect way of logging with parameter. Param value is {randomParameter}");
+
+        return Ok();
+    }
+
+    /// <summary>
+    /// Demo 2
     /// </summary>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("traceability", Name = "traceability")]
     [SwaggerOperation(
-        Summary = "Demo of exception logging and Traceability and support code",
+        Summary = "Demo of exception logging and Traceability and Support Code",
         Description = DefaultDescription,
         OperationId = "Log Traceability",
         Tags = new[] { "Logging" }
@@ -35,7 +59,7 @@ public class LoggingController : BaseAPIController
     }
 
     /// <summary>
-    /// 
+    /// Demo 3
     /// </summary>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
@@ -53,4 +77,7 @@ public class LoggingController : BaseAPIController
 
         return Ok();
     }
+
+
+
 }
