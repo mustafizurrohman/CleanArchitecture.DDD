@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
+﻿using System.Runtime.CompilerServices;
+using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
 namespace CleanArchitecture.DDD.API.Controllers;
@@ -168,14 +169,21 @@ public class EntityFrameworkDemoController : BaseAPIController
         OperationId = "EntityFramework streaming Demo",
         Tags = new[] { "EntityFramework" }
     )]
-    public async Task<IActionResult> GetDoctorsStreaming(CancellationToken cancellationToken)
+    public async IAsyncEnumerable<OkObjectResult> GetDoctorsStreaming([EnumeratorCancellation] CancellationToken cancellationToken)
     {
         var doctors = DbContext.Doctors
             .AsNoTracking()
+            .OrderBy(doc => doc.Name.Firstname)
+            .Take(10)
             .AsAsyncEnumerable()
             .Select(doc => doc.Name.Firstname + " " + doc.Name.Lastname)
             .AsAsyncEnumerable();
 
-        return Ok(doctors);
+        await foreach (var doctor in doctors.WithCancellation(cancellationToken))
+        {
+            await Task.Delay(50, cancellationToken);
+            yield return Ok(doctor);
+        }
+        
     }
 }

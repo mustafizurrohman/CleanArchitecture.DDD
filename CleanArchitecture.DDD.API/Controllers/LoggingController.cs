@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using CleanArchitecture.DDD.Application.MediatR.Commands;
+using System.Security.Cryptography;
+using System.Threading;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
@@ -24,27 +26,12 @@ public class LoggingController : BaseAPIController
         OperationId = "Log Traceability",
         Tags = new[] { "Logging" }
     )]
-    public IActionResult TestExceptionLogging()
+    public async Task<IActionResult> TestExceptionLogging(CancellationToken cancellationToken)
     {
-        var faker = new Faker();
+        var loggingCommand = new LoggingCommand();
+        await Mediator.Send(loggingCommand, cancellationToken);
 
-        Thread.Sleep(RandomDelay);
-        Log.Information("Testing if logs are co-related. {param} is a random parameter", faker.Lorem.Word());
-
-        Thread.Sleep(RandomDelay);
-        Log.Verbose("A verbose log message");
-
-        Thread.Sleep(RandomDelay);
-        Log.Debug("Here is a debug message with param {message}", "debug message param");
-
-        Thread.Sleep(RandomDelay);
-        Log.Fatal("This should actually never happen {param}", faker.Lorem.Sentence());
-
-        Thread.Sleep(RandomDelay);
-        Log.Error("Logging before throwing an exception .... ");
-
-        Thread.Sleep(RandomDelay);
-        throw new NotImplementedException();
+        return Ok();
     }
 
     /// <summary>

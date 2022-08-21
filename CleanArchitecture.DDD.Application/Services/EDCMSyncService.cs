@@ -24,6 +24,22 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
         
     }
 
+    public async Task<IEnumerable<Doctor>> GetFakeDoctors()
+    {
+        var response = await _httpClient.GetAsync("Fake/doctors");
+        response.EnsureSuccessStatusCode();
+
+        var parsedResponse = await response.Content.ReadAsAsync<IReadOnlyList<FakeDoctorAddressDTO>>();
+
+        var doctorDTOList = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>, List<DoctorDTO>>(parsedResponse);
+
+        var doctors = doctorDTOList
+            .Select(DoctorDTO.ToDoctor)
+            .ToImmutableList();
+
+        return doctors;
+    }
+
     public async Task<IEnumerable<DoctorDTO>> SyncDoctors()
     {
         Log.Information("Syncing doctors");

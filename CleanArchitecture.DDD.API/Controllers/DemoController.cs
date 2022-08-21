@@ -1,4 +1,3 @@
-using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
 namespace CleanArchitecture.DDD.API.Controllers;

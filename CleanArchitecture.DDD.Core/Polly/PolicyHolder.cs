@@ -93,11 +93,12 @@ public class PolicyHolder : IPolicyHolder
     private IAsyncPolicy GetRetryPolicyWithJitter()
     {
         int attempts = 0;
-        
+        int retryCount = 5;
+
         var maxDelay = TimeSpan.FromSeconds(45);
         
         IEnumerable<TimeSpan> delay = Backoff
-            .DecorrelatedJitterBackoffV2(medianFirstRetryDelay: TimeSpan.FromSeconds(1), retryCount: 50)
+            .DecorrelatedJitterBackoffV2(medianFirstRetryDelay: TimeSpan.FromSeconds(1), retryCount: retryCount)
             .Select(s => TimeSpan.FromTicks(Math.Min(s.Ticks, maxDelay.Ticks)));
 
         return Policy
@@ -108,7 +109,7 @@ public class PolicyHolder : IPolicyHolder
                     var now = DateTime.Now;
                     var nextTry = now.Add(waitingTime);
                     Log.Information("Polly RetryAttempt# {@attempts} at {@now}. Next try at {@nextTry} if current attempt fails",
-                        ++attempts,
+                        (++attempts % retryCount),
                         now.ToLocalDEDateTime(),
                         nextTry.ToLocalDEDateTime());
                 });
@@ -132,17 +133,18 @@ public class PolicyHolder : IPolicyHolder
     private IAsyncPolicy<HttpResponseMessage> GetHttpRetryPolicy()
     {
         int attempts = 0;
-        
+        int retryCount = 5;
+
         return HttpPolicyExtensions
             .HandleTransientHttpError()
-            .WaitAndRetryAsync(5,
+            .WaitAndRetryAsync(retryCount,
                 retryAttempt => TimeSpan.FromMilliseconds(Math.Pow(1.5, retryAttempt) * 1000),
                 (_, waitingTime) =>
                 {
                     var now = DateTime.Now;
                     var nextTry = now.Add(waitingTime);
-                    Log.Information("Polly RetryAttempt# {@attempts} at {@now}. Next try at {@nextTry} if current attempt fails", 
-                        ++attempts, 
+                    Log.Information("Polly RetryAttempt# {@attempts} at {@now}. Next try at {@nextTry} if current attempt fails",
+                        (++attempts % retryCount),
                         now.ToLocalDEDateTime(), 
                         nextTry.ToLocalDEDateTime());
                 });

@@ -36,6 +36,8 @@ public class FakeController : BaseAPIController
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<ExternalFakeDoctorAddressDTO>))]
     public IActionResult GetFakeDoctors(int num = 10, CancellationToken cancellationToken = default)
     {
+        Log.Information("Generating fake doctors ... ");
+
         // Simulate a fake delay here
         // Thread.Sleep(2000);
 
@@ -62,6 +64,8 @@ public class FakeController : BaseAPIController
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<ExternalFakeDoctorAddressDTO>))]
     public IActionResult GetDoctorsWithInvalidData(int num = 10, CancellationToken cancellationToken = default)
     {
+        Log.Information("Generating fake doctors where some of them are invalid ... ");
+
         // Simulate a fake delay here
         // Thread.Sleep(2000);
 

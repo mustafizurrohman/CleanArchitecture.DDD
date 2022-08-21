@@ -5,4 +5,5 @@ public interface IEDCMSyncService
     Task<IEnumerable<DoctorDTO>> SyncDoctors();
     void SyncDoctorsInBackground();
     Task<IEnumerable<DoctorDTO>> SyncDoctorsWithSomeInvalidData();
+    Task<IEnumerable<Doctor>> GetFakeDoctors();
 }
