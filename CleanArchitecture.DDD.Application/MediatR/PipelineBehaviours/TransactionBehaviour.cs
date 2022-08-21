@@ -15,6 +15,8 @@ public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
     {
         return await next();
 
+        #region -- Old Code --
+
         // TODO: Improve this. Not applicable in all situations! Disabling for now.
         // For example- We do not need transactions when reading from database
         //await using var transaction = await _domainDbContext.Database.BeginTransactionAsync(cancellationToken);
@@ -30,5 +32,8 @@ public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
         //    await transaction.RollbackAsync(cancellationToken);
         //    throw;
         //}
+
+        #endregion
+        
     }
 }
