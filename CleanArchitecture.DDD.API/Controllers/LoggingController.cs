@@ -36,12 +36,13 @@ public class LoggingController : BaseAPIController
         };
 
         // Correct. Refer SEQ entry
-        Log.Information("Correct way of logging with parameter. Param value is {param}", loggingParam);
+        Log.Information("Correct way of logging with parameter. Param value is {randomParameter}", randomParameter);
+        Log.Information($"Incorrect way of logging with parameter. Param value is {randomParameter}");
 
         // Incorrect with string interpolation. Refer SEQ entry
-        Log.Information($"Incorrect way of logging with parameter. Param value is {randomParameter}");
+        Log.Information("Correct way of logging with parameter. Param value is {param}", loggingParam);
         Log.Information($"Incorrect way of logging with parameter. Param value is {loggingParam}");
-
+        
         return Ok();
     }
 
