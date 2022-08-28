@@ -70,11 +70,7 @@ public static class WebExtensionBuilderExtensions
 
         // builder.Services.AddHealthChecksUI()
         //    .AddInMemoryStorage();
-
-        // Health check reports can be published by a class which inherits from IHealthCheckPublisher
-        // TODO: Implement this
-        // https://app.pluralsight.com/course-player?clipId=b93c3372-74d7-4623-9506-2d851b2522a9
-
+        
         builder.Services.Configure<HealthCheckPublisherOptions>(options =>
         {
             // Wait for 10 seconds after application start up. Default is 5 seconds
@@ -87,6 +83,9 @@ public static class WebExtensionBuilderExtensions
             options.Timeout = TimeSpan.FromSeconds(20);
         });
 
+        // Health check reports can be published by a class which inherits from IHealthCheckPublisher
+        // TODO: Implement this
+        // https://app.pluralsight.com/course-player?clipId=b93c3372-74d7-4623-9506-2d851b2522a9
         builder.Services.AddSingleton<IHealthCheckPublisher, HealthCheckPublisher>();
 
         return builder;

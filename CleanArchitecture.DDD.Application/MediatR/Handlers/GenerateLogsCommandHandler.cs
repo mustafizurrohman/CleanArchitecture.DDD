@@ -38,8 +38,27 @@ public class GenerateLogsCommandHandler : BaseHandler, IRequestHandler<GenerateL
             Action GetLog(LogLevel logLevel)
             {
                 var withParams = DateTime.Now.Ticks % 2 == 0;
-                
-                if (withParams)
+                var withFixedText = DateTime.Now.Ticks % 3 == 0;
+
+                if (withParams && withFixedText)
+                {
+                    var paramValue = _faker.Lorem.Word();
+
+                    return logLevel switch
+                    {
+                        LogLevel.Trace => () => Log.Verbose("[TRACE] {paramValue} -  This is a trace message with param.", paramValue),
+                        LogLevel.Debug => () => Log.Debug("[DEBUG] {paramValue} -  This is a debug message with param.", paramValue),
+                        LogLevel.Information => () => Log.Information("[INFORMATION]  {paramValue} - This is a informational message with param.", paramValue),
+                        LogLevel.Warning => () => Log.Warning("[WARNING]  {paramValue} - This is a warning message with param.", paramValue),
+                        LogLevel.Error => () => Log.Error("[ERROR]  {paramValue} - This is a warning message with param.", paramValue),
+                        LogLevel.Critical => () => Log.Fatal("[CRITICAL]  {paramValue} - This is a critical message with param.", paramValue),
+                        LogLevel.None => () => { },
+                        _ => () => { }
+                    };
+                }
+
+
+                if (withParams && !withFixedText)
                 {
                     var paramValue = _faker.Lorem.Word();
 
@@ -58,12 +77,12 @@ public class GenerateLogsCommandHandler : BaseHandler, IRequestHandler<GenerateL
 
                 return logLevel switch
                 {
-                    LogLevel.Trace => () => Log.Verbose("[TRACE] " + RandomText),
-                    LogLevel.Debug => () => Log.Debug("[DEBUG] " + RandomText),
-                    LogLevel.Information => () => Log.Information("[INFORMATION] " + RandomText),
-                    LogLevel.Warning => () => Log.Warning("[WARNING] " + RandomText),
-                    LogLevel.Error => () => Log.Error("[ERROR] " + RandomText),
-                    LogLevel.Critical => () => Log.Fatal("[CRITICAL] " + RandomText),
+                    LogLevel.Trace => () => Log.Verbose("[TRACE] This is a Trace message."),
+                    LogLevel.Debug => () => Log.Debug("[DEBUG] This is a Debug message."),
+                    LogLevel.Information => () => Log.Information("[INFORMATION] This is a Information message."),
+                    LogLevel.Warning => () => Log.Warning("[WARNING] This is a Warning message."),
+                    LogLevel.Error => () => Log.Error("[ERROR] This is a Error message."),
+                    LogLevel.Critical => () => Log.Fatal("[CRITICAL] This is a Fatal message."),
                     LogLevel.None => () => { },
                     _ => () => { }
                 };
