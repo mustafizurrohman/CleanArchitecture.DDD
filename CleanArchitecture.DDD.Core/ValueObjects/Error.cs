@@ -47,11 +47,9 @@ public static class GeneralErrors
         return new Error("record.not.found", $"Record not found{forId}");
     }
 
-    public static Error ValueIsInvalid() =>
-        new Error("value.is.invalid", "Value is invalid");
+    public static Error ValueIsInvalid() => new("value.is.invalid", "Value is invalid");
 
-    public static Error ValueIsRequired() =>
-        new Error("value.is.required", "Value is required");
+    public static Error ValueIsRequired() => new("value.is.required", "Value is required");
 
     public static Error InvalidLength(string? name = null)
     {
