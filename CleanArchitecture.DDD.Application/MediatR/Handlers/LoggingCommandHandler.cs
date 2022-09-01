@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
+﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
 public class LoggingCommandHandler : IRequestHandler<LoggingCommand>
 {

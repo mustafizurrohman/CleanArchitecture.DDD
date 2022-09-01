@@ -34,16 +34,6 @@
 	  <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="7.0.0-preview.6.22330.3" />
 	  <PackageReference Include="Scrutor" Version="4.2.0" />
 	  <PackageReference Include="Scrutor.AspNetCore" Version="3.3.0" />
-	  <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
-	  <PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
-	  <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.1-dev-00787" />
-	  <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.2" />
-	  <PackageReference Include="Serilog.Enrichers.Span" Version="2.3.0" />
-	  <PackageReference Include="Serilog.Enrichers.Thread" Version="3.2.0-dev-00752" />
-	  <PackageReference Include="Serilog.Enrichers.TraceIdentifier" Version="1.0.2" />
-	  <PackageReference Include="Serilog.Exceptions" Version="8.3.0" />
-	  <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.1-dev-00337" />
-	  <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.2-dev-00225" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 	  <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
 	  <PackageReference Include="System.Interactive.Async" Version="6.0.1" />

@@ -1,6 +1,7 @@
 using CleanArchitecture.DDD.API.HealthCheckReporter;
 using CleanArchitecture.DDD.Application;
-using CleanArchitecture.DDD.Core.Logging;
+using CleanArchitecture.DDD.Core.Logging.CustomEnrichers;
+using CleanArchitecture.DDD.Core.Logging.Helpers;
 using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Domain;
 using Hangfire;
@@ -276,44 +277,7 @@ public static class WebExtensionBuilderExtensions
         // because it allows changes during run-time.
         builder.Host.UseSerilog((_, _, loggerConfig) =>
         {
-            var assemblyName = Assembly.GetExecutingAssembly().GetName();
-
-            loggerConfig
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .MinimumLevel.Override("IdentityServer4", LogEventLevel.Information)
-                .MinimumLevel.Override("Hangfire", LogEventLevel.Information);
-
-            loggerConfig
-                .Enrich.WithCorrelationId()
-                .Enrich.WithCorrelationIdHeader()
-                .Enrich.FromLogContext()
-                .Enrich.WithTraceIdentifier()
-                .Enrich.WithExceptionDetails()
-                .Enrich.WithMachineName()
-                .Enrich.WithProcessId()
-                .Enrich.WithProcessName()
-                .Enrich.WithEnvironmentName()
-                .Enrich.With<ActivityEnricher>()
-                // Custom serilog enricher to append release number
-                .Enrich.WithReleaseNumber()
-                // Custom serilog enricher to append logged in username
-                // .Enrich.WithUsername()
-                .Enrich.WithProperty("Assembly", $"{assemblyName.Name}")
-                .Enrich.WithProperty("Version", $"{assemblyName.Version}");
-
-            var seqUrl = builder.Configuration.GetConnectionString("Seq")!;
-
-            loggerConfig
-                // Console configuration
-                .WriteTo.Console()
-                // File configuration
-                .WriteTo.File(new RenderedCompactJsonFormatter(),
-                    @"C:\dev\Serilog\APILogs.json",
-                    rollingInterval: RollingInterval.Day,
-                    retainedFileCountLimit: 7)
-                // Seq Configuration
-                .WriteTo.Seq(seqUrl, LogEventLevel.Debug);
+            loggerConfig.WithSimpleConfiguration("CleanArchitecture.DDD.API", builder.Configuration);
         });
 
         return builder;

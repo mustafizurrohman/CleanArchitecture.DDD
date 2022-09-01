@@ -2,13 +2,13 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace CleanArchitecture.DDD.Core.Logging;
+namespace CleanArchitecture.DDD.Core.Logging.CustomEnrichers;
 
 // TODO: Debug this!
 public class UserNameEnricher : ILogEventEnricher
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
-    
+
     private const string PropertyName = "USERNAME";
 
     public UserNameEnricher() : this(new HttpContextAccessor())

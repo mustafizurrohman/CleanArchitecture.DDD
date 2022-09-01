@@ -1,11 +1,11 @@
-﻿namespace CleanArchitecture.DDD.Core.Logging;
+﻿namespace CleanArchitecture.DDD.Core.Logging.CustomEnrichers;
 
 public static class LoggingEnricherExtensionMethods
 {
     public static LoggerConfiguration WithReleaseNumber(this LoggerEnrichmentConfiguration enrich)
     {
-        return enrich is null 
-            ? throw new ArgumentNullException(nameof(enrich)) 
+        return enrich is null
+            ? throw new ArgumentNullException(nameof(enrich))
             : enrich.With<ReleaseNumberEnricher>();
     }
 

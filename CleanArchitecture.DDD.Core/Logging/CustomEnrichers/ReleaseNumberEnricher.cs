@@ -2,7 +2,7 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace CleanArchitecture.DDD.Core.Logging;
+namespace CleanArchitecture.DDD.Core.Logging.CustomEnrichers;
 
 public class ReleaseNumberEnricher : ILogEventEnricher
 {

@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.Application.MediatR.Commands;
-using System.Security.Cryptography;
-using System.Threading;
+﻿using Serilog.Context;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
@@ -48,6 +46,38 @@ public class LoggingController : BaseAPIController
 
     /// <summary>
     /// Demo 2
+    /// </summary>
+    /// <returns></returns>
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpPost("scope", Name = "scope")]
+    [SwaggerOperation(
+        Summary = "Demo for logging using param",
+        Description = DefaultDescription,
+        OperationId = "Log Generation Demo with Parameter",
+        Tags = new[] { "Logging" }
+    )]
+    public IActionResult LoggingScopeDemo(CancellationToken cancellationToken)
+    {
+        var randomParameter = new Faker().Random.Word();
+
+        var loggingParam = new
+        {
+            Word = randomParameter,
+            Wordlength = randomParameter.Length
+        };
+
+        using (LogContext.PushProperty("ScopeID", "ScopeTest", true))
+        
+        // Correct. Refer SEQ entry
+        Log.Information("Correct way of logging with parameter. Param value is {randomParameter}", randomParameter);
+        Log.Information($"Incorrect way of logging with parameter. Param value is {randomParameter}");
+
+        
+        return Ok();
+    }
+
+    /// <summary>
+    /// Demo 3
     /// </summary>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
