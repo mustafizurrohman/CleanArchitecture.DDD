@@ -10,8 +10,8 @@ public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
     {
         _domainDbContext = domainDbContext;
     }
-
-    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+    
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         return await next();
 
@@ -34,6 +34,5 @@ public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
         //}
 
         #endregion
-        
     }
 }

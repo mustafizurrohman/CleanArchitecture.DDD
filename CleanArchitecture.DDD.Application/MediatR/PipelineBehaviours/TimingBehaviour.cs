@@ -14,13 +14,13 @@ public class TimingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, 
     {
         _httpContextAccessor = httpContextAccessor;
     }
-
-    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+    
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        var displayUrl = _httpContextAccessor.HttpContext.Request.GetDisplayUrl();
-        
+        var displayUrl = _httpContextAccessor.HttpContext?.Request.GetDisplayUrl();
+
         Stopwatch stopwatch = new();
-        
+
         stopwatch.Start();
         var response = await next();
         stopwatch.Stop();
@@ -30,7 +30,7 @@ public class TimingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         var requestProcessingTime = stopwatch.ElapsedMilliseconds;
 
         // Performance monitoring
-        if (requestProcessingTime > 750) 
+        if (requestProcessingTime > 750)
         {
             // Here we can use Weischer Email Service for Performance monitoring
             // Or Better still- Azure Application Insights?
@@ -51,6 +51,4 @@ public class TimingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         action();
         Console.WriteLine();
     }
-
-
 }
