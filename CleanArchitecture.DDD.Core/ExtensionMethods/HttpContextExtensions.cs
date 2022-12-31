@@ -1,19 +1,24 @@
-﻿using AspNetHttpContext = Microsoft.AspNetCore.Http.HttpContext;
+﻿using System.Diagnostics;
+using AspNetHttpContext = Microsoft.AspNetCore.Http.HttpContext;
 
 namespace CleanArchitecture.DDD.Core.ExtensionMethods;
 
 public static class HttpContextExtensions
 {
-    // Fix this: Make sure that it matches with the logged value using Serilog. 
     public static string GetSupportCode(this AspNetHttpContext httpContext)
     {
-        //var correlationId = httpContext.Items
-        //    .Where(item => item.Key.ToString()!.Contains("CorrelationId"))
-        //    .Select(item => item.Value);
+        var supportCode = string.Empty;
 
-        //return correlationId?.ToString() ?? string.Empty;
-        return httpContext.TraceIdentifier;
-    
+        var traceIdentifier = Activity.Current?.Id ?? httpContext?.TraceIdentifier ?? string.Empty;
+        var traceIdentifierParts = traceIdentifier.Split('-');
+
+        if (traceIdentifierParts.Length >= 2)
+            supportCode = traceIdentifierParts[1];
+
+        if (supportCode == string.Empty)
+            supportCode = httpContext!.TraceIdentifier;
+
+        return supportCode!;
     }
 
 }

@@ -99,17 +99,7 @@ public static class WebExtensionBuilderExtensions
             setup.IncludeExceptionDetails = (httpContext, exception) => builder.Environment.IsDevelopment();
             setup.OnBeforeWriteDetails = (httpContext, details) =>
             {
-                // TODO: Support code calculation as an extension method and a serilog enricher
-                var supportCode = string.Empty;
-
-                var traceIdentifier = Activity.Current?.Id ?? httpContext?.TraceIdentifier ?? string.Empty;
-                var traceIdentifierParts = traceIdentifier.Split('-');
-
-                if (traceIdentifierParts.Length >= 2)
-                    supportCode = traceIdentifierParts[1];
-
-                if (supportCode == string.Empty)
-                    supportCode = httpContext!.TraceIdentifier;
+                var supportCode = httpContext!.GetSupportCode();
 
                 details.Detail = "An internal error occurred in our API. " 
                                 + $"Please use the Support Code \'{supportCode}\' for contacting us";
