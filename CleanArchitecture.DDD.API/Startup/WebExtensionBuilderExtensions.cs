@@ -217,7 +217,7 @@ public static class WebExtensionBuilderExtensions
 
     private static WebApplicationBuilder ConfigureInputValidation(this WebApplicationBuilder builder)
     {
-        builder.Services.AddFluentValidation();
+        builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
         builder.Services.AddValidatorsFromAssemblies(new[]
         {
             typeof(CoreAssemblyMarker).Assembly,
