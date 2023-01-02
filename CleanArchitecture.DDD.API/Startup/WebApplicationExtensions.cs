@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.DDD.API.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+using CleanArchitecture.DDD.API.Models;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -8,6 +9,7 @@ namespace CleanArchitecture.DDD.API.Startup;
 
 public static class WebApplicationExtensions
 {
+    [SuppressMessage("Usage", "ASP0014:Suggest using top level route registrations", Justification = "<Pending>")]
     public static WebApplication ConfigureHttpPipeline(this WebApplication app)
     {
         var isInDevelopment = app.Environment.IsDevelopment();
