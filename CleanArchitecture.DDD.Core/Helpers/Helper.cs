@@ -19,8 +19,6 @@ public static class Helper
         action();
         stopwatch.Stop();
 
-        var executionTime = stopwatch.ElapsedMilliseconds;
-
         LogWithSpace(() => Console.WriteLine($"Execution took {stopwatch.ElapsedMilliseconds} ms / {stopwatch.ElapsedTicks} ticks."));
     }
 }

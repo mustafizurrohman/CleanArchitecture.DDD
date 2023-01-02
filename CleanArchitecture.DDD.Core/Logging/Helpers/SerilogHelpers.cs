@@ -19,9 +19,7 @@ public static class SerilogHelpers
         string applicationName, IConfiguration configuration)
     {
         var assemblyName = Assembly.GetEntryAssembly()!.GetName();
-
-        var databaseConnectionString = configuration.GetConnectionString("DDD_Db") ?? string.Empty;
-
+        
         if (string.IsNullOrWhiteSpace(applicationName))
             applicationName = assemblyName.Name!;
 
