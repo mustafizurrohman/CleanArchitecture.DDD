@@ -5,7 +5,6 @@ using CleanArchitecture.DDD.Core.Logging.CustomEnrichers;
 using CleanArchitecture.DDD.Core.Logging.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Serilog.Enrichers.Span;
 using Serilog.Events;
 using Serilog.Exceptions;

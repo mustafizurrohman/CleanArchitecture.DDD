@@ -10,10 +10,6 @@ using Hellang.Middleware.ProblemDetails;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
-using Serilog.Enrichers.Span;
-using Serilog.Events;
-using Serilog.Exceptions;
-using Serilog.Formatting.Compact;
 
 namespace CleanArchitecture.DDD.API.Startup;
 
