@@ -76,8 +76,7 @@ public class ValidationController : BaseAPIController
 
         var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
 
-        var doctorsToValidate = AutoMapper.Map<IEnumerable<ExternalFakeDoctorAddressDTO>, IEnumerable<FakeDoctorAddressDTO>>
-            (fakeDoctors).ToList();
+        var doctorsToValidate = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>>(fakeDoctors).ToList();
 
         var validationReport = doctorsToValidate
             .Where(doc => withModelError ? !doc.GetModelValidationReport().Valid : doc.GetModelValidationReport().Valid)
@@ -109,8 +108,7 @@ public class ValidationController : BaseAPIController
 
         var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
 
-        var doctorsToValidate = AutoMapper.Map<IEnumerable<ExternalFakeDoctorAddressDTO>, IEnumerable<FakeDoctorAddressDTO>>
-                (fakeDoctors);
+        var doctorsToValidate = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>>(fakeDoctors);
 
         var validationReport = await doctorsToValidate.GetModelValidationReportAsync();
 

@@ -31,7 +31,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
 
         var parsedResponse = await response.Content.ReadAsAsync<IReadOnlyList<FakeDoctorAddressDTO>>();
 
-        var doctorDTOList = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>, List<DoctorDTO>>(parsedResponse);
+        var doctorDTOList = AutoMapper.Map<List<DoctorDTO>>(parsedResponse);
 
         var doctors = doctorDTOList
             .Select(DoctorDTO.ToDoctor)
@@ -49,7 +49,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
 
         var parsedResponse = await response.Content.ReadAsAsync<IReadOnlyList<FakeDoctorAddressDTO>>();
 
-        var doctorDTOList = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>, List<DoctorDTO>>(parsedResponse);
+        var doctorDTOList = AutoMapper.Map<List<DoctorDTO>>(parsedResponse);
 
         // Prepare to save to database
         // We are using a static method here but AutoMapper could also be used
@@ -88,7 +88,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
 
         var parsedResponse = await response.Content.ReadAsAsync<IReadOnlyList<FakeDoctorAddressDTO>>();
 
-        var doctorDTOList = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>, List<DoctorDTO>>(parsedResponse);
+        var doctorDTOList = AutoMapper.Map<List<DoctorDTO>>(parsedResponse);
 
         // Prepare to save to database
         // We are using a static method here but AutoMapper could also be used
@@ -125,7 +125,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
 
         // This is not necessary here but done only as an example to demonstrate AutoMapper
         var doctorDTOList = AutoMapper
-            .Map<IEnumerable<FakeDoctorAddressDTO>, IEnumerable<DoctorDTO>>(modelCollectionValidationReport.ValidModels)
+            .Map<IEnumerable<DoctorDTO>>(modelCollectionValidationReport.ValidModels)
             .ToList();
         
         // Save valid list in database!
