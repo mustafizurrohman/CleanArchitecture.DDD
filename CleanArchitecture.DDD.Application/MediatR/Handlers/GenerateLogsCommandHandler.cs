@@ -17,7 +17,7 @@ public class GenerateLogsCommandHandler : BaseHandler, IRequestHandler<GenerateL
     }
 
 
-    public async Task<Unit> Handle(GenerateLogsCommand request, CancellationToken cancellationToken)
+    public async Task Handle(GenerateLogsCommand request, CancellationToken cancellationToken)
     {
         for (var i = 0; i < request.Iterations; i++)
         {
@@ -28,7 +28,7 @@ public class GenerateLogsCommandHandler : BaseHandler, IRequestHandler<GenerateL
             
         }
 
-        return Unit.Value;
+        return;
     }
 
     private void GenerateLogs(bool withDelay)
@@ -40,52 +40,53 @@ public class GenerateLogsCommandHandler : BaseHandler, IRequestHandler<GenerateL
                 var withParams = DateTime.Now.Ticks % 2 == 0;
                 var withFixedText = DateTime.Now.Ticks % 3 == 0;
 
-                if (withParams && withFixedText)
+                switch (withParams)
                 {
-                    var paramValue = _faker.Lorem.Word();
-
-                    return logLevel switch
+                    case true when withFixedText:
                     {
-                        LogLevel.Trace => () => Log.Verbose("[TRACE] {paramValue} -  This is a trace message with param.", paramValue),
-                        LogLevel.Debug => () => Log.Debug("[DEBUG] {paramValue} -  This is a debug message with param.", paramValue),
-                        LogLevel.Information => () => Log.Information("[INFORMATION]  {paramValue} - This is a informational message with param.", paramValue),
-                        LogLevel.Warning => () => Log.Warning("[WARNING]  {paramValue} - This is a warning message with param.", paramValue),
-                        LogLevel.Error => () => Log.Error("[ERROR]  {paramValue} - This is a warning message with param.", paramValue),
-                        LogLevel.Critical => () => Log.Fatal("[CRITICAL]  {paramValue} - This is a critical message with param.", paramValue),
-                        LogLevel.None => () => { },
-                        _ => () => { }
-                    };
-                }
+                        var paramValue = _faker.Lorem.Word();
 
-
-                if (withParams && !withFixedText)
-                {
-                    var paramValue = _faker.Lorem.Word();
-
-                    return logLevel switch
+                        return logLevel switch
+                        {
+                            LogLevel.Trace => () => Log.Verbose("[TRACE] {paramValue} -  This is a trace message with param.", paramValue),
+                            LogLevel.Debug => () => Log.Debug("[DEBUG] {paramValue} -  This is a debug message with param.", paramValue),
+                            LogLevel.Information => () => Log.Information("[INFORMATION]  {paramValue} - This is a informational message with param.", paramValue),
+                            LogLevel.Warning => () => Log.Warning("[WARNING]  {paramValue} - This is a warning message with param.", paramValue),
+                            LogLevel.Error => () => Log.Error("[ERROR]  {paramValue} - This is a warning message with param.", paramValue),
+                            LogLevel.Critical => () => Log.Fatal("[CRITICAL]  {paramValue} - This is a critical message with param.", paramValue),
+                            LogLevel.None => () => { },
+                            _ => () => { }
+                        };
+                    }
+                    case true when !withFixedText:
                     {
-                        LogLevel.Trace => () => Log.Verbose("[TRACE] {paramValue} - " + RandomText, paramValue),
-                        LogLevel.Debug => () => Log.Debug("[DEBUG] {paramValue} -  " + RandomText, paramValue),
-                        LogLevel.Information => () => Log.Information("[INFORMATION]  {paramValue} - " + RandomText, paramValue),
-                        LogLevel.Warning => () => Log.Warning("[WARNING]  {paramValue} - " + RandomText, paramValue),
-                        LogLevel.Error => () => Log.Error("[ERROR]  {paramValue} - " + RandomText, paramValue),
-                        LogLevel.Critical => () => Log.Fatal("[CRITICAL]  {paramValue} - " + RandomText, paramValue),
-                        LogLevel.None => () => { },
-                        _ => () => { }
-                    };
-                }
+                        var paramValue = _faker.Lorem.Word();
 
-                return logLevel switch
-                {
-                    LogLevel.Trace => () => Log.Verbose("[TRACE] This is a Trace message."),
-                    LogLevel.Debug => () => Log.Debug("[DEBUG] This is a Debug message."),
-                    LogLevel.Information => () => Log.Information("[INFORMATION] This is a Information message."),
-                    LogLevel.Warning => () => Log.Warning("[WARNING] This is a Warning message."),
-                    LogLevel.Error => () => Log.Error("[ERROR] This is a Error message."),
-                    LogLevel.Critical => () => Log.Fatal("[CRITICAL] This is a Fatal message."),
-                    LogLevel.None => () => { },
-                    _ => () => { }
-                };
+                        return logLevel switch
+                        {
+                            LogLevel.Trace => () => Log.Verbose("[TRACE] {paramValue} - " + RandomText, paramValue),
+                            LogLevel.Debug => () => Log.Debug("[DEBUG] {paramValue} -  " + RandomText, paramValue),
+                            LogLevel.Information => () => Log.Information("[INFORMATION]  {paramValue} - " + RandomText, paramValue),
+                            LogLevel.Warning => () => Log.Warning("[WARNING]  {paramValue} - " + RandomText, paramValue),
+                            LogLevel.Error => () => Log.Error("[ERROR]  {paramValue} - " + RandomText, paramValue),
+                            LogLevel.Critical => () => Log.Fatal("[CRITICAL]  {paramValue} - " + RandomText, paramValue),
+                            LogLevel.None => () => { },
+                            _ => () => { }
+                        };
+                    }
+                    default:
+                        return logLevel switch
+                        {
+                            LogLevel.Trace => () => Log.Verbose("[TRACE] This is a Trace message."),
+                            LogLevel.Debug => () => Log.Debug("[DEBUG] This is a Debug message."),
+                            LogLevel.Information => () => Log.Information("[INFORMATION] This is a Information message."),
+                            LogLevel.Warning => () => Log.Warning("[WARNING] This is a Warning message."),
+                            LogLevel.Error => () => Log.Error("[ERROR] This is a Error message."),
+                            LogLevel.Critical => () => Log.Fatal("[CRITICAL] This is a Fatal message."),
+                            LogLevel.None => () => { },
+                            _ => () => { }
+                        };
+                }
             }
 
             return new List<Action>

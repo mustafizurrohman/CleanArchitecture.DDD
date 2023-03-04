@@ -122,7 +122,7 @@ public static class WebExtensionBuilderExtensions
     private static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-        builder.Services.AddMediatR(typeof(ApplicationAssemblyMarker).Assembly);
+        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
         builder.Services.AddSingleton<IPolicyHolder, PolicyHolder>();
 
         builder.Services.AddHttpContextAccessor();

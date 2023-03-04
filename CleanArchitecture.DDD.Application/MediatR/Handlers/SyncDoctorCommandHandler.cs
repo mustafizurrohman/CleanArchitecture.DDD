@@ -10,7 +10,7 @@ public class SyncDoctorCommandHandler : BaseHandler, IRequestHandler<SyncDoctorC
         _iedcmSyncService = iedcmSyncService;
     }
 
-    public async Task<Unit> Handle(SyncDoctorCommand request, CancellationToken cancellationToken)
+    public async Task Handle(SyncDoctorCommand request, CancellationToken cancellationToken)
     {
         if (request.SimulateError) {
             await _iedcmSyncService.SyncDoctorsWithSomeInvalidData();
@@ -19,6 +19,6 @@ public class SyncDoctorCommandHandler : BaseHandler, IRequestHandler<SyncDoctorC
             await _iedcmSyncService.SyncDoctors();
         }
 
-        return Unit.Value;
+        return;
     }
 }

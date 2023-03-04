@@ -11,7 +11,7 @@ public class SeedDoctorsCommandHandler : BaseHandler, IRequestHandler<SeedDoctor
         
     }
 
-    public async Task<Unit> Handle(SeedDoctorsCommand request, CancellationToken cancellationToken)
+    public async Task Handle(SeedDoctorsCommand request, CancellationToken cancellationToken)
     {
         var faker = new Faker();
 
@@ -48,7 +48,7 @@ public class SeedDoctorsCommandHandler : BaseHandler, IRequestHandler<SeedDoctor
         await DbContext.AddRangeAsync(doctors, cancellationToken);
         await DbContext.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        return;
 
     }
 }

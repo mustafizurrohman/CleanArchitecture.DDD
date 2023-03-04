@@ -8,7 +8,7 @@ public class SeedAddressCommandHandler : BaseHandler, IRequestHandler<SeedAddres
 
     }
 
-    public async Task<Unit> Handle(SeedAddressCommand request, CancellationToken cancellationToken)
+    public async Task Handle(SeedAddressCommand request, CancellationToken cancellationToken)
     {
         var faker = new Faker("de");
 
@@ -28,6 +28,6 @@ public class SeedAddressCommandHandler : BaseHandler, IRequestHandler<SeedAddres
         await DbContext.AddRangeAsync(addresses, cancellationToken);
         await DbContext.SaveChangesAsync(cancellationToken);
         
-        return Unit.Value;
+        return;
     }
 }

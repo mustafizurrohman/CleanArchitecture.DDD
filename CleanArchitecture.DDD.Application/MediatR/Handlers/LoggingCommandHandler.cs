@@ -11,7 +11,7 @@ public class LoggingCommandHandler : IRequestHandler<LoggingCommand>
         _mediator = mediator;
     }
     
-    public async Task<Unit> Handle(LoggingCommand request, CancellationToken cancellationToken)
+    public async Task Handle(LoggingCommand request, CancellationToken cancellationToken)
     {
         var generateLogsCommand = new GenerateLogsCommand(1, true);
         await _mediator.Send(generateLogsCommand, cancellationToken);
@@ -30,6 +30,6 @@ public class LoggingCommandHandler : IRequestHandler<LoggingCommand>
         if (now.Second % 1 == 0)
             throw new Exception("Don't know what to throw ...");
 
-        return Unit.Value;
+        return;
     }
 }
