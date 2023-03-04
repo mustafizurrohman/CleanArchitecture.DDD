@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.Application.ExtensionMethods;
+﻿using CleanArchitecture.DDD.Application.DTO.Internal;
+
+namespace CleanArchitecture.DDD.Application.ExtensionMethods;
 
 public static class GenericValidationExtensions
 {
@@ -10,19 +12,7 @@ public static class GenericValidationExtensions
 
         var validationResult = validator.Validate(model);
 
-        return new ModelValidationReport<T>
-        {
-            Model = model,
-            Valid = validationResult.IsValid,
-            ModelErrors = validationResult.Errors
-                .GroupBy(e => new { e.PropertyName, e.AttemptedValue })
-                .Select(e => new ValidationErrorByProperty
-                {
-                    PropertyName = e.Key.PropertyName,
-                    ProvidedValue = e.Select(err => err.AttemptedValue).Distinct().Single(),
-                    ErrorMessages = e.Select(err => err.ErrorMessage).ToList()
-                })
-        };
+        return new ModelValidationReport<T>(model, validationResult);
     }
 
     public static ModelValidationReport<T> GetModelValidationReport<T>(this T model)
@@ -42,19 +32,7 @@ public static class GenericValidationExtensions
 
         var validationResult = await validator.ValidateAsync(model);
 
-        return new ModelValidationReport<T>
-        {
-            Model = model,
-            Valid = validationResult.IsValid,
-            ModelErrors = validationResult.Errors
-                .GroupBy(e => new { e.PropertyName, e.AttemptedValue })
-                .Select(e => new ValidationErrorByProperty
-                {
-                    PropertyName = e.Key.PropertyName,
-                    ProvidedValue = e.Select(err => err.AttemptedValue).Distinct().Single(),
-                    ErrorMessages = e.Select(err => err.ErrorMessage).ToList()
-                })
-        };
+        return new ModelValidationReport<T>(model, validationResult);
     }
 
     public static async Task<ModelValidationReport<T>> GetModelValidationReportAsync<T>(this T model)
