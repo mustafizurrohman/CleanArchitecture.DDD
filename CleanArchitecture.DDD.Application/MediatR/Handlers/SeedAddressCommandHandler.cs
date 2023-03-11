@@ -27,7 +27,5 @@ public class SeedAddressCommandHandler : BaseHandler, IRequestHandler<SeedAddres
 
         await DbContext.AddRangeAsync(addresses, cancellationToken);
         await DbContext.SaveChangesAsync(cancellationToken);
-        
-        return;
     }
 }

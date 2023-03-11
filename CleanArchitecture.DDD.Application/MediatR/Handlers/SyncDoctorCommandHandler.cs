@@ -18,7 +18,6 @@ public class SyncDoctorCommandHandler : BaseHandler, IRequestHandler<SyncDoctorC
         else {
             await _iedcmSyncService.SyncDoctors();
         }
-
-        return;
+        
     }
 }

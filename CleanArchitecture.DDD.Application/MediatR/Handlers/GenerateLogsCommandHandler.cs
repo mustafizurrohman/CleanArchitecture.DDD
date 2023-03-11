@@ -27,8 +27,6 @@ public class GenerateLogsCommandHandler : BaseHandler, IRequestHandler<GenerateL
                 Thread.Sleep((i+1) * RandomDelay);
             
         }
-
-        return;
     }
 
     private void GenerateLogs(bool withDelay)

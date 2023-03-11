@@ -47,8 +47,6 @@ public class SeedDoctorsCommandHandler : BaseHandler, IRequestHandler<SeedDoctor
 
         await DbContext.AddRangeAsync(doctors, cancellationToken);
         await DbContext.SaveChangesAsync(cancellationToken);
-
-        return;
-
+        
     }
 }

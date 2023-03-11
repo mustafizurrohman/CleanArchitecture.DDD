@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.Application.DTO.Internal;
-
-namespace CleanArchitecture.DDD.Application.ExtensionMethods;
+﻿namespace CleanArchitecture.DDD.Application.ExtensionMethods;
 
 public static class GenericValidationExtensions
 {

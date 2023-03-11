@@ -24,7 +24,7 @@ public class DataServiceCached : IDataService
     public async Task<IEnumerable<DemoData>> GetDemoDataAsync(int num)
     {
         // Trivial implementation- Not suitable for production 
-        var cacheKey = "DemoData";
+        const string cacheKey = "DemoData";
 
         if (MemoryCache.TryGetValue(cacheKey, out List<DemoData>? demoData)) {
             Log.Information("Returning cached data ...");

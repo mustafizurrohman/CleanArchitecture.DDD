@@ -63,7 +63,6 @@ public class SeedDoctorsWithAddressesCommandHandler
 
         await DbContext.AddRangeAsync(doctors, cancellationToken);
         await DbContext.SaveChangesAsync(cancellationToken);
-
-        return;
+        
     }
 }

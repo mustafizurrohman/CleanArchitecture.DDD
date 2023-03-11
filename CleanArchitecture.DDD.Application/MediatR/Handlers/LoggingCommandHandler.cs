@@ -29,7 +29,5 @@ public class LoggingCommandHandler : IRequestHandler<LoggingCommand>
 
         if (now.Second % 1 == 0)
             throw new Exception("Don't know what to throw ...");
-
-        return;
     }
 }

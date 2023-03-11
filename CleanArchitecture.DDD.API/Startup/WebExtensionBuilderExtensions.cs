@@ -95,7 +95,7 @@ public static class WebExtensionBuilderExtensions
             setup.IncludeExceptionDetails = (httpContext, exception) => builder.Environment.IsDevelopment();
             setup.OnBeforeWriteDetails = (httpContext, details) =>
             {
-                var supportCode = httpContext!.GetSupportCode();
+                var supportCode = httpContext.GetSupportCode();
 
                 details.Detail = "An internal error occurred in our API. " 
                                 + $"Please use the Support Code \'{supportCode}\' for contacting us";
