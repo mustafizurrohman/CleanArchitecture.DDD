@@ -90,7 +90,7 @@ public class PolicyHolder : IPolicyHolder
         _pollyPolicyRegistry.Add(WrappedPolicyNames.TimeoutRetryAndFallbackWrap.ToString(), GetTimeoutRetryAndFallbackWrap());
     }
 
-    private IAsyncPolicy GetRetryPolicyWithJitter()
+    private static IAsyncPolicy GetRetryPolicyWithJitter()
     {
         int attempts = 0;
         int retryCount = 5;
@@ -115,14 +115,14 @@ public class PolicyHolder : IPolicyHolder
                 });
     }
     
-    private IAsyncPolicy GetTimeOutPolicy()
+    private static IAsyncPolicy GetTimeOutPolicy()
     {
         return Policy
             .Handle<HttpRequestException>()
             .WaitAndRetryAsync(1, retryAttempt => TimeSpan.FromSeconds(retryAttempt));
     }
 
-    private IAsyncPolicy<HttpResponseMessage> GetHttpCircuitBreakerPolicy()
+    private static IAsyncPolicy<HttpResponseMessage> GetHttpCircuitBreakerPolicy()
     {
         // Break after 3 tries and wait for 15 seconds before retrying
         return HttpPolicyExtensions
@@ -130,7 +130,7 @@ public class PolicyHolder : IPolicyHolder
             .CircuitBreakerAsync(3, TimeSpan.FromSeconds(15));
     }
 
-    private IAsyncPolicy<HttpResponseMessage> GetHttpRetryPolicy()
+    private static IAsyncPolicy<HttpResponseMessage> GetHttpRetryPolicy()
     {
         int attempts = 0;
         int retryCount = 5;
@@ -150,7 +150,7 @@ public class PolicyHolder : IPolicyHolder
                 });
     }
 
-    private IAsyncPolicy<HttpResponseMessage> GetHttpRequestFallbackPolicy()
+    private static IAsyncPolicy<HttpResponseMessage> GetHttpRequestFallbackPolicy()
     {
         int _cachedResult = 0;
         
@@ -163,7 +163,7 @@ public class PolicyHolder : IPolicyHolder
             });
     }
 
-    private AsyncPolicyWrap<HttpResponseMessage> GetTimeoutRetryAndFallbackWrap()
+    private static AsyncPolicyWrap<HttpResponseMessage> GetTimeoutRetryAndFallbackWrap()
     {
         var circuitBreakerPolicy = GetHttpCircuitBreakerPolicy();
         var fallbackPolicy = GetHttpRequestFallbackPolicy();
@@ -171,12 +171,12 @@ public class PolicyHolder : IPolicyHolder
         return Policy.WrapAsync(circuitBreakerPolicy, fallbackPolicy);
     }
 
-    private IAsyncPolicy<HttpResponseMessage> GetHttpNoOpPolicy()
+    private static IAsyncPolicy<HttpResponseMessage> GetHttpNoOpPolicy()
     {
         return Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>();
     }
 
-    private IAsyncPolicy<HttpResponseMessage> GetHttpRetryPolicyWithJitter()
+    private static IAsyncPolicy<HttpResponseMessage> GetHttpRetryPolicyWithJitter()
     {
         return GetRetryPolicyWithJitter().AsAsyncPolicy<HttpResponseMessage>();
     }

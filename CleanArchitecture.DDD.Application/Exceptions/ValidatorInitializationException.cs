@@ -6,7 +6,7 @@ internal class ValidatorInitializationException : ApplicationException
     private string ValidatorClassName { get; }
     private string CustomMessage { get; }
 
-    public ValidatorInitializationException(Type typ, Exception? ex = null) :
+    public ValidatorInitializationException(Type typ, Exception ex) :
         base($"Could not initialize a validator for type {typ.GetTypeNameForFluentValidation()}. " +
              "Please provide a validator of type " +
              $"FluentValidation.AbstractValidator<{typ.GetTypeNameForFluentValidation()}> as a second parameter." +
