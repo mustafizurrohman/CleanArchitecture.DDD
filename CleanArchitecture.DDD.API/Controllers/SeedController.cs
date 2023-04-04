@@ -35,9 +35,8 @@ public class SeedController : BaseAPIController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> InsertAddresses(CancellationToken cancellationToken, int num = 100)
     {
-        if (num <= 0)
-            return BadRequest(nameof(num) + " must be positive");
-
+        Guard.Against.NegativeOrZero(num);
+        
         var stopWatch = new Stopwatch();
         stopWatch.Start();
 
@@ -66,8 +65,7 @@ public class SeedController : BaseAPIController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateDoctors(CancellationToken cancellationToken, int num = 100)
     {
-        if (num <= 0)
-            return BadRequest(nameof(num) + " must be positive");
+        Guard.Against.NegativeOrZero(num);
 
         var stopWatch = new Stopwatch();
         stopWatch.Start();
@@ -104,8 +102,7 @@ public class SeedController : BaseAPIController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateDoctorsWithAddress(CancellationToken cancellationToken, int num = 100)
     {
-        if (num <= 0)
-            return BadRequest(nameof(num) + " must be positive");
+        Guard.Against.NegativeOrZero(num);
 
         var stopWatch = new Stopwatch();
         stopWatch.Start();

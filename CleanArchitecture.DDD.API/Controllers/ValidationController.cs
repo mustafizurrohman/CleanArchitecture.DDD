@@ -71,8 +71,7 @@ public class ValidationController : BaseAPIController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public IActionResult DemoExtensionMethod(bool withModelError = false, int num = 100)
     {
-        if (num <= 0)
-            return BadRequest(nameof(num) + " must be positive");
+        Guard.Against.NegativeOrZero(num);
 
         var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
 
@@ -103,8 +102,7 @@ public class ValidationController : BaseAPIController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DemoExtensionMethodForCollection(int num = 100)
     {
-        if (num <= 0)
-            return BadRequest(nameof(num) + " must be positive");
+        Guard.Against.NegativeOrZero(num);
 
         var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
 
@@ -132,8 +130,7 @@ public class ValidationController : BaseAPIController
     )]
     public async Task<IActionResult> DemoExtensionMethodErrorForObject(int num = 100)
     {
-        if (num <= 0)
-            return BadRequest(nameof(num) + " must be positive");
+        Guard.Against.NegativeOrZero(num);
 
         var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
 
@@ -161,8 +158,7 @@ public class ValidationController : BaseAPIController
     )]
     public async Task<IActionResult> DemoExtensionMethodErrorForCollection(int num = 100)
     {
-        if (num <= 0)
-            return BadRequest(nameof(num) + " must be positive");
+        Guard.Against.NegativeOrZero(num);
 
         var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
         

@@ -162,7 +162,7 @@ public static class WebExtensionBuilderExtensions
             c.SwaggerDoc("v1", new OpenApiInfo
             {
                 Version = "1.0.0",
-                Title = "Demo API using .NET 7 (Preview)",
+                Title = "Demo API using .NET 8 (Preview)",
                 Description = "Sample API to illustrate multiple features of the .NET Framework and C#",
                 TermsOfService = new Uri("https://www.gnu.org/licenses/gpl-3.0.en.html"),
                 Contact = new OpenApiContact()
