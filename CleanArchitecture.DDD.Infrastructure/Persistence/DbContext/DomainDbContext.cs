@@ -18,14 +18,13 @@ public class DomainDbContext : DatabaseContext
     {
         _connectionString = connectionString;
 
-        /*
         if (!IsDatabaseReachable(_connectionString))
         {
             const string message = "Invalid database connection string or database is not reachable ... ";
             
             Log.Fatal(message);
             throw new DatabaseNotReachableException();
-        } */
+        } 
 
         _useLogger = useLogger;
     }

@@ -28,6 +28,7 @@ public static class WebExtensionBuilderExtensions
     public static WebApplicationBuilder ConfigureApplication(this WebApplicationBuilder builder)
     {
         builder.ConfigureLogging()
+            .ValidateAppSettings()
             .ConfigureEntityFramework()
             .ConfigureServices()
             .ConfigureInputValidation()
@@ -36,8 +37,7 @@ public static class WebExtensionBuilderExtensions
             .ConfigureExceptionHandling()
             .ConfigureHealthChecks()
             // .ConfigureHangfire()
-            .ConfigureControllers()
-            .ValidateAppSettings();
+            .ConfigureControllers();
 
         return builder;
     }

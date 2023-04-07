@@ -18,7 +18,6 @@ public class AppSettingsValidator : AbstractValidator<AppSettings>
             .Must(BeValidDbConnectionString)
             .WithMessage("Database is not reachable");
 
-
     }
 
     private static bool BeValidDbConnectionString(string connectionString)

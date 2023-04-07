@@ -38,7 +38,7 @@ public class FluentValidationOptions<TOptions> : IValidateOptions<TOptions>
             .Select(e => new ValidationErrorByProperty
             {
                 PropertyName = e.Key.PropertyName,
-                ProvidedValue = "***",
+                ProvidedValue = "*** (Hidden)",
                 ErrorMessages = e.Select(err => err.ErrorMessage).ToList()
             })
             .ToFormattedJsonFailSafe();
