@@ -23,7 +23,7 @@ public class FakeController : BaseAPIController
     public FakeController(IAppServices appServices, IFakeDataService fakeDataService) 
         : base(appServices)
     {
-        _fakeDataService = Guard.Against.Null(fakeDataService, nameof(fakeDataService));
+        _fakeDataService = Guard.Against.Null(fakeDataService);
     }
 
     [HttpGet("doctors")]

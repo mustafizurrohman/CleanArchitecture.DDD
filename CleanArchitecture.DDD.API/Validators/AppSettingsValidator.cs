@@ -18,6 +18,19 @@ public class AppSettingsValidator : AbstractValidator<AppSettings>
             .Must(BeValidDbConnectionString)
             .WithMessage("Database is not reachable");
 
+        RuleFor(prop => prop.HealthChecksUI.EvaluationTimeOnSeconds)
+            .GreaterThanOrEqualTo(1);
+
+        RuleFor(prop => prop.HealthChecksUI.MinimumSecondsBetweenFailureNotifications)
+            .GreaterThanOrEqualTo(1);
+
+        RuleFor(prop => prop.HealthChecksUI.HealthChecks)
+            .Must(p => p.Count > 0)
+            .WithMessage("At least 1 health check must be defined");
+
+        RuleFor(prop => prop.Logging.LogLevel)
+            .IsInEnum();
+
     }
 
     private static bool BeValidDbConnectionString(string connectionString)
