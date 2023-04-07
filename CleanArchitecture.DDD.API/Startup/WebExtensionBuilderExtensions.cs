@@ -1,4 +1,5 @@
 using CleanArchitecture.DDD.API.HealthCheckReporter;
+using CleanArchitecture.DDD.API.Models;
 using CleanArchitecture.DDD.Application;
 using CleanArchitecture.DDD.Core.Logging.CustomEnrichers;
 using CleanArchitecture.DDD.Core.Logging.Helpers;
@@ -35,7 +36,19 @@ public static class WebExtensionBuilderExtensions
             .ConfigureExceptionHandling()
             .ConfigureHealthChecks()
             // .ConfigureHangfire()
-            .ConfigureControllers();
+            .ConfigureControllers()
+            .ValidateAppSettings();
+
+        return builder;
+    }
+
+    public static WebApplicationBuilder ValidateAppSettings(this WebApplicationBuilder builder)
+    {
+        builder.Services
+            .AddOptions<AppSettings>()
+            .Bind(builder.Configuration)
+            .ValidateFluently()
+            .ValidateOnStart();
 
         return builder;
     }
@@ -218,8 +231,9 @@ public static class WebExtensionBuilderExtensions
         {
             typeof(CoreAssemblyMarker).Assembly,
             typeof(ApplicationAssemblyMarker).Assembly,
-            typeof(DomainAssemblyMarker).Assembly
-        });
+            typeof(DomainAssemblyMarker).Assembly,
+            typeof(APIAssemblyMarker).Assembly
+        }, ServiceLifetime.Singleton);
 
         return builder;
     }
