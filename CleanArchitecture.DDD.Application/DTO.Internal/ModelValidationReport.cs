@@ -7,7 +7,7 @@ public class ModelValidationReport<T>
     public bool Valid { get; init; }
     public IEnumerable<ValidationErrorByProperty> ModelErrors { get; init; }
 
-    public ModelValidationReport(T model, FluentValidation.Results.ValidationResult validationResult)
+    public ModelValidationReport(T model, FluentValidationResult validationResult)
     {
         Model = model;
         Valid = validationResult.IsValid;
