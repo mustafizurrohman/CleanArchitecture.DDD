@@ -11,13 +11,6 @@ public class ModelValidationReport<T>
     {
         Model = model;
         Valid = validationResult.IsValid;
-        ModelErrors = validationResult.Errors
-            .GroupBy(e => new {e.PropertyName, e.AttemptedValue})
-            .Select(e => new ValidationErrorByProperty
-            {
-                PropertyName = e.Key.PropertyName,
-                ProvidedValue = e.Select(err => err.AttemptedValue).Distinct().Single(),
-                ErrorMessages = e.Select(err => err.ErrorMessage).ToList()
-            });
+        ModelErrors = validationResult.Errors.GetValidationErrorByProperties(true);
     }
 }

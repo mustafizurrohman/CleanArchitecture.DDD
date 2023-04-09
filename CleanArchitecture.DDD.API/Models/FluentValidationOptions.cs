@@ -34,13 +34,7 @@ public class FluentValidationOptions<TOptions> : IValidateOptions<TOptions>
             return ValidateOptionsResult.Success;
 
         var errors = validationResult.Errors
-            .GroupBy(e => new { e.PropertyName, e.AttemptedValue })
-            .Select(e => new ValidationErrorByProperty
-            {
-                PropertyName = e.Key.PropertyName,
-                ProvidedValue = "*** (Hidden)",
-                ErrorMessages = e.Select(err => err.ErrorMessage).ToList()
-            })
+            .GetValidationErrorByProperties(false)
             .ToFormattedJsonFailSafe();
 
         return ValidateOptionsResult.Fail(errors);
