@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
+﻿using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Helpers;
 
 namespace CleanArchitecture.DDD.API.Models;
 

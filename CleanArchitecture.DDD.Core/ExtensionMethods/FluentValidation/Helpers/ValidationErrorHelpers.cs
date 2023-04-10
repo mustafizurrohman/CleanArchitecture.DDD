@@ -1,6 +1,7 @@
-﻿using FluentValidation.Results;
+﻿using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
+using FluentValidation.Results;
 
-namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
+namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Helpers;
 
 public static class ValidationErrorHelpers
 {

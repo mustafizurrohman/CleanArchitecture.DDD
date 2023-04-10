@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
+﻿using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Helpers;
+
+namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
 
 public class ModelValidationReport<T>
     where T : class, new()
