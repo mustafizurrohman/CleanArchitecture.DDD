@@ -100,16 +100,16 @@ public static class SerilogHelpers
     }
 
     // TODO: Refactor this!
-    private static UserInfo AddCustomContextDetails(IHttpContextAccessor ctx)
+    private static UserInfo? AddCustomContextDetails(IHttpContextAccessor ctx)
     {
         var excluded = new List<string> { "nbf", "exp", "auth_time", "amr", "sub" };
         const string userIdClaimType = "sub";
 
-        var context = ctx.HttpContext;
+        var context = ctx.HttpContext!;
         var user = context?.User.Identity;
         if (user is not {IsAuthenticated: true}) return null;
 
-        var userId = context.User.Claims.FirstOrDefault(a => a.Type == userIdClaimType)?.Value;
+        var userId = context!.User.Claims.FirstOrDefault(a => a.Type == userIdClaimType)?.Value;
         var userInfo = new UserInfo
         {
             Username = user.Name!,

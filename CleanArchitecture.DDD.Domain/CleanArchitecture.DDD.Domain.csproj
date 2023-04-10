@@ -18,9 +18,9 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
-    <PackageReference Include="CSharpFunctionalExtensions" Version="2.37.0" />
-    <PackageReference Include="FluentValidation" Version="11.5.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.0-preview.1.23111.4" />
+    <PackageReference Include="CSharpFunctionalExtensions" Version="2.38.1" />
+    <PackageReference Include="FluentValidation" Version="11.5.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.0-preview.2.23128.3" />
     <PackageReference Include="ValueOf" Version="2.0.31" />
   </ItemGroup>
 

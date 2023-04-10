@@ -15,7 +15,7 @@ public sealed class Error : ValueObject
         Message = message;
     }
 
-    protected override IEnumerable<object> GetEqualityComponents()
+    protected override IEnumerable<IComparable> GetEqualityComponents()
     {
         yield return Code;
     }
@@ -33,7 +33,7 @@ public sealed class Error : ValueObject
         string[] data = serialized.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
 
         if (data.Length < 2)
-            throw new Exception($"Invalid error serialization: '{serialized}'");
+            throw new ArgumentException($"Invalid error serialization: '{serialized}'");
 
         return new Error(data[0], data[1]);
     }

@@ -28,7 +28,7 @@ public class NameValueObject : ValueObject
         return createdObject;
     }
 
-    protected override IEnumerable<object> GetEqualityComponents()
+    protected override IEnumerable<IComparable> GetEqualityComponents()
     {
         yield return Value;
     }

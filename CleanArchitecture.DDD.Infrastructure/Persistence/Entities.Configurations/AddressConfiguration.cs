@@ -19,7 +19,7 @@ internal class AddressConfiguration : IEntityTypeConfiguration<Address>
         var fileContents = File.ReadAllText("../CleanArchitecture.DDD.Infrastructure/Seed/address.json");
         var addressList = JsonConvert.DeserializeObject<IEnumerable<Address>>(fileContents);
 
-        return addressList;
+        return addressList ?? Enumerable.Empty<Address>();
     }
 
 }
