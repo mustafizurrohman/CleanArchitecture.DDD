@@ -1,5 +1,6 @@
 ﻿namespace CleanArchitecture.DDD.Application.Services.ScrutorDemo.AssemblyScanning;
 
+[InjectionOrder(3)]
 public class ThreeTestService : ITestService
 {
     public string HelloWorld()

@@ -1,5 +1,4 @@
 using CleanArchitecture.DDD.Infrastructure;
-using FluentAssertions;
 using FluentAssertions.Types;
 
 namespace CodeIntegrityTests;

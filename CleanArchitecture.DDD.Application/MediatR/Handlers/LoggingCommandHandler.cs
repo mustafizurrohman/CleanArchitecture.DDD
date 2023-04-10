@@ -28,6 +28,6 @@ public class LoggingCommandHandler : IRequestHandler<LoggingCommand>
             throw new InsufficientMemoryException();
 
         if (now.Second % 1 == 0)
-            throw new Exception("Don't know what to throw ...");
+            throw new ArrayTypeMismatchException("Don't know what to throw ...");
     }
 }

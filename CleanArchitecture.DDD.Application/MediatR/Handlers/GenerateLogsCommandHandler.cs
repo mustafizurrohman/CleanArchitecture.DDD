@@ -17,7 +17,7 @@ public class GenerateLogsCommandHandler : BaseHandler, IRequestHandler<GenerateL
     }
 
 
-    public async Task Handle(GenerateLogsCommand request, CancellationToken cancellationToken)
+    public Task Handle(GenerateLogsCommand request, CancellationToken cancellationToken)
     {
         for (var i = 0; i < request.Iterations; i++)
         {
@@ -27,6 +27,8 @@ public class GenerateLogsCommandHandler : BaseHandler, IRequestHandler<GenerateL
                 Thread.Sleep((i+1) * RandomDelay);
             
         }
+
+        return Task.CompletedTask;
     }
 
     private void GenerateLogs(bool withDelay)

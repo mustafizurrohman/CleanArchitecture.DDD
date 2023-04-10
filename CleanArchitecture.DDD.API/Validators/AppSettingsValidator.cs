@@ -1,7 +1,6 @@
 ﻿using CleanArchitecture.DDD.API.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace CleanArchitecture.DDD.API.Validators;
 

@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace CleanArchitecture.DDD.API.Models;
+﻿namespace CleanArchitecture.DDD.API.Models;
 
 // AppSettings myDeserializedClass = JsonConvert.DeserializeObject<AppSettings>(myJsonResponse);
 public class AppSettings

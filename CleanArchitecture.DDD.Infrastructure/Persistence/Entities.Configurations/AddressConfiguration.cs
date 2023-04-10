@@ -14,7 +14,7 @@ internal class AddressConfiguration : IEntityTypeConfiguration<Address>
         builder.HasData(parsedAddresses);
     }
 
-    private IEnumerable<Address> GetAddresses()
+    private static IEnumerable<Address> GetAddresses()
     {
         var fileContents = File.ReadAllText("../CleanArchitecture.DDD.Infrastructure/Seed/address.json");
         var addressList = JsonConvert.DeserializeObject<IEnumerable<Address>>(fileContents);
