@@ -1,10 +1,13 @@
 ﻿using Newtonsoft.Json;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
+#pragma warning disable S1133
 
 namespace CleanArchitecture.DDD.Core.ExtensionMethods;
 
 public static class ObjectExtensions
 {
+
+    // For demo only. Disabling pragma S1133 to avoid warning
     [Obsolete("Please use \'ToFormattedJsonFailSafe()\' to avoid OutOfMemoryException")]
     public static string ToFormattedJson(this object? objectInstance,JsonSerializerSettings? serializerSettings = null)
     {

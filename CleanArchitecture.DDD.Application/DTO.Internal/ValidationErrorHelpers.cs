@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 
 namespace CleanArchitecture.DDD.Application.DTO.Internal;
+
 public static class ValidationErrorHelpers
 {
     public static IEnumerable<ValidationErrorByProperty> GetValidationErrorByProperties(this IEnumerable<ValidationFailure> failures, bool showValue = true)
@@ -11,5 +12,3 @@ public static class ValidationErrorHelpers
     }
 
 }
-
-

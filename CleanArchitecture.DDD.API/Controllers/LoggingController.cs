@@ -34,12 +34,12 @@ public class LoggingController : BaseAPIController
         };
 
         // Correct. Refer SEQ entry
-        Log.Information("Correct way of logging with parameter. Param value is {randomParameter}", randomParameter);
-        Log.Information($"Incorrect way of logging with parameter. Param value is {randomParameter}");
+        Log.Information("[CORRECT] Param value is {randomParameter}", randomParameter);
+        Log.Information($"[INCORRECT] Param value is {randomParameter}");
 
         // Incorrect with string interpolation. Refer SEQ entry
-        Log.Information("Correct way of logging with parameter. Param value is {param}", loggingParam);
-        Log.Information($"Incorrect way of logging with parameter. Param value is {loggingParam}");
+        Log.Information("[CORRECT] Param value is {param}", loggingParam);
+        Log.Information($"[INCORRECT] Param value is {loggingParam}");
         
         return Ok();
     }
@@ -56,7 +56,7 @@ public class LoggingController : BaseAPIController
         OperationId = "Log Generation Demo with Parameter",
         Tags = new[] { "Logging" }
     )]
-    public IActionResult LoggingScopeDemo(CancellationToken cancellationToken)
+    public IActionResult LoggingScopeDemo(CancellationToken _)
     {
         var randomParameter = new Faker().Random.Word();
 
@@ -67,12 +67,11 @@ public class LoggingController : BaseAPIController
         };
 
         using (LogContext.PushProperty("ScopeID", "ScopeTest", true))
-        
-        // Correct. Refer SEQ entry
-        Log.Information("Correct way of logging with parameter. Param value is {randomParameter}", randomParameter);
-        Log.Information($"Incorrect way of logging with parameter. Param value is {randomParameter}");
+        {
+            Log.Information("[CORRECT] Param value is {loggingParam}", loggingParam);
+            Log.Information($"[INCORRECT] Param value is {randomParameter}");
+        }
 
-        
         return Ok();
     }
 

@@ -7,7 +7,7 @@ public class GenerateLogsCommandHandler : BaseHandler, IRequestHandler<GenerateL
 {
     private readonly Faker _faker;
 
-    private int RandomDelay => RandomNumberGenerator.GetInt32(500, 1000);
+    private static int RandomDelay => RandomNumberGenerator.GetInt32(500, 1000);
     private string RandomText => _faker.Lorem.Lines(1);
 
     public GenerateLogsCommandHandler(IAppServices appServices)
@@ -120,13 +120,22 @@ public class GenerateLogsCommandHandler : BaseHandler, IRequestHandler<GenerateL
         logActions.AddRange(GetSetOfLogs());
         logActions.AddRange(GetSetOfLogs());
 
-        var take = (int)Math.Ceiling(logActions.Count * 0.75);
+
+        var random = RandomNumberGenerator.GetInt32(81, 99);
+        Console.WriteLine("Random : " + random);
+        var take = (int)Math.Ceiling(logActions.Count * (random * 0.01));
 
         logActions = logActions.OrderBy(_ => Guid.NewGuid())
             .Take(take)
             .ToList();
         
+        Console.WriteLine("Starting generation of logs ...");
+        Console.WriteLine(Environment.NewLine);
+
         WriteLogsWithRandomDelay(logActions, withDelay);
+
+        Console.WriteLine(Environment.NewLine);
+        Console.WriteLine("Generation of logs completed ...");
     }
 
     private void WriteLogsWithRandomDelay(IEnumerable<Action> logActions, bool withDelay)
