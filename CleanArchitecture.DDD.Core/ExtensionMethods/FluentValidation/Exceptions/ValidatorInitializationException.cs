@@ -1,6 +1,7 @@
 ﻿namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Exceptions;
 
-internal class ValidatorInitializationException : ApplicationException
+/// <inheritdoc />
+public class ValidatorInitializationException : ApplicationException
 {
     private string? TypeName { get; }
     private string ValidatorClassName { get; }

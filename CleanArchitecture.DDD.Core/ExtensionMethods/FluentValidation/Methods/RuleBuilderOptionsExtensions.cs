@@ -17,7 +17,7 @@ public static class RuleBuilderOptionsExtensions
         return rule
             .MustNotBeNullOrEmpty()
             .MaximumLength(maxLength)
-            .WithMessage("'{PropertyName}' cannot have more than 30 characters")
+                .WithMessage("'{PropertyName}' cannot have more than 30 characters")
             .NotContainNumbersOrSpecialCharacters()
             .MustNotStartOrEndWithWhiteSpace()
             .MustNotContainConsecutiveSpaces();
@@ -35,9 +35,9 @@ public static class RuleBuilderOptionsExtensions
     {
         return rule
             .SetValidator(new NotEmptyValidator<T, TProperty>())
-            .WithMessage("'{PropertyName}' must not be empty.")
+                .WithMessage("'{PropertyName}' must not be empty.")
             .SetValidator(new NotNullValidator<T, TProperty>())
-            .WithMessage("'{PropertyName}' must not be Null.");
+                .WithMessage("'{PropertyName}' must not be Null.");
     }
 
 

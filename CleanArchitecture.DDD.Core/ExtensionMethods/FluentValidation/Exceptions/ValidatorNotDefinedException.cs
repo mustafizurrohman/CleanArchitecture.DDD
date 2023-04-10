@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Exceptions;
 
-internal class ValidatorNotDefinedException : ApplicationException
+public class ValidatorNotDefinedException : ApplicationException
 {
     private string? TypeName { get; } 
     private string ValidatorClassName { get; }
