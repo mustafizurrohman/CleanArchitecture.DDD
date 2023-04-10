@@ -51,7 +51,7 @@ public class DependencyInjectionController : BaseAPIController
     public IActionResult TestScrutorMultipleServices([FromServices] IEnumerable<ITestService> testServices)
     {
         var serviceOutputs = testServices
-            .OrderByDescending(svc => svc.GetType().GetCustomAttribute<InjectionOrderAttribute>()?.Order ?? 0)
+            .OrderBy(svc => svc.GetType().GetCustomAttribute<InjectionOrderAttribute>()?.Order ?? 0)
             .Select(svc => new
             {
                 ServiceType = svc.GetType().Name, 

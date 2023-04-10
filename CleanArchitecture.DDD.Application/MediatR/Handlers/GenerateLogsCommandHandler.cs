@@ -140,7 +140,7 @@ public class GenerateLogsCommandHandler : BaseHandler, IRequestHandler<GenerateL
         Console.WriteLine("Generation of logs completed ...");
     }
 
-    private void WriteLogsWithRandomDelay(IEnumerable<Action> logActions, bool withDelay)
+    private static void WriteLogsWithRandomDelay(IEnumerable<Action> logActions, bool withDelay)
     {
         foreach (var logAction in logActions)
         {

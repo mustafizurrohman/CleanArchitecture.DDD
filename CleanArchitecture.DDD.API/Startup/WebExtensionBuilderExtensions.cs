@@ -209,7 +209,7 @@ public static class WebExtensionBuilderExtensions
                             Id = "Bearer"
                         }
                     },
-                    new string[] { }
+                    Array.Empty<string>()
                 }
             });
 
