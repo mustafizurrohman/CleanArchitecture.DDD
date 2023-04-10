@@ -1,7 +1,7 @@
 ﻿using CleanArchitecture.DDD.Core.ValueObjects;
 using CSharpFunctionalExtensions;
 
-namespace CleanArchitecture.DDD.Core.ExtensionMethods;
+namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Methods;
 
 public static class RuleBuilderOptionsExtensions
 {
@@ -47,10 +47,10 @@ public static class RuleBuilderOptionsExtensions
     /// <typeparam name="T"></typeparam>
     /// <param name="ruleBuilder"></param>
     /// <returns></returns>
-    private static IRuleBuilderOptions<T, string> NotStartWithWhiteSpace<T>(this IRuleBuilder<T, string> ruleBuilder)     
-    {         
+    private static IRuleBuilderOptions<T, string> NotStartWithWhiteSpace<T>(this IRuleBuilder<T, string> ruleBuilder)
+    {
         return ruleBuilder.Must(m => m != null && !m.StartsWith(" "))
-            .WithMessage("'{PropertyName}' must not start with whitespace.");     
+            .WithMessage("'{PropertyName}' must not start with whitespace.");
     }
 
     /// <summary>
@@ -59,10 +59,10 @@ public static class RuleBuilderOptionsExtensions
     /// <typeparam name="T"></typeparam>
     /// <param name="ruleBuilder"></param>
     /// <returns></returns>
-    private static IRuleBuilderOptions<T, string> NotEndWithWhiteSpace<T>(this IRuleBuilder<T, string> ruleBuilder)     
-    {         
+    private static IRuleBuilderOptions<T, string> NotEndWithWhiteSpace<T>(this IRuleBuilder<T, string> ruleBuilder)
+    {
         return ruleBuilder.Must(m => m != null && !m.EndsWith(" "))
-            .WithMessage("'{PropertyName}' must not end with whitespace.");     
+            .WithMessage("'{PropertyName}' must not end with whitespace.");
     }
 
     /// <summary>
@@ -99,7 +99,7 @@ public static class RuleBuilderOptionsExtensions
     {
         return ruleBuilder.Must(name => !name.Contains("  "))
             .WithMessage("'{PropertyName}' must not contain more than 1 consecutive spaces");
-        
+
     }
 
     public static IRuleBuilderOptions<T, string> MustBeValueObject<T, TValueObject>(

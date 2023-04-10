@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.Application.DTO;
+﻿using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Methods;
+
+namespace CleanArchitecture.DDD.Application.DTO;
 
 // Must be public otherwise it cannot be injected automatically to the DI Registry
 [UsedImplicitly]

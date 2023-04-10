@@ -9,8 +9,8 @@ public static class EnumerableValidationExtensions
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models, IValidator<T> validator)
         where T : class, new()
     {
-        models = Guard.Against.Null(models, nameof(models));
-        validator = Guard.Against.Null(validator, nameof(validator));
+        models = Guard.Against.Null(models);
+        validator = Guard.Against.Null(validator);
 
         var errorReport = models
             .Select(model => model.GetModelValidationReport(validator));
@@ -23,7 +23,7 @@ public static class EnumerableValidationExtensions
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models)
         where T : class, new()
     {
-        models = Guard.Against.NullOrEmpty(models, nameof(models));
+        models = Guard.Against.NullOrEmpty(models);
         models = models.ToList();
 
         var validator = models.First().GetValidator();
@@ -33,8 +33,8 @@ public static class EnumerableValidationExtensions
     public static Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this IEnumerable<T> models, IValidator<T> validator)
         where T : class, new()
     {
-        models = Guard.Against.NullOrEmpty(models, nameof(models));
-        validator = Guard.Against.Null(validator, nameof(validator));
+        models = Guard.Against.NullOrEmpty(models);
+        validator = Guard.Against.Null(validator);
 
         var errorReport = models
             .Select(async model => await model.GetModelValidationReportAsync(validator))
@@ -49,7 +49,7 @@ public static class EnumerableValidationExtensions
     public static async Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this IEnumerable<T> models)
         where T : class, new()
     {
-        models = Guard.Against.NullOrEmpty(models, nameof(models));
+        models = Guard.Against.NullOrEmpty(models);
         models = models.ToList();
 
         var validatorInstance = models.First().GetValidator();
