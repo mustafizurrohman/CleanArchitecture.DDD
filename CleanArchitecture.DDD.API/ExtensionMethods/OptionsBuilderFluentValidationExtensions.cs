@@ -1,5 +1,4 @@
 ﻿using CleanArchitecture.DDD.API.Models;
-using Microsoft.Extensions.Options;
 
 namespace CleanArchitecture.DDD.API.ExtensionMethods;
 

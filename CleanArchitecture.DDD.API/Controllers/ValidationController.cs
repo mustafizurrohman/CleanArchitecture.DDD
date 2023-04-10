@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.API.Controllers;
+﻿using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Methods;
+
+namespace CleanArchitecture.DDD.API.Controllers;
 
 public class ValidationController : BaseAPIController
 {

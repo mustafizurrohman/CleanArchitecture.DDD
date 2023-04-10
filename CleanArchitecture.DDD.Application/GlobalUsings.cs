@@ -16,6 +16,7 @@ global using Microsoft.EntityFrameworkCore;
 global using AutoMapper.QueryableExtensions;
 
 global using CleanArchitecture.DDD.Core.Polly;
+global using CleanArchitecture.DDD.Core.Attributes;
 
 global using CleanArchitecture.DDD.Application.MediatR.Queries;
 global using CleanArchitecture.DDD.Application.MediatR.Commands;

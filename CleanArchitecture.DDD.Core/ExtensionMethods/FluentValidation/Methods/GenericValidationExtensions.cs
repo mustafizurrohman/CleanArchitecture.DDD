@@ -1,4 +1,7 @@
-﻿namespace CleanArchitecture.DDD.Application.ExtensionMethods;
+﻿using Ardalis.GuardClauses;
+using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
+
+namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Methods;
 
 public static class GenericValidationExtensions
 {

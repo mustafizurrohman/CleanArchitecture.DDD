@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace CleanArchitecture.DDD.Application.DTO.Internal;
+namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 public class ModelCollectionValidationReport<T> 

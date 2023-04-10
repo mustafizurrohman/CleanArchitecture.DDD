@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.DDD.Application.DTO.Internal;
+﻿namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
 
 public class ValidationReport<T>
     where T : class, new()

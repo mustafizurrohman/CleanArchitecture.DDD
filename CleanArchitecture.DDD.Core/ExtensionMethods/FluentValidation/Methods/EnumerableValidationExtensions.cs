@@ -1,7 +1,8 @@
 ﻿using System.Reflection;
-using CleanArchitecture.DDD.Application.Exceptions;
+using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Exceptions;
+using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
 
-namespace CleanArchitecture.DDD.Application.ExtensionMethods;
+namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Methods;
 
 public static class EnumerableValidationExtensions
 {

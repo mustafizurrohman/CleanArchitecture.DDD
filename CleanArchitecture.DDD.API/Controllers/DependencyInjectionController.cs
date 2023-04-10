@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.DDD.Application.DTO.Internal;
+using CleanArchitecture.DDD.Core.Attributes;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 

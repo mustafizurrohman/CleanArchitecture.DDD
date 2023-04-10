@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.Application.Services;
+﻿using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
+
+namespace CleanArchitecture.DDD.Application.Services;
 
 public interface INotificationService
 {

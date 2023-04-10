@@ -10,6 +10,10 @@ global using JetBrains.Annotations;
 global using Polly;
 global using Polly.Registry;
 global using Polly.Wrap;
+global using Ardalis.GuardClauses;
+
 
 global using Serilog;
 global using Serilog.Configuration;
+
+global using FluentValidationResult = FluentValidation.Results.ValidationResult;

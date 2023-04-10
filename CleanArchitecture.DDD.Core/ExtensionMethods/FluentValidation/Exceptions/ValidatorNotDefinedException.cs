@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.DDD.Application.Exceptions;
+﻿namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Exceptions;
 
 internal class ValidatorNotDefinedException : ApplicationException
 {

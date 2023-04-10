@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using CleanArchitecture.DDD.Application.DTO.Internal;
+﻿using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
 
 namespace CleanArchitecture.DDD.API.Models;
 
