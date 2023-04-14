@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Exceptions;
 using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Methods;
 
@@ -67,10 +68,8 @@ public static class EnumerableValidationExtensions
 
             var validatorTypeInstance = Assembly.GetAssembly(typeof(T))
                 ?.GetTypes()
-                .FirstOrDefault(typ => typ.IsSubclassOf(genericType));
-
-            if (validatorTypeInstance is null)
-                throw new ValidatorNotDefinedException(typeof(T));
+                .FirstOrDefault(typ => typ.IsSubclassOf(genericType))
+                ?? throw new ValidatorNotDefinedException(typeof(T));
 
             validatorInstance = (IValidator<T>) Activator.CreateInstance(validatorTypeInstance)!;
 

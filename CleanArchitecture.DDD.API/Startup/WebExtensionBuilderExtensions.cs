@@ -42,7 +42,7 @@ public static class WebExtensionBuilderExtensions
         return builder;
     }
 
-    public static WebApplicationBuilder ValidateAppSettings(this WebApplicationBuilder builder)
+    private static WebApplicationBuilder ValidateAppSettings(this WebApplicationBuilder builder)
     {
         builder.Services
             .AddOptions<AppSettings>()

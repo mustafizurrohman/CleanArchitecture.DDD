@@ -76,7 +76,7 @@ public static class StringExtensions
     /// <returns>System.String.</returns>
     public static string Randomize(this string input)
     {
-        return new string(input.ToCharArray().OrderBy(c => Guid.NewGuid()).ToArray());
+        return new string(input.ToCharArray().OrderBy(_ => Guid.NewGuid()).ToArray());
     }
 
     /// <summary>
@@ -160,8 +160,4 @@ public static class StringExtensions
     {
         return Regex.Replace(inputString, "([A-Z])", " $1").Trim();
     }
-
-
-
-
 }

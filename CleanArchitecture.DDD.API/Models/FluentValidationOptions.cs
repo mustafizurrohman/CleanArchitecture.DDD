@@ -8,7 +8,7 @@ public class FluentValidationOptions<TOptions> : IValidateOptions<TOptions>
     /// <summary>
     /// The options name.
     /// </summary>
-    public string? Name { get; }
+    private string? Name { get; }
 
     private readonly IValidator<TOptions> _validator;
 

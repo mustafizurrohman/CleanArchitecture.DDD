@@ -10,7 +10,7 @@ public class DependencyHealthCheck
     public Exception? Exception { get; }
     public IReadOnlyDictionary<string, object> Data { get; }
 
-    public DependencyHealthCheck(
+    private DependencyHealthCheck(
         string dependencyName,
         HealthStatus status,
         TimeSpan duration,
