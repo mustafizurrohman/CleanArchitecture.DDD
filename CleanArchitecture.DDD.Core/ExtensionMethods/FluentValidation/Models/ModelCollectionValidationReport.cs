@@ -8,15 +8,20 @@ public class ModelCollectionValidationReport<T>
     where T : class, new()
 {
     private IEnumerable<ModelValidationReport<T>> ValidationReportInternal { get; }
-    
+
+    private IEnumerable<ModelValidationReport<T>> ValidModelReports =>
+        ValidationReportInternal.Where(model => model.Valid);
+
+    private IEnumerable<ModelValidationReport<T>> InValidModelReports =>
+        ValidationReportInternal.Where(model => !model.Valid);
+
+
     public ValidationReport<T> ValidationReport { get; } 
 
-    public IEnumerable<T> ValidModels =>
-        ValidationReportInternal.Where(model => model.Valid)
+    public IEnumerable<T> ValidModels => ValidModelReports
             .Select(model => model.Model);
 
-    public IEnumerable<T> InvalidModels =>
-        ValidationReportInternal.Where(model => !model.Valid)
+    public IEnumerable<T> InvalidModels => InValidModelReports
             .Select(model => model.Model);
 
     public bool HasValidModels => ValidationReportInternal.Any(model => model.Valid);
@@ -37,7 +42,7 @@ public class ModelCollectionValidationReport<T>
     {
         ValidationReportInternal = Guard.Against.NullOrEmpty(validationReport).ToList();
         
-        ValidationReport = new ValidationReport<T>(ValidationReportInternal.Where(vr => vr.Valid), ValidationReportInternal.Where(vr => !vr.Valid));
+        ValidationReport = new ValidationReport<T>(ValidModelReports, InValidModelReports);
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Methods;
+﻿using AutoMapper.QueryableExtensions;
+using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Methods;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
@@ -75,11 +76,11 @@ public class ValidationController : BaseAPIController
     {
         Guard.Against.NegativeOrZero(num);
 
-        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
-
-        var doctorsToValidate = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>>(fakeDoctors).ToList();
-
-        var validationReport = doctorsToValidate
+        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num)
+            .AsQueryable()
+            .ProjectTo<FakeDoctorAddressDTO>(AutoMapper.ConfigurationProvider);
+        
+        var validationReport = fakeDoctors
             .Where(doc => withModelError ? !doc.GetModelValidationReport().Valid : doc.GetModelValidationReport().Valid)
             .Select(doc => doc.GetModelValidationReport())
             .FirstOrDefault();

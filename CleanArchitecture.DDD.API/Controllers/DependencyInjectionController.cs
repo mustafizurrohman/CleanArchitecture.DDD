@@ -40,6 +40,7 @@ public class DependencyInjectionController : BaseAPIController
     /// 
     /// </summary>
     /// <param name="testServices"></param>
+    /// <param name="descending"></param>
     /// <returns></returns>
     [HttpGet("multiple", Name = "ScrutorDemoMultipleInjection")]
     [SwaggerOperation(
@@ -49,10 +50,13 @@ public class DependencyInjectionController : BaseAPIController
         Tags = new[] { "DependencyInjection" }
     )]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    public IActionResult TestScrutorMultipleServices([FromServices] IEnumerable<ITestService> testServices)
+    public IActionResult TestScrutorMultipleServices([FromServices] IEnumerable<ITestService> testServices, bool descending)
     {
-        var serviceOutputs = testServices
-            .OrderBy(svc => svc.GetType().GetCustomAttribute<InjectionOrderAttribute>()?.Order ?? 0)
+        var services = descending
+            ? testServices.OrderByDescending(svc => svc.GetType().GetCustomAttribute<InjectionOrderAttribute>()?.Order ?? 0)
+            : testServices.OrderBy(svc => svc.GetType().GetCustomAttribute<InjectionOrderAttribute>()?.Order ?? 0);
+
+        var serviceOutputs = services
             .Select(svc => new
             {
                 ServiceType = svc.GetType().Name, 
