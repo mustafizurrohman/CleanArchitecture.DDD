@@ -3,12 +3,15 @@ using CleanArchitecture.DDD.Core.Helpers;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 using CleanArchitecture.DDD.Infrastructure.Persistence.ExtensionMethods;
+using YamlDotNet.Core.Tokens;
 
-namespace CleanArchitecture.DDD.API.Controllers;
+namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 
-public class EntityFrameworkDemoController : BaseAPIController
+public class EFDemoController : BaseAPIController
 {
-    public EntityFrameworkDemoController(IAppServices appServices)
+    private const string Tag = "EF-Demo";
+
+    public EFDemoController(IAppServices appServices)
         : base(appServices)
     {
     }
@@ -23,7 +26,7 @@ public class EntityFrameworkDemoController : BaseAPIController
         Summary = "Demo of soft delete extension method",
         Description = DefaultDescription,
         OperationId = "Demo soft delete Extension Method",
-        Tags = new[] { "EntityFramework" }
+        Tags = new[] { Tag }
     )]
     public async Task<IActionResult> DemoSoftDelete(Guid doctorGuid, CancellationToken cancellationToken)
     {
@@ -49,7 +52,7 @@ public class EntityFrameworkDemoController : BaseAPIController
         Summary = "Demo of soft delete extension method on IEnumerable",
         Description = DefaultDescription,
         OperationId = "Demo soft delete Extension Method on IEnumerable",
-        Tags = new[] { "EntityFramework" }
+        Tags = new[] { Tag }
     )]
     public async Task<IActionResult> DemoSoftDeleteCollection(CancellationToken cancellationToken)
     {
@@ -70,68 +73,12 @@ public class EntityFrameworkDemoController : BaseAPIController
     /// </summary>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("softdelete/collection/bulk", Name = "softDeleteCollectionBulk")]
-    [SwaggerOperation(
-        Summary = "Demo of soft delete extension method on IEnumerable using Bulk Extension methods",
-        Description = DefaultDescription,
-        OperationId = "Demo soft delete Extension Method on IEnumerable using Bulk Extension methods",
-        Tags = new[] { "EntityFramework" }
-    )]
-    public async Task<IActionResult> DemoSoftDeleteBulkCollection(CancellationToken cancellationToken)
-    {
-        var affectedRows = -1;
-
-        await Helper.BenchmarkAsync(async () =>
-        {
-            affectedRows = await DbContext.Addresses
-                .OrderBy(_ => Guid.NewGuid())
-                .Take(20)
-                .SoftDeleteBulkAsync(cancellationToken);
-        });
-
-        return Ok(affectedRows);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("softdelete/collection/bulk/undo", Name = "softDeleteCollectionUndoBulk")]
-    [SwaggerOperation(
-        Summary = "Demo of undo soft delete extension method on IEnumerable using Bulk Extension methods",
-        Description = DefaultDescription,
-        OperationId = "Demo undo soft delete Extension Method on IEnumerable using Bulk Extension methods",
-        Tags = new[] { "EntityFramework" }
-    )]
-    public async Task<IActionResult> DemoUndoSoftDeleteUndoBulkCollection(CancellationToken cancellationToken)
-    {
-        var affectedRows = -1;
-
-        await Helper.BenchmarkAsync(async () =>
-        {
-            affectedRows = await DbContext.Addresses
-                .IgnoreQueryFilters()
-                .Where(add => add.SoftDeleted)
-                .OrderBy(_ => Guid.NewGuid())
-                .Take(20)
-                .UndoSoftDeleteBulkAsync(cancellationToken);
-        });
-
-        return Ok(affectedRows);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("softdelete/collection/undo", Name = "UndoSoftDeleteCollection")]
     [SwaggerOperation(
         Summary = "Demo of undo soft delete extension method on IEnumerable",
         Description = DefaultDescription,
         OperationId = "Demo undo soft delete Extension Method on IEnumerable",
-        Tags = new[] { "EntityFramework" }
+        Tags = new[] { Tag }
     )]
     public async Task<IActionResult> DemoUndoSoftDeleteCollection(CancellationToken cancellationToken)
     {
@@ -160,7 +107,7 @@ public class EntityFrameworkDemoController : BaseAPIController
         Summary = "Grouping using Entity Framework",
         Description = DefaultDescription,
         OperationId = "EntityFramework Grouping Demo",
-        Tags = new[] { "EntityFramework" }
+        Tags = new[] { "EF-Demo" }
     )]
     public async Task<IActionResult> GroupDoctorsByCity(CancellationToken cancellationToken)
     {
@@ -190,7 +137,7 @@ public class EntityFrameworkDemoController : BaseAPIController
             })
             .OrderByDescending(doc => doc.Count)
             .AsAsyncEnumerable();
-        
+
         // Work with streaming results using EF Core!
         var result = result0
             .Select(groupedDoctors => new
@@ -201,7 +148,7 @@ public class EntityFrameworkDemoController : BaseAPIController
                     .OrderBy(doc => doc.Specialization)
                     .ThenBy(doc => doc.FullName)
                     .GroupBy(doc => doc.Specialization)
-                    .Select(docSp => new 
+                    .Select(docSp => new
                     {
                         Specialization = docSp.Key.ToSpecialization().ToStringCached(),
                         Doctors = docSp.Select(dsp => dsp.FullName),
@@ -225,7 +172,7 @@ public class EntityFrameworkDemoController : BaseAPIController
         Summary = "Streaming using Entity Framework",
         Description = DefaultDescription,
         OperationId = "EntityFramework streaming Demo",
-        Tags = new[] { "EntityFramework" }
+        Tags = new[] { Tag }
     )]
     public async IAsyncEnumerable<OkObjectResult> GetDoctorsStreaming([EnumeratorCancellation] CancellationToken cancellationToken)
     {
@@ -242,6 +189,6 @@ public class EntityFrameworkDemoController : BaseAPIController
             await Task.Delay(50, cancellationToken);
             yield return Ok(doctor);
         }
-        
+
     }
 }

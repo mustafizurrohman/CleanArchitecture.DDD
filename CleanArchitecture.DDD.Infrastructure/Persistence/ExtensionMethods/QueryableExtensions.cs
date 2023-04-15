@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.ExtensionMethods;
 
