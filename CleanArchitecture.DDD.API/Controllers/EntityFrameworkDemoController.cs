@@ -91,6 +91,30 @@ public class EntityFrameworkDemoController : BaseAPIController
     /// </summary>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpPost("softdelete/collection/bulk/undo", Name = "softDeleteCollectionUndoBulk")]
+    [SwaggerOperation(
+        Summary = "Demo of undo soft delete extension method on IEnumerable using Bulk Extension methods",
+        Description = DefaultDescription,
+        OperationId = "Demo undo soft delete Extension Method on IEnumerable using Bulk Extension methods",
+        Tags = new[] { "EntityFramework" }
+    )]
+    public async Task<IActionResult> DemoUndoSoftDeleteUndoBulkCollection(CancellationToken cancellationToken)
+    {
+        var affectedRows = await DbContext.Addresses
+            .IgnoreQueryFilters()
+            .Where(add => add.SoftDeleted)
+            .OrderBy(_ => Guid.NewGuid())
+            .Take(20)
+            .UndoSoftDeleteBulkAsync(cancellationToken);
+
+        return Ok(affectedRows);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    [ApiExplorerSettings(IgnoreApi = false)]
     [HttpPost("softdelete/collection/undo", Name = "UndoSoftDeleteCollection")]
     [SwaggerOperation(
         Summary = "Demo of undo soft delete extension method on IEnumerable",
