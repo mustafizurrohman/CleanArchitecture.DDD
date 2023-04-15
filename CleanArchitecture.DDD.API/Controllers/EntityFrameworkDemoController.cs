@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
+using CleanArchitecture.DDD.Infrastructure.Persistence.ExtensionMethods;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
@@ -61,6 +62,28 @@ public class EntityFrameworkDemoController : BaseAPIController
         await DbContext.SaveChangesAsync(cancellationToken);
 
         return Ok(doctors);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpPost("softdelete/collection/bulk", Name = "softDeleteCollectionBulk")]
+    [SwaggerOperation(
+        Summary = "Demo of soft delete extension method on IEnumerable using Bulk Extension methods",
+        Description = DefaultDescription,
+        OperationId = "Demo soft delete Extension Method on IEnumerable using Bulk Extension methods",
+        Tags = new[] { "EntityFramework" }
+    )]
+    public async Task<IActionResult> DemoSoftDeleteBulkCollection(CancellationToken cancellationToken)
+    {
+        var affectedRows = await DbContext.Addresses
+            .OrderBy(_ => Guid.NewGuid())
+            .Take(20)
+            .SoftDeleteBulkAsync(cancellationToken);
+
+        return Ok(affectedRows);
     }
 
     /// <summary>

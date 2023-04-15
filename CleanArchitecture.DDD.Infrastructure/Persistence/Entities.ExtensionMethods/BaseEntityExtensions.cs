@@ -21,7 +21,7 @@ public static class BaseEntityExtensions
                 return be;
             });
     }
-
+    
     public static BaseEntity UndoSoftDelete(this BaseEntity baseEntity)
     {
         baseEntity.SoftDeleted = false;
