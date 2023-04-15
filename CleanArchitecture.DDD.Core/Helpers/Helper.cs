@@ -21,4 +21,15 @@ public static class Helper
 
         LogWithSpace(() => Console.WriteLine($"Execution took {stopwatch.ElapsedMilliseconds} ms / {stopwatch.ElapsedTicks} ticks."));
     }
+
+    public static async Task BenchmarkAsync(Func<Task> action)
+    {
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+        await action();
+        stopwatch.Stop();
+
+        LogWithSpace(() => Console.WriteLine($"Execution took {stopwatch.ElapsedMilliseconds} ms / {stopwatch.ElapsedTicks} ticks."));
+    }
+
 }

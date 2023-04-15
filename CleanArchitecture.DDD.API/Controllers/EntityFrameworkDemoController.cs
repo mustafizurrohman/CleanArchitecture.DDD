@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using CleanArchitecture.DDD.Core.Helpers;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 using CleanArchitecture.DDD.Infrastructure.Persistence.ExtensionMethods;
@@ -78,10 +79,15 @@ public class EntityFrameworkDemoController : BaseAPIController
     )]
     public async Task<IActionResult> DemoSoftDeleteBulkCollection(CancellationToken cancellationToken)
     {
-        var affectedRows = await DbContext.Addresses
-            .OrderBy(_ => Guid.NewGuid())
-            .Take(20)
-            .SoftDeleteBulkAsync(cancellationToken);
+        var affectedRows = -1;
+
+        await Helper.BenchmarkAsync(async () =>
+        {
+            affectedRows = await DbContext.Addresses
+                .OrderBy(_ => Guid.NewGuid())
+                .Take(20)
+                .SoftDeleteBulkAsync(cancellationToken);
+        });
 
         return Ok(affectedRows);
     }
@@ -100,12 +106,17 @@ public class EntityFrameworkDemoController : BaseAPIController
     )]
     public async Task<IActionResult> DemoUndoSoftDeleteUndoBulkCollection(CancellationToken cancellationToken)
     {
-        var affectedRows = await DbContext.Addresses
-            .IgnoreQueryFilters()
-            .Where(add => add.SoftDeleted)
-            .OrderBy(_ => Guid.NewGuid())
-            .Take(20)
-            .UndoSoftDeleteBulkAsync(cancellationToken);
+        var affectedRows = -1;
+
+        await Helper.BenchmarkAsync(async () =>
+        {
+            affectedRows = await DbContext.Addresses
+                .IgnoreQueryFilters()
+                .Where(add => add.SoftDeleted)
+                .OrderBy(_ => Guid.NewGuid())
+                .Take(20)
+                .UndoSoftDeleteBulkAsync(cancellationToken);
+        });
 
         return Ok(affectedRows);
     }
