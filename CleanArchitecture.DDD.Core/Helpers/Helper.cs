@@ -19,7 +19,9 @@ public static class Helper
         action();
         stopwatch.Stop();
 
-        LogWithSpace(() => Console.WriteLine($"Execution took {stopwatch.ElapsedMilliseconds} ms / {stopwatch.ElapsedTicks} ticks."));
+        LogExecutionTime(stopwatch);
+
+        stopwatch.Reset();
     }
 
     public static async Task BenchmarkAsync(Func<Task> action)
@@ -29,6 +31,13 @@ public static class Helper
         await action();
         stopwatch.Stop();
 
+        LogExecutionTime(stopwatch);
+
+        stopwatch.Reset();
+    }
+
+    private static void  LogExecutionTime(Stopwatch stopwatch)
+    {
         LogWithSpace(() => Console.WriteLine($"Execution took {stopwatch.ElapsedMilliseconds} ms / {stopwatch.ElapsedTicks} ticks."));
     }
 
