@@ -17,10 +17,10 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-preview.5.22302.2")
+                .HasAnnotation("ProductVersion", "8.0.0-preview.2.23128.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Address", b =>
                 {
@@ -1002,6 +1002,37 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
                     b.ToTable("Doctors");
                 });
 
+            modelBuilder.Entity("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Patient", b =>
+                {
+                    b.Property<Guid>("PatientID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ID");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Firstname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Lastname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SoftDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("PatientID");
+
+                    b.ToTable("Patient");
+                });
+
             modelBuilder.Entity("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Doctor", b =>
                 {
                     b.HasOne("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Address", "Address")
@@ -1037,6 +1068,37 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("Name")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Patient", b =>
+                {
+                    b.OwnsOne("CleanArchitecture.DDD.Infrastructure.Persistence.JSONColumn.PatientMasterData", "MasterData", b1 =>
+                        {
+                            b1.Property<Guid>("PatientID")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<bool>("Active")
+                                .HasColumnType("bit");
+
+                            b1.Property<DateTime>("DateOfBirth")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("PrimaryDoctor")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("PatientID");
+
+                            b1.ToTable("Patient");
+
+                            b1.ToJson("MasterData");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PatientID");
+                        });
+
+                    b.Navigation("MasterData")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

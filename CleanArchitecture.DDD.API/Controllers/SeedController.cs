@@ -123,4 +123,41 @@ public class SeedController : BaseAPIController
         return Ok(new Tuple<int, long>(num, stopWatch.ElapsedMilliseconds));
     }
 
+    /// <summary>
+    /// Seed specified number of patients with master data
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <param name="num"></param>
+    /// <returns></returns>
+    [HttpPost("patientsWithMasterData", Name = "seedPatientsWithMasterData")]
+    [SwaggerOperation(
+        Summary = "Seed specified number of patient with MasterData in database",
+        Description = DefaultDescription,
+        OperationId = "Seed Patient",
+        Tags = new[] { "Seed" }
+    )]
+    [ProducesResponseType(typeof(Tuple<int, long>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreatePatientWithMasterData(CancellationToken cancellationToken, int num = 100)
+    {
+        Guard.Against.NegativeOrZero(num);
+
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
+
+        try
+        {
+            var command = new SeedPatientsWithMasterDataCommand(num);
+            await Mediator.Send(command, cancellationToken);
+        }
+        catch (UniqueAddressesNotAvailable ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
+        stopWatch.Stop();
+
+        return Ok(new Tuple<int, long>(num, stopWatch.ElapsedMilliseconds));
+    }
+
 }
