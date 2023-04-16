@@ -36,9 +36,9 @@ public abstract class BaseAPIController : ControllerBase
     /// <param name="appServices"></param>
     protected BaseAPIController(IAppServices appServices)
     {
-        DbContext = Guard.Against.Null(appServices.DbContext, nameof(appServices));
-        AutoMapper = Guard.Against.Null(appServices.AutoMapper, nameof(appServices));
-        Mediator = Guard.Against.Null(appServices.Mediator, nameof(appServices));
+        DbContext = Guard.Against.Null(appServices.DbContext);
+        AutoMapper = Guard.Against.Null(appServices.AutoMapper);
+        Mediator = Guard.Against.Null(appServices.Mediator);
     }
 
 
