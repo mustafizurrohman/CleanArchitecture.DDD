@@ -16,6 +16,7 @@ public sealed class Patient : BaseEntity
 
     public string Lastname { get; set; }
 
+    // JSON Column
     public PatientMasterData MasterData { get; set; }
 
     [NotMapped]

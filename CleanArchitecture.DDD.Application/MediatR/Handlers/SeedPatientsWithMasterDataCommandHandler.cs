@@ -6,7 +6,7 @@ namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
 public class SeedPatientsWithMasterDataCommandHandler : BaseHandler, IRequestHandler<SeedPatientsWithMasterDataCommand>
 {
-    private readonly Faker _faker = new Faker();
+    private readonly Faker _faker = new();
 
     public SeedPatientsWithMasterDataCommandHandler(IAppServices appServices) : base(appServices)
     {
@@ -30,13 +30,13 @@ public class SeedPatientsWithMasterDataCommandHandler : BaseHandler, IRequestHan
 
     private async Task<PatientMasterData> GetPatientMasterData(CancellationToken cancellationToken)
     {
+        // What happens when doc is deleted. Data inconsistency!
         var primaryDoctor = await DbContext
             .Doctors
             .OrderBy(_ => Guid.NewGuid())
             .Select(doc => doc.FullName)
             .FirstOrDefaultAsync(cancellationToken);
-
-
+        
         return new PatientMasterData()
         {
             PrimaryDoctor = primaryDoctor ?? string.Empty,
@@ -48,8 +48,8 @@ public class SeedPatientsWithMasterDataCommandHandler : BaseHandler, IRequestHan
 
     private DateTime RandomDay()
     {
-        DateTime start = new DateTime(1995, 1, 1);
-        int range = (DateTime.Today - start).Days;
+        var start = DateTime.Now.AddYears(-100);
+        var range = (DateTime.Today - start).Days;
         return start.AddDays(new Random().Next(range));
     }
 }
