@@ -10,7 +10,7 @@ namespace CleanArchitecture.DDD.API.Controllers.Fake;
 [ApiExplorerSettings(IgnoreApi = true)]
 public class FakeController : BaseAPIController
 {
-    private const string Tag = "FakeData";
+    private const string DefaultControllerTag = "FakeData";
 
     private readonly IFakeDataService _fakeDataService;
     private static int _attempts = 0;
@@ -35,7 +35,7 @@ public class FakeController : BaseAPIController
         Summary = "Generates fake doctors",
         Description = "No authentication required",
         OperationId = "GetFakeDoctorsWithSomeInvalidData",
-        Tags = new[] { "FakeData" }
+        Tags = new[] { DefaultControllerTag }
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<ExternalFakeDoctorAddressDTO>))]
     public IActionResult GetFakeDoctors(int num = 10, CancellationToken cancellationToken = default)
@@ -63,7 +63,7 @@ public class FakeController : BaseAPIController
         Summary = "Generates fake doctors",
         Description = "No authentication required",
         OperationId = "GetFakeDoctorsWithSomeInvalidData",
-        Tags = new[] { "FakeData" }
+        Tags = new[] { DefaultControllerTag }
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<ExternalFakeDoctorAddressDTO>))]
     public IActionResult GetDoctorsWithInvalidData(int num = 10, CancellationToken cancellationToken = default)

@@ -4,7 +4,7 @@ namespace CleanArchitecture.DDD.API.Controllers;
 
 public class PasswordController : BaseAPIController
 {
-    private const string Tag = "Password";
+    private const string DefaultControllerTag = "Password";
 
     public PasswordController(IAppServices appServices) : base(appServices)
     {
@@ -22,7 +22,7 @@ public class PasswordController : BaseAPIController
         Summary = "Hash a password",
         Description = DefaultDescription,
         OperationId = "Hash Password",
-        Tags = new[] { "Password" }
+        Tags = new[] { DefaultControllerTag }
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> HashPassword(string password, CancellationToken cancellationToken)
@@ -46,7 +46,7 @@ public class PasswordController : BaseAPIController
         Summary = "Verify a password with provided hash value",
         Description = DefaultDescription,
         OperationId = "Verify Hashed Password",
-        Tags = new[] { "Password" }
+        Tags = new[] { DefaultControllerTag }
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> VerifyHashPassword(string password, string hashedPassword, CancellationToken cancellationToken)

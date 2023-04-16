@@ -7,7 +7,7 @@ namespace CleanArchitecture.DDD.API.Controllers;
 [Route("scrutor")]
 public class DependencyInjectionController : BaseAPIController
 {
-    private const string Tag = "DependencyInjection";
+    private const string DefaultControllerTag = "DependencyInjection";
 
     /// <summary>
     /// Demonstrates features of Dependency Injection where Services are injected
@@ -30,7 +30,7 @@ public class DependencyInjectionController : BaseAPIController
         Summary = "Demo of DI using scrutor",
         Description = DefaultDescription,
         OperationId = "Test Scrutor",
-        Tags = new[] { "DependencyInjection" }
+        Tags = new[] { DefaultControllerTag }
     )]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public IActionResult TestScrutor([FromServices] ITestService testService)
@@ -49,7 +49,7 @@ public class DependencyInjectionController : BaseAPIController
         Summary = "Demo of DI of multiple services using scrutor",
         Description = DefaultDescription,
         OperationId = "Test Scrutor Multiple",
-        Tags = new[] { "DependencyInjection" }
+        Tags = new[] { DefaultControllerTag }
     )]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public IActionResult TestScrutorMultipleServices([FromServices] IEnumerable<ITestService> testServices, bool descending)
@@ -81,7 +81,7 @@ public class DependencyInjectionController : BaseAPIController
         Summary = "Demo of Decoration of services using scrutor",
         Description = DefaultDescription,
         OperationId = "Test Scrutor Decoration",
-        Tags = new[] { "DependencyInjection" }
+        Tags = new[] { DefaultControllerTag }
     )]
     [ProducesResponseType(typeof(IEnumerable<DemoData>), StatusCodes.Status200OK)]
     public async Task<IActionResult> TestScrutorDecoration([FromServices] IDataService dataService)

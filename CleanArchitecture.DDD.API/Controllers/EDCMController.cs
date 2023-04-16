@@ -4,7 +4,7 @@ namespace CleanArchitecture.DDD.API.Controllers;
 
 public class EDCMController : BaseAPIController
 {
-    private const string Tag = "EDCM";
+    private const string DefaultControllerTag = "EDCM";
 
     private readonly IEDCMSyncService _iedcmSyncService;
     
@@ -31,7 +31,7 @@ public class EDCMController : BaseAPIController
         Summary = "Gets doc from a fake external data service",
         Description = DefaultDescription,
         OperationId = "Sync Doctors",
-        Tags = new[] { "EDCM" }
+        Tags = new[] { DefaultControllerTag }
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status504GatewayTimeout)]
@@ -61,7 +61,7 @@ public class EDCMController : BaseAPIController
         Summary = "Gets doc from a fake external data service as a Background task",
         Description = DefaultDescription,
         OperationId = "SyncDocBackground",
-        Tags = new[] { "EDCM" }
+        Tags = new[] { DefaultControllerTag }
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult SyncDoctorsInBackground()

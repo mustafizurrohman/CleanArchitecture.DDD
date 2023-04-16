@@ -9,7 +9,7 @@ namespace CleanArchitecture.DDD.API.Controllers;
 [AllowAnonymous]
 public class HealthController : BaseAPIController
 {
-    private const string Tag = "Health";
+    private const string DefaultControllerTag = "Health";
 
     private readonly HealthCheckService _healthCheckService;
 
@@ -28,7 +28,7 @@ public class HealthController : BaseAPIController
         Summary = "Health Check Endpoint",
         Description = DefaultDescription,
         OperationId = "Health Check Endpoint",
-        Tags = new[] { "Health" }
+        Tags = new[] { DefaultControllerTag }
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]

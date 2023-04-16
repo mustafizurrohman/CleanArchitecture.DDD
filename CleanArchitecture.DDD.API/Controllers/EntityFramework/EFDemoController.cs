@@ -7,7 +7,7 @@ namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 
 public class EFDemoController : BaseAPIController
 {
-    private const string Tag = "EF-Demo";
+    private const string DefaultControllerTag = "EF-Demo";
 
     public EFDemoController(IAppServices appServices)
         : base(appServices)
@@ -24,7 +24,7 @@ public class EFDemoController : BaseAPIController
         Summary = "Demo of soft delete extension method",
         Description = DefaultDescription,
         OperationId = "Demo soft delete Extension Method",
-        Tags = new[] { Tag }
+        Tags = new[] { DefaultControllerTag }
     )]
     public async Task<IActionResult> DemoSoftDelete(Guid doctorGuid, CancellationToken cancellationToken)
     {
@@ -50,7 +50,7 @@ public class EFDemoController : BaseAPIController
         Summary = "Demo of soft delete extension method on IEnumerable",
         Description = DefaultDescription,
         OperationId = "Demo soft delete Extension Method on IEnumerable",
-        Tags = new[] { Tag }
+        Tags = new[] { DefaultControllerTag }
     )]
     public async Task<IActionResult> DemoSoftDeleteCollection(CancellationToken cancellationToken)
     {
@@ -76,7 +76,7 @@ public class EFDemoController : BaseAPIController
         Summary = "Demo of undo soft delete extension method on IEnumerable",
         Description = DefaultDescription,
         OperationId = "Demo undo soft delete Extension Method on IEnumerable",
-        Tags = new[] { Tag }
+        Tags = new[] { DefaultControllerTag }
     )]
     public async Task<IActionResult> DemoUndoSoftDeleteCollection(CancellationToken cancellationToken)
     {
@@ -170,7 +170,7 @@ public class EFDemoController : BaseAPIController
         Summary = "Streaming using Entity Framework",
         Description = DefaultDescription,
         OperationId = "EntityFramework streaming Demo",
-        Tags = new[] { Tag }
+        Tags = new[] { DefaultControllerTag }
     )]
     public async IAsyncEnumerable<OkObjectResult> GetDoctorsStreaming([EnumeratorCancellation] CancellationToken cancellationToken)
     {
