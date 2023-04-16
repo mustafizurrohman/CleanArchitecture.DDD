@@ -1,4 +1,5 @@
 ﻿using AutoMapper.QueryableExtensions;
+using CleanArchitecture.DDD.API.Controllers.BaseController;
 using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Methods;
 
 namespace CleanArchitecture.DDD.API.Controllers;

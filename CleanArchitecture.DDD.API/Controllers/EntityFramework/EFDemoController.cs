@@ -1,9 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
-using CleanArchitecture.DDD.Core.Helpers;
+using CleanArchitecture.DDD.API.Controllers.BaseController;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
-using CleanArchitecture.DDD.Infrastructure.Persistence.ExtensionMethods;
-using YamlDotNet.Core.Tokens;
 
 namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 

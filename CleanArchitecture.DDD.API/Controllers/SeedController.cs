@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.DDD.Application.Exceptions;
+﻿using CleanArchitecture.DDD.API.Controllers.BaseController;
+using CleanArchitecture.DDD.Application.Exceptions;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 

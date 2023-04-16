@@ -1,4 +1,5 @@
-﻿using Serilog.Context;
+﻿using CleanArchitecture.DDD.API.Controllers.BaseController;
+using Serilog.Context;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
