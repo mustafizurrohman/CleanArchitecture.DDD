@@ -5,7 +5,7 @@ namespace CleanArchitecture.DDD.API.Controllers;
 
 public class DemoController : BaseAPIController
 {
-    
+    private const string Tag = "Demo";
 
     public DemoController(IAppServices appServices)
         : base(appServices)
@@ -23,7 +23,7 @@ public class DemoController : BaseAPIController
         Summary = "Demo of equality of Value Object",
         Description = DefaultDescription,
         OperationId = "Check Value Object for equality",
-        Tags = new[] { "Demo" }
+        Tags = new[] { Tag }
     )]
     public IActionResult TestNameValueObjectForEquality(string name)
     {
@@ -36,8 +36,6 @@ public class DemoController : BaseAPIController
         return Ok(createdName1.Value == createdName2.Value);
     }
     
-
-
     /// <summary>
     /// 
     /// </summary>
@@ -48,7 +46,7 @@ public class DemoController : BaseAPIController
         Summary = "Test of random specialization as text",
         Description = DefaultDescription,
         OperationId = "Demo Specialization Enum",
-        Tags = new[] { "Demo" }
+        Tags = new[] { Tag }
     )]
     public IActionResult DemoExtensionMethod()
     {

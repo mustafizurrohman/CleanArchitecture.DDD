@@ -5,7 +5,8 @@ namespace CleanArchitecture.DDD.API.Controllers;
 [ApiExplorerSettings(IgnoreApi = false)]
 public class SearchController : BaseAPIController
 {
-    
+    private const string DefaultControllerTag = "Search";
+
     /// <summary>
     /// 
     /// </summary>
@@ -31,7 +32,7 @@ public class SearchController : BaseAPIController
         Summary = "Searches for doctors from database",
         Description = DefaultDescription,
         OperationId = "Search Doctors",
-        Tags = new[] { "Search" }
+        Tags = new[] { DefaultControllerTag }
     )]
     [ProducesResponseType(typeof(IEnumerable<DoctorCityDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchVersion2(

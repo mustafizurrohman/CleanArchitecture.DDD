@@ -6,6 +6,8 @@ namespace CleanArchitecture.DDD.API.Controllers;
 
 public class ValidationController : BaseAPIController
 {
+    private const string DefaultControllerTag = "Validation";
+
     private readonly IFakeDataService _fakeDataService;
 
     public ValidationController(IAppServices appServices, IFakeDataService fakeDataService) 
@@ -25,7 +27,7 @@ public class ValidationController : BaseAPIController
         Summary = "Demo of validation of Value Object",
         Description = DefaultDescription,
         OperationId = "Validate Value Object",
-        Tags = new[] { "Validation" }
+        Tags = new[] { DefaultControllerTag }
     )]
     public IActionResult TestNameValueObject(string name)
     {
@@ -48,7 +50,7 @@ public class ValidationController : BaseAPIController
         Summary = "Demo of input validation using FluentValidation",
         Description = DefaultDescription,
         OperationId = "Input Validation",
-        Tags = new[] { "Validation" }
+        Tags = new[] { DefaultControllerTag }
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -69,7 +71,7 @@ public class ValidationController : BaseAPIController
         Summary = "Demo of Extension method for a single object",
         Description = DefaultDescription,
         OperationId = "Extension Method Validation",
-        Tags = new[] { "Validation" }
+        Tags = new[] { DefaultControllerTag }
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -100,7 +102,7 @@ public class ValidationController : BaseAPIController
         Summary = "Demo of Extension method for IEnumerable",
         Description = DefaultDescription,
         OperationId = "Extension Method IEnumerable Validation",
-        Tags = new[] { "Validation" }
+        Tags = new[] { DefaultControllerTag }
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -131,7 +133,7 @@ public class ValidationController : BaseAPIController
         Summary = "Demo of incorrect usage of Extension method",
         Description = DefaultDescription,
         OperationId = "Extension Method Validation Incorrect usage",
-        Tags = new[] { "Validation" }
+        Tags = new[] { DefaultControllerTag }
     )]
     public async Task<IActionResult> DemoExtensionMethodErrorForObject(int num = 100)
     {
@@ -159,7 +161,7 @@ public class ValidationController : BaseAPIController
         Summary = "Demo of incorrect usage of Extension method for IEnumerable",
         Description = DefaultDescription,
         OperationId = "Extension Method IEnumerable Incorrect usage",
-        Tags = new[] { "Validation" }
+        Tags = new[] { DefaultControllerTag }
     )]
     public async Task<IActionResult> DemoExtensionMethodErrorForCollection(int num = 100)
     {

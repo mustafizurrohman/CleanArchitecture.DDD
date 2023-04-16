@@ -10,6 +10,7 @@ namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 [ApiExplorerSettings(IgnoreApi = false)]
 public class SeedController : BaseAPIController
 {
+    private const string Tag = "Seed";
 
     /// <summary>
     /// 
@@ -31,7 +32,7 @@ public class SeedController : BaseAPIController
         Summary = "Seed specified number of address in database",
         Description = DefaultDescription,
         OperationId = "Seed Addresses",
-        Tags = new[] { "Seed" }
+        Tags = new[] { Tag }
     )]
     [ProducesResponseType(typeof(Tuple<int, long>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -60,7 +61,7 @@ public class SeedController : BaseAPIController
         Summary = "Seed specified number of doctors in database",
         Description = DefaultDescription,
         OperationId = "Seed Doctors",
-        Tags = new[] { "Seed" }
+        Tags = new[] { Tag }
     )]
     [ProducesResponseType(typeof(Tuple<int, long>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -102,7 +103,7 @@ public class SeedController : BaseAPIController
         Summary = "Seed specified number of doctors with address in database",
         Description = DefaultDescription,
         OperationId = "Seed Doctors with Address",
-        Tags = new[] { "Seed" }
+        Tags = new[] { Tag }
     )]
     [ProducesResponseType(typeof(Tuple<int, long>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -145,7 +146,7 @@ public class SeedController : BaseAPIController
         Summary = "Seed specified number of patient with MasterData in database",
         Description = DefaultDescription,
         OperationId = "Seed Patient",
-        Tags = new[] { "Seed" }
+        Tags = new[] { Tag }
     )]
     [ProducesResponseType(typeof(Tuple<int, long>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

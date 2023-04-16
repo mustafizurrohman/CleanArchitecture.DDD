@@ -4,6 +4,7 @@ namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 
 public class MasterDataController : BaseAPIController
 {
+    private const string Tag = "MasterData";
 
     public MasterDataController(IAppServices appServices)
         : base(appServices)
@@ -22,7 +23,7 @@ public class MasterDataController : BaseAPIController
         Summary = "Retrieves all doctors from database",
         Description = DefaultDescription,
         OperationId = "Get All Doctors",
-        Tags = new[] { "MasterData" }
+        Tags = new[] { Tag }
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<Doctor>))]
     public async Task<IActionResult> GetAllDoctors(CancellationToken cancellationToken, bool includeSoftDeleted = false)
@@ -51,7 +52,7 @@ public class MasterDataController : BaseAPIController
         Summary = "Retrieves all patients from database younger than specified number of years",
         Description = DefaultDescription,
         OperationId = "Get All Young Patients",
-        Tags = new[] { "MasterData" }
+        Tags = new[] { Tag }
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Young patients was retrieved", typeof(IEnumerable<Patient>))]
     public async Task<IActionResult> Patients(CancellationToken cancellationToken, int years, bool includeSoftDeleted = false)
@@ -74,7 +75,7 @@ public class MasterDataController : BaseAPIController
         Summary = "Inactivate an existing patient",
         Description = DefaultDescription,
         OperationId = "Inactivate Patient",
-        Tags = new[] { "MasterData" }
+        Tags = new[] { Tag }
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Patient was inactivated")]
     public async Task<IActionResult> InactivatePatient(CancellationToken cancellationToken, Guid patientId)

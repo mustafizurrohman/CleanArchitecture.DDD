@@ -5,6 +5,8 @@ namespace CleanArchitecture.DDD.API.Controllers;
 
 public class LoggingController : BaseAPIController
 {
+    private const string Tag = "Logging";
+
     public LoggingController(IAppServices appServices)
         : base(appServices)
     {

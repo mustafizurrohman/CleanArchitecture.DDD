@@ -4,6 +4,8 @@ namespace CleanArchitecture.DDD.API.Controllers;
 
 public class EDCMController : BaseAPIController
 {
+    private const string Tag = "EDCM";
+
     private readonly IEDCMSyncService _iedcmSyncService;
     
     /// <summary>

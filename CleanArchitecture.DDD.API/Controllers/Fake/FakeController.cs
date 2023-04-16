@@ -10,6 +10,8 @@ namespace CleanArchitecture.DDD.API.Controllers.Fake;
 [ApiExplorerSettings(IgnoreApi = true)]
 public class FakeController : BaseAPIController
 {
+    private const string Tag = "FakeData";
+
     private readonly IFakeDataService _fakeDataService;
     private static int _attempts = 0;
 

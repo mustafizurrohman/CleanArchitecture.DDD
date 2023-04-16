@@ -9,6 +9,8 @@ namespace CleanArchitecture.DDD.API.Controllers;
 [AllowAnonymous]
 public class HealthController : BaseAPIController
 {
+    private const string Tag = "Health";
+
     private readonly HealthCheckService _healthCheckService;
 
     public HealthController(IAppServices appServices, HealthCheckService healthCheckService) : base(appServices)

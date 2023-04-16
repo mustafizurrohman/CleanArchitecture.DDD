@@ -4,6 +4,8 @@ namespace CleanArchitecture.DDD.API.Controllers;
 
 public class PasswordController : BaseAPIController
 {
+    private const string Tag = "Password";
+
     public PasswordController(IAppServices appServices) : base(appServices)
     {
     }

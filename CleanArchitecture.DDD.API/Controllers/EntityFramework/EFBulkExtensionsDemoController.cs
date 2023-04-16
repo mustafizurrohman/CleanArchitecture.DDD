@@ -6,6 +6,8 @@ namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 
 public class EFBulkExtensionsDemoController : BaseAPIController
 {
+    private const string DefaultControllerTag = "EF-BulkExtensions";
+
     public EFBulkExtensionsDemoController(IAppServices appServices)
         : base(appServices)
     {
@@ -16,12 +18,12 @@ public class EFBulkExtensionsDemoController : BaseAPIController
     /// </summary>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("softdelete/collection/bulk", Name = "softDeleteCollectionBulk")]
+    [HttpPost("softdelete/bulk", Name = "softDeleteCollectionBulk")]
     [SwaggerOperation(
         Summary = "Demo of soft delete extension method on IEnumerable using Bulk Extension methods",
         Description = DefaultDescription,
         OperationId = "Demo soft delete Extension Method on IEnumerable using Bulk Extension methods",
-        Tags = new[] { "EF-BulkExtensions" }
+        Tags = new[] { DefaultControllerTag }
     )]
     public async Task<IActionResult> DemoSoftDeleteBulkCollection(CancellationToken cancellationToken)
     {
@@ -43,12 +45,12 @@ public class EFBulkExtensionsDemoController : BaseAPIController
     /// </summary>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("softdelete/collection/bulk/undo", Name = "softDeleteCollectionUndoBulk")]
+    [HttpPost("softdelete/bulk/undo", Name = "softDeleteCollectionUndoBulk")]
     [SwaggerOperation(
         Summary = "Demo of undo soft delete extension method on IEnumerable using Bulk Extension methods",
         Description = DefaultDescription,
         OperationId = "Demo undo soft delete Extension Method on IEnumerable using Bulk Extension methods",
-        Tags = new[] { "EF-BulkExtensions" }
+        Tags = new[] { DefaultControllerTag }
     )]
     public async Task<IActionResult> DemoUndoSoftDeleteUndoBulkCollection(CancellationToken cancellationToken)
     {
@@ -72,12 +74,12 @@ public class EFBulkExtensionsDemoController : BaseAPIController
     /// </summary>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpPost("delete/collection/bulk", Name = "DeleteCollectionBulk")]
+    [HttpPost("delete/bulk", Name = "DeleteCollectionBulk")]
     [SwaggerOperation(
         Summary = "Demo of bulk delete",
         Description = DefaultDescription,
         OperationId = "Demo of bulk delete",
-        Tags = new[] { "EF-BulkExtensions" }
+        Tags = new[] { DefaultControllerTag }
     )]
     public async Task<IActionResult> DemoBulkDelete(IEnumerable<Guid> ids, CancellationToken cancellationToken)
     {

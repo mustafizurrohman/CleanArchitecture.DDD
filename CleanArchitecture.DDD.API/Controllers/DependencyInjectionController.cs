@@ -7,6 +7,7 @@ namespace CleanArchitecture.DDD.API.Controllers;
 [Route("scrutor")]
 public class DependencyInjectionController : BaseAPIController
 {
+    private const string Tag = "DependencyInjection";
 
     /// <summary>
     /// Demonstrates features of Dependency Injection where Services are injected
