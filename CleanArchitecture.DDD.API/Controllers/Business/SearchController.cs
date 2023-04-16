@@ -1,6 +1,6 @@
 ﻿using CleanArchitecture.DDD.API.Controllers.BaseController;
 
-namespace CleanArchitecture.DDD.API.Controllers;
+namespace CleanArchitecture.DDD.API.Controllers.Business;
 
 [ApiExplorerSettings(IgnoreApi = false)]
 public class SearchController : BaseAPIController

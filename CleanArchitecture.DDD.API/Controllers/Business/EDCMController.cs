@@ -1,19 +1,19 @@
 ﻿using CleanArchitecture.DDD.API.Controllers.BaseController;
 
-namespace CleanArchitecture.DDD.API.Controllers;
+namespace CleanArchitecture.DDD.API.Controllers.Business;
 
 public class EDCMController : BaseAPIController
 {
     private const string DefaultControllerTag = "EDCM";
 
     private readonly IEDCMSyncService _iedcmSyncService;
-    
+
     /// <summary>
     /// 
     /// </summary>
     /// <param name="appServices"></param>
     /// <param name="iedcmSyncService"></param>
-    public EDCMController(IAppServices appServices, IEDCMSyncService iedcmSyncService) 
+    public EDCMController(IAppServices appServices, IEDCMSyncService iedcmSyncService)
         : base(appServices)
     {
         _iedcmSyncService = iedcmSyncService;
