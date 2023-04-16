@@ -66,8 +66,7 @@ public static class ServiceCollectionScrutorExtensions
                 .AddClasses(classes => classes.WithAttribute<ScopedServiceAttribute>())
                 .AsImplementedInterfaces()
                 .WithScopedLifetime();
-
-
+            
             scan.FromAssemblyOf<T>()
                 .AddClasses(classes => classes.WithAttribute<SingletonServiceAttribute>())
                 .AsImplementedInterfaces()

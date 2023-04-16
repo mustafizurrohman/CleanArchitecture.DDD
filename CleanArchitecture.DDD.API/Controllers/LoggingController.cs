@@ -99,7 +99,7 @@ public class LoggingController : BaseAPIController
     }
 
     /// <summary>
-    /// Demo 3
+    /// Demo 4
     /// </summary>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]

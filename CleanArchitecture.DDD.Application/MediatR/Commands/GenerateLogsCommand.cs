@@ -1,3 +1,3 @@
 ﻿namespace CleanArchitecture.DDD.Application.MediatR.Commands;
 
-public record GenerateLogsCommand(int Iterations, bool WithDelay) : IRequest;
+public record GenerateLogsCommand(int Iterations, bool WithDelay = true) : IRequest;

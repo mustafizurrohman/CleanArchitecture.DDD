@@ -13,7 +13,7 @@ public class LoggingCommandHandler : IRequestHandler<LoggingCommand>
     
     public async Task Handle(LoggingCommand request, CancellationToken cancellationToken)
     {
-        var generateLogsCommand = new GenerateLogsCommand(1, true);
+        var generateLogsCommand = new GenerateLogsCommand(1);
         await _mediator.Send(generateLogsCommand, cancellationToken);
 
         await _edcmSyncService.GetFakeDoctors();

@@ -11,7 +11,7 @@ public class InactivatePatientCommandHandler : BaseHandler, IRequestHandler<Inac
     {
         // TODO: Why does this not work?
         // Using ExecuteUpdateAsync does not work on JSON Columns yet
-        //await DbContext.Patients
+        // await DbContext.Patients
         //    .Where(patient => patient.PatientID == request.ID)
         //    .ExecuteUpdateAsync(patient =>
         //        patient.SetProperty(currentPatient => currentPatient.MasterData.Active, p => false), cancellationToken);

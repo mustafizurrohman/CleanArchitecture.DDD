@@ -10,7 +10,4 @@ public static class LoggingHelper
         action();
         Console.WriteLine();
     }
-
-
-
 }

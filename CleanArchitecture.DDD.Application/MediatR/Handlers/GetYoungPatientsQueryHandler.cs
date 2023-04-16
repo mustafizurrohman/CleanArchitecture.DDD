@@ -13,13 +13,13 @@ public class GetYoungPatientsQueryHandler : BaseHandler,
     {
         // Querying a JSON column
         var query = DbContext.Patients
+            .AsNoTracking()
             .Where(p => p.MasterData.DateOfBirth > DateTime.Now.AddYears(-1 * request.Years));
 
         if (request.IncludeSoftDeleted)
             query = query.IgnoreQueryFilters();
 
         var patients = await query
-            .AsNoTracking()
             .ProjectTo<PatientMasterDataDTO>(AutoMapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 

@@ -97,7 +97,6 @@ public class SeedController : BaseAPIController
             return BadRequest(ex.Message);
         }
 
-
         return Ok(new Tuple<int, long>(num, runtime));
     }
 

@@ -17,7 +17,8 @@ public class TimingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, 
     
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        var displayUrl = _httpContextAccessor.HttpContext?.Request.GetDisplayUrl();
+        // Warning: This might expose sensitive data.
+        var requestUrl = _httpContextAccessor.HttpContext?.Request.GetDisplayUrl();
 
         Stopwatch stopwatch = new();
 
@@ -28,27 +29,22 @@ public class TimingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         // Log details about request which takes more than 750ms
         // Email admin if it takes more than a second!
         var requestProcessingTime = stopwatch.ElapsedMilliseconds;
-
+        
         // Performance monitoring
         if (requestProcessingTime > 750)
         {
-            // Here we can use Weischer Email Service for Performance monitoring
+            // Here we can use a Email Service for Performance monitoring
             // Or Better still- Azure Application Insights?
-            LogWithSpace(() => Log.Warning("MediatR Timing middleware: Slow request {requestType}! Took {requestProcessingTime} ms. Request url {displayUrl}", request.GetType(), requestProcessingTime, displayUrl));
+            // Hash tag (#) before logging indicates that it is a tag. Can be used in frameworks like Stackify
+            // Reference- https://stackify.com/get-smarter-log-management-with-log-tags/
+            LoggingHelper.LogWithSpace(() => Log.Warning("#MediatR Timing middleware: Slow request {requestType}! Took {requestProcessingTime} ms. Request url {requestUrl}", request.GetType(), requestProcessingTime, requestUrl));
         }
         else
         {
-            LogWithSpace(() => Log.Information("MediatR Timing middleware: Processed request {displayUrl} in {requestProcessingTime} ms.", displayUrl, requestProcessingTime));
+            LoggingHelper.LogWithSpace(() => Log.Information("#MediatR Timing middleware: Processed request {requestUrl} in {requestProcessingTime} ms.", requestUrl, requestProcessingTime));
         }
 
         return response;
     }
-
-    // ReSharper disable once MemberCanBeMadeStatic.Local
-    private void LogWithSpace(Action action)
-    {
-        Console.WriteLine();
-        action();
-        Console.WriteLine();
-    }
+    
 }
