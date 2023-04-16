@@ -1,12 +1,11 @@
-﻿
-using CleanArchitecture.DDD.API.Controllers.BaseController;
+﻿using CleanArchitecture.DDD.API.Controllers.BaseController;
 
-namespace CleanArchitecture.DDD.API.Controllers;
+namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 
 public class MasterDataController : BaseAPIController
 {
 
-    public MasterDataController(IAppServices appServices) 
+    public MasterDataController(IAppServices appServices)
         : base(appServices)
     {
 
@@ -33,7 +32,7 @@ public class MasterDataController : BaseAPIController
 
         var response = new
         {
-            Doctors = result, 
+            Doctors = result,
             result.Count
         };
 
@@ -43,25 +42,25 @@ public class MasterDataController : BaseAPIController
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="includeSoftDeleted"></param>
     /// <param name="cancellationToken"></param>
+    /// <param name="years"></param>
+    /// <param name="includeSoftDeleted"></param>
     /// <returns></returns>
     [HttpGet("patient")]
     [SwaggerOperation(
-        Summary = "Retrieves all patients from database ",
+        Summary = "Retrieves all patients from database younger than specified number of years",
         Description = DefaultDescription,
         OperationId = "Get All Patients",
         Tags = new[] { "MasterData" }
     )]
-    [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<Patient>))]
-    public async Task<IActionResult> Patients(CancellationToken cancellationToken, bool includeSoftDeleted = false)
+    [SwaggerResponse(StatusCodes.Status200OK, "Young patients was retrieved", typeof(IEnumerable<Patient>))]
+    public async Task<IActionResult> Patients(CancellationToken cancellationToken, int years, bool includeSoftDeleted = false)
     {
-        var patients = await DbContext.Patients
-            .Where(p => p.MasterData.DateOfBirth > DateTime.Now.AddYears(-5))
-            .Select(p => new { p.Fullname, p.MasterData.DateOfBirth})
-            .ToListAsync(cancellationToken);
+        var query = new GetYoungPatientsQuery(years, includeSoftDeleted);
 
-        return Ok(patients);
+        var result = await Mediator.Send(query, cancellationToken);
+
+        return Ok(result);
 
     }
 

@@ -12,7 +12,7 @@ public static class Helper
     }
 
     // TODO: Can this be implemented as an attribute?
-    public static void Benchmark(Action action)
+    public static long Benchmark(Action action)
     {
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -21,10 +21,10 @@ public static class Helper
 
         LogExecutionTime(stopwatch);
 
-        stopwatch.Reset();
+        return stopwatch.ElapsedMilliseconds;
     }
 
-    public static async Task BenchmarkAsync(Func<Task> action)
+    public static async Task<long> BenchmarkAsync(Func<Task> action)
     {
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -33,7 +33,7 @@ public static class Helper
 
         LogExecutionTime(stopwatch);
 
-        stopwatch.Reset();
+        return stopwatch.ElapsedMilliseconds;
     }
 
     private static void  LogExecutionTime(Stopwatch stopwatch)
