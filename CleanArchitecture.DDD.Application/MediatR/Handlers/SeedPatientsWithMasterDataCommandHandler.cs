@@ -1,6 +1,4 @@
 ﻿using CleanArchitecture.DDD.Infrastructure.Persistence.JSONColumn;
-using System.Drawing;
-using System.Security.Cryptography;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
@@ -48,8 +46,9 @@ public class SeedPatientsWithMasterDataCommandHandler : BaseHandler, IRequestHan
 
     private DateTime RandomDay()
     {
-        var start = DateTime.Now.AddYears(-100);
-        var range = (DateTime.Today - start).Days;
+        var now = DateTime.Now;
+        var start = now.AddYears(-100);
+        var range = (now - start).Days;
         return start.AddDays(new Random().Next(range));
     }
 }

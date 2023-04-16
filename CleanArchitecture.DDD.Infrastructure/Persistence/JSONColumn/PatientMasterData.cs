@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
-
-namespace CleanArchitecture.DDD.Infrastructure.Persistence.JSONColumn;
+﻿namespace CleanArchitecture.DDD.Infrastructure.Persistence.JSONColumn;
 
 public class PatientMasterData
 {

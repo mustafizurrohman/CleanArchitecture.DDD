@@ -1,5 +1,4 @@
-﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Configurations;
 
