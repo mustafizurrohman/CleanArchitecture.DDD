@@ -11,8 +11,7 @@ public class GetYoungPatientsQueryHandler : BaseHandler,
 
     public async Task<IEnumerable<PatientMasterDataDTO>> Handle(GetYoungPatientsQuery request, CancellationToken cancellationToken)
     {
-        // <Patient, PatientMasterDataDTO>
-
+        // Querying a JSON column
         var query = DbContext.Patients
             .Where(p => p.MasterData.DateOfBirth > DateTime.Now.AddYears(-1 * request.Years));
 
@@ -27,4 +26,3 @@ public class GetYoungPatientsQueryHandler : BaseHandler,
         return patients;
     }
 }
-
