@@ -27,7 +27,7 @@ public class EFBulkExtensionsDemoController : BaseAPIController
     {
         var affectedRows = -1;
 
-        await Helper.BenchmarkAsync(async () =>
+        await BenchmarkHelper.BenchmarkAsync(async () =>
         {
             affectedRows = await DbContext.Addresses
                 .OrderBy(_ => Guid.NewGuid())
@@ -54,7 +54,7 @@ public class EFBulkExtensionsDemoController : BaseAPIController
     {
         var affectedRows = -1;
 
-        await Helper.BenchmarkAsync(async () =>
+        await BenchmarkHelper.BenchmarkAsync(async () =>
         {
             affectedRows = await DbContext.Addresses
                 .IgnoreQueryFilters()
@@ -83,7 +83,7 @@ public class EFBulkExtensionsDemoController : BaseAPIController
     {
         var affectedRows = -1;
 
-        await Helper.BenchmarkAsync(async () =>
+        await BenchmarkHelper.BenchmarkAsync(async () =>
         {
             affectedRows = await DbContext.Addresses
                 .IgnoreQueryFilters()

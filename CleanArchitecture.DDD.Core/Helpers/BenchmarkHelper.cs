@@ -2,15 +2,8 @@
 
 namespace CleanArchitecture.DDD.Core.Helpers;
 
-public static class Helper
+public static class BenchmarkHelper
 {
-    public static void LogWithSpace(Action action)
-    {
-        Console.WriteLine();
-        action();
-        Console.WriteLine();
-    }
-
     // TODO: Can this be implemented as an attribute?
     public static long Benchmark(Action action)
     {
@@ -36,9 +29,9 @@ public static class Helper
         return stopwatch.ElapsedMilliseconds;
     }
 
-    private static void  LogExecutionTime(Stopwatch stopwatch)
+    private static void LogExecutionTime(Stopwatch stopwatch)
     {
-        LogWithSpace(() => Console.WriteLine($"Execution took {stopwatch.ElapsedMilliseconds} ms / {stopwatch.ElapsedTicks} ticks."));
+        LoggingHelper.LogWithSpace(() => Console.WriteLine($"Execution took {stopwatch.ElapsedMilliseconds} ms / {stopwatch.ElapsedTicks} ticks."));
     }
-
 }
+

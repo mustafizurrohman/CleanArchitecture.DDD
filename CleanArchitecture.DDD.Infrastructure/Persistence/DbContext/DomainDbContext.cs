@@ -118,7 +118,7 @@ public class DomainDbContext : DatabaseContext
     /// </summary>
     private void SetAuditingData()
     {
-        Helper.Benchmark(() =>
+        BenchmarkHelper.Benchmark(() =>
         {
             var entries = ChangeTracker
                 .Entries()

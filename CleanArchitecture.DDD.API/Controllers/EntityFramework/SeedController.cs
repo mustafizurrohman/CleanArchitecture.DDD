@@ -38,8 +38,8 @@ public class SeedController : BaseAPIController
     public async Task<IActionResult> InsertAddresses(CancellationToken cancellationToken, int num = 100)
     {
         Guard.Against.NegativeOrZero(num);
-
-        var runtime = await Helper.BenchmarkAsync(async () =>
+        
+        var runtime = await BenchmarkHelper.BenchmarkAsync(async () =>
         {
             var command = new SeedAddressCommand(num);
             await Mediator.Send(command, cancellationToken);
@@ -66,13 +66,13 @@ public class SeedController : BaseAPIController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateDoctors(CancellationToken cancellationToken, int num = 100)
     {
-        Guard.Against.NegativeOrZero(num);
-
         long runtime = -1;
         
         try
         {
-            runtime = await Helper.BenchmarkAsync(async () =>
+            Guard.Against.NegativeOrZero(num);
+
+            runtime = await BenchmarkHelper.BenchmarkAsync(async () =>
             {
                 var command = new SeedDoctorsCommand(num);
                 await Mediator.Send(command, cancellationToken);
@@ -82,8 +82,12 @@ public class SeedController : BaseAPIController
         {
             return BadRequest(ex.Message);
         }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
 
-        
+
         return Ok(new Tuple<int, long>(num, runtime));
     }
 
@@ -104,13 +108,13 @@ public class SeedController : BaseAPIController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateDoctorsWithAddress(CancellationToken cancellationToken, int num = 100)
     {
-        Guard.Against.NegativeOrZero(num);
-
         long runtime = -1;
 
         try
         {
-            runtime = await Helper.BenchmarkAsync(async () =>
+            Guard.Against.NegativeOrZero(num);
+
+            runtime = await BenchmarkHelper.BenchmarkAsync(async () =>
             {
                 var command = new SeedDoctorsWithAddressesCommand(num);
                 await Mediator.Send(command, cancellationToken);
@@ -119,6 +123,10 @@ public class SeedController : BaseAPIController
             });
         }
         catch (UniqueAddressesNotAvailable ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (ArgumentException ex)
         {
             return BadRequest(ex.Message);
         }
@@ -145,7 +153,7 @@ public class SeedController : BaseAPIController
     {
         Guard.Against.NegativeOrZero(num);
 
-        var runtime = await Helper.BenchmarkAsync(async () =>
+        var runtime = await BenchmarkHelper.BenchmarkAsync(async () =>
         {
             var command = new SeedPatientsWithMasterDataCommand(num);
             await Mediator.Send(command, cancellationToken);

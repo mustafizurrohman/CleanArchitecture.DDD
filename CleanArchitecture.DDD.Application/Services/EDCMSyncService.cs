@@ -157,7 +157,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
                 // Not updating names for the sake of simplicity
                 
                 if (existingDoctor.Address == doctor.Address) {
-                    Helper.LogWithSpace(() => Log.Information("Not updating Address with ID {addressID} because it is unchanged.", existingDoctor.Address.AddressID));
+                    LoggingHelper.LogWithSpace(() => Log.Information("Not updating Address with ID {addressID} because it is unchanged.", existingDoctor.Address.AddressID));
                     continue;
                 }
 
@@ -181,7 +181,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
                 
                 address.UpdateAddress(doctor.Address);
 
-                Helper.LogWithSpace(() => Log.Information("Updating Address with ID {addressID}", existingDoctor.Address.AddressID));
+                LoggingHelper.LogWithSpace(() => Log.Information("Updating Address with ID {addressID}", existingDoctor.Address.AddressID));
             }
             else
             {
@@ -189,7 +189,7 @@ public class EDCMSyncService : BaseService, IEDCMSyncService
                 // Since EF is aware that Doctors and Addresses are linked using a PK-FK relationship
                 await DbContext.AddAsync(doctor);
 
-                Helper.LogWithSpace(() => Log.Information("Inserting Address with ID {addressID}", doctor.Address.AddressID));
+                LoggingHelper.LogWithSpace(() => Log.Information("Inserting Address with ID {addressID}", doctor.Address.AddressID));
             }
         }
 
