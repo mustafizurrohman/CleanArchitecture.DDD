@@ -38,14 +38,23 @@ public class SeedController : BaseAPIController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> InsertAddresses(CancellationToken cancellationToken, int num = 100)
     {
-        Guard.Against.NegativeOrZero(num);
-        
-        var runtime = await BenchmarkHelper.BenchmarkAsync(async () =>
-        {
-            var command = new SeedAddressCommand(num);
-            await Mediator.Send(command, cancellationToken);
+        long runtime = -1;
 
-        });
+        try
+        {
+            Guard.Against.NegativeOrZero(num);
+
+            runtime = await BenchmarkHelper.BenchmarkAsync(async () =>
+            {
+                var command = new SeedAddressCommand(num);
+                await Mediator.Send(command, cancellationToken);
+
+            });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
 
         return Ok(new Tuple<int, long>(num, runtime));
     }

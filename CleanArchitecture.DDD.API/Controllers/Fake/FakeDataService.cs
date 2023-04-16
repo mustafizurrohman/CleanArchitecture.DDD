@@ -22,7 +22,7 @@ public class FakeDataService : IFakeDataService
 
     public IEnumerable<ExternalFakeDoctorAddressDTO> GetValidDoctors(int num)
     {
-        num = Guard.Against.NegativeOrZero(num, nameof(num));
+        num = Guard.Against.NegativeOrZero(num);
 
         return DoctorFaker.Generate(num);
     }
@@ -59,7 +59,7 @@ public class FakeDataService : IFakeDataService
 
     public IEnumerable<ExternalFakeDoctorAddressDTO> GetFakeDoctorsWithSomeInvalidData(int num)
     {
-        num = Guard.Against.NegativeOrZero(num, nameof(num));
+        num = Guard.Against.NegativeOrZero(num);
 
         var generatedFakeDoctors = DoctorFaker.Generate(num).ToArray();
 
