@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.API.Controllers.BaseController;
-
-namespace CleanArchitecture.DDD.API.Controllers;
+﻿namespace CleanArchitecture.DDD.API.Controllers;
 
 public class PasswordController : BaseAPIController
 {

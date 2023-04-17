@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace CleanArchitecture.DDD.Core.Helpers;
+﻿namespace CleanArchitecture.DDD.Core.Helpers;
 
 public static class LoggingHelper
 {

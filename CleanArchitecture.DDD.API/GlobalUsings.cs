@@ -36,3 +36,7 @@ global using CleanArchitecture.DDD.Application.Services.ScrutorDemo.ServiceDecor
 global using CleanArchitecture.DDD.Application.ServicesAggregate;
 global using Microsoft.Extensions.Options;
 global using Swashbuckle.AspNetCore.Annotations;
+
+global using CleanArchitecture.DDD.API.Controllers.BaseController;
+global using CleanArchitecture.DDD.Application.Exceptions;
+global using CleanArchitecture.DDD.Core.Helpers;

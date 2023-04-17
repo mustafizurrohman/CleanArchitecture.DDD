@@ -1,5 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using CleanArchitecture.DDD.API.Controllers.BaseController;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 

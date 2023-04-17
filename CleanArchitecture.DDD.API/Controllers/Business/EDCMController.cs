@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.API.Controllers.BaseController;
-
-namespace CleanArchitecture.DDD.API.Controllers.Business;
+﻿namespace CleanArchitecture.DDD.API.Controllers.Business;
 
 public class EDCMController : BaseAPIController
 {

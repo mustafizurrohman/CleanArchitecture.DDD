@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.API.Controllers.BaseController;
-
-namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
+﻿namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 
 public class MasterDataController : BaseAPIController
 {

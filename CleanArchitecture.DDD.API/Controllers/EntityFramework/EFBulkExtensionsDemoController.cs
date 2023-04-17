@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.API.Controllers.BaseController;
-using CleanArchitecture.DDD.Core.Helpers;
-using CleanArchitecture.DDD.Infrastructure.Persistence.ExtensionMethods;
+﻿using CleanArchitecture.DDD.Infrastructure.Persistence.ExtensionMethods;
 
 namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 

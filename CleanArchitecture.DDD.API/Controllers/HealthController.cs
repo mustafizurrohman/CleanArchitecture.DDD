@@ -1,5 +1,4 @@
-﻿using CleanArchitecture.DDD.API.Controllers.BaseController;
-using CleanArchitecture.DDD.API.Models;
+﻿using CleanArchitecture.DDD.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 

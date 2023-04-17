@@ -1,6 +1,4 @@
-﻿using CleanArchitecture.DDD.API.Controllers.BaseController;
-
-namespace CleanArchitecture.DDD.API.Controllers.Fake;
+﻿namespace CleanArchitecture.DDD.API.Controllers.Fake;
 
 /// <summary>
 /// Fake Controller

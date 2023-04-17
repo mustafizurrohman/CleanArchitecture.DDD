@@ -1,4 +1,3 @@
-using CleanArchitecture.DDD.API.Controllers.BaseController;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
 namespace CleanArchitecture.DDD.API.Controllers;

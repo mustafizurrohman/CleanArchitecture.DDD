@@ -1,8 +1,4 @@
-﻿using CleanArchitecture.DDD.API.Controllers.BaseController;
-using CleanArchitecture.DDD.Application.Exceptions;
-using CleanArchitecture.DDD.Core.Helpers;
-
-namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
+﻿namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 
 /// <summary>
 /// 
