@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.DDD.Application.DTO.Internal;
 using CleanArchitecture.DDD.Core.Attributes;
+using CleanArchitecture.DDD.Core.GuardClauses;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
@@ -53,9 +54,13 @@ public class DependencyInjectionController : BaseAPIController
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public IActionResult TestScrutorMultipleServices([FromServices] IEnumerable<ITestService> testServices, bool descending)
     {
+        var injectedServices = testServices.ToList();
+
+        Guard.Against.EmptyOrNullEnumerable(injectedServices);
+
         var services = descending
-            ? testServices.OrderByDescending(svc => svc.GetType().GetCustomAttribute<InjectionOrderAttribute>()?.Order ?? 0)
-            : testServices.OrderBy(svc => svc.GetType().GetCustomAttribute<InjectionOrderAttribute>()?.Order ?? 0);
+            ? injectedServices.OrderByDescending(svc => svc.GetType().GetCustomAttribute<InjectionOrderAttribute>()?.Order ?? 0)
+            : injectedServices.OrderBy(svc => svc.GetType().GetCustomAttribute<InjectionOrderAttribute>()?.Order ?? 0);
 
         var serviceOutputs = services
             .Select(svc => new
