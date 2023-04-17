@@ -38,25 +38,23 @@ public class SeedController : BaseAPIController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> InsertAddresses(CancellationToken cancellationToken, int num = 100)
     {
-        long runtime = -1;
-
         try
         {
             Guard.Against.NegativeOrZero(num);
 
-            runtime = await BenchmarkHelper.BenchmarkAsync(async () =>
+            var runtime = await BenchmarkHelper.BenchmarkAsync(async () =>
             {
                 var command = new SeedAddressCommand(num);
                 await Mediator.Send(command, cancellationToken);
 
             });
+
+            return Ok(new Tuple<int, long>(num, runtime));
         }
         catch (ArgumentException ex)
         {
             return BadRequest(ex.Message);
         }
-
-        return Ok(new Tuple<int, long>(num, runtime));
     }
 
     /// <summary>
@@ -76,17 +74,17 @@ public class SeedController : BaseAPIController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateDoctors(CancellationToken cancellationToken, int num = 100)
     {
-        long runtime = -1;
-        
         try
         {
             Guard.Against.NegativeOrZero(num);
 
-            runtime = await BenchmarkHelper.BenchmarkAsync(async () =>
+            var runtime = await BenchmarkHelper.BenchmarkAsync(async () =>
             {
                 var command = new SeedDoctorsCommand(num);
                 await Mediator.Send(command, cancellationToken);
             });
+
+            return Ok(new Tuple<int, long>(num, runtime));
         }
         catch (UniqueAddressesNotAvailable ex)
         {
@@ -96,8 +94,6 @@ public class SeedController : BaseAPIController
         {
             return BadRequest(ex.Message);
         }
-
-        return Ok(new Tuple<int, long>(num, runtime));
     }
 
     /// <summary>
@@ -117,19 +113,17 @@ public class SeedController : BaseAPIController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateDoctorsWithAddress(CancellationToken cancellationToken, int num = 100)
     {
-        long runtime = -1;
-
         try
         {
             Guard.Against.NegativeOrZero(num);
 
-            runtime = await BenchmarkHelper.BenchmarkAsync(async () =>
+            var runtime = await BenchmarkHelper.BenchmarkAsync(async () =>
             {
                 var command = new SeedDoctorsWithAddressesCommand(num);
                 await Mediator.Send(command, cancellationToken);
-
-
             });
+
+            return Ok(new Tuple<int, long>(num, runtime));
         }
         catch (UniqueAddressesNotAvailable ex)
         {
@@ -139,8 +133,6 @@ public class SeedController : BaseAPIController
         {
             return BadRequest(ex.Message);
         }
-
-        return Ok(new Tuple<int, long>(num, runtime));
     }
 
     /// <summary>
