@@ -65,7 +65,7 @@ public static class WebExtensionBuilderExtensions
             {
                 var connectionString = builder.GetDatabaseConnectionString();
                 
-                return DomainDbContext.IsDatabaseReachable(connectionString) 
+                return connectionString.IsValidDbConnectionString() 
                     ? HealthCheckResult.Healthy() 
                     : HealthCheckResult.Unhealthy();
             }, tags: new[] { "ready" });

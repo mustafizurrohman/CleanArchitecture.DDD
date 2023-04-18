@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.DDD.Core.Helpers;
+﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
+using CleanArchitecture.DDD.Core.Helpers;
 using CleanArchitecture.DDD.Infrastructure.Exceptions;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 using DatabaseContext = Microsoft.EntityFrameworkCore.DbContext;
@@ -18,7 +19,7 @@ public class DomainDbContext : DatabaseContext
     {
         _connectionString = connectionString;
 
-        if (!IsDatabaseReachable(_connectionString))
+        if (!_connectionString.IsValidDbConnectionString())
         {
             const string message = "Invalid database connection string or database is not reachable ... ";
             
@@ -136,40 +137,4 @@ public class DomainDbContext : DatabaseContext
             }
         });                
     }
-
-    public static bool IsDatabaseReachable(string connectionString)
-    {
-        string RemoveDatabaseFromConnectionString(string connStr)
-        {
-            return connStr
-                .Split(";")
-                .Where(str => !str.Contains("Database="))
-                .Aggregate((a, b) => a + ";" + b);
-        }
-
-        if (string.IsNullOrWhiteSpace(connectionString))
-            return false;
-
-        connectionString = RemoveDatabaseFromConnectionString(connectionString);
-
-        SqlConnection? connection = null;
-
-        try
-        {
-            connection = new SqlConnection(connectionString);
-            connection.Open();
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-        finally
-        {
-            if (connection?.State == ConnectionState.Open)
-                connection.Close();
-        }
-        
-        return true;
-    }
-    
 }

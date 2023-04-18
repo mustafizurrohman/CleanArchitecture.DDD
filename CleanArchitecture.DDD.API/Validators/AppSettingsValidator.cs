@@ -18,10 +18,10 @@ public class AppSettingsValidator : AbstractValidator<AppSettings>
             .WithMessage("Database is not reachable");
 
         RuleFor(prop => prop.HealthChecksUI.EvaluationTimeOnSeconds)
-            .GreaterThanOrEqualTo(1);
+            .InclusiveBetween(1, 60);
 
         RuleFor(prop => prop.HealthChecksUI.MinimumSecondsBetweenFailureNotifications)
-            .GreaterThanOrEqualTo(1);
+            .InclusiveBetween(1, 60);
 
         RuleFor(prop => prop.HealthChecksUI.HealthChecks)
             .Must(p => p.Count > 0)
@@ -34,37 +34,7 @@ public class AppSettingsValidator : AbstractValidator<AppSettings>
 
     private static bool BeValidDbConnectionString(string connectionString)
     {
-        static string RemoveDatabaseFromConnectionString(string connStr)
-        {
-            return connStr
-                .Split(";")
-                .Where(str => !str.Contains("Database="))
-                .Aggregate((a, b) => a + ";" + b);
-        }
-
-        if (string.IsNullOrWhiteSpace(connectionString))
-            return false;
-
-        connectionString = RemoveDatabaseFromConnectionString(connectionString);
-
-        SqlConnection? connection = null;
-
-        try
-        {
-            connection = new SqlConnection(connectionString);
-            connection.Open();
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-        finally
-        {
-            if (connection?.State == ConnectionState.Open)
-                connection.Close();
-        }
-
-        return true;
+        return connectionString.IsValidDbConnectionString();
     }
 }
 
