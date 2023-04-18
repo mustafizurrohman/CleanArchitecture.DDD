@@ -57,7 +57,7 @@ public class DependencyInjectionController : BaseAPIController
         var injectedServices = testServices.ToList();
 
         Guard.Against.EmptyOrNullEnumerable(injectedServices);
-
+        
         var services = descending
             ? injectedServices.OrderByDescending(svc => svc.GetType().GetCustomAttribute<InjectionOrderAttribute>()?.Order ?? 0)
             : injectedServices.OrderBy(svc => svc.GetType().GetCustomAttribute<InjectionOrderAttribute>()?.Order ?? 0);
@@ -69,7 +69,6 @@ public class DependencyInjectionController : BaseAPIController
                 ServiceOutput = svc.HelloWorld()
             })
             .ToList();
-
 
         return Ok(serviceOutputs);
     }

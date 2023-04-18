@@ -4,7 +4,7 @@ public interface IPolicyHolder
 {
     PolicyRegistry Registry { get; }
 
-    IAsyncPolicy<HttpResponseMessage> GetPolicy(HttpPolicyNames httpPolicyNames);
+    IAsyncPolicy<HttpResponseMessage> GetPolicy(HttpPolicyNames httpPolicyName);
 
     IAsyncPolicy GetPolicy(PolicyNames policyName);
 

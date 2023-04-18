@@ -30,7 +30,8 @@ public class SearchDoctorsQueryHandler : BaseHandler, IRequestHandler<SearchDoct
                 return Enumerable.Empty<DoctorCityDTO>();
         }
 
-        var results = await DbContext.Doctors.AsNoTracking()
+        var results = await DbContext.Doctors
+            .AsNoTracking()
             .SearchByName(name, request.And)
             .ProjectTo<DoctorCityDTO>(AutoMapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);

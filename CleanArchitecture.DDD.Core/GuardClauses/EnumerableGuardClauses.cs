@@ -2,7 +2,7 @@
 
 public static class EnumerableGuardClauses
 {
-    public static void EmptyOrNullEnumerable<T>(this IGuardClause guardClause, IEnumerable<T> collection)
+    public static void EmptyOrNullEnumerable<T>(this IGuardClause _, IEnumerable<T> collection)
         where T : class
     {
         if (collection is null || !collection.Any())

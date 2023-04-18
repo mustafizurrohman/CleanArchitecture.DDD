@@ -132,8 +132,8 @@ public class PolicyHolder : IPolicyHolder
 
     private static IAsyncPolicy<HttpResponseMessage> GetHttpRetryPolicy()
     {
-        int attempts = 0;
-        int retryCount = 5;
+        var attempts = 0;
+        var retryCount = 5;
 
         return HttpPolicyExtensions
             .HandleTransientHttpError()
@@ -152,14 +152,14 @@ public class PolicyHolder : IPolicyHolder
 
     private static IAsyncPolicy<HttpResponseMessage> GetHttpRequestFallbackPolicy()
     {
-        int _cachedResult = 0;
+        var cachedResult = 0;
         
         return Policy
             .HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
             .Or<TimeoutRejectedException>()
             .FallbackAsync(new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new ObjectContent(_cachedResult.GetType(), _cachedResult, new JsonMediaTypeFormatter())
+                Content = new ObjectContent(cachedResult.GetType(), cachedResult, new JsonMediaTypeFormatter())
             });
     }
 
