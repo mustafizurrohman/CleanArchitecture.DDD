@@ -3,6 +3,7 @@ using CleanArchitecture.DDD.API.Models;
 using CleanArchitecture.DDD.Application;
 using CleanArchitecture.DDD.Core.Logging.CustomEnrichers;
 using CleanArchitecture.DDD.Core.Logging.Helpers;
+using CleanArchitecture.DDD.Core.Models;
 using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Domain;
 using Hangfire;
@@ -65,7 +66,7 @@ public static class WebExtensionBuilderExtensions
             {
                 var connectionString = builder.GetDatabaseConnectionString();
                 
-                return connectionString.IsValidDbConnectionString() 
+                return new DbConnectionString(connectionString).IsValid 
                     ? HealthCheckResult.Healthy() 
                     : HealthCheckResult.Unhealthy();
             }, tags: new[] { "ready" });

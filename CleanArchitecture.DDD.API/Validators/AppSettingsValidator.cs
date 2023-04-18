@@ -1,6 +1,5 @@
 ﻿using CleanArchitecture.DDD.API.Models;
-using Microsoft.Data.SqlClient;
-using System.Data;
+using CleanArchitecture.DDD.Core.Models;
 
 namespace CleanArchitecture.DDD.API.Validators;
 
@@ -34,7 +33,7 @@ public class AppSettingsValidator : AbstractValidator<AppSettings>
 
     private static bool BeValidDbConnectionString(string connectionString)
     {
-        return connectionString.IsValidDbConnectionString();
+        return new DbConnectionString(connectionString).IsValid;
     }
 }
 

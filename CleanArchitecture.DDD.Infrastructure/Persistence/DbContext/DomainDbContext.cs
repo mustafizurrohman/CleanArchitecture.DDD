@@ -1,5 +1,5 @@
-﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
-using CleanArchitecture.DDD.Core.Helpers;
+﻿using CleanArchitecture.DDD.Core.Helpers;
+using CleanArchitecture.DDD.Core.Models;
 using CleanArchitecture.DDD.Infrastructure.Exceptions;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 using DatabaseContext = Microsoft.EntityFrameworkCore.DbContext;
@@ -19,7 +19,7 @@ public class DomainDbContext : DatabaseContext
     {
         _connectionString = connectionString;
 
-        if (!_connectionString.IsValidDbConnectionString())
+        if (!new DbConnectionString(_connectionString).IsValid)
         {
             const string message = "Invalid database connection string or database is not reachable ... ";
             
