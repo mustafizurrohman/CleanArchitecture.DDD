@@ -3,7 +3,8 @@ using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
-public class SeedDoctorsCommandHandler : BaseHandler, IRequestHandler<SeedDoctorsCommand>
+public sealed class SeedDoctorsCommandHandler 
+    : BaseHandler, IRequestHandler<SeedDoctorsCommand>
 {
     public SeedDoctorsCommandHandler(IAppServices appServices) 
         : base(appServices)

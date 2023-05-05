@@ -3,7 +3,8 @@ using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
-public class GenerateLogsCommandHandler : BaseHandler, IRequestHandler<GenerateLogsCommand>
+public sealed class GenerateLogsCommandHandler 
+    : BaseHandler, IRequestHandler<GenerateLogsCommand>
 {
     private readonly Faker _faker;
 

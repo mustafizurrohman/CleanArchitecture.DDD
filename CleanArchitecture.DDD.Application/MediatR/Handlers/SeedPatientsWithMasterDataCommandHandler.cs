@@ -2,7 +2,8 @@
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
-public class SeedPatientsWithMasterDataCommandHandler : BaseHandler, IRequestHandler<SeedPatientsWithMasterDataCommand>
+public sealed class SeedPatientsWithMasterDataCommandHandler 
+    : BaseHandler, IRequestHandler<SeedPatientsWithMasterDataCommand>
 {
     private readonly Faker _faker = new();
 

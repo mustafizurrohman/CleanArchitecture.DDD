@@ -1,6 +1,7 @@
 ﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
-public class HashPasswordQueryHandler : IRequestHandler<HashPasswordQuery, string>
+public sealed class HashPasswordQueryHandler 
+    : IRequestHandler<HashPasswordQuery, string>
 {
     private readonly IPasswordService _passwordService;
     

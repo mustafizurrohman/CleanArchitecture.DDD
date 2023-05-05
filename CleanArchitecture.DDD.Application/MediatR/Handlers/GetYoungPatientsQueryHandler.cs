@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
-public class GetYoungPatientsQueryHandler : BaseHandler,
+public sealed class GetYoungPatientsQueryHandler : BaseHandler,
     IRequestHandler<GetYoungPatientsQuery, IEnumerable<PatientMasterDataDTO>>
 {
     public GetYoungPatientsQueryHandler(IAppServices appServices)

@@ -1,6 +1,7 @@
 ﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
-public class SearchDoctorsQueryHandler : BaseHandler, IRequestHandler<SearchDoctorsQuery, IEnumerable<DoctorCityDTO>>
+public sealed class SearchDoctorsQueryHandler 
+    : BaseHandler, IRequestHandler<SearchDoctorsQuery, IEnumerable<DoctorCityDTO>>
 {
     private readonly IValidator<Name> _nameValidator;
 

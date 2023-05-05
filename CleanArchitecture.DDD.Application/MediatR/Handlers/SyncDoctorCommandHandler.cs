@@ -1,6 +1,7 @@
 ﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
-public class SyncDoctorCommandHandler : BaseHandler, IRequestHandler<SyncDoctorCommand>
+public sealed class SyncDoctorCommandHandler 
+    : BaseHandler, IRequestHandler<SyncDoctorCommand>
 {
     private readonly IEDCMSyncService _iedcmSyncService;
 

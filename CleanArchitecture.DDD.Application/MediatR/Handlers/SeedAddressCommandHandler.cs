@@ -1,6 +1,7 @@
 ﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
-public class SeedAddressCommandHandler : BaseHandler, IRequestHandler<SeedAddressCommand>
+public sealed class SeedAddressCommandHandler 
+    : BaseHandler, IRequestHandler<SeedAddressCommand>
 {
     public SeedAddressCommandHandler(IAppServices appServices)
         : base(appServices)

@@ -1,6 +1,7 @@
 ﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
-public class LoggingCommandHandler : IRequestHandler<LoggingCommand>
+public sealed class LoggingCommandHandler 
+    : IRequestHandler<LoggingCommand>
 {
     private readonly IEDCMSyncService _edcmSyncService;
     private readonly IMediator _mediator;

@@ -1,6 +1,7 @@
 ﻿namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
-public class InactivatePatientCommandHandler : BaseHandler, IRequestHandler<InactivatePatientCommand>
+public sealed class InactivatePatientCommandHandler 
+    : BaseHandler, IRequestHandler<InactivatePatientCommand>
 {
     public InactivatePatientCommandHandler(IAppServices appServices) 
         : base(appServices)
