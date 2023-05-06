@@ -1,3 +1,3 @@
 ﻿namespace CleanArchitecture.DDD.Application.MediatR.Commands;
 
-public record SyncDoctorCommand(bool SimulateError): IRequest;
+public sealed record SyncDoctorCommand(bool SimulateError): IRequest;

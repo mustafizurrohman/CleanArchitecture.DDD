@@ -1,3 +1,3 @@
 ﻿namespace CleanArchitecture.DDD.Application.MediatR.Commands;
 
-public record InactivatePatientCommand(Guid ID) : IRequest;
+public sealed record InactivatePatientCommand(Guid ID) : IRequest;

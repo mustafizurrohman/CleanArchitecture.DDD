@@ -1,3 +1,3 @@
 ﻿namespace CleanArchitecture.DDD.Application.MediatR.Commands;
 
-public record SeedDoctorsCommand(int Num): IRequest;
+public sealed record SeedDoctorsCommand(int Num): IRequest;

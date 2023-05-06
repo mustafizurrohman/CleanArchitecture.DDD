@@ -1,3 +1,3 @@
 ﻿namespace CleanArchitecture.DDD.Application.MediatR.Commands;
 
-public record LoggingCommand : IRequest;
+public sealed record LoggingCommand : IRequest;

@@ -1,5 +1,3 @@
 ﻿namespace CleanArchitecture.DDD.Application.MediatR.Commands;
 
-public record SeedPatientsWithMasterDataCommand(int Num) : IRequest;
-
-
+public sealed record SeedPatientsWithMasterDataCommand(int Num) : IRequest;
