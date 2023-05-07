@@ -66,7 +66,7 @@ public static class WebExtensionBuilderExtensions
             {
                 var connectionString = builder.GetDatabaseConnectionString();
                 
-                return new DbConnectionString(connectionString).IsValid 
+                return new DbConnectionString(connectionString).IsReachable 
                     ? HealthCheckResult.Healthy() 
                     : HealthCheckResult.Unhealthy();
             }, tags: new[] { "ready" });

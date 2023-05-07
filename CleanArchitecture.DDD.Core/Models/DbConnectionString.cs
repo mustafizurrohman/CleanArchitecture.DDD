@@ -7,14 +7,13 @@ public class DbConnectionString
 {
     private readonly string _connectionString;
 
-    public bool IsValid { get; private set; }
+    public bool IsReachable => IsValidDbConnectionString(_connectionString);
 
     public string ConnectionString => _connectionString;
 
     public DbConnectionString(string connectionString)
     {
         _connectionString = connectionString;
-        IsValid = IsValidDbConnectionString(_connectionString);
     }
 
     private static bool IsValidDbConnectionString(string connectionString)

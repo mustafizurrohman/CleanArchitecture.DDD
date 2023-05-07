@@ -33,7 +33,7 @@ public class AppSettingsValidator : AbstractValidator<AppSettings>
 
     private static bool BeValidDbConnectionString(string connectionString)
     {
-        return new DbConnectionString(connectionString).IsValid;
+        return new DbConnectionString(connectionString).IsReachable;
     }
 }
 

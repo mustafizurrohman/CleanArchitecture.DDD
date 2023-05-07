@@ -47,13 +47,44 @@ public static class ServiceCollectionScrutorExtensions
     }
 
     /// <summary>
-    /// Registers the service by attribute
+    /// Registers the service by attribute with specified lifetime
     /// Reference- https://alimozdemir.medium.com/better-di-service-registration-with-assembly-scan-3e0329e8e30a
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="serviceCollection"></param>
+    /// <param name="excludedTypes"></param>
     /// <returns></returns>
-    public static IServiceCollection RegisterServiceByAttribute<T>(this IServiceCollection serviceCollection)
+    public static IServiceCollection RegisterServiceByAttribute<T>
+        (this IServiceCollection serviceCollection,
+            IEnumerable<Type>? excludedTypes = null)
+    {
+        excludedTypes ??= Enumerable.Empty<Type>().ToList();
+
+        return serviceCollection.Scan(scan =>
+        {
+            scan.FromAssemblyOf<T>()
+                .AddClasses(classes => classes.Where(type => !excludedTypes.GetType().Name.ToLower().Contains(type.Name.ToLower())))
+                .AddClasses(classes => classes.WithAttribute<TransientServiceAttribute>())
+                .AsImplementedInterfaces()
+                .WithTransientLifetime();
+
+            scan.FromAssemblyOf<T>()
+                .AddClasses(classes => classes.Where(type => !excludedTypes.GetType().Name.ToLower().Contains(type.Name.ToLower())))
+                .AddClasses(classes => classes.WithAttribute<ScopedServiceAttribute>())
+                .AsImplementedInterfaces()
+                .WithScopedLifetime();
+            
+            scan.FromAssemblyOf<T>()
+                .AddClasses(classes => classes.Where(type => !excludedTypes.GetType().Name.ToLower().Contains(type.Name.ToLower())))
+                .AddClasses(classes => classes.WithAttribute<SingletonServiceAttribute>())
+                .AsImplementedInterfaces()
+                .WithSingletonLifetime();
+        });
+
+
+    }
+
+    public static IServiceCollection RegisterServicesWithSpecifiedLifetime<T>(this IServiceCollection serviceCollection)
     {
         return serviceCollection.Scan(scan =>
         {
@@ -66,7 +97,7 @@ public static class ServiceCollectionScrutorExtensions
                 .AddClasses(classes => classes.WithAttribute<ScopedServiceAttribute>())
                 .AsImplementedInterfaces()
                 .WithScopedLifetime();
-            
+
             scan.FromAssemblyOf<T>()
                 .AddClasses(classes => classes.WithAttribute<SingletonServiceAttribute>())
                 .AsImplementedInterfaces()

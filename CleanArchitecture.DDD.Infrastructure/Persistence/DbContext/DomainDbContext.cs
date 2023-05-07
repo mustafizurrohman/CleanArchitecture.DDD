@@ -19,7 +19,7 @@ public class DomainDbContext : DatabaseContext
     {
         _connectionString = connectionString;
 
-        if (!new DbConnectionString(_connectionString).IsValid)
+        if (!new DbConnectionString(_connectionString).IsReachable)
         {
             const string message = "Invalid database connection string or database is not reachable ... ";
             
