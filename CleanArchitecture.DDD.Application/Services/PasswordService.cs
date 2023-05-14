@@ -9,7 +9,7 @@ public class PasswordService : IPasswordService
     private int SaltLength { get; }
     private int NumberOfRounds { get; }
 
-    public PasswordService()
+    public PasswordService(IPasswordComplexityRoundService passwordComplexityRoundService)
     {
         // Reference- https://www.youtube.com/watch?v=cMykd0jScSY
 
@@ -20,14 +20,7 @@ public class PasswordService : IPasswordService
         // US National Institute of Standards and Technology recommendation
         SaltLength = 128;
 
-        // Recommendation: Double every 2 years (Moore's law)
-        // Generation time will increase when NumberOfRounds will increase
-        // Helps in preventing Brute Force Attacks
-        // It is fine if use waits for 2-3 seconds for password verification
-        // Adjust this accordingly. 
-        // Lower- Faster but less secure. Higher- Slower but more secure
-        // Underscores improve readability!
-        NumberOfRounds = 100_000;
+        NumberOfRounds = passwordComplexityRoundService.GetPasswordRounds();
     }
 
     public string HashPassword(string password)
@@ -40,13 +33,13 @@ public class PasswordService : IPasswordService
         return hashedPassword.ToString();
     }
     
-    public bool VerifyPassword(string password, string hash)
+    public bool VerifyPassword(string password, string hashedPassword)
     {
-        var hashedPassword = new HashedPassword(hash);
-        var salt = hashedPassword.Salt.ByeArrayFromBase64String();
-        var hashedPasswordAsBase64 = HashPasswordAsBase64(password, salt, hashedPassword.NumberOfRounds);
+        var passwordHash = new HashedPassword(hashedPassword);
+        var salt = passwordHash.Salt.ByeArrayFromBase64String();
+        var hashedPasswordAsBase64 = HashPasswordAsBase64(password, salt, passwordHash.NumberOfRounds);
 
-        return hashedPassword.Hash == hashedPasswordAsBase64;
+        return passwordHash.Hash == hashedPasswordAsBase64;
     }
 
 
