@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Exceptions;
 using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
 // ReSharper disable MemberCanBePrivate.Global
@@ -76,7 +77,7 @@ public static class EnumerableValidationExtensions
         }
         catch (Exception ex)
         {
-            Log.Error(ex, ex.Message);
+            Log.Error(ex.Demystify(), ex.Message);
 
             if (ex is ValidatorNotDefinedException)
                 throw;

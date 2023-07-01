@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="4.0.1" />
+    <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.38.1" />
     <PackageReference Include="FluentValidation" Version="11.5.2" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0-preview1" />
