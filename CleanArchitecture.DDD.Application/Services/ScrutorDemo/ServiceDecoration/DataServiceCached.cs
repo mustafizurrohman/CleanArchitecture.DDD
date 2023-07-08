@@ -15,10 +15,11 @@ public class DataServiceCached : IDataService
         MemoryCacheEntryOptions = new MemoryCacheEntryOptions()
             .SetSlidingExpiration(TimeSpan.FromSeconds(15));
 
-        MemoryCache = Guard.Against.Null(memoryCache, nameof(memoryCache));
-        DataService = Guard.Against.Null(dataService, nameof(dataService));
+        MemoryCache = Guard.Against.Null(memoryCache);
+        DataService = Guard.Against.Null(dataService);
 
-        Log.Information($"DECORATED DataService CACHED- Initialized service... Cache valid until {DateTime.Now.Add(timeSpan).ToLocalDEDateTime()}");
+        Log.Information($"DECORATED DataService CACHED- Initialized service... " +
+                        "Cache valid until {cacheValidity}", DateTime.Now.Add(timeSpan).ToLocalDEDateTime());
     }
 
     public async Task<IEnumerable<DemoData>> GetDemoDataAsync(int num)

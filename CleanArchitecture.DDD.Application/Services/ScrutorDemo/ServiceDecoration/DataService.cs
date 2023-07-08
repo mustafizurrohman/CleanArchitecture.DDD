@@ -9,7 +9,7 @@ public class DataService : IDataService
 
     public Task<IEnumerable<DemoData>> GetDemoDataAsync(int num)
     {
-        num = Guard.Against.NegativeOrZero(num, nameof(num));
+        num = Guard.Against.NegativeOrZero(num);
 
         var demoDataFaker = new Faker<DemoData>()
             .StrictMode(true)
@@ -18,7 +18,7 @@ public class DataService : IDataService
             .RuleFor(da => da.Lastname, fake => fake.Name.LastName())
             .RuleFor(da => da.Cached, _ => false);
 
-        Log.Information($"Generating {num} DemoData ... ");
+        Log.Information("Generating {numberOfGeneratedDemoData} DemoData ... ", num);
 
         return Task.FromResult(demoDataFaker.Generate(num).AsEnumerable());
     }
