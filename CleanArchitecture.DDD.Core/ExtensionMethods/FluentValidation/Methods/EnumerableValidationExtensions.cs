@@ -11,8 +11,8 @@ public static class EnumerableValidationExtensions
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models, IValidator<T> validator)
         where T : class, new()
     {
-        models = Guard.Against.Null(models);
-        validator = Guard.Against.Null(validator);
+        ArgumentNullException.ThrowIfNull(models);
+        ArgumentNullException.ThrowIfNull(validator);
 
         var errorReport = models
             .Select(model => model.GetModelValidationReport(validator));
