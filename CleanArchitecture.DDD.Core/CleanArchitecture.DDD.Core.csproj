@@ -37,6 +37,7 @@
     <PackageReference Include="Serilog.Settings.Configuration" Version="7.0.0" />
     <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.3.0" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.3-dev-00262" />
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>
 
 </Project>
