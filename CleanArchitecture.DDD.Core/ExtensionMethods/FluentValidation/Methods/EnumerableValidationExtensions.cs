@@ -47,8 +47,6 @@ public static class EnumerableValidationExtensions
         return new ModelCollectionValidationReport<T>(errorReport);
     }
 
-    // TODO: Test this throughly!
-    // If this does not work then use the version from above after injecting the validator using DI
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models)
         where T : class, new()
     {
@@ -70,9 +68,6 @@ public static class EnumerableValidationExtensions
         return new ModelCollectionValidationReport<T>(errorReport); 
     }
 
-    // TODO: Test this throughly!
-    // TestUseCase: Test when the validator uses DI
-    // If this does not work then use the version from above after injecting the validator using DI
     public static async Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this IEnumerable<T> models)
         where T : class, new()
     {
@@ -83,7 +78,7 @@ public static class EnumerableValidationExtensions
         return await GetModelValidationReportAsync(models, validatorInstance);
     }
 
-    public static IValidator<T> GetValidator<T>(this T model)
+    public static IValidator<T> GetValidator<T>(this T _)
     {
         IValidator<T> validatorInstance;
 
