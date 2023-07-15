@@ -27,7 +27,7 @@ public static class EnumerableValidationExtensions
 
         var modelsList = models.DefaultIfEmpty().ToList();
 
-        IValidator<T> validator = modelsList[0].GetValidator()!;
+        IValidator<T> validator = modelsList.GetValidator()!;
 
         foreach (var model in modelsList)
         {
@@ -53,7 +53,7 @@ public static class EnumerableValidationExtensions
         models = Guard.Against.NullOrEmpty(models);
         models = models.ToList();
 
-        var validator = models.First().GetValidator();
+        var validator = models.GetValidator();
         return GetModelValidationReport(models, validator);
     }
 
@@ -74,11 +74,11 @@ public static class EnumerableValidationExtensions
         models = Guard.Against.NullOrEmpty(models);
         models = models.ToList();
 
-        var validatorInstance = models.First().GetValidator();
+        var validatorInstance = models.GetValidator();
         return await GetModelValidationReportAsync(models, validatorInstance);
     }
 
-    public static IValidator<T> GetValidator<T>(this T _)
+    private static IValidator<T> GetValidator<T>(this IEnumerable<T> _)
     {
         IValidator<T> validatorInstance;
 
