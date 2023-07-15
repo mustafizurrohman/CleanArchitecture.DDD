@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections;
+using System.Diagnostics;
 using System.Reflection;
 using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Exceptions;
 using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
@@ -71,7 +72,7 @@ public static class GenericValidationExtensions
 
             if (ex is ValidatorNotDefinedException)
                 throw;
-
+            
             throw new ValidatorInitializationException(typeof(T), ex);
         }
 
