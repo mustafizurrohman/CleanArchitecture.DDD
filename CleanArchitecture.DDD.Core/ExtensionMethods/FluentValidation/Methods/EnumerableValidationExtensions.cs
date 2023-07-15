@@ -11,8 +11,7 @@ public static class EnumerableValidationExtensions
     public static async IAsyncEnumerable<ModelValidationReport<T>> GetModelValidationReportEnumerableAsync<T>(this IEnumerable<T> models, IValidator<T> validator)
         where T : class, new()
     {
-        ArgumentNullException.ThrowIfNull(models);
-        ArgumentNullException.ThrowIfNull(validator);
+        VerifyThatParamsAreNotNull(models, validator);
 
         foreach (var model in models)
         {
@@ -23,7 +22,7 @@ public static class EnumerableValidationExtensions
     public static async IAsyncEnumerable<ModelValidationReport<T>> GetModelValidationReportEnumerableAsync<T>(this IEnumerable<T> models)
         where T : class, new()
     {
-        ArgumentNullException.ThrowIfNull(models);
+        VerifyThatParamsAreNotNull(models);
 
         var modelsList = models.ToList();
 
@@ -35,11 +34,11 @@ public static class EnumerableValidationExtensions
         }
     }
 
+    
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models, IValidator<T> validator)
         where T : class, new()
     {
-        ArgumentNullException.ThrowIfNull(models);
-        ArgumentNullException.ThrowIfNull(validator);
+        VerifyThatParamsAreNotNull(models, validator);
 
         var errorReport = models
             .Select(model => model.GetModelValidationReport(validator));
@@ -50,7 +49,7 @@ public static class EnumerableValidationExtensions
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models)
         where T : class, new()
     {
-        models = Guard.Against.NullOrEmpty(models);
+        VerifyThatParamsAreNotNull(models);
         models = models.ToList();
 
         var validator = models.GetValidator();
@@ -60,9 +59,8 @@ public static class EnumerableValidationExtensions
     public static async Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this IEnumerable<T> models, IValidator<T> validator)
         where T : class, new()
     {
-        models = Guard.Against.NullOrEmpty(models);
-        validator = Guard.Against.Null(validator);
-        
+        VerifyThatParamsAreNotNull(models, validator);
+
         var errorReport = await models.GetModelValidationReportEnumerableAsync(validator).ToListAsync();
 
         return new ModelCollectionValidationReport<T>(errorReport); 
@@ -71,7 +69,7 @@ public static class EnumerableValidationExtensions
     public static async Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this IEnumerable<T> models)
         where T : class, new()
     {
-        models = Guard.Against.NullOrEmpty(models);
+        VerifyThatParamsAreNotNull(models);
         models = models.ToList();
 
         var validatorInstance = models.GetValidator();
@@ -107,6 +105,14 @@ public static class EnumerableValidationExtensions
         }
 
         return validatorInstance;
+    }
+
+    private static void VerifyThatParamsAreNotNull(params object[] objects)
+    {
+        foreach (var objectInstance in objects)
+        {
+            ArgumentNullException.ThrowIfNull(objectInstance);
+        }
     }
 
 }

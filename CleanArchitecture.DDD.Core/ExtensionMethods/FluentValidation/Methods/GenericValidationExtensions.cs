@@ -11,8 +11,7 @@ public static class GenericValidationExtensions
     public static ModelValidationReport<T> GetModelValidationReport<T>(this T model, IValidator<T> validator, bool showModelValue = true)
         where T : class, new()
     {
-        ArgumentNullException.ThrowIfNull(model);
-        ArgumentNullException.ThrowIfNull(validator);
+        VerifyThatParamsAreNotNull(model, validator);
         
         var validationResult = validator.Validate(model);
 
@@ -22,7 +21,7 @@ public static class GenericValidationExtensions
     public static ModelValidationReport<T> GetModelValidationReport<T>(this T model, bool showModelValue = true)
         where T : class, new()
     {
-        ArgumentNullException.ThrowIfNull(model);
+        VerifyThatParamsAreNotNull(model);
 
         var validator = model.GetValidator();
         return GetModelValidationReport(model, validator, showModelValue);
@@ -31,8 +30,7 @@ public static class GenericValidationExtensions
     public static async Task<ModelValidationReport<T>> GetModelValidationReportAsync<T>(this T model, IValidator<T> validator, bool showModelValue = true, CancellationToken cancellationToken = default)
         where T : class, new()
     {
-        ArgumentNullException.ThrowIfNull(model);
-        ArgumentNullException.ThrowIfNull(validator);
+        VerifyThatParamsAreNotNull(model, validator);
 
         var validationResult = await validator.ValidateAsync(model, cancellationToken);
 
@@ -42,7 +40,7 @@ public static class GenericValidationExtensions
     public static async Task<ModelValidationReport<T>> GetModelValidationReportAsync<T>(this T model, bool showModelValue = true, CancellationToken cancellationToken = default)
         where T : class, new()
     {
-        ArgumentNullException.ThrowIfNull(model);
+        VerifyThatParamsAreNotNull(model);
 
         var validator = model.GetValidator();
         return await GetModelValidationReportAsync(model, validator, showModelValue, cancellationToken);
@@ -77,6 +75,14 @@ public static class GenericValidationExtensions
         }
 
         return validatorInstance;
+    }
+
+    private static void VerifyThatParamsAreNotNull(params object[] objects)
+    {
+        foreach (var objectInstance in objects)
+        {
+            ArgumentNullException.ThrowIfNull(objectInstance);
+        }
     }
 
 }
