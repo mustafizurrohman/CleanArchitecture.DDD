@@ -84,8 +84,8 @@ public class ValidationController : BaseAPIController
             .ProjectTo<FakeDoctorAddressDTO>(AutoMapper.ConfigurationProvider);
         
         var validationReport = fakeDoctors
-            .Where(doc => withModelError ? !doc.GetModelValidationReport().Valid : doc.GetModelValidationReport().Valid)
-            .Select(doc => doc.GetModelValidationReport())
+            .Where(doc => withModelError ? !doc.GetModelValidationReport(true).Valid : doc.GetModelValidationReport(true).Valid)
+            .Select(doc => doc.GetModelValidationReport(true))
             .FirstOrDefault();
         
         return Ok(validationReport);

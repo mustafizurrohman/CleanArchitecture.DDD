@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Methods;
+﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
 
 namespace CleanArchitecture.DDD.Domain.ValueObjects;
 

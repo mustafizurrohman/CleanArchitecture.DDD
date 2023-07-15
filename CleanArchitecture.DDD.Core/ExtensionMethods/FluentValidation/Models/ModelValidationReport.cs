@@ -12,11 +12,11 @@ public class ModelValidationReport<T>
     public IEnumerable<ValidationErrorByProperty> ModelErrors { get; }
     public int NumberOfModelErrors { get; }
 
-    public ModelValidationReport(T model, FluentValidationResult validationResult)
+    public ModelValidationReport(T model, FluentValidationResult validationResult, bool showModelValue = true)
     {
         Model = model;
         Valid = validationResult.IsValid;
-        ModelErrors = validationResult.Errors.GetValidationErrorByProperties(true);
+        ModelErrors = validationResult.Errors.GetValidationErrorByProperties(showModelValue);
         NumberOfModelErrors = ModelErrors.Count();
     }
 }

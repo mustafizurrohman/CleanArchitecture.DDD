@@ -7,7 +7,7 @@ namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Methods;
 
 public static class GenericValidationExtensions
 {
-    public static ModelValidationReport<T> GetModelValidationReport<T>(this T model, IValidator<T> validator)
+    public static ModelValidationReport<T> GetModelValidationReport<T>(this T model, IValidator<T> validator, bool showModelValue = true)
         where T : class, new()
     {
         ArgumentNullException.ThrowIfNull(model);
@@ -15,19 +15,19 @@ public static class GenericValidationExtensions
         
         var validationResult = validator.Validate(model);
 
-        return new ModelValidationReport<T>(model, validationResult);
+        return new ModelValidationReport<T>(model, validationResult, showModelValue);
     }
 
-    public static ModelValidationReport<T> GetModelValidationReport<T>(this T model)
+    public static ModelValidationReport<T> GetModelValidationReport<T>(this T model, bool showModelValue = true)
         where T : class, new()
     {
         ArgumentNullException.ThrowIfNull(model);
 
         var validator = model.GetValidator();
-        return GetModelValidationReport(model, validator);
+        return GetModelValidationReport(model, validator, showModelValue);
     }
 
-    public static async Task<ModelValidationReport<T>> GetModelValidationReportAsync<T>(this T model, IValidator<T> validator, CancellationToken cancellationToken = default)
+    public static async Task<ModelValidationReport<T>> GetModelValidationReportAsync<T>(this T model, IValidator<T> validator, bool showModelValue = true, CancellationToken cancellationToken = default)
         where T : class, new()
     {
         ArgumentNullException.ThrowIfNull(model);
@@ -35,16 +35,16 @@ public static class GenericValidationExtensions
 
         var validationResult = await validator.ValidateAsync(model, cancellationToken);
 
-        return new ModelValidationReport<T>(model, validationResult);
+        return new ModelValidationReport<T>(model, validationResult, showModelValue);
     }
 
-    public static async Task<ModelValidationReport<T>> GetModelValidationReportAsync<T>(this T model, CancellationToken cancellationToken = default)
+    public static async Task<ModelValidationReport<T>> GetModelValidationReportAsync<T>(this T model, bool showModelValue = true, CancellationToken cancellationToken = default)
         where T : class, new()
     {
         ArgumentNullException.ThrowIfNull(model);
 
         var validator = model.GetValidator();
-        return await GetModelValidationReportAsync(model, validator, cancellationToken);
+        return await GetModelValidationReportAsync(model, validator, showModelValue, cancellationToken);
     }
 
     private static IValidator<T> GetValidator<T>(this T _)

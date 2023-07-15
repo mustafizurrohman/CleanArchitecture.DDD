@@ -1,7 +1,7 @@
 ﻿using CleanArchitecture.DDD.Core.ValueObjects;
 using CSharpFunctionalExtensions;
 
-namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Methods;
+namespace CleanArchitecture.DDD.Core.ExtensionMethods;
 
 public static class RuleBuilderOptionsExtensions
 {
