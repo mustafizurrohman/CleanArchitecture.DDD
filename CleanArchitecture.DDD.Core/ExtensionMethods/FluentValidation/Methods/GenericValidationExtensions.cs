@@ -27,27 +27,28 @@ public static class GenericValidationExtensions
         return GetModelValidationReport(model, validator);
     }
 
-    public static async Task<ModelValidationReport<T>> GetModelValidationReportAsync<T>(this T model, IValidator<T> validator)
+    public static async Task<ModelValidationReport<T>> GetModelValidationReportAsync<T>(this T model, IValidator<T> validator, CancellationToken cancellationToken = default)
         where T : class, new()
     {
         ArgumentNullException.ThrowIfNull(model);
         ArgumentNullException.ThrowIfNull(validator);
 
-        var validationResult = await validator.ValidateAsync(model);
+        var validationResult = await validator.ValidateAsync(model, cancellationToken);
 
         return new ModelValidationReport<T>(model, validationResult);
     }
 
-    public static async Task<ModelValidationReport<T>> GetModelValidationReportAsync<T>(this T model)
+    public static async Task<ModelValidationReport<T>> GetModelValidationReportAsync<T>(this T model, CancellationToken cancellationToken = default)
         where T : class, new()
     {
         ArgumentNullException.ThrowIfNull(model);
 
         var validator = model.GetValidator();
-        return await GetModelValidationReportAsync(model, validator);
+        return await GetModelValidationReportAsync(model, validator, cancellationToken);
     }
 
     private static IValidator<T> GetValidator<T>(this T _)
+        where T : class, new()
     {
         IValidator<T> validatorInstance;
 

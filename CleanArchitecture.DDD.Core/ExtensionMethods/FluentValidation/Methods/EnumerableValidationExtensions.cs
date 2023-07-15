@@ -25,13 +25,13 @@ public static class EnumerableValidationExtensions
     {
         ArgumentNullException.ThrowIfNull(models);
 
-        var modelsList = models.DefaultIfEmpty().ToList();
+        var modelsList = models.ToList();
 
-        IValidator<T> validator = modelsList.GetValidator()!;
+        IValidator<T> validator = modelsList.GetValidator();
 
         foreach (var model in modelsList)
         {
-            yield return await model.GetModelValidationReportAsync(validator!);
+            yield return await model.GetModelValidationReportAsync(validator);
         }
     }
 
@@ -79,6 +79,7 @@ public static class EnumerableValidationExtensions
     }
 
     private static IValidator<T> GetValidator<T>(this IEnumerable<T> _)
+        where T : class, new()
     {
         IValidator<T> validatorInstance;
 
