@@ -1,6 +1,8 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using System.Collections.Immutable;
+using AutoMapper.QueryableExtensions;
 using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Methods;
 using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
+// ReSharper disable PossibleMultipleEnumeration
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
@@ -112,10 +114,25 @@ public class ValidationController : BaseAPIController
 
         var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
 
-        List<FakeDoctorAddressDTO> doctorsToValidate = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>>(fakeDoctors).ToList();
+        var doctorsToValidate = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>>(fakeDoctors);
 
         var validationReport = await doctorsToValidate.GetModelValidationReportAsync();
-        var test = await doctorsToValidate.GetModelValidationReportEnumerableAsync().ToListAsync();
+
+        _ = doctorsToValidate.GetModelValidationReport();
+        _ = await doctorsToValidate.GetModelValidationReportAsync();
+        _ = await doctorsToValidate.GetModelValidationReportEnumerableAsync().ToListAsync();
+        _ = doctorsToValidate.ToList().GetModelValidationReport();
+        _ = await doctorsToValidate.ToList().GetModelValidationReportAsync();
+        _ = await doctorsToValidate.GetModelValidationReportEnumerableAsync().ToArrayAsync();
+        _ = doctorsToValidate.ToArray().GetModelValidationReport();
+        _ = await doctorsToValidate.ToArray().GetModelValidationReportAsync();
+        _ = await doctorsToValidate.ToArray().GetModelValidationReportEnumerableAsync().ToListAsync();
+        _ = doctorsToValidate.ToImmutableArray().GetModelValidationReport();
+        _ = await doctorsToValidate.ToImmutableArray().GetModelValidationReportAsync();
+        _ = await doctorsToValidate.ToImmutableArray().GetModelValidationReportEnumerableAsync().ToListAsync();
+        _ = doctorsToValidate.ToImmutableList().GetModelValidationReport();
+        _ = await doctorsToValidate.ToImmutableList().GetModelValidationReportAsync();
+        _ = await doctorsToValidate.ToImmutableList().GetModelValidationReportEnumerableAsync().ToListAsync();
 
         var validationReportJson = validationReport.ToFormattedJsonFailSafe();
         Console.Write(validationReportJson);
