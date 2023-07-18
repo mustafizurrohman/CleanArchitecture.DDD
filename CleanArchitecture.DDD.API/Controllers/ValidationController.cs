@@ -114,7 +114,7 @@ public class ValidationController : BaseAPIController
 
         List<FakeDoctorAddressDTO> doctorsToValidate = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>>(fakeDoctors).ToList();
 
-        var validationReport = await doctorsToValidate.AsEnumerable().GetModelValidationReportAsync();
+        var validationReport = await doctorsToValidate.GetModelValidationReportAsync();
         var test = await doctorsToValidate.GetModelValidationReportEnumerableAsync().ToListAsync();
 
         var validationReportJson = validationReport.ToFormattedJsonFailSafe();

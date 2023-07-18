@@ -1,6 +1,6 @@
-WebAPI using .NET 7 (Preview)
+WebAPI using .NET 8 (Preview)
 
-Please use latest version Visual Studio 2022 Preview to open the project and ensure that .NET 7 (Preview) is installed in your machiene
+Please use latest version Visual Studio 2022 Preview to open the project and ensure that .NET 8 (Preview) is installed in your machiene
 
 - Onion Architecture
 

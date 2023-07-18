@@ -34,7 +34,6 @@ public static class EnumerableValidationExtensions
         }
     }
 
-    
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models, IValidator<T> validator)
         where T : class, new()
     {
@@ -44,6 +43,12 @@ public static class EnumerableValidationExtensions
             .Select(model => model.GetModelValidationReport(validator));
 
         return new ModelCollectionValidationReport<T>(errorReport);
+    }
+
+    public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this List<T> models, IValidator<T> validator)
+        where T : class, new()
+    {
+        return models.AsEnumerable().GetModelValidationReport();
     }
 
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models)
@@ -56,6 +61,12 @@ public static class EnumerableValidationExtensions
         return GetModelValidationReport(models, validator);
     }
 
+    public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this List<T> models)
+        where T : class, new()
+    {
+        return models.AsEnumerable().GetModelValidationReport();
+    }
+
     public static async Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this IEnumerable<T> models, IValidator<T> validator)
         where T : class, new()
     {
@@ -66,6 +77,12 @@ public static class EnumerableValidationExtensions
         return new ModelCollectionValidationReport<T>(errorReport); 
     }
 
+    public static async Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this List<T> models, IValidator<T> validator)
+        where T : class, new()
+    {
+        return await models.AsEnumerable().GetModelValidationReportAsync(validator);
+    }
+
     public static async Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this IEnumerable<T> models)
         where T : class, new()
     {
@@ -74,6 +91,12 @@ public static class EnumerableValidationExtensions
 
         var validatorInstance = models.GetValidator();
         return await GetModelValidationReportAsync(models, validatorInstance);
+    }
+
+    public static async Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this List<T> models)
+        where T : class, new()
+    {
+        return await models.AsEnumerable().GetModelValidationReportAsync();
     }
 
     private static IValidator<T> GetValidator<T>(this IEnumerable<T> _)
