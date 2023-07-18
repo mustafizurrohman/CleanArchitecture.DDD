@@ -34,6 +34,21 @@ public static class EnumerableValidationExtensions
         }
     }
 
+    public static async IAsyncEnumerable<ModelValidationReport<T>> GetModelValidationReportEnumerableAsync<T>(this T[] models)
+        where T : class, new()
+    {
+        VerifyThatParamsAreNotNull(models as object[]);
+
+        var modelsList = models.ToList();
+
+        IValidator<T> validator = modelsList.GetValidator();
+
+        foreach (var model in modelsList)
+        {
+            yield return await model.GetModelValidationReportAsync(validator);
+        }
+    }
+
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models, IValidator<T> validator)
         where T : class, new()
     {
@@ -48,7 +63,13 @@ public static class EnumerableValidationExtensions
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this List<T> models, IValidator<T> validator)
         where T : class, new()
     {
-        return models.AsEnumerable().GetModelValidationReport();
+        return models.AsEnumerable().GetModelValidationReport(validator);
+    }
+
+    public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this T[] models, IValidator<T> validator)
+        where T : class, new()
+    {
+        return models.AsEnumerable().GetModelValidationReport(validator);
     }
 
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this IEnumerable<T> models)
@@ -62,6 +83,12 @@ public static class EnumerableValidationExtensions
     }
 
     public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this List<T> models)
+        where T : class, new()
+    {
+        return models.AsEnumerable().GetModelValidationReport();
+    }
+
+    public static ModelCollectionValidationReport<T> GetModelValidationReport<T>(this T[] models)
         where T : class, new()
     {
         return models.AsEnumerable().GetModelValidationReport();
@@ -83,6 +110,12 @@ public static class EnumerableValidationExtensions
         return await models.AsEnumerable().GetModelValidationReportAsync(validator);
     }
 
+    public static async Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this T[] models, IValidator<T> validator)
+        where T : class, new()
+    {
+        return await models.AsEnumerable().GetModelValidationReportAsync(validator);
+    }
+
     public static async Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this IEnumerable<T> models)
         where T : class, new()
     {
@@ -94,6 +127,12 @@ public static class EnumerableValidationExtensions
     }
 
     public static async Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this List<T> models)
+        where T : class, new()
+    {
+        return await models.AsEnumerable().GetModelValidationReportAsync();
+    }
+
+    public static async Task<ModelCollectionValidationReport<T>> GetModelValidationReportAsync<T>(this T[] models)
         where T : class, new()
     {
         return await models.AsEnumerable().GetModelValidationReportAsync();
