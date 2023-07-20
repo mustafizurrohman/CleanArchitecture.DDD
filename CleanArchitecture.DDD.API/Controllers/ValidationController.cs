@@ -108,7 +108,7 @@ public class ValidationController : BaseAPIController
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DemoExtensionMethodForCollection(int num = 100)
+    public async Task<IActionResult> DemoExtensionMethodForCollection(int num = 100, CancellationToken cancellationToken = default)
     {
         Guard.Against.NegativeOrZero(num);
 
@@ -119,20 +119,23 @@ public class ValidationController : BaseAPIController
         var validationReport = await doctorsToValidate.GetModelValidationReportAsync();
 
         _ = doctorsToValidate.GetModelValidationReport();
-        _ = await doctorsToValidate.GetModelValidationReportAsync();
-        _ = await doctorsToValidate.GetModelValidationReportEnumerableAsync().ToListAsync();
         _ = doctorsToValidate.ToList().GetModelValidationReport();
-        _ = await doctorsToValidate.ToList().GetModelValidationReportAsync();
-        _ = await doctorsToValidate.GetModelValidationReportEnumerableAsync().ToArrayAsync();
         _ = doctorsToValidate.ToArray().GetModelValidationReport();
-        _ = await doctorsToValidate.ToArray().GetModelValidationReportAsync();
-        _ = await doctorsToValidate.ToArray().GetModelValidationReportEnumerableAsync().ToListAsync();
         _ = doctorsToValidate.ToImmutableArray().GetModelValidationReport();
-        _ = await doctorsToValidate.ToImmutableArray().GetModelValidationReportAsync();
-        _ = await doctorsToValidate.ToImmutableArray().GetModelValidationReportEnumerableAsync().ToListAsync();
         _ = doctorsToValidate.ToImmutableList().GetModelValidationReport();
+
+        _ = await doctorsToValidate.GetModelValidationReportAsync();
+        _ = await doctorsToValidate.ToList().GetModelValidationReportAsync();
         _ = await doctorsToValidate.ToImmutableList().GetModelValidationReportAsync();
-        _ = await doctorsToValidate.ToImmutableList().GetModelValidationReportEnumerableAsync().ToListAsync();
+        _ = await doctorsToValidate.ToArray().GetModelValidationReportAsync();
+        _ = await doctorsToValidate.ToImmutableArray().GetModelValidationReportAsync();
+        
+        _ = await doctorsToValidate.GetModelValidationReportEnumerableAsync().ToListAsync(cancellationToken);
+        _ = await doctorsToValidate.GetModelValidationReportEnumerableAsync().ToArrayAsync(cancellationToken);
+        _ = await doctorsToValidate.ToArray().GetModelValidationReportEnumerableAsync().ToListAsync(cancellationToken);
+        _ = await doctorsToValidate.ToImmutableArray().GetModelValidationReportEnumerableAsync().ToListAsync(cancellationToken);
+        _ = await doctorsToValidate.ToList().GetModelValidationReportEnumerableAsync().ToListAsync(cancellationToken);
+        _ = await doctorsToValidate.ToImmutableList().GetModelValidationReportEnumerableAsync().ToListAsync(cancellationToken);
 
         var validationReportJson = validationReport.ToFormattedJsonFailSafe();
         Console.Write(validationReportJson);

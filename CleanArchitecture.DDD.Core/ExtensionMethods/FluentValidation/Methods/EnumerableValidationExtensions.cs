@@ -24,11 +24,11 @@ public static class EnumerableValidationExtensions
     {
         VerifyThatParamsAreNotNull(models);
 
-        var modelsList = models.ToList();
+        models = models.ToList();
 
-        IValidator<T> validator = modelsList.GetValidator();
+        IValidator<T> validator = models.GetValidator();
 
-        foreach (var model in modelsList)
+        foreach (var model in models)
         {
             yield return await model.GetModelValidationReportAsync(validator);
         }
@@ -39,11 +39,9 @@ public static class EnumerableValidationExtensions
     {
         VerifyThatParamsAreNotNull(models as object[]);
 
-        var modelsList = models.ToList();
+        IValidator<T> validator = models.GetValidator();
 
-        IValidator<T> validator = modelsList.GetValidator();
-
-        foreach (var model in modelsList)
+        foreach (var model in models)
         {
             yield return await model.GetModelValidationReportAsync(validator);
         }
