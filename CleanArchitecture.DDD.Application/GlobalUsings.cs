@@ -35,5 +35,3 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Scrutor;
 
 global using CleanArchitecture.DDD.Core.Helpers;
-
-global using FluentValidationResult = FluentValidation.Results.ValidationResult;

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Immutable;
 using AutoMapper.QueryableExtensions;
 using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Methods;
-using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
 // ReSharper disable PossibleMultipleEnumeration
 
 namespace CleanArchitecture.DDD.API.Controllers;

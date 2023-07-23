@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reflection;
 using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Exceptions;
 using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Models;
