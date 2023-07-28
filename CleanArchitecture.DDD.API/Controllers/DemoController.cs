@@ -67,7 +67,4 @@ public class DemoController : BaseAPIController
 
         return Ok(randomSpecializations);
     }
-
-
-
 }

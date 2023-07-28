@@ -7,6 +7,4 @@ public class DemoData
     public string Firstname { get; init; }
     public string Lastname { get; init; }
     public string FullName => (Firstname + " " + Lastname).RemoveConsecutiveSpaces();
-
-    
 }

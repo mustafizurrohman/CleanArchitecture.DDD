@@ -31,18 +31,13 @@ internal class HashedPassword
         Hash = hashParts[0]; 
         Salt = hashParts[1];
 
-        try
-        {
-            NumberOfRounds = int.Parse(hashParts[2]);
-        }
-        catch (Exception ex)
-        {
-            if (ex is ArgumentException or FormatException or OverflowException)
-                throw new InvalidHashedPasswordException();
+        var parseSuccessful = int.TryParse(hashParts[2], out var parsedNumberOfRounds);
 
-            throw;
-        }
+        if (!parseSuccessful)
+            throw new InvalidHashedPasswordException();
 
+        NumberOfRounds = parsedNumberOfRounds;
+        
     }
 
     /// <summary>
