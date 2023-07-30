@@ -20,10 +20,12 @@ public class DbConnectionString
     {
         static string RemoveDatabaseFromConnectionString(string connStr)
         {
+            var separator = ";";
+
             return connStr
-                .Split(";")
+                .Split(separator)
                 .Where(str => !str.Contains("Database="))
-                .Aggregate((a, b) => a + ";" + b);
+                .Aggregate((a, b) => a + separator + b);
         }
 
         if (string.IsNullOrWhiteSpace(connectionString))

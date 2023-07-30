@@ -10,7 +10,7 @@ public class NotificationService : INotificationService
         if (modelCollectionValidationReport.HasAllValidModels)
             return;
 
-        // TODO: Save as HTML and send as attachment using Weischer Global Email service 
+        // TODO: Save as HTML and send as attachment using Global Email service 
         var validationResult = modelCollectionValidationReport.ValidationReport.InvalidModelsReport.ToFormattedJsonFailSafe();
         Log.Warning(validationResult);
 
