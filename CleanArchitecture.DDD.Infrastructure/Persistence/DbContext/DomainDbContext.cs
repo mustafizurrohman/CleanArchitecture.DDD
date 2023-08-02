@@ -1,7 +1,11 @@
-﻿using CleanArchitecture.DDD.Core.Helpers;
+﻿using System.Collections.Immutable;
+using CleanArchitecture.DDD.Core.Helpers;
 using CleanArchitecture.DDD.Core.Models;
 using CleanArchitecture.DDD.Infrastructure.Exceptions;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Query;
+using System.Linq.Expressions;
 using DatabaseContext = Microsoft.EntityFrameworkCore.DbContext;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
@@ -71,11 +75,11 @@ public class DomainDbContext : DatabaseContext
     {      
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        #region -- Soft Deletion Configuration --
-
         var allEntityTypes = modelBuilder.Model
             .GetEntityTypes()
-            .ToList();
+            .ToImmutableList();
+
+        #region -- Soft Deletion Configuration --
 
         // Set default value of SoftDeletedProperty in all entities
         var allSoftDeletedProperties = allEntityTypes
@@ -92,13 +96,22 @@ public class DomainDbContext : DatabaseContext
 
         #region -- Global Query Filter Configuration --
 
-        // TODO: Can this be done using reflection?
-        modelBuilder.Entity<Doctor>()
-            .HasQueryFilter(doc => !doc.SoftDeleted);
+        var entityTypesWithBaseEntityAsBaseModel = allEntityTypes
+            .Where(et => et.ClrType.IsAssignableTo(typeof(BaseEntity)))
+            .ToImmutableList();
 
-        modelBuilder.Entity<Address>()
-            .HasQueryFilter(addr => !addr.SoftDeleted);
+        Expression<Func<BaseEntity, bool>> notSoftDeletedFilterExpr = bm => !bm.SoftDeleted;
+        foreach (var entityType in entityTypesWithBaseEntityAsBaseModel)
+        {
+            // Modify expression to handle correct child type
+            var parameter = Expression.Parameter(entityType.ClrType);
+            var body = ReplacingExpressionVisitor.Replace(notSoftDeletedFilterExpr.Parameters[0], parameter, notSoftDeletedFilterExpr.Body);
+            var lambdaExpression = Expression.Lambda(body, parameter);
 
+            // Set query filter
+            entityType.SetQueryFilter(lambdaExpression);
+        }
+        
         #endregion
     }
 
