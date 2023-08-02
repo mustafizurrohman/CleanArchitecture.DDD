@@ -16,4 +16,12 @@ public static class EnumerableExtensions
         }
     }
 
+    public static async Task ForEachAsync<T>(this List<T> source, Func<T, Task> func)
+    {
+        foreach (var item in source)
+        {
+            await func(item);
+        }
+    }
+
 }
