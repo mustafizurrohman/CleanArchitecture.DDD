@@ -99,7 +99,7 @@ public class EFDemoController : BaseAPIController
     /// </summary>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpGet("grouping", Name = "DemoWeischer")]
+    [HttpGet("grouping", Name = "DemoGrouping")]
     [SwaggerOperation(
         Summary = "Grouping using Entity Framework",
         Description = DefaultDescription,
@@ -112,7 +112,8 @@ public class EFDemoController : BaseAPIController
         stopwatch.Start();
 
         var result0 = DbContext.Doctors
-            .Include(doc => doc.Address)
+            // EF Core will take care of it
+            // .Include(doc => doc.Address)
             .Select(doc => new
             {
                 doc.FullName,
@@ -171,21 +172,15 @@ public class EFDemoController : BaseAPIController
         OperationId = "EntityFramework streaming Demo",
         Tags = new[] { DefaultControllerTag }
     )]
-    public async IAsyncEnumerable<OkObjectResult> GetDoctorsStreaming([EnumeratorCancellation] CancellationToken cancellationToken)
+    public async Task<IActionResult> GetDoctorsStreaming(CancellationToken cancellationToken)
     {
         var doctors = DbContext.Doctors
             .AsNoTracking()
             .OrderBy(doc => doc.Name.Firstname)
-            .Take(10)
-            .AsAsyncEnumerable()
             .Select(doc => doc.Name.Firstname + " " + doc.Name.Lastname)
-            .AsAsyncEnumerable();
+            .Chunk(1000)
+            .ToAsyncEnumerable();
 
-        await foreach (var doctor in doctors.WithCancellation(cancellationToken))
-        {
-            await Task.Delay(50, cancellationToken);
-            yield return Ok(doctor);
-        }
-
+        return Ok(doctors);
     }
 }

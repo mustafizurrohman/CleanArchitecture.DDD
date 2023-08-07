@@ -35,7 +35,6 @@ public class DomainDbContext : DatabaseContext
     }
 
     #region -- Entities --
-
     public virtual DbSet<Doctor> Doctors { get; set; }
     public virtual DbSet<Address> Addresses { get; set; }
     public virtual DbSet<Patient> Patients { get; set; }

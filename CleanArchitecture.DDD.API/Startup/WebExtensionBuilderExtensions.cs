@@ -242,6 +242,7 @@ public static class WebExtensionBuilderExtensions
     private static WebApplicationBuilder ConfigureEntityFramework(this WebApplicationBuilder builder)
     {
         var connectionString = builder.GetDatabaseConnectionString();
+        // TODO: Use DbContextPooling
         builder.Services.AddScoped(_ => new DomainDbContext(connectionString, builder.Environment.IsDevelopment()));
 
         return builder;
