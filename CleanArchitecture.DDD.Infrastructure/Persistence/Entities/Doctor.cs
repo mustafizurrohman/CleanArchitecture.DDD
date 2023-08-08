@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
+﻿using Bogus;
+using CleanArchitecture.DDD.Core.ExtensionMethods;
 using CleanArchitecture.DDD.Domain.ValueObjects;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
@@ -23,8 +24,7 @@ public sealed class Doctor : BaseEntity
 
     // Must be init
     public Address Address { get; set; }
-    [ForeignKey("Address")]
-    public Guid AddressId { get; set; }
+    [ForeignKey("Address")] public Guid AddressId { get; set; }
 
     public Specialization Specialization { get; set; }
 
@@ -32,8 +32,7 @@ public sealed class Doctor : BaseEntity
     public string FullName => (this.Name.Firstname + " " + this.Name.Middlename + " " + this.Name.Lastname)
         .RemoveConsecutiveSpaces();
 
-    [NotMapped] 
-    public string SpecializationAsString => Specialization.ToStringCached();
+    [NotMapped] public string SpecializationAsString => Specialization.ToStringCached();
 
     /// <summary>
     /// Required for EntityFramework
@@ -59,7 +58,7 @@ public sealed class Doctor : BaseEntity
         };
     }
 
-    public static Doctor Create(string firstname, string? middlename, string lastname) 
+    public static Doctor Create(string firstname, string? middlename, string lastname)
     {
         return new Doctor
         {
@@ -67,7 +66,8 @@ public sealed class Doctor : BaseEntity
         };
     }
 
-    public static Doctor Create(Name name, Address address, Guid EDCMExternalID, Specialization specialization = Specialization.Unknown)
+    public static Doctor Create(Name name, Address address, Guid EDCMExternalID,
+        Specialization specialization = Specialization.Unknown)
     {
         var doc = new Doctor
         {
@@ -81,8 +81,8 @@ public sealed class Doctor : BaseEntity
     }
 
     public static Doctor Create(Name name, Address address, Specialization specialization = Specialization.Unknown)
-    {                  
-        var doc =  new Doctor
+    {
+        var doc = new Doctor
         {
             Name = Name.Copy(name),
             Address = Address.Copy(address),
@@ -109,4 +109,12 @@ public sealed class Doctor : BaseEntity
         return doc;
     }
 
+    public static Doctor CreateRandom()
+    {
+        var doctor = Doctor.Create(Name.CreateRandom(), Address.CreateRandom(), SpecializationEnumExtensions.GetRandomSpecialization());
+        return doctor;
+    }
+
 }
+
+

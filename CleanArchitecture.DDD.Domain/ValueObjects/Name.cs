@@ -1,4 +1,5 @@
-﻿ using CleanArchitecture.DDD.Core.ExtensionMethods;
+﻿ using Bogus;
+ using CleanArchitecture.DDD.Core.ExtensionMethods;
  using CleanArchitecture.DDD.Domain.Exceptions;
 
  namespace CleanArchitecture.DDD.Domain.ValueObjects; 
@@ -37,6 +38,15 @@
             Validate(newName);
 
          return newName;
+     }
+
+     public static Name CreateRandom()
+     { 
+         Faker faker = new();
+         var name = Name.Create(faker.Name.FirstName(), faker.Name.LastName());
+
+         return name;
+
      }
 
      public override string ToString()

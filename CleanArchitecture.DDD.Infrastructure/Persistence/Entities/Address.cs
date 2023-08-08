@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
+﻿using Bogus;
+using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
 
@@ -45,6 +46,26 @@ public sealed class Address : BaseEntity
         };
     }
 
+    public static Address CreateRandom()
+    {
+        Faker faker = new();
+
+        IReadOnlyList<string> fakeCities = new List<string>()
+        {
+            "Berlin", "Bern", "Vienna", "Hamburg", "Köln", "Munich", "Stuttgart",
+            "Zurich", "Graz", "Bonn", "Göttingen", "Rome", "Venice", "Hannover"
+        };
+
+        IReadOnlyList<string> fakeCountries = new List<string>()
+        {
+            "Deutschland", "Osterreich", "Schweiz"
+        };
+
+        var address = Create(faker.Address.StreetName(), faker.Address.ZipCode(), faker.Random.ArrayElement(fakeCities.ToArray()), faker.Random.ArrayElement(fakeCountries.ToArray()));
+
+        return address;
+    }
+
     public void UpdateAddress(Address updatedAddress)
     {
         StreetAddress = updatedAddress.StreetAddress;
@@ -52,14 +73,12 @@ public sealed class Address : BaseEntity
         Country = updatedAddress.Country;
         ZipCode = updatedAddress.ZipCode;
     }
-
     public override string ToString()
     {
         const string separator = ", ";
-
         return StreetAddress + separator
-                             + ZipCode + separator
-                             + City + separator + Country;
+        + ZipCode + separator
+        + City + separator + Country;
     }
 
     public static bool operator !=(Address left, Address right)

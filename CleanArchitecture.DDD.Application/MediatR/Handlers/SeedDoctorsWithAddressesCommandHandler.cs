@@ -61,15 +61,9 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
         Log.Information("Seeding complete ...");
     }
 
-
-
     private Doctor GetDoctor(bool simulateDelay)
     {
-        var address = Address.Create(_faker.Address.StreetName(), _faker.Address.ZipCode(), RandomCity, RandomCountry);
-            
-        var name = Name.Create(_faker.Name.FirstName(), _faker.Name.LastName());
-
-        var doctor = Doctor.Create(name, address, SpecializationEnumExtensions.GetRandomSpecialization());
+        var doctor = Doctor.CreateRandom();
 
         if (simulateDelay)
         {
