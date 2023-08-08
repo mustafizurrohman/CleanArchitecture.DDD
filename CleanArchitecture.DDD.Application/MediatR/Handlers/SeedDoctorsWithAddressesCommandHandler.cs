@@ -13,29 +13,21 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
 
     private readonly List<string> _fakeCities = new()
     {
-        "Berlin",
-        "Bern",
-        "Vienna",
-        "Hamburg",
-        "Köln",
-        "Munich",
-        "Stuttgart",
-        "Zurich",
-        "Graz",
-        "Bonn",
-        "Göttingen",
-        "Rome",
-        "Venice"
+        "Berlin", "Bern", "Vienna", "Hamburg", "Köln", "Munich", "Stuttgart", 
+        "Zurich", "Graz", "Bonn", "Göttingen", "Rome", "Venice", "Hannover"
     };
 
     private readonly List<string> _fakeCountries = new()
     {
-        "Deutschland",
-        "Osterreich",
-        "Schweiz"
+        "Deutschland", "Osterreich", "Schweiz"
     };
     #pragma warning restore S3604 // Member initializer values should not be redundant
-    
+
+    private T RandomElement<T>(IEnumerable<T> enumerable) => _faker.Random.ArrayElement(enumerable.ToArray());
+
+    private string RandomCity => RandomElement(_fakeCities);
+    private string RandomCountry => RandomElement(_fakeCountries);
+
     #endregion
 
     public async Task Handle(SeedDoctorsWithAddressesCommand request, CancellationToken cancellationToken)
@@ -67,13 +59,9 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
         }
 
         Log.Information("Seeding complete ...");
-
     }
 
-    private T RandomElement<T>(IEnumerable<T> enumerable) => _faker.Random.ArrayElement(enumerable.ToArray());
 
-    private string RandomCity => RandomElement(_fakeCities);
-    private string RandomCountry => RandomElement(_fakeCountries);
 
     private Doctor GetDoctor(bool simulateDelay)
     {
@@ -116,25 +104,5 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
         {
             yield return chuckOfDoctors; 
         }
-
-        #region -- Trivial Implementation -- 
-
-        /*
-        var doctors = new List<Doctor>();
-        chunkSize = Math.Min(chunkSize, num);
-
-        foreach (var _ in Enumerable.Range(1, num))
-        {
-            doctors.Add(await GetDoctorAsync(simulateDelay));
-
-            if (doctors.Count == chunkSize)
-            {
-                yield return doctors;
-                doctors.Clear();
-            }
-        } */
-
-        #endregion
-
     }
 }
