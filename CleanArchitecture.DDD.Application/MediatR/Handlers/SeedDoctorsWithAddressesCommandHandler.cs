@@ -84,8 +84,8 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
         {
             var waitTimeInMs = DateTime.Now.Microsecond % 3 switch
             {
-                0 => _faker.Random.Number(90, 200),
-                1 => _faker.Random.Number(200, 400),
+                0 => _faker.Random.Number(9, 20),
+                1 => _faker.Random.Number(20, 400),
                 2 => _faker.Random.Number(400, 800),
                 _ => _faker.Random.Number(800, 1500)
             };
@@ -114,7 +114,7 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
     {
         Console.WriteLine("Starting buffering ...");
         var bufferedDoctorEnumerable = GetDoctorsAsyncEnumerable(num, simulateDelay)
-            .Buffer(TimeSpan.FromMilliseconds(1500), 8);
+            .Buffer(TimeSpan.FromMilliseconds(2000), 8);
 
         await foreach (var chunk in bufferedDoctorEnumerable)
         {
