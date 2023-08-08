@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
-using CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
+﻿using System.Collections.Immutable;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
-using Microsoft.Identity.Client;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 
 public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServices) 
     : BaseHandler(appServices), IRequestHandler<SeedDoctorsWithAddressesCommand>
 {
+    #region -- Private Variables -- 
+
+    #pragma warning disable S3604 // Member initializer values should not be redundant
     private readonly Faker _faker = new();
 
     private readonly List<string> _fakeCities = new()
@@ -34,19 +34,13 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
         "Osterreich",
         "Schweiz"
     };
-
+    #pragma warning restore S3604 // Member initializer values should not be redundant
+    
+    #endregion
 
     public async Task Handle(SeedDoctorsWithAddressesCommand request, CancellationToken cancellationToken)
     {
-        var chunkSize = request.Num > 1000 
-            ? 1000 
-            : (int)Math.Floor((double)request.Num / 10);
-
-        chunkSize = Math.Min(chunkSize, request.Num);
-
-        Log.Information("Computed chunk size is {chunkSize}", chunkSize);
-
-        var doctors = GetDoctorsChunkedAsyncEnumerable(request.Num, chunkSize, request.WithRandomDelay)
+        var doctors = GetDoctorsChunkedAsyncEnumerable(request.Num, request.WithRandomDelay)
             .WithCancellation(cancellationToken);
 
         var numberOfDoctorsSaved = 0;
@@ -63,7 +57,10 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
             numberOfDoctorsSaved += doctorsToSave.Count;
             var remaining = request.Num - numberOfDoctorsSaved;
             var completePercentage = Math.Round(numberOfDoctorsSaved / (double) request.Num * 100, 2);
-            Log.Information("Saved chunk with {numberOfDoctors} doctors... Completed {completed}% Remaining {remaining} doctors ", chunkSize, completePercentage, remaining);
+            Log.Information("Saved chunk with {numberOfDoctors} doctors... Completed {completed}% Remaining {remaining} doctors "
+                , doctorsToSave.Count
+                , completePercentage
+                , remaining);
         }
 
         Log.Information("Seeding complete ...");
@@ -85,7 +82,9 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
 
         if (simulateDelay)
         {
-            var waitTimeInMs = _faker.Random.Number(3, 10);
+            var waitTimeInMs = DateTime.Now.Microsecond % 3  == 0
+                ? _faker.Random.Number(90, 200)
+                : _faker.Random.Number(200, 400);
             Thread.Sleep(waitTimeInMs);
         }
 
@@ -97,9 +96,28 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
         return Task.FromResult(GetDoctor(simulateDelay));
     }
 
-    // TODO: Can this be further optimized?
-    private async IAsyncEnumerable<IEnumerable<Doctor>> GetDoctorsChunkedAsyncEnumerable(int num, int chunkSize, bool simulateDelay)
+    private async IAsyncEnumerable<Doctor> GetDoctorsAsyncEnumerable(int num, bool simulateDelay)
     {
+        foreach (var _ in Enumerable.Range(1, num))
+        {
+            yield return await GetDoctorAsync(simulateDelay);
+        }
+    }
+
+    private async IAsyncEnumerable<IEnumerable<Doctor>> GetDoctorsChunkedAsyncEnumerable(int num, bool simulateDelay)
+    {
+        Console.WriteLine("Starting buffering ...");
+        var bufferedDoctorEnumerable = GetDoctorsAsyncEnumerable(num, simulateDelay)
+            .Buffer(TimeSpan.FromSeconds(1), 8);
+
+        await foreach (var chunk in bufferedDoctorEnumerable)
+        {
+            yield return chunk; 
+        }
+
+        #region -- Trivial Implementation -- 
+
+        /*
         var doctors = new List<Doctor>();
         chunkSize = Math.Min(chunkSize, num);
 
@@ -112,6 +130,9 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
                 yield return doctors;
                 doctors.Clear();
             }
-        }
+        } */
+
+        #endregion
+
     }
 }
