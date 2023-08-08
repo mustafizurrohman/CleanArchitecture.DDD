@@ -45,7 +45,7 @@ public class DomainDbContext : DatabaseContext
     {
         optionsBuilder.UseSqlServer(_connectionString);
 
-        if (_useLogger)
+        if (_useLogger && false)
         {
             var consoleLoggerFactory = LoggerFactory.Create(loggerBuilder =>
             {
@@ -130,22 +130,19 @@ public class DomainDbContext : DatabaseContext
     /// </summary>
     private void SetAuditingData()
     {
-        BenchmarkHelper.Benchmark(() =>
+        var entries = ChangeTracker
+            .Entries()
+            .Where(e => e is {Entity: BaseEntity, State: EntityState.Added or EntityState.Modified});
+
+        var now = DateTime.Now;
+
+        foreach (var entityEntry in entries)
         {
-            var entries = ChangeTracker
-                .Entries()
-                .Where(e => e.Entity is BaseEntity
-                            && e.State is EntityState.Added or EntityState.Modified);
-
-            var now = DateTime.Now;
-
-            foreach (var entityEntry in entries)
-            {
-                if (entityEntry.State == EntityState.Added)
-                    ((BaseEntity)entityEntry.Entity).CreatedOn = now;
-                else
-                    ((BaseEntity)entityEntry.Entity).UpdatedOn = now;
-            }
-        });                
+            if (entityEntry.State == EntityState.Added)
+                ((BaseEntity)entityEntry.Entity).CreatedOn = now;
+            else
+                ((BaseEntity)entityEntry.Entity).UpdatedOn = now;
+        }
+                       
     }
 }

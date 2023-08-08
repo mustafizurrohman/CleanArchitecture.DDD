@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 using Microsoft.Identity.Client;
 
@@ -37,27 +38,44 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
 
     public async Task Handle(SeedDoctorsWithAddressesCommand request, CancellationToken cancellationToken)
     {
-        var doctors = Enumerable.Range(0, request.Num)
-            .Select(_ => GetDoctor(true))
-            .Chunk(10)
-            .ToAsyncEnumerable();
+        var chunkSize = request.Num > 1000 
+            ? 1000 
+            : (int)Math.Floor((double)request.Num / 10);
 
-        await foreach (var chunkOfDoctors in doctors.WithCancellation(cancellationToken))
+        chunkSize = Math.Min(chunkSize, request.Num);
+
+        Log.Information("Computed chunk size is {chunkSize}", chunkSize);
+
+        var doctors = GetDoctorsChunkedAsyncEnumerable(request.Num, chunkSize, request.WithRandomDelay)
+            .WithCancellation(cancellationToken);
+
+        var numberOfDoctorsSaved = 0;
+
+        await foreach (var chunkOfDoctors in doctors)
         {
-            await DbContext.AddRangeAsync(chunkOfDoctors, cancellationToken);
-                
+            var doctorsToSave = chunkOfDoctors.ToImmutableList();
+            Console.WriteLine();
+            Console.WriteLine($"Got a chunk of doctors with {doctorsToSave.Count} doctors... ");
+
+            await DbContext.AddRangeAsync(doctorsToSave, cancellationToken);
             await DbContext.SaveChangesAsync(cancellationToken);
-            Log.Information("Saved chunk of doctor ... ");
+            
+            numberOfDoctorsSaved += doctorsToSave.Count;
+            var remaining = request.Num - numberOfDoctorsSaved;
+            var completePercentage = Math.Round(numberOfDoctorsSaved / (double) request.Num * 100, 2);
+            Log.Information("Saved chunk with {numberOfDoctors} doctors... Completed {completed}% Remaining {remaining} doctors ", chunkSize, completePercentage, remaining);
         }
+
+        Log.Information("Seeding complete ...");
+
     }
 
     private T RandomElement<T>(IEnumerable<T> enumerable) => _faker.Random.ArrayElement(enumerable.ToArray());
 
-    private string RandomCity => RandomElement(_fakeCities.ToArray());
-    private string RandomCountry => RandomElement(_fakeCountries.ToArray());
+    private string RandomCity => RandomElement(_fakeCities);
+    private string RandomCountry => RandomElement(_fakeCountries);
 
-    // TODO: Try with Async variant to experiment with new code
-    private Doctor GetDoctor(bool simulateDelay = false)
+    private Doctor GetDoctor(bool simulateDelay)
     {
         var address = Address.Create(_faker.Address.StreetName(), _faker.Address.ZipCode(), RandomCity, RandomCountry);
             
@@ -67,11 +85,33 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
 
         if (simulateDelay)
         {
-            var waitTimeInMs = _faker.Random.Number(300, 900);
+            var waitTimeInMs = _faker.Random.Number(3, 10);
             Thread.Sleep(waitTimeInMs);
-            Log.Information("Waited randomly for {creationTime} milliseconds...", waitTimeInMs);
         }
 
         return doctor;
+    }
+
+    private Task<Doctor> GetDoctorAsync(bool simulateDelay)
+    {
+        return Task.FromResult(GetDoctor(simulateDelay));
+    }
+
+    // TODO: Can this be further optimized?
+    private async IAsyncEnumerable<IEnumerable<Doctor>> GetDoctorsChunkedAsyncEnumerable(int num, int chunkSize, bool simulateDelay)
+    {
+        var doctors = new List<Doctor>();
+        chunkSize = Math.Min(chunkSize, num);
+
+        foreach (var _ in Enumerable.Range(1, num))
+        {
+            doctors.Add(await GetDoctorAsync(simulateDelay));
+
+            if (doctors.Count == chunkSize)
+            {
+                yield return doctors;
+                doctors.Clear();
+            }
+        }
     }
 }

@@ -97,6 +97,7 @@ public class SeedController : BaseAPIController
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <param name="num"></param>
+    /// <param name="withDelay"></param>
     /// <returns></returns>
     [HttpPost("doctorsWithAddress", Name = "seedDoctorsWithAddress")]
     [SwaggerOperation(
@@ -107,7 +108,7 @@ public class SeedController : BaseAPIController
     )]
     [ProducesResponseType(typeof(Tuple<int, long>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateDoctorsWithAddress(CancellationToken cancellationToken, int num = 100)
+    public async Task<IActionResult> CreateDoctorsWithAddress(CancellationToken cancellationToken, int num = 100, bool withDelay = false)
     {
         try
         {
@@ -115,7 +116,7 @@ public class SeedController : BaseAPIController
 
             var runtime = await BenchmarkHelper.BenchmarkAsync(async () =>
             {
-                var command = new SeedDoctorsWithAddressesCommand(num);
+                var command = new SeedDoctorsWithAddressesCommand(num, withDelay);
                 await Mediator.Send(command, cancellationToken);
             });
 
