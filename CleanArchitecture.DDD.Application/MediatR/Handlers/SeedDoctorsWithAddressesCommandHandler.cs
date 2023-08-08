@@ -45,6 +45,7 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
 
         var numberOfDoctorsSaved = 0;
 
+        // Consuming the async stream
         await foreach (var chunkOfDoctors in doctors)
         {
             var doctorsToSave = chunkOfDoctors.ToImmutableList();
@@ -56,11 +57,13 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
             
             numberOfDoctorsSaved += doctorsToSave.Count;
             var remaining = request.Num - numberOfDoctorsSaved;
-            var completePercentage = Math.Round(numberOfDoctorsSaved / (double) request.Num * 100, 2);
-            Log.Information("Saved chunk with {numberOfDoctors} doctors... Completed {completed}% Remaining {remaining} doctors "
+            var completePercentage = numberOfDoctorsSaved.GetPercentageOf(request.Num);
+            var remainingPercentage = remaining.GetPercentageOf(request.Num);
+            Log.Information("Saved chunk with {numberOfDoctors} doctors... Completed {completed}%. Remaining {remaining} ({remainingPercentage}%) doctors "
                 , doctorsToSave.Count
                 , completePercentage
-                , remaining);
+                , remaining
+                , remainingPercentage);
         }
 
         Log.Information("Seeding complete ...");
@@ -82,15 +85,7 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
 
         if (simulateDelay)
         {
-            var waitTimeInMs = DateTime.Now.Microsecond % 3 switch
-            {
-                0 => _faker.Random.Number(9, 20),
-                1 => _faker.Random.Number(20, 400),
-                2 => _faker.Random.Number(400, 800),
-                _ => _faker.Random.Number(800, 1500)
-            };
-
-            Console.WriteLine($"Delay {waitTimeInMs} ms");
+            var waitTimeInMs = _faker.Random.Number(9, 25);
             Thread.Sleep(waitTimeInMs);
         }
 
@@ -113,12 +108,13 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
     private async IAsyncEnumerable<IEnumerable<Doctor>> GetDoctorsChunkedAsyncEnumerable(int num, bool simulateDelay)
     {
         Console.WriteLine("Starting buffering ...");
-        var bufferedDoctorEnumerable = GetDoctorsAsyncEnumerable(num, simulateDelay)
-            .Buffer(TimeSpan.FromMilliseconds(2000), 8);
 
-        await foreach (var chunk in bufferedDoctorEnumerable)
+        var bufferedEnumerableChunk = GetDoctorsAsyncEnumerable(num, simulateDelay)
+            .Buffer(TimeSpan.FromMilliseconds(2000), _faker.Random.Number(125, 150));
+
+        await foreach (var chuckOfDoctors in bufferedEnumerableChunk)
         {
-            yield return chunk; 
+            yield return chuckOfDoctors; 
         }
 
         #region -- Trivial Implementation -- 

@@ -6,7 +6,7 @@ namespace CleanArchitecture.DDD.Core.ExtensionMethods;
 public static class AsyncEnumerableExtensions
 {
     /// <summary>
-    /// Source: https://stackoverflow.com/a/67676374
+    /// Source: https://stackoverflow.com/a/67676374 ::
     /// Splits the elements of a sequence into chunks that are emitted when either
     /// they are full, or a given amount of time has elapsed after requesting the
     /// previous chunk.
@@ -16,9 +16,8 @@ public static class AsyncEnumerableExtensions
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(source);
-        if (timeSpan < TimeSpan.FromMilliseconds(1.0))
-            throw new ArgumentOutOfRangeException(nameof(timeSpan));
-        if (count < 1) throw new ArgumentOutOfRangeException(nameof(count));
+        ArgumentOutOfRangeException.ThrowIfLessThan(timeSpan, TimeSpan.FromMilliseconds(1.0));
+        ArgumentOutOfRangeException.ThrowIfLessThan(count, 1);
 
         using CancellationTokenSource linkedCts = CancellationTokenSource
             .CreateLinkedTokenSource(cancellationToken);
