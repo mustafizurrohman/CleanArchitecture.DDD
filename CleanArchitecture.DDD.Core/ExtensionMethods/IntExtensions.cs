@@ -1,6 +1,4 @@
-﻿using Azure.Core;
-
-namespace CleanArchitecture.DDD.Core.ExtensionMethods;
+﻿namespace CleanArchitecture.DDD.Core.ExtensionMethods;
 
 public static class IntExtensions
 {

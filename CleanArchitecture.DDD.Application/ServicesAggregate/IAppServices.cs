@@ -7,4 +7,6 @@ public interface IAppServices
     public IMapper AutoMapper { get; }
 
     public IMediator Mediator { get; }
+
+    public Faker Faker { get; }
 }

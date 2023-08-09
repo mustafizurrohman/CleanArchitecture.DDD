@@ -8,7 +8,7 @@
 [ApiExplorerSettings(IgnoreApi = true)]
 public class FakeController : BaseAPIController
 {
-    private const string DefaultControllerTag = "FakeData";
+    private const string DefaultControllerTag = "Faker";
 
     private readonly IFakeDataService _fakeDataService;
     private static int _attempts = 0;

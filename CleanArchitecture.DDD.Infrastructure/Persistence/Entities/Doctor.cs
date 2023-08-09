@@ -1,5 +1,4 @@
-﻿using Bogus;
-using CleanArchitecture.DDD.Core.ExtensionMethods;
+﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
 using CleanArchitecture.DDD.Domain.ValueObjects;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
@@ -111,7 +110,7 @@ public sealed class Doctor : BaseEntity
 
     public static Doctor CreateRandom()
     {
-        var doctor = Doctor.Create(Name.CreateRandom(), Address.CreateRandom(), SpecializationEnumExtensions.GetRandomSpecialization());
+        var doctor = Create(Name.CreateRandom(), Address.CreateRandom(), SpecializationEnumExtensions.GetRandomSpecialization());
         return doctor;
     }
 

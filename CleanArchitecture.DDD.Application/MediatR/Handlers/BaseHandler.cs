@@ -20,11 +20,17 @@ public abstract class BaseHandler
     /// <summary>
     /// 
     /// </summary>
+    protected Faker Faker { get; }
+
+    /// <summary>
+    /// 
+    /// </summary>
     /// <param name="appServices"></param>
     protected BaseHandler(IAppServices appServices)
     {
         DbContext = Guard.Against.Null(appServices.DbContext);
         AutoMapper = Guard.Against.Null(appServices.AutoMapper);
         Mediator = Guard.Against.Null(appServices.Mediator);
+        Faker = appServices.Faker;
     }
 }
