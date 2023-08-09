@@ -5,39 +5,42 @@ namespace CleanArchitecture.DDD.Application.MediatR.Handlers;
 public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServices) 
     : BaseHandler(appServices), IRequestHandler<SeedDoctorsWithAddressesCommand>
 {
+    private int _numberOfDoctorsSaved;
 
     public async Task Handle(SeedDoctorsWithAddressesCommand request, CancellationToken cancellationToken)
     {
         var doctors = GetDoctorsChunkedAsyncEnumerable(request.Num, request.WithRandomDelay)
             .WithCancellation(cancellationToken);
 
-        var numberOfDoctorsSaved = 0;
-
         // Consuming the async stream
         await foreach (var chunkOfDoctors in doctors)
         {
             var doctorsToSave = chunkOfDoctors.ToImmutableList();
-            Console.WriteLine();
-            Console.WriteLine($"Got a chunk of doctors with {doctorsToSave.Count} doctors... ");
+            Log.Information("Received a chunk of doctors with {numberOfDoctorsReceived} doctors... ", doctorsToSave.Count);
 
             await DbContext.AddRangeAsync(doctorsToSave, cancellationToken);
             await DbContext.SaveChangesAsync(cancellationToken);
             
-            numberOfDoctorsSaved += doctorsToSave.Count;
-            var remaining = request.Num - numberOfDoctorsSaved;
-            var completePercentage = numberOfDoctorsSaved.GetPercentageOf(request.Num);
-            var remainingPercentage = remaining.GetPercentageOf(request.Num);
-            Log.Information("Saved chunk with {numberOfDoctors} doctors... Completed {completed}%. Remaining {remaining} ({remainingPercentage}%) doctors "
-                , doctorsToSave.Count
-                , completePercentage
-                , remaining
-                , remainingPercentage);
+            LogProgress(doctorsToSave.Count, request.Num);
         }
 
         Log.Information("Seeding complete ...");
     }
 
-    private Doctor GetDoctor(bool simulateDelay)
+    private void LogProgress(int numberOfDoctorsSavedInChunk, int totalNumberOfDoctorsToSave)
+    {
+        _numberOfDoctorsSaved += numberOfDoctorsSavedInChunk;
+        var remaining = totalNumberOfDoctorsToSave - _numberOfDoctorsSaved;
+        var completePercentage = _numberOfDoctorsSaved.GetPercentageOf(totalNumberOfDoctorsToSave);
+        var remainingPercentage = remaining.GetPercentageOf(totalNumberOfDoctorsToSave);
+        Log.Information("Saved chunk with {numberOfDoctors} doctors... Completed {completed}%. Remaining {remaining} ({remainingPercentage}%) doctors "
+            , numberOfDoctorsSavedInChunk
+            , completePercentage
+            , remaining
+            , remainingPercentage);
+    }
+
+    private Task<Doctor> GetDoctorAsync(bool simulateDelay)
     {
         var doctor = Doctor.CreateRandom();
 
@@ -47,12 +50,7 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
             Thread.Sleep(waitTimeInMs);
         }
 
-        return doctor;
-    }
-
-    private Task<Doctor> GetDoctorAsync(bool simulateDelay)
-    {
-        return Task.FromResult(GetDoctor(simulateDelay));
+        return doctor.AsTask();
     }
 
     private async IAsyncEnumerable<Doctor> GetDoctorsAsyncEnumerable(int num, bool simulateDelay)

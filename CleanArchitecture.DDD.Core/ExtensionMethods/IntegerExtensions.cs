@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.DDD.Core.ExtensionMethods;
 
-public static class IntExtensions
+public static class IntegerExtensions
 {
     public static double GetPercentageOf(this int num, int total)
     {

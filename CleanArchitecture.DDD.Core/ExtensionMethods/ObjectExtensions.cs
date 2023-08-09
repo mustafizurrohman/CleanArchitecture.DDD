@@ -33,4 +33,10 @@ public static class ObjectExtensions
 
         return stringBuilder.ToString();
     }
+
+    public static Task<T> AsTask<T>(this T objectInstance)
+        where T : class, new()
+    {
+        return Task.FromResult(objectInstance);
+    }
 }
