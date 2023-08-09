@@ -12,7 +12,9 @@ public static class AsyncEnumerableExtensions
     /// previous chunk.
     /// </summary>
     public static async IAsyncEnumerable<IList<TSource>> Buffer<TSource>(
-        this IAsyncEnumerable<TSource> source, TimeSpan timeSpan, int count,
+        this IAsyncEnumerable<TSource> source, 
+        TimeSpan timeSpan, 
+        int count,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(source);

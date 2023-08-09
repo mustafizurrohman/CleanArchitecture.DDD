@@ -34,6 +34,12 @@ public static class ObjectExtensions
         return stringBuilder.ToString();
     }
 
+    /// <summary>
+    /// Converts an object of type T to Task&lt;T&gt;
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="objectInstance"></param>
+    /// <returns></returns>
     public static Task<T> AsTask<T>(this T objectInstance)
         where T : class, new()
     {

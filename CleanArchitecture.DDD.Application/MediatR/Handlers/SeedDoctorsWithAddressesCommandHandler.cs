@@ -19,6 +19,7 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
             Log.Information("Received a chunk of doctors with {numberOfDoctorsReceived} doctors... ", doctorsToSave.Count);
 
             await DbContext.AddRangeAsync(doctorsToSave, cancellationToken);
+            // TODO: Save only when we have sufficient doctors? Performance optimization!
             await DbContext.SaveChangesAsync(cancellationToken);
             
             LogProgress(doctorsToSave.Count, request.Num);
@@ -40,17 +41,21 @@ public sealed class SeedDoctorsWithAddressesCommandHandler(IAppServices appServi
             , remainingPercentage);
     }
 
+    /// <summary>
+    /// Not necessary here but just to simulate a real world scenario
+    /// This might come from a Database, FileSystem or a third party service
+    /// </summary>
+    /// <param name="simulateDelay">If a random fake delay should be added</param>
+    /// <returns></returns>
     private Task<Doctor> GetDoctorAsync(bool simulateDelay)
     {
-        var doctor = Doctor.CreateRandom();
-
         if (simulateDelay)
         {
             var waitTimeInMs = Faker.Random.Number(9, 25);
             Thread.Sleep(waitTimeInMs);
         }
 
-        return doctor.AsTask();
+        return Doctor.CreateRandom().AsTask();
     }
 
     private async IAsyncEnumerable<Doctor> GetDoctorsAsyncEnumerable(int num, bool simulateDelay)
