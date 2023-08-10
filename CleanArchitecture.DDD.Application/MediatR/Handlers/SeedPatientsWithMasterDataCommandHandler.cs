@@ -15,7 +15,7 @@ public sealed class SeedPatientsWithMasterDataCommandHandler
 
     public async Task Handle(SeedPatientsWithMasterDataCommand request, CancellationToken cancellationToken)
     {
-        var patientList = PatientMasterData.CreateRandom(DbContext, request.Num)
+        var patientList = (await PatientMasterData.CreateRandomAsync(DbContext, request.Num))
             .Select(masterData => new Patient()
             {
                 Firstname = _faker.Name.FirstName(),

@@ -13,7 +13,7 @@ public class PatientMasterData
 
     private static PatientMasterData Create(string primaryDoctor, DateTime dateOfBirth, bool active)
     {
-        return new PatientMasterData()
+        return new PatientMasterData
         {
             PrimaryDoctor = primaryDoctor,
             DateOfBirth = dateOfBirth,
@@ -21,21 +21,22 @@ public class PatientMasterData
         };
     }
 
-    public static PatientMasterData CreateRandom(DomainDbContext context)
+    public static async Task<PatientMasterData> CreateRandomAsync(DomainDbContext context)
     {
-        return CreateRandom(context, 1)[0];
+        return (await CreateRandomAsync(context, 1)).First();
     }
 
-    public static List<PatientMasterData> CreateRandom(DomainDbContext context, int num)
+    public static async Task<IEnumerable<PatientMasterData>> CreateRandomAsync(DomainDbContext context, int num)
     {
-        var patientMasterDataList = context
+        var patientMasterDataList = await context
             .Doctors
+            .AsQueryable()
             .OrderBy(_ => Guid.NewGuid())
             .Select(doc => doc.FullName)
             .Take(num)
-            .AsEnumerable()
+            .AsAsyncEnumerable()
             .Select(primaryDoctor => Create(primaryDoctor, RandomDay(), RandomActive))
-            .ToList();
+            .ToListAsync();
 
         return patientMasterDataList;
     }
