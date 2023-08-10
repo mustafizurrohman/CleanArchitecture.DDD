@@ -175,9 +175,8 @@ public class EFDemoController : BaseAPIController
     {
         var doctors = DbContext.Doctors
             .AsNoTracking()
-            .OrderBy(doc => doc.Name.Firstname)
             .Select(doc => doc.Name.Firstname + " " + doc.Name.Lastname)
-            .Chunk(1000)
+            .Take(100)
             .ToAsyncEnumerable();
 
         return Ok(doctors);
