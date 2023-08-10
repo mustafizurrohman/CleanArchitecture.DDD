@@ -23,38 +23,24 @@ public class PatientMasterData
 
     public static PatientMasterData CreateRandom(DomainDbContext context)
     {
-        var primaryDoctor = context
-            .Doctors
-            .OrderBy(_ => Guid.NewGuid())
-            .Select(doc => doc.FullName)
-            .FirstOrDefault() ?? string.Empty;
-
-        var active = DateTime.Now.Ticks % 2 == 0;
-        
-        return Create(primaryDoctor, RandomDay(), active);
+        return CreateRandom(context, 1)[0];
     }
 
     public static List<PatientMasterData> CreateRandom(DomainDbContext context, int num)
     {
-        var primaryDoctors = context
+        var patientMasterDataList = context
             .Doctors
             .OrderBy(_ => Guid.NewGuid())
             .Select(doc => doc.FullName)
             .Take(num)
+            .AsEnumerable()
+            .Select(primaryDoctor => Create(primaryDoctor, RandomDay(), RandomActive))
             .ToList();
 
-        var patientMasterDataList = new List<PatientMasterData>();
-
-        foreach (var primaryDoctor in primaryDoctors)
-        {
-            var active = DateTime.Now.Ticks % 2 == 0;
-
-            patientMasterDataList.Add(Create(primaryDoctor, RandomDay(), active));
-        }
-
         return patientMasterDataList;
-
     }
+
+    private static bool RandomActive => DateTime.Now.Ticks % 2 == 0;
 
     private static DateTime RandomDay()
     {
