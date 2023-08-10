@@ -8,7 +8,7 @@ Please use latest version Visual Studio 2022 Preview to open the project and ens
 
 - (Enhanced) Structured Logging using Serilog
 
-- Database Persistence using Entity Framework Core 7 Preview
+- Database Persistence using Entity Framework Core 8 Preview
 	- Global filters
 	- Value Converters
 	- Exception Handler
@@ -27,7 +27,7 @@ Please use latest version Visual Studio 2022 Preview to open the project and ens
 
 - Use of ValueObjects
 
-- Input Validation with FluentValidation
+- Input Validation with FluentValidation (+ custom extension methods)
 
 - Use of IHttpClientFactory (with Dependency Injection und Polly)
 
