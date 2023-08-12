@@ -1,4 +1,5 @@
-﻿namespace CleanArchitecture.DDD.API.Controllers.Fake;
+﻿// ReSharper disable PossibleMultipleEnumeration
+namespace CleanArchitecture.DDD.API.Controllers.Fake;
 
 public class FakeDataService : IFakeDataService
 {
@@ -79,8 +80,8 @@ public class FakeDataService : IFakeDataService
             var updated = new ExternalFakeDoctorAddressDTO()
             {
                 EDCMExternalID = i % 2 == 0 ? Guid.Empty : currentDoc.EDCMExternalID,
-                Firstname = currentDoc.Firstname + (i % 3 == 0 ? "" : $" {i}  * "),
-                Lastname = currentDoc.Lastname + (i % 3 == 0 ? "" : $"{DateTime.Now}  {i}  "),
+                Firstname = currentDoc.Firstname + (i % Faker.Random.Number(2, 4) == 0 ? "" : InvalidateString(currentDoc.Firstname)),
+                Lastname = currentDoc.Lastname + (i % Faker.Random.Number(3, 6) == 0 ? "" : InvalidateString(currentDoc.Lastname)),
                 StreetAddress = currentDoc.StreetAddress,
                 ZipCode = currentDoc.ZipCode,
                 City = currentDoc.City,
@@ -108,5 +109,50 @@ public class FakeDataService : IFakeDataService
             .ToList();
 
         return doctorsWithAddress;
+    }
+
+    private string InvalidateString(string inputString)
+    {
+        var invalidateWithSpecialCharacters = Faker.Random.Number(10, 20) % 2 == 0;
+
+        var invalidCharacters = new List<char>()
+        {
+            '*', '?', '§', '~', '#', '`', '´'
+        };
+
+        if (invalidateWithSpecialCharacters)
+        {
+            var randomInvalidCharacters = Enumerable.Range(1, Faker.Random.Number(1, invalidCharacters.Count))
+                .Select(_ => Faker.Random.ArrayElement(invalidCharacters.ToArray()))
+                .Aggregate(string.Empty, (a, b) => a.ToString() + b.ToString());
+
+            inputString += randomInvalidCharacters;
+            inputString = inputString.Randomize();
+        }
+        else
+        {
+            inputString += $"{DateTime.Now}" + "   " + Faker.Random.Number(1, 10);
+            inputString = inputString.Randomize();
+        }
+
+        var invalidationType = Faker.Random.Number(1, 100) % 3;
+
+        switch (invalidationType)
+        {
+            case 0:
+                inputString = " " + inputString;
+                break;
+            case 1:
+                inputString += "  ";
+                break;
+            default:
+            {
+                inputString = inputString.Insert(Faker.Random.Number(1, inputString.Length), "  ");
+                break;
+            }
+        }
+
+        return inputString.Randomize().Randomize();
+
     }
 }

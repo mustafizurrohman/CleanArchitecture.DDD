@@ -17,7 +17,7 @@ public static class RuleBuilderOptionsExtensions
         return rule
             .MustNotBeNullOrEmpty()
             .MaximumLength(maxLength)
-                .WithMessage("'{PropertyName}' cannot have more than 30 characters")
+                .WithMessage($"'{{PropertyName}}' cannot have more than {maxLength} characters")
             .NotContainNumbersOrSpecialCharacters()
             .MustNotStartOrEndWithWhiteSpace()
             .MustNotContainConsecutiveSpaces();
