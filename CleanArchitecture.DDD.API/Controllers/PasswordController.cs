@@ -1,4 +1,7 @@
-﻿namespace CleanArchitecture.DDD.API.Controllers;
+﻿using CleanArchitecture.DDD.Application.MediatR.Queries.HashPassword;
+using CleanArchitecture.DDD.Application.MediatR.Queries.HashPasswordVerification;
+
+namespace CleanArchitecture.DDD.API.Controllers;
 
 public class PasswordController : BaseAPIController
 {

@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.API.Controllers.Business;
+﻿using CleanArchitecture.DDD.Application.MediatR.Queries.SearchDoctors;
+
+namespace CleanArchitecture.DDD.API.Controllers.Business;
 
 [ApiExplorerSettings(IgnoreApi = false)]
 public class SearchController : BaseAPIController

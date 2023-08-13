@@ -1,4 +1,6 @@
-﻿using Serilog.Context;
+﻿using CleanArchitecture.DDD.Application.MediatR.Commands.GenerateLogs;
+using CleanArchitecture.DDD.Application.MediatR.Commands.Logging;
+using Serilog.Context;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 

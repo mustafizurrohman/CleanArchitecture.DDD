@@ -1,4 +1,8 @@
-﻿namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
+﻿using CleanArchitecture.DDD.Application.MediatR.Commands.InactivatePatient;
+using CleanArchitecture.DDD.Application.MediatR.Queries.GetAllDoctors;
+using CleanArchitecture.DDD.Application.MediatR.Queries.GetYoungPatients;
+
+namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 
 public class MasterDataController : BaseAPIController
 {

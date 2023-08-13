@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.API.Controllers.Business;
+﻿using CleanArchitecture.DDD.Application.MediatR.Commands.SyncDoctor;
+
+namespace CleanArchitecture.DDD.API.Controllers.Business;
 
 public class EDCMController : BaseAPIController
 {

@@ -1,4 +1,9 @@
-﻿namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
+﻿using CleanArchitecture.DDD.Application.MediatR.Commands.SeedAddress;
+using CleanArchitecture.DDD.Application.MediatR.Commands.SeedDoctors;
+using CleanArchitecture.DDD.Application.MediatR.Commands.SeedDoctorsWithAdresses;
+using CleanArchitecture.DDD.Application.MediatR.Commands.SeedPatientsWithMasterData;
+
+namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 
 /// <summary>
 /// 
