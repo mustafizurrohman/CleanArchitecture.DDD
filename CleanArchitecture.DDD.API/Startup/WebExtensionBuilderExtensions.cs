@@ -1,6 +1,7 @@
 using CleanArchitecture.DDD.API.HealthCheckReporter;
 using CleanArchitecture.DDD.API.Models;
 using CleanArchitecture.DDD.Application;
+using CleanArchitecture.DDD.Application.MediatR.PipelineBehaviours;
 using CleanArchitecture.DDD.Core.Logging.CustomEnrichers;
 using CleanArchitecture.DDD.Core.Logging.Helpers;
 using CleanArchitecture.DDD.Core.Models;
@@ -31,8 +32,8 @@ public static class WebExtensionBuilderExtensions
         builder.ConfigureLogging()
             .ValidateAppSettings()
             .ConfigureEntityFramework()
-            .ConfigureServices()
             .ConfigureInputValidation()
+            .ConfigureServices()
             .ConfigureSwagger()
             .ConfigureHttpClientFactory()
             .ConfigureExceptionHandling()
@@ -106,19 +107,29 @@ public static class WebExtensionBuilderExtensions
     {
         builder.Services.AddProblemDetails(setup =>
         {
-            setup.IncludeExceptionDetails = (httpContext, exception) => builder.Environment.IsDevelopment();
+            setup.MapFluentValidationException();
+
+            setup.MapToStatusCode<NotImplementedException>(StatusCodes.Status501NotImplemented);
+            setup.IncludeExceptionDetails = (httpContext, exception) => !builder.Environment.IsDevelopment();
             setup.OnBeforeWriteDetails = (httpContext, details) =>
             {
                 var supportCode = httpContext.GetSupportCode();
 
-                details.Detail = "An internal error occurred in our API. " 
-                                + $"Please use the Support Code \'{supportCode}\' for contacting us";
+                details.Detail = httpContext.Response.StatusCode switch
+                {
+                    > 500 => "An internal error occurred in our API. ",
+                    > 400 => "Bad request. ",
+                    _ => "An error occured in our API. "
+                };
+
+                details.Detail += $"Please use the Support Code \'{supportCode}\' for contacting us";
 
                 // TODO: May be we will want to log the user and other information here as well
                 // Or generate a push notification / email / 1 aggregated email per hour 
                 // May be SEQ can do something about this as a notification or as dashboard item
                 Log.Error("[TICKET] Support Code: \'{supportCode}\'", supportCode);
             };
+
             // setup.Rethrow<Exception>();
         });
 
@@ -136,7 +147,27 @@ public static class WebExtensionBuilderExtensions
     private static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+
+        // MediatR Configuration
+        builder.Services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+        });
+
+        builder.Services
+            .AddScoped(typeof(IPipelineBehavior<,>), typeof(TimingBehaviour<,>))
+            .AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+
+        /*
+        // TODO: Order of injection matters here. How can it be influenced?
+        builder.Services.Scan(scan =>
+            scan.FromAssemblyOf<ApplicationAssemblyMarker>()
+                .AddClasses(classes => classes.AssignableTo(typeof(IPipelineBehavior<,>)))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime()
+        );
+        */
+
         builder.Services.AddSingleton<IPolicyHolder, PolicyHolder>();
 
         builder.Services.AddHttpContextAccessor();
@@ -154,15 +185,6 @@ public static class WebExtensionBuilderExtensions
         // builder.Services.AddTransient<IDataService, DataService>();
         builder.Services.AddMemoryCache();
         builder.Services.Decorate<IDataService, DataServiceCached>();
-
-        // MediatR Configuration
-        // TODO: Order of injection matters here. How can it be influenced?
-        builder.Services.Scan(scan =>
-            scan.FromAssemblyOf<ApplicationAssemblyMarker>()
-                .AddClasses(classes => classes.AssignableTo(typeof(IPipelineBehavior<,>)))
-                .AsImplementedInterfaces()
-                .WithTransientLifetime()
-        );
 
         return builder;
     }

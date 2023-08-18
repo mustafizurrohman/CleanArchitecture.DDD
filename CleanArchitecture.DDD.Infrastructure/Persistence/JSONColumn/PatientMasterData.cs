@@ -1,5 +1,4 @@
 ﻿using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
-using System.Threading;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.JSONColumn;
 

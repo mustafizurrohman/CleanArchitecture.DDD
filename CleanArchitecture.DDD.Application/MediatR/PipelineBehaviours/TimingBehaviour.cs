@@ -13,8 +13,9 @@ public class TimingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, 
     public TimingBehaviour(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
+        Console.WriteLine("Initialized timing behaviour");
     }
-    
+
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         // Warning: This might expose sensitive data.

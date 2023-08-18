@@ -9,8 +9,9 @@ public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
     public TransactionBehaviour(DomainDbContext domainDbContext)
     {
         _domainDbContext = domainDbContext;
+        Console.WriteLine("Initialized transaction behaviour");
     }
-    
+
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         return await next();
