@@ -6,7 +6,8 @@ namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
 public static class ProblemDetailsOptionsExtensions
 {
-    public static void MapFluentValidationException(this ProblemDetailsOptions options) =>
+    public static void MapFluentValidationException(this ProblemDetailsOptions options) {
+    
         options.Map<ValidationException>((httpContext, validationException) =>
         {
             var factory = httpContext.RequestServices.GetRequiredService<ProblemDetailsFactory>();
@@ -18,8 +19,8 @@ public static class ProblemDetailsOptionsExtensions
                     error => error.Select(x => x.ErrorMessage).ToArray()
                 );
 
-            return factory.CreateValidationProblemDetails(httpContext, errors);
+            return factory.CreateValidationProblemDetails(httpContext, errors, (int)HttpStatusCode.BadRequest);
         });
+
+    }
 }
-
-

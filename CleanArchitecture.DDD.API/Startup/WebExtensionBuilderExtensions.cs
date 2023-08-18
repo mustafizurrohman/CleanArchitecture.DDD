@@ -110,15 +110,15 @@ public static class WebExtensionBuilderExtensions
             setup.MapFluentValidationException();
 
             setup.MapToStatusCode<NotImplementedException>(StatusCodes.Status501NotImplemented);
-            setup.IncludeExceptionDetails = (httpContext, exception) => !builder.Environment.IsDevelopment();
+            setup.IncludeExceptionDetails = (httpContext, exception) => builder.Environment.IsDevelopment();
             setup.OnBeforeWriteDetails = (httpContext, details) =>
             {
                 var supportCode = httpContext.GetSupportCode();
 
                 details.Detail = httpContext.Response.StatusCode switch
                 {
-                    > 500 => "An internal error occurred in our API. ",
-                    > 400 => "Bad request. ",
+                    >= 500 => "An internal error occurred in our API. ",
+                    >= 400 => "Bad request. ",
                     _ => "An error occured in our API. "
                 };
 
