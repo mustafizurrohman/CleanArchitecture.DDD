@@ -1,6 +1,5 @@
 ﻿namespace CleanArchitecture.DDD.Application.AutoMapper;
 
-[UsedImplicitly]
 public class PatientMappings : Profile
 {
     public PatientMappings()

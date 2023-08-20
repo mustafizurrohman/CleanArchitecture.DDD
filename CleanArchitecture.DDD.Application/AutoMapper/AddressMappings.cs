@@ -1,6 +1,5 @@
 ﻿namespace CleanArchitecture.DDD.Application.AutoMapper;
 
-[UsedImplicitly]
 public class AddressMappings : Profile
 {
     public AddressMappings()

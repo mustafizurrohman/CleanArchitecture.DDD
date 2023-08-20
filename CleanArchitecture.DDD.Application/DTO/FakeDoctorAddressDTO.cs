@@ -1,6 +1,5 @@
 ﻿namespace CleanArchitecture.DDD.Application.DTO;
 
-[UsedImplicitly]
 public class FakeDoctorAddressDTO
 {
     public Guid EDCMExternalID { get; init; }

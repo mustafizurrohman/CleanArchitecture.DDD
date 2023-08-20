@@ -2,7 +2,6 @@
 
 namespace CleanArchitecture.DDD.Application.AutoMapper;
 
-[UsedImplicitly]
 public class DoctorMappings : Profile
 {
     public DoctorMappings()
