@@ -24,12 +24,12 @@
   <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="4.1.1" />
     <PackageReference Include="Bogus" Version="34.0.2" />
-    <PackageReference Include="Hangfire.Core" Version="1.8.3" />
+    <PackageReference Include="Hangfire.Core" Version="1.8.5" />
     <PackageReference Include="MediatR" Version="12.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Polly" Version="8.0.0-alpha.6" />
-    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="8.0.0-preview.5.23280.1-02" />
+    <PackageReference Include="Polly" Version="8.0.0-alpha.8" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="8.0.0-preview.7.23375.4-01" />
   </ItemGroup>
 
 </Project>
