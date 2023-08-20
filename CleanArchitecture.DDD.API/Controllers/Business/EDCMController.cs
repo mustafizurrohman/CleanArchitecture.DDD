@@ -46,7 +46,7 @@ public class EDCMController : BaseAPIController
         }
         catch (HttpRequestException ex)
         {
-            Log.Error(ex, "Internal error");
+            Log.Error(ex.Demystify(), "Internal error");
             return StatusCode((int)HttpStatusCode.GatewayTimeout, $"Support code : {HttpContext.GetSupportCode()}");
         }
     }
@@ -73,7 +73,7 @@ public class EDCMController : BaseAPIController
         }
         catch (HttpRequestException ex)
         {
-            Log.Error(ex, "Internal error");
+            Log.Error(ex.Demystify(), "Internal error");
             return StatusCode((int)HttpStatusCode.GatewayTimeout, $"Support code : {HttpContext.GetSupportCode()}");
         }
     }

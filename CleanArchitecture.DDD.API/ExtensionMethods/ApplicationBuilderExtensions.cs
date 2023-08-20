@@ -29,7 +29,7 @@ public static class ApplicationBuilderExtensions
         catch (Exception ex)
         {
             Log.Error("An exception occurred during migrating database ...");
-            Log.Error(ex, ex.Message);
+            Log.Error(ex.Demystify(), ex.Message);
         }
         finally
         {
@@ -54,7 +54,7 @@ public static class ApplicationBuilderExtensions
                 var errorFeature = context.Features.Get<IExceptionHandlerFeature>();
                 var exception = errorFeature?.Error ?? new Exception();
 
-                Log.Error(exception, exception.Message);
+                Log.Error(exception.Demystify(), exception.Message);
                 return Task.CompletedTask;
             });
         });
