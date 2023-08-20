@@ -7,9 +7,11 @@ using CleanArchitecture.DDD.Core.Logging.Helpers;
 using CleanArchitecture.DDD.Core.Models;
 using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Domain;
+using CSharpFunctionalExtensions;
 using Hangfire;
 using Hangfire.SqlServer;
 using Hellang.Middleware.ProblemDetails;
+using Hellang.Middleware.ProblemDetails.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -105,6 +107,8 @@ public static class WebExtensionBuilderExtensions
 
     private static WebApplicationBuilder ConfigureExceptionHandling(this WebApplicationBuilder builder)
     {
+        builder.Services.AddProblemDetailsConventions();
+
         builder.Services.AddProblemDetails(setup =>
         {
             setup.MapFluentValidationException();
@@ -115,18 +119,8 @@ public static class WebExtensionBuilderExtensions
             {
                 var supportCode = httpContext.GetSupportCode();
 
-                details.Detail = httpContext.Response.StatusCode switch
-                {
-                    >= 500 => "An internal error occurred in our API. ",
-                    >= 400 => "Bad request. ",
-                    _ => "An error occured in our API. "
-                };
+                details.Detail += $". Please use the Support Code \'{supportCode}\' for contacting us";
 
-                details.Detail += $"Please use the Support Code \'{supportCode}\' for contacting us";
-
-                // TODO: May be we will want to log the user and other information here as well
-                // Or generate a push notification / email / 1 aggregated email per hour 
-                // May be SEQ can do something about this as a notification or as dashboard item
                 Log.Error("[TICKET] Support Code: \'{supportCode}\'", supportCode);
             };
 
@@ -181,8 +175,6 @@ public static class WebExtensionBuilderExtensions
         builder.Services
             .RegisterServicesFromAssembly<ApplicationAssemblyMarker>(excludedTypes: excludedTypes);
 
-        // Already injected above
-        // builder.Services.AddTransient<IDataService, DataService>();
         builder.Services.AddMemoryCache();
         builder.Services.Decorate<IDataService, DataServiceCached>();
 
@@ -309,7 +301,6 @@ public static class WebExtensionBuilderExtensions
         return builder;
     }
 
-    // TODO: Ensure that best practice is followed here
     private static WebApplicationBuilder ConfigureHttpClientFactory(this WebApplicationBuilder builder)
     {
         var policyHolder = new PolicyHolder();

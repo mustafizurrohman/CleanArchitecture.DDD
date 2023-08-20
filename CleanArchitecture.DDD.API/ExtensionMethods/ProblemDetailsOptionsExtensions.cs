@@ -6,6 +6,7 @@ namespace CleanArchitecture.DDD.API.ExtensionMethods;
 
 public static class ProblemDetailsOptionsExtensions
 {
+    
     public static void MapFluentValidationException(this ProblemDetailsOptions options) {
     
         options.Map<ValidationException>((httpContext, validationException) =>
@@ -23,4 +24,5 @@ public static class ProblemDetailsOptionsExtensions
         });
 
     }
+    
 }

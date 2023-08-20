@@ -1,4 +1,6 @@
 ﻿using System.Collections.Immutable;
+using System.Net;
+using Microsoft.AspNetCore.Http;
 using ValidationException = FluentValidation.ValidationException;
 
 namespace CleanArchitecture.DDD.Application.MediatR.PipelineBehaviours;
@@ -27,7 +29,7 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
             .Where(validationFailure => validationFailure is not null)
             .ToImmutableList();
 
-        if (errors.Any()) 
+        if (errors.Any())
             throw new ValidationException(errors);
         
         return await next();
