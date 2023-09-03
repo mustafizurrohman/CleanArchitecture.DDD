@@ -18,7 +18,7 @@ public class DataServiceCached : IDataService
         MemoryCache = Guard.Against.Null(memoryCache);
         DataService = Guard.Against.Null(dataService);
 
-        Log.Information($"DECORATED DataService CACHED- Initialized service... " +
+        Log.Information("DECORATED DataService CACHED- Initialized service... " +
                         "Cache valid until {cacheValidity}", DateTime.Now.Add(timeSpan).ToLocalDEDateTime());
     }
 

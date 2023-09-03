@@ -34,8 +34,7 @@ public class ModelCollectionValidationReport<T>
     public bool HasAllInvalidModels => ValidationReportInternal.All(model => !model.Valid);
     public int TotalNumberOfModels => ValidationReportInternal.Count();
 
-    public double PercentageValidModels => Math.Round(NumberOfValidModels / (double)TotalNumberOfModels * 100, 2);
-
+    public double PercentageValidModels => NumberOfValidModels.GetPercentageOf(TotalNumberOfModels);
     public double PercentageInvalidModels => Math.Round(100 - PercentageValidModels, 2);
 
     public ModelCollectionValidationReport(IEnumerable<ModelValidationReport<T>> validationReport)

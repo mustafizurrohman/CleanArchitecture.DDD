@@ -49,7 +49,7 @@ public static class RuleBuilderOptionsExtensions
     /// <returns></returns>
     private static IRuleBuilderOptions<T, string> NotStartWithWhiteSpace<T>(this IRuleBuilder<T, string> ruleBuilder)
     {
-        return ruleBuilder.Must(m => m != null && !m.StartsWith(" "))
+        return ruleBuilder.Must(m => m != null && !m.StartsWith(' '))
             .WithMessage("'{PropertyName}' must not start with whitespace.");
     }
 
@@ -61,7 +61,7 @@ public static class RuleBuilderOptionsExtensions
     /// <returns></returns>
     private static IRuleBuilderOptions<T, string> NotEndWithWhiteSpace<T>(this IRuleBuilder<T, string> ruleBuilder)
     {
-        return ruleBuilder.Must(m => m != null && !m.EndsWith(" "))
+        return ruleBuilder.Must(m => m != null && !m.EndsWith(' '))
             .WithMessage("'{PropertyName}' must not end with whitespace.");
     }
 
@@ -99,7 +99,6 @@ public static class RuleBuilderOptionsExtensions
     {
         return ruleBuilder.Must(name => !name.Contains("  "))
             .WithMessage("'{PropertyName}' must not contain more than 1 consecutive spaces");
-
     }
 
     public static IRuleBuilderOptions<T, string> MustBeValueObject<T, TValueObject>(

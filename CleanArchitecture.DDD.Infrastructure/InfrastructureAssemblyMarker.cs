@@ -1,5 +1,5 @@
 ﻿namespace CleanArchitecture.DDD.Infrastructure;
 
-public class InfrastructureAssemblyMarker
+public abstract class InfrastructureAssemblyMarker
 {
 }

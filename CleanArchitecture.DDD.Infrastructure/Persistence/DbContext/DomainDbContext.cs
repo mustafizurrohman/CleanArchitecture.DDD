@@ -22,18 +22,16 @@ public class DomainDbContext : DatabaseContext
     {
         _connectionString = connectionString;
 
-        if (!new DbConnectionString(_connectionString).IsReachable)
-        {
-            const string message = "Invalid database connection string or database is not reachable ... ";
-            
-            Log.Fatal(message);
-            throw new DatabaseNotReachableException();
-        } 
+        var isDbReachable = new DbConnectionString(_connectionString).IsReachable;
 
+        if (!isDbReachable)
+            throw new DatabaseNotReachableException();
+        
         _useLogger = useLogger;
     }
 
     #region -- Entities --
+
     public virtual DbSet<Doctor> Doctors { get; set; }
     public virtual DbSet<Address> Addresses { get; set; }
     public virtual DbSet<Patient> Patients { get; set; }
@@ -44,7 +42,7 @@ public class DomainDbContext : DatabaseContext
     {
         optionsBuilder.UseSqlServer(_connectionString);
 
-        if (_useLogger && false)
+        if (_useLogger)
         {
             var consoleLoggerFactory = LoggerFactory.Create(loggerBuilder =>
             {

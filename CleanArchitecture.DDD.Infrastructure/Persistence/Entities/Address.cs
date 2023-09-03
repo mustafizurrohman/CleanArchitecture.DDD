@@ -96,7 +96,10 @@ public sealed class Address : BaseEntity
 
     private bool Equals(Address other)
     {
-        return StreetAddress == other.StreetAddress && ZipCode == other.ZipCode && City == other.City && Country == other.Country;
+        return StreetAddress == other.StreetAddress 
+               && ZipCode == other.ZipCode 
+               && City == other.City 
+               && Country == other.Country;
     }
 
     public override bool Equals(object? obj)
