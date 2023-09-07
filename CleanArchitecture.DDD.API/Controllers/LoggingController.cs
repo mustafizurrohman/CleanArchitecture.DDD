@@ -119,6 +119,4 @@ public class LoggingController : BaseAPIController
         return Ok();
     }
 
-
-
 }

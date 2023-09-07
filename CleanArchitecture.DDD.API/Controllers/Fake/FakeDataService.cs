@@ -37,23 +37,18 @@ public class FakeDataService : IFakeDataService
             return Enumerable.Empty<ExternalFakeDoctorAddressDTO>();
         }
 
-        var modifiedDoctors = new List<ExternalFakeDoctorAddressDTO>();
-
-        foreach (var cachedDoctor in doctors)
-        {
-            var modifiedDoctor = new ExternalFakeDoctorAddressDTO
+        var modifiedDoctors = doctors
+            .Select(doc => new ExternalFakeDoctorAddressDTO
             {
-                EDCMExternalID = cachedDoctor.EDCMExternalID,
-                Firstname = cachedDoctor.Firstname,
-                Lastname = cachedDoctor.Lastname,
+                EDCMExternalID = doc.EDCMExternalID,
+                Firstname = doc.Firstname,
+                Lastname = doc.Lastname,
                 StreetAddress = Faker.Address.StreetAddress() + iteration,
                 ZipCode = Faker.Address.ZipCode() + iteration,
                 City = Faker.Address.City() + iteration,
-                Country = cachedDoctor.Country + iteration
-            };
-
-            modifiedDoctors.Add(modifiedDoctor);
-        }
+                Country = doc.Country + iteration
+            })
+            .ToList();
 
         return modifiedDoctors;
     }
@@ -80,8 +75,8 @@ public class FakeDataService : IFakeDataService
             var updated = new ExternalFakeDoctorAddressDTO()
             {
                 EDCMExternalID = i % 2 == 0 ? Guid.Empty : currentDoc.EDCMExternalID,
-                Firstname = currentDoc.Firstname + (i % Faker.Random.Number(2, 4) == 0 ? "" : InvalidateString(currentDoc.Firstname)),
-                Lastname = currentDoc.Lastname + (i % Faker.Random.Number(3, 6) == 0 ? "" : InvalidateString(currentDoc.Lastname)),
+                Firstname = InvalidateStringRandomly(currentDoc.Firstname, i, 2, 4),
+                Lastname = InvalidateStringRandomly(currentDoc.Firstname, i, 3, 6),
                 StreetAddress = currentDoc.StreetAddress,
                 ZipCode = currentDoc.ZipCode,
                 City = currentDoc.City,
@@ -111,14 +106,21 @@ public class FakeDataService : IFakeDataService
         return doctorsWithAddress;
     }
 
+    private string InvalidateStringRandomly(string inputString, int index, int lower, int upper)
+    {
+        return (index % Faker.Random.Number(lower, upper) == 0)
+            ? inputString
+            : InvalidateString(inputString);
+    }
+
     private string InvalidateString(string inputString)
     {
         var invalidateWithSpecialCharacters = Faker.Random.Number(10, 20) % 2 == 0;
 
-        var invalidCharacters = new List<char>()
+        IReadOnlyList<char> invalidCharacters = new List<char>()
         {
             '*', '?', '§', '~', '#', '`', '´'
-        };
+        }.AsReadOnly();
 
         if (invalidateWithSpecialCharacters)
         {

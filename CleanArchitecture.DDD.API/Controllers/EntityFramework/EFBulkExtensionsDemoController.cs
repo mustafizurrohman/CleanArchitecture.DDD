@@ -94,4 +94,3 @@ public class EFBulkExtensionsDemoController : BaseAPIController
         return Ok(affectedRows);
     }
 }
-

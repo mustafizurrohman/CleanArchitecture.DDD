@@ -136,7 +136,7 @@ public class EFDemoController : BaseAPIController
             .AsAsyncEnumerable();
 
         // Work with streaming results using EF Core!
-        var result = result0
+        var result = await result0
             .Select(groupedDoctors => new
             {
                 groupedDoctors.City,
@@ -151,14 +151,17 @@ public class EFDemoController : BaseAPIController
                         Doctors = docSp.Select(dsp => dsp.FullName),
                         Count = docSp.Count()
                     })
-            });
+            })
+            .ToListAsync(cancellationToken);
 
         stopwatch.Stop();
         Log.Information("Query took {executionTime} ms", stopwatch.ElapsedMilliseconds);
 
-        return Ok(await result.ToListAsync(cancellationToken));
+        return Ok(result);
     }
 
+    #pragma warning disable CS1998 
+    // Async method lacks 'await' operators and will run synchronously
     /// <summary>
     /// TODO: Implement using MediatR
     /// </summary>

@@ -65,7 +65,6 @@ public class MasterDataController : BaseAPIController
         return Ok(result);
     }
 
-
     /// <summary>
     /// 
     /// </summary>
@@ -87,6 +86,5 @@ public class MasterDataController : BaseAPIController
 
         return Ok();
     }
-
 
 }
