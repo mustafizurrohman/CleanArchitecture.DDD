@@ -33,21 +33,10 @@ public class FakeDataService : IFakeDataService
         doctors = doctors.ToList();
 
         if (!doctors.Any())
-        {
             return Enumerable.Empty<ExternalFakeDoctorAddressDTO>();
-        }
-
+        
         var modifiedDoctors = doctors
-            .Select(doc => new ExternalFakeDoctorAddressDTO
-            {
-                EDCMExternalID = doc.EDCMExternalID,
-                Firstname = doc.Firstname,
-                Lastname = doc.Lastname,
-                StreetAddress = Faker.Address.StreetAddress() + iteration,
-                ZipCode = Faker.Address.ZipCode() + iteration,
-                City = Faker.Address.City() + iteration,
-                Country = doc.Country + iteration
-            })
+            .Select(doc => doc.UpdateAddress())
             .ToList();
 
         return modifiedDoctors;
@@ -59,102 +48,22 @@ public class FakeDataService : IFakeDataService
 
         var generatedFakeDoctors = DoctorFaker.Generate(num).ToArray();
 
-        // Invalidate entry in 50% of the cases!
-        // ReSharper disable once PossibleLossOfFraction
-        var numberOfNamesToInvalidate = (int)Math.Ceiling((double)(num/2)) < generatedFakeDoctors.Length
-            // ReSharper disable once PossibleLossOfFraction
-            ? (int)Math.Ceiling((double)(num / 2))
-            : generatedFakeDoctors.Length;
+        double randomPercentage = (double)(new Faker()).Random.Number(5, 45) / 100;
+        var numberOfNamesToInvalidate = (int)Math.Floor(randomPercentage * generatedFakeDoctors.Length);
 
-        var doctorsWithAddress = new List<ExternalFakeDoctorAddressDTO>();
-
-        for (var i = 0; i < numberOfNamesToInvalidate; i++)
-        {
-            var currentDoc = generatedFakeDoctors[i];
-
-            var updated = new ExternalFakeDoctorAddressDTO()
-            {
-                EDCMExternalID = i % 2 == 0 ? Guid.Empty : currentDoc.EDCMExternalID,
-                Firstname = InvalidateStringRandomly(currentDoc.Firstname, i, 2, 4),
-                Lastname = InvalidateStringRandomly(currentDoc.Firstname, i, 3, 6),
-                StreetAddress = currentDoc.StreetAddress,
-                ZipCode = currentDoc.ZipCode,
-                City = currentDoc.City,
-                Country = currentDoc.Country
-            };
-
-            doctorsWithAddress.Add(updated);
-        }
+        var invalidDoctors = generatedFakeDoctors
+            .Shuffle()
+            .Take(numberOfNamesToInvalidate)
+            .Select(doc => doc.Invalidate())
+            .ToList();
 
         var validDoctors = generatedFakeDoctors
-            .Where(doc => !doctorsWithAddress.Select(da => da.EDCMExternalID).Contains(doc.EDCMExternalID))
+            .Where(doc => !invalidDoctors.Select(da => da.EDCMExternalID).Contains(doc.EDCMExternalID))
+            .Take(generatedFakeDoctors.Length - numberOfNamesToInvalidate)
             .ToList();
 
-        doctorsWithAddress.AddRange(validDoctors);
-
-        if (doctorsWithAddress.Count < num)
-        {
-            var newValidDoctors = DoctorFaker.Generate(num - doctorsWithAddress.Count);
-            doctorsWithAddress.AddRange(newValidDoctors);
-        }
-
-        doctorsWithAddress = doctorsWithAddress
-            .OrderBy(_ => Guid.NewGuid())
-            .Take(num)
-            .ToList();
-
-        return doctorsWithAddress;
-    }
-
-    private string InvalidateStringRandomly(string inputString, int index, int lower, int upper)
-    {
-        return (index % Faker.Random.Number(lower, upper) == 0)
-            ? inputString
-            : InvalidateString(inputString);
-    }
-
-    private string InvalidateString(string inputString)
-    {
-        var invalidateWithSpecialCharacters = Faker.Random.Number(10, 20) % 2 == 0;
-
-        IReadOnlyList<char> invalidCharacters = new List<char>()
-        {
-            '*', '?', '§', '~', '#', '`', '´'
-        }.AsReadOnly();
-
-        if (invalidateWithSpecialCharacters)
-        {
-            var randomInvalidCharacters = Enumerable.Range(1, Faker.Random.Number(1, invalidCharacters.Count))
-                .Select(_ => Faker.Random.ArrayElement(invalidCharacters.ToArray()))
-                .Aggregate(string.Empty, (a, b) => a.ToString() + b.ToString());
-
-            inputString += randomInvalidCharacters;
-            inputString = inputString.Randomize();
-        }
-        else
-        {
-            inputString += $"{DateTime.Now}" + "   " + Faker.Random.Number(1, 10);
-            inputString = inputString.Randomize();
-        }
-
-        var invalidationType = Faker.Random.Number(1, 100) % 3;
-
-        switch (invalidationType)
-        {
-            case 0:
-                inputString = " " + inputString;
-                break;
-            case 1:
-                inputString += "  ";
-                break;
-            default:
-            {
-                inputString = inputString.Insert(Faker.Random.Number(1, inputString.Length), "  ");
-                break;
-            }
-        }
-
-        return inputString.Randomize().Randomize();
+        return invalidDoctors.Concat(validDoctors).Shuffle();
 
     }
+
 }

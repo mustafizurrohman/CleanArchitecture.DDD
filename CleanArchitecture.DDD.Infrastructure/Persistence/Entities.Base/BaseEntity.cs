@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
+﻿namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 
 public abstract class BaseEntity
 {

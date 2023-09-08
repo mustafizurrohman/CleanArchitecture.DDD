@@ -1,6 +1,4 @@
 ﻿using System.Collections.Immutable;
-using System.Net;
-using Microsoft.AspNetCore.Http;
 using ValidationException = FluentValidation.ValidationException;
 
 namespace CleanArchitecture.DDD.Application.MediatR.PipelineBehaviours;

@@ -7,7 +7,6 @@ using CleanArchitecture.DDD.Core.Logging.Helpers;
 using CleanArchitecture.DDD.Core.Models;
 using CleanArchitecture.DDD.Core.Polly;
 using CleanArchitecture.DDD.Domain;
-using CSharpFunctionalExtensions;
 using Hangfire;
 using Hangfire.SqlServer;
 using Hellang.Middleware.ProblemDetails;

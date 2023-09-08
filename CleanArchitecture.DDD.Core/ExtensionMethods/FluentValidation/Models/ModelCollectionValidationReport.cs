@@ -37,6 +37,8 @@ public class ModelCollectionValidationReport<T>
     public double PercentageValidModels => NumberOfValidModels.GetPercentageOf(TotalNumberOfModels);
     public double PercentageInvalidModels => Math.Round(100 - PercentageValidModels, 2);
 
+    public int TotalNumberOfModelErrors => ValidationReportInternal.Sum(rep => rep.NumberOfModelErrors);
+
     public ModelCollectionValidationReport(IEnumerable<ModelValidationReport<T>> validationReport)
     {
         ValidationReportInternal = Guard.Against.NullOrEmpty(validationReport).ToList();
