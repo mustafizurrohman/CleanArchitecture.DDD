@@ -37,7 +37,7 @@ public static class EnumerableValidationExtensions
     public static async IAsyncEnumerable<ModelValidationReport<T>> GetModelValidationReportEnumerableAsync<T>(this T[] models)
         where T : class, new()
     {
-        VerifyThatParamsAreNotNull(models as object[]);
+        VerifyThatParamsAreNotNull(models);
 
         IValidator<T> validator = models.GetValidator();
 

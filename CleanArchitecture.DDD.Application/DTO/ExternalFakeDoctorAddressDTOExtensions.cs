@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.Metrics;
-using System.Reflection.Emit;
-
-namespace CleanArchitecture.DDD.Application.DTO;
+﻿namespace CleanArchitecture.DDD.Application.DTO;
 
 public static class ExternalFakeDoctorAddressDTOExtensions
 {
