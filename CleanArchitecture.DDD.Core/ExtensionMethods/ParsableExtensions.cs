@@ -11,10 +11,7 @@ public static class ParsableExtensions
     public static bool TryParse<T>(this string input, out T? result, IFormatProvider? formatProvider = null)
         where T : IParsable<T>
     {
-        var parsedSuccessful = T.TryParse(input, formatProvider, out T? parsedResult);
-        result = parsedResult ?? default;
-        
-        return parsedSuccessful;
+        return T.TryParse(input, formatProvider, out result);
     }
 }
 
