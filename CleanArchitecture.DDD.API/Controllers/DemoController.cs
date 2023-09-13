@@ -1,4 +1,5 @@
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
+using CleanArchitecture.DDD.Core.ExtensionMethods;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
@@ -40,7 +41,7 @@ public class DemoController : BaseAPIController
     /// </summary>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
-    [HttpGet("extension", Name = "extension")]
+    [HttpGet("extension/enum", Name = "extensionEnum")]
     [SwaggerOperation(
         Summary = "Test of random specialization as text",
         Description = DefaultDescription,
@@ -67,4 +68,28 @@ public class DemoController : BaseAPIController
 
         return Ok(randomSpecializations);
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    [ApiExplorerSettings(IgnoreApi = false)]
+    [HttpGet("extension/parse", Name = "extensionParse")]
+    [SwaggerOperation(
+        Summary = "Test of extension method for parsing",
+        Description = DefaultDescription,
+        OperationId = "Demo Parsing",
+        Tags = new[] { DefaultControllerTag }
+    )]
+    public IActionResult DemoExtensionMethodParse()
+    {
+        var randomNumber1 = ((new Faker()).Random.Number(50, 100)).ToString();
+        var randomNumber2 = ((new Faker()).Random.Number(100, 200)).ToString();
+
+        var num1Parsed = randomNumber1.Parse<int>();
+        var num2Parsed = randomNumber2.Parse<double>(); 
+
+        return Ok((num1Parsed, num2Parsed));
+    }
+
 }
