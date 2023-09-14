@@ -4,21 +4,17 @@ using CleanArchitecture.DDD.Core.GuardClauses;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
+/// <summary>
+/// Demonstrates features of Dependency Injection where Services are injected
+/// using an Extension Method which uses Scrutor
+/// We are skipping the use of MediatR here for the sake of simplicity
+/// </summary>
+/// <param name="appServices"></param>
 [Route("scrutor")]
-public class DependencyInjectionController : BaseAPIController
+public class DependencyInjectionController(IAppServices appServices) 
+    : BaseAPIController(appServices)
 {
     private const string DefaultControllerTag = "DependencyInjection";
-
-    /// <summary>
-    /// Demonstrates features of Dependency Injection where Services are injected
-    /// using an Extension Method which uses Scrutor
-    /// We are skipping the use of MediatR here for the sake of simplicity
-    /// </summary>
-    /// <param name="appServices"></param>
-    public DependencyInjectionController(IAppServices appServices) 
-        : base(appServices)
-    {
-    }
 
     /// <summary>
     /// 

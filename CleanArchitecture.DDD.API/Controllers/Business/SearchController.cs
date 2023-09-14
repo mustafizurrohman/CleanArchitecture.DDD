@@ -2,23 +2,16 @@
 
 namespace CleanArchitecture.DDD.API.Controllers.Business;
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="appServices"></param>
 [ApiExplorerSettings(IgnoreApi = false)]
-public class SearchController : BaseAPIController
+public class SearchController(IAppServices appServices) 
+    : BaseAPIController(appServices)
 {
     private const string DefaultControllerTag = "Search";
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="appServices"></param>
-    public SearchController(IAppServices appServices)
-        : base(appServices)
-    {
-
-    }
-
-
-
+    
     /// <summary>
     /// Search for doctors by name
     /// </summary>

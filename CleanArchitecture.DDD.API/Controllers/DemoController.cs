@@ -3,14 +3,10 @@ using CleanArchitecture.DDD.Core.ExtensionMethods;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
-public class DemoController : BaseAPIController
+public class DemoController(IAppServices appServices) 
+    : BaseAPIController(appServices)
 {
     private const string DefaultControllerTag = "Demo";
-
-    public DemoController(IAppServices appServices)
-        : base(appServices)
-    {
-    }
 
     /// <summary>
     /// 

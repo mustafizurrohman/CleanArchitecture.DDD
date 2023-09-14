@@ -3,13 +3,10 @@ using CleanArchitecture.DDD.Application.MediatR.Queries.HashPasswordVerification
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
-public class PasswordController : BaseAPIController
+public class PasswordController(IAppServices appServices) 
+    : BaseAPIController(appServices)
 {
     private const string DefaultControllerTag = "Password";
-
-    public PasswordController(IAppServices appServices) : base(appServices)
-    {
-    }
 
     /// <summary>
     /// Hashes a password

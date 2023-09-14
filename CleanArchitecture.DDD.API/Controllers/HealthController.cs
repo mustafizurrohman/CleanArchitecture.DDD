@@ -4,18 +4,11 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
-// TODO: Best practice???
 [AllowAnonymous]
-public class HealthController : BaseAPIController
+public class HealthController(IAppServices appServices, HealthCheckService healthCheckService)
+    : BaseAPIController(appServices)
 {
     private const string DefaultControllerTag = "Health";
-
-    private readonly HealthCheckService _healthCheckService;
-
-    public HealthController(IAppServices appServices, HealthCheckService healthCheckService) : base(appServices)
-    {
-        _healthCheckService = healthCheckService;
-    }
 
     /// <summary>
     /// 
@@ -33,7 +26,7 @@ public class HealthController : BaseAPIController
     [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
     public async Task<IActionResult> GetHealth(CancellationToken cancellationToken)
     {
-        var report = await _healthCheckService.CheckHealthAsync(cancellationToken);
+        var report = await healthCheckService.CheckHealthAsync(cancellationToken);
         var result = new HealthCheckDetailedResponse(report);
 
         return report.Status == HealthStatus.Healthy 

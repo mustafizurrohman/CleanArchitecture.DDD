@@ -5,17 +5,10 @@ using CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Methods;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
-public class ValidationController : BaseAPIController
+public class ValidationController(IAppServices appServices, IFakeDataService fakeDataService) 
+    : BaseAPIController(appServices)
 {
     private const string DefaultControllerTag = "Validation";
-
-    private readonly IFakeDataService _fakeDataService;
-
-    public ValidationController(IAppServices appServices, IFakeDataService fakeDataService) 
-        : base(appServices)
-    {
-        _fakeDataService = fakeDataService;
-    }
 
     /// <summary>
     /// 
@@ -80,7 +73,7 @@ public class ValidationController : BaseAPIController
     {
         Guard.Against.NegativeOrZero(num);
 
-        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num)
+        var fakeDoctors = fakeDataService.GetFakeDoctorsWithSomeInvalidData(num)
             .AsQueryable()
             .ProjectTo<FakeDoctorAddressDTO>(AutoMapper.ConfigurationProvider);
         
@@ -111,7 +104,7 @@ public class ValidationController : BaseAPIController
     {
         Guard.Against.NegativeOrZero(num);
 
-        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
+        var fakeDoctors = fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
 
         var doctorsToValidate = AutoMapper.Map<IEnumerable<FakeDoctorAddressDTO>>(fakeDoctors);
 
@@ -159,7 +152,7 @@ public class ValidationController : BaseAPIController
     {
         Guard.Against.NegativeOrZero(num);
 
-        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
+        var fakeDoctors = fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
 
         var doctorToValidate = fakeDoctors.First();
 
@@ -187,7 +180,7 @@ public class ValidationController : BaseAPIController
     {
         Guard.Against.NegativeOrZero(num);
 
-        var fakeDoctors = _fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
+        var fakeDoctors = fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
         
         // We have not defined a validator for ExternalFakeDoctorAddressDTO
         // So this  will throw an exception at runtime

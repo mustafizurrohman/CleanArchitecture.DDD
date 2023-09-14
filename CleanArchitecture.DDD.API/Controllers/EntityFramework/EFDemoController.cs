@@ -3,14 +3,9 @@ using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
 namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 
-public class EFDemoController : BaseAPIController
+public class EFDemoController(IAppServices appServices) : BaseAPIController(appServices)
 {
     private const string DefaultControllerTag = "EF-Demo";
-
-    public EFDemoController(IAppServices appServices)
-        : base(appServices)
-    {
-    }
 
     /// <summary>
     /// 

@@ -2,22 +2,16 @@
 
 namespace CleanArchitecture.DDD.API.Controllers.Business;
 
-public class EDCMController : BaseAPIController
+/// <summary>
+/// 
+/// </summary>
+/// <param name="appServices"></param>
+/// <param name="iedcmSyncService"></param>
+public class EDCMController(IAppServices appServices, IEDCMSyncService iedcmSyncService) 
+    : BaseAPIController(appServices)
 {
     private const string DefaultControllerTag = "EDCM";
 
-    private readonly IEDCMSyncService _iedcmSyncService;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="appServices"></param>
-    /// <param name="iedcmSyncService"></param>
-    public EDCMController(IAppServices appServices, IEDCMSyncService iedcmSyncService)
-        : base(appServices)
-    {
-        _iedcmSyncService = iedcmSyncService;
-    }
 
     /// <summary>
     /// 

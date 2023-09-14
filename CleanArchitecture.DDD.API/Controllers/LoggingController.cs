@@ -4,15 +4,10 @@ using Serilog.Context;
 
 namespace CleanArchitecture.DDD.API.Controllers;
 
-public class LoggingController : BaseAPIController
+public class LoggingController(IAppServices appServices) 
+    : BaseAPIController(appServices)
 {
     private const string DefaultControllerTag = "Logging";
-
-    public LoggingController(IAppServices appServices)
-        : base(appServices)
-    {
-            
-    }
 
     /// <summary>
     /// Demo 1

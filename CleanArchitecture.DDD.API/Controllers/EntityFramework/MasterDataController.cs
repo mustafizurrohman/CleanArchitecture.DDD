@@ -4,15 +4,9 @@ using CleanArchitecture.DDD.Application.MediatR.Queries.GetYoungPatients;
 
 namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 
-public class MasterDataController : BaseAPIController
+public class MasterDataController(IAppServices appServices) : BaseAPIController(appServices)
 {
     private const string DefaultControllerTag = "MasterData";
-
-    public MasterDataController(IAppServices appServices)
-        : base(appServices)
-    {
-
-    }
 
     /// <summary>
     /// 
