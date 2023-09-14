@@ -48,7 +48,7 @@ public class FakeDataService : IFakeDataService
 
         var generatedFakeDoctors = DoctorFaker.Generate(num).ToArray();
 
-        double randomPercentage = (double)(new Faker()).Random.Number(5, 45) / 100;
+        double randomPercentage = (double)Faker.Random.Number(5, 45) / 100;
         var numberOfNamesToInvalidate = (int)Math.Floor(randomPercentage * generatedFakeDoctors.Length);
 
         var validDoctors = generatedFakeDoctors
