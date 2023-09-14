@@ -51,19 +51,19 @@ public class FakeDataService : IFakeDataService
         double randomPercentage = (double)(new Faker()).Random.Number(5, 45) / 100;
         var numberOfNamesToInvalidate = (int)Math.Floor(randomPercentage * generatedFakeDoctors.Length);
 
+        var validDoctors = generatedFakeDoctors
+            .Shuffle()
+            .Take(generatedFakeDoctors.Length - numberOfNamesToInvalidate)
+            .ToList();
+
         var invalidDoctors = generatedFakeDoctors
+            .ExceptBy(validDoctors.Select(vd => vd.EDCMExternalID), doc => doc.EDCMExternalID)
             .Shuffle()
             .Take(numberOfNamesToInvalidate)
             .Select(doc => doc.Invalidate())
             .ToList();
 
-        var validDoctors = generatedFakeDoctors
-            .Where(doc => !invalidDoctors.Select(da => da.EDCMExternalID).Contains(doc.EDCMExternalID))
-            .Take(generatedFakeDoctors.Length - numberOfNamesToInvalidate)
-            .ToList();
-
-        return invalidDoctors.Concat(validDoctors).Shuffle();
-
+        return validDoctors.Concat(invalidDoctors).Shuffle();
     }
 
 }
