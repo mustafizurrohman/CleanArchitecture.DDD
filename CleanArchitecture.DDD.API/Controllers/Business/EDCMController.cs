@@ -62,7 +62,7 @@ public class EDCMController(IAppServices appServices, IEDCMSyncService iedcmSync
     {
         try
         {
-            _iedcmSyncService.SyncDoctorsInBackground();
+            iedcmSyncService.SyncDoctorsInBackground();
             return Ok();
         }
         catch (HttpRequestException ex)
