@@ -4,15 +4,10 @@ using CleanArchitecture.DDD.Infrastructure.Persistence.JSONColumn;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Commands.SeedPatientsWithMasterData;
 
-public sealed class SeedPatientsWithMasterDataCommandHandler
-    : BaseHandler, IRequestHandler<SeedPatientsWithMasterDataCommand>
+public sealed class SeedPatientsWithMasterDataCommandHandler(IAppServices appServices) 
+    : BaseHandler(appServices), IRequestHandler<SeedPatientsWithMasterDataCommand>
 {
     private readonly Faker _faker = new();
-
-    public SeedPatientsWithMasterDataCommandHandler(IAppServices appServices)
-        : base(appServices)
-    {
-    }
 
     public async Task Handle(SeedPatientsWithMasterDataCommand request, CancellationToken cancellationToken)
     {

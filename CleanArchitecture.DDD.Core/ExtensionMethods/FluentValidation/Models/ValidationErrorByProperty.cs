@@ -14,7 +14,7 @@ public class ValidationErrorByProperty
         
         ProvidedValue = showValue
             ? grp.Select(err => err.AttemptedValue).Distinct().Single()
-            : "*** (Hidden)";
+            : "*** [Hidden]";
 
         ErrorMessages = grp.Select(err => err.ErrorMessage);
     }
