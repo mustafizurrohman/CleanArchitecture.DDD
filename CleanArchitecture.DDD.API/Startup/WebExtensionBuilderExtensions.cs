@@ -12,6 +12,7 @@ using Hangfire.SqlServer;
 using Hellang.Middleware.ProblemDetails;
 using Hellang.Middleware.ProblemDetails.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
@@ -255,9 +256,30 @@ public static class WebExtensionBuilderExtensions
     private static WebApplicationBuilder ConfigureEntityFramework(this WebApplicationBuilder builder)
     {
         var connectionString = builder.GetDatabaseConnectionString();
-        // TODO: Use DbContextPooling
-        builder.Services.AddScoped(_ => new DomainDbContext(connectionString, builder.Environment.IsDevelopment()));
+        var loggingEnabled = builder.Environment.IsDevelopment();
 
+        builder.Services.AddDbContextPool<DomainDbContext>(options =>
+        {
+            options.UseSqlServer(connectionString);
+
+            if (!loggingEnabled) 
+                return;
+            
+            var consoleLoggerFactory = LoggerFactory.Create(loggerBuilder =>
+            {
+                loggerBuilder
+                    .AddFilter((category, level) =>
+                        category == DbLoggerCategory.Database.Command.Name
+                        && level == LogLevel.Information)
+                    .AddConsole();
+            });
+
+            options
+                .EnableSensitiveDataLogging()
+                .UseLoggerFactory(consoleLoggerFactory);
+
+        });
+        
         return builder;
     }
 

@@ -11,23 +11,9 @@ namespace CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 
 public class DomainDbContext : DatabaseContext
 {
-    private readonly string _connectionString;
-    private readonly bool _useLogger;
-    
-    private DomainDbContext()
+    public DomainDbContext(DbContextOptions dbContextOptions)
+        : base(dbContextOptions)
     {
-    }
-
-    public DomainDbContext(string connectionString, bool useLogger)
-    {
-        _connectionString = connectionString;
-
-        var isDbReachable = new DbConnectionString(_connectionString).IsReachable;
-
-        if (!isDbReachable)
-            throw new DatabaseNotReachableException();
-        
-        _useLogger = useLogger;
     }
 
     #region -- Entities --
@@ -37,36 +23,7 @@ public class DomainDbContext : DatabaseContext
     public virtual DbSet<Patient> Patients { get; set; }
 
     #endregion
-    
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer(_connectionString);
 
-        if (_useLogger)
-        {
-            var consoleLoggerFactory = LoggerFactory.Create(loggerBuilder =>
-            {
-                loggerBuilder
-                    .AddFilter((category, level) =>
-                        category == DbLoggerCategory.Database.Command.Name
-                        && level == LogLevel.Information)
-                    .AddConsole();
-            });
-            
-            optionsBuilder
-                .EnableSensitiveDataLogging()
-                .UseLoggerFactory(consoleLoggerFactory);
-        }
-        else
-        {
-            optionsBuilder
-                .UseLoggerFactory(LoggerFactory.Create(builder =>
-                {
-                    builder.AddFilter((_, _) => false);
-                }));
-        }
-    }
-    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {      
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
