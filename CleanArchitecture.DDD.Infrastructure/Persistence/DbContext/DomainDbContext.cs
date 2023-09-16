@@ -1,11 +1,10 @@
 ﻿using System.Collections.Immutable;
-using CleanArchitecture.DDD.Core.Models;
-using CleanArchitecture.DDD.Infrastructure.Exceptions;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 using DatabaseContext = Microsoft.EntityFrameworkCore.DbContext;
 using CleanArchitecture.DDD.Core.ExtensionMethods;
+using CleanArchitecture.DDD.Infrastructure.Persistence.Extensions;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 
@@ -27,44 +26,9 @@ public class DomainDbContext : DatabaseContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {      
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-        var allEntityTypes = modelBuilder.Model
-            .GetEntityTypes()
-            .ToImmutableList();
-
-        #region -- Soft Deletion Configuration --
-
-        // Set default value of SoftDeletedProperty in all entities
-        var allSoftDeletedProperties = allEntityTypes
-            .SelectMany(type => type.GetProperties())
-            .Where(p => p.Name == nameof(BaseEntity.SoftDeleted))
-            .ToList();
-
-        foreach (var prop in allSoftDeletedProperties)
-        {
-            prop.SetDefaultValue(false);
-        }
-
-        #endregion
-
-        #region -- Global Query Filter Configuration --
-
-        Expression<Func<BaseEntity, bool>> notSoftDeletedFilterExpr = bm => !bm.SoftDeleted;
-
-        allEntityTypes
-            .Where(et => et.ClrType.IsAssignableTo(typeof(BaseEntity)))
-            .ForEach(entityType =>
-            {
-                // Modify expression to handle correct child type
-                var parameter = Expression.Parameter(entityType.ClrType);
-                var body = ReplacingExpressionVisitor.Replace(notSoftDeletedFilterExpr.Parameters[0], parameter, notSoftDeletedFilterExpr.Body);
-                var lambdaExpression = Expression.Lambda(body, parameter);
-
-                // Set query filter
-                entityType.SetQueryFilter(lambdaExpression);
-            });
-
-        #endregion
+        
+        modelBuilder.ConfigureSoftDelete()
+            .ConfigureGlobalFilters();
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
