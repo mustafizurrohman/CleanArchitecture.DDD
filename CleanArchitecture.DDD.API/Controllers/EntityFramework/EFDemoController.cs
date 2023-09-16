@@ -155,10 +155,8 @@ public class EFDemoController(IAppServices appServices) : BaseAPIController(appS
         return Ok(result);
     }
 
-    #pragma warning disable CS1998 
-    // Async method lacks 'await' operators and will run synchronously
     /// <summary>
-    /// TODO: Implement using MediatR
+    /// Must ba a Async function but without await
     /// </summary>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
@@ -172,11 +170,15 @@ public class EFDemoController(IAppServices appServices) : BaseAPIController(appS
     public async Task<IActionResult> GetDoctorsStreaming(CancellationToken cancellationToken)
     {
         var doctors = DbContext.Doctors
+            .OrderBy(doc => doc.Name.Lastname)
+            .ThenBy(doc => doc.Name.Firstname)
             .AsNoTracking()
             .Select(doc => doc.Name.Firstname + " " + doc.Name.Lastname)
             .Take(100)
             .ToAsyncEnumerable();
 
-        return Ok(doctors);
+        // Also works!
+        // return Ok(doctors); 
+        return Ok(await doctors.ToListAsync(cancellationToken));
     }
 }

@@ -166,4 +166,29 @@ public class SeedController : BaseAPIController
         return Ok(new Tuple<int, long>(num, runtime));
     }
 
+    /// <summary>
+    /// Prune the database
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPost("prune", Name = "prune")]
+    [SwaggerOperation(
+        Summary = "Prune database",
+        Description = DefaultDescription,
+        OperationId = "Prune database",
+        Tags = new[] { DefaultControllerTag }
+    )]
+    [ProducesResponseType(typeof(Tuple<int, long>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> PruneDatabase(CancellationToken cancellationToken)
+    {
+        var runtime = await BenchmarkHelper.BenchmarkAsync(async () =>
+        {
+            await DbContext.Addresses.ExecuteDeleteAsync(cancellationToken);
+            await DbContext.Doctors.ExecuteDeleteAsync(cancellationToken);
+            await DbContext.Doctors.ExecuteDeleteAsync(cancellationToken);
+        });
+
+        return Ok(runtime);
+    }
 }
