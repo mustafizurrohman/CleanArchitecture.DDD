@@ -1,6 +1,6 @@
 ﻿using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 using DatabaseContext = Microsoft.EntityFrameworkCore.DbContext;
-using CleanArchitecture.DDD.Infrastructure.Persistence.Extensions;
+using CleanArchitecture.DDD.Infrastructure.Persistence.ExtensionMethods;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 

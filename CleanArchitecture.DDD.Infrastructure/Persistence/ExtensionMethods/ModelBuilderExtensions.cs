@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Query;
 // ReSharper disable UnusedMethodReturnValue.Global
 
-namespace CleanArchitecture.DDD.Infrastructure.Persistence.Extensions;
+namespace CleanArchitecture.DDD.Infrastructure.Persistence.ExtensionMethods;
 
 internal static class ModelBuilderExtensions
 {

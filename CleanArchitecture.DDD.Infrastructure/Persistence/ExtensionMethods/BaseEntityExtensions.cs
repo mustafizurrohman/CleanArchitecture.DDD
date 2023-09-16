@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 
-namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities.ExtensionMethods;
+namespace CleanArchitecture.DDD.Infrastructure.Persistence.ExtensionMethods;
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]
 public static class BaseEntityExtensions
@@ -16,12 +16,13 @@ public static class BaseEntityExtensions
             where T : BaseEntity
     {
         return baseEntities
-            .Select(be => {
+            .Select(be =>
+            {
                 be.SoftDeleted = true;
                 return be;
             });
     }
-    
+
     public static BaseEntity UndoSoftDelete(this BaseEntity baseEntity)
     {
         baseEntity.SoftDeleted = false;
@@ -32,7 +33,8 @@ public static class BaseEntityExtensions
             where T : BaseEntity
     {
         return baseEntities
-            .Select(be => {
+            .Select(be =>
+            {
                 be.SoftDeleted = false;
                 return be;
             });
