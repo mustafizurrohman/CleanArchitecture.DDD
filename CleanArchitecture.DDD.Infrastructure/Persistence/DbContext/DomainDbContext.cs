@@ -1,9 +1,5 @@
-﻿using System.Collections.Immutable;
-using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
-using Microsoft.EntityFrameworkCore.Query;
-using System.Linq.Expressions;
+﻿using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 using DatabaseContext = Microsoft.EntityFrameworkCore.DbContext;
-using CleanArchitecture.DDD.Core.ExtensionMethods;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Extensions;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
@@ -15,13 +11,11 @@ public class DomainDbContext : DatabaseContext
     {
     }
 
-    #region -- Entities --
-
+    // Entities 
     public virtual DbSet<Doctor> Doctors { get; set; }
     public virtual DbSet<Address> Addresses { get; set; }
     public virtual DbSet<Patient> Patients { get; set; }
 
-    #endregion
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {      

@@ -4,6 +4,7 @@ using CleanArchitecture.DDD.Core.ExtensionMethods;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Query;
+// ReSharper disable UnusedMethodReturnValue.Global
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.Extensions;
 

@@ -14,6 +14,7 @@ using Hellang.Middleware.ProblemDetails.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+// ReSharper disable UnusedMethodReturnValue.Local
 
 namespace CleanArchitecture.DDD.API.Startup;
 
@@ -254,12 +255,11 @@ public static class WebExtensionBuilderExtensions
 
     private static WebApplicationBuilder ConfigureEntityFramework(this WebApplicationBuilder builder)
     {
-        var connectionString = builder.GetDatabaseConnectionString();
         var loggingEnabled = builder.Environment.IsDevelopment();
 
         builder.Services.AddDbContextPool<DomainDbContext>(options =>
         {
-            options.UseSqlServer(connectionString);
+            options.UseSqlServer(builder.GetDatabaseConnectionString());
 
             if (!loggingEnabled) 
                 return;
