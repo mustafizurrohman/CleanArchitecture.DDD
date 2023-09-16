@@ -16,7 +16,7 @@ internal static class ModelBuilderExtensions
         var allSoftDeletedProperties = modelBuilder.GetAllEntityTypes()
             .SelectMany(type => type.GetProperties())
             .Where(p => p.Name == nameof(BaseEntity.SoftDeleted))
-            .ToList();
+            .ToImmutableList();
 
         foreach (var prop in allSoftDeletedProperties)
         {
