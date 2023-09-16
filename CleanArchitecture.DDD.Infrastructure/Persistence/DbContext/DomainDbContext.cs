@@ -18,11 +18,10 @@ public class DomainDbContext : DatabaseContext
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {      
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        
-        modelBuilder.ConfigureSoftDelete()
-            .ConfigureGlobalFilters();
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly())
+            .ConfigureGlobalFilters()
+            .ConfigureSoftDelete();
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

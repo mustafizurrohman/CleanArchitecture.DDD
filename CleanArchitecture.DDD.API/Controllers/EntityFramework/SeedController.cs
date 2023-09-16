@@ -184,9 +184,9 @@ public class SeedController : BaseAPIController
     {
         var runtime = await BenchmarkHelper.BenchmarkAsync(async () =>
         {
-            await DbContext.Addresses.ExecuteDeleteAsync(cancellationToken);
-            await DbContext.Doctors.ExecuteDeleteAsync(cancellationToken);
-            await DbContext.Doctors.ExecuteDeleteAsync(cancellationToken);
+            await DbContext.Addresses.IgnoreQueryFilters().ExecuteDeleteAsync(cancellationToken);
+            await DbContext.Doctors.IgnoreQueryFilters().ExecuteDeleteAsync(cancellationToken);
+            await DbContext.Patients.IgnoreQueryFilters().ExecuteDeleteAsync(cancellationToken);
         });
 
         return Ok(runtime);

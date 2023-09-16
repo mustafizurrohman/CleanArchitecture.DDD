@@ -308,7 +308,7 @@ public static class WebExtensionBuilderExtensions
 
     private static WebApplicationBuilder ConfigureLogging(this WebApplicationBuilder builder)
     {
-        var assemblyName = Assembly.GetEntryAssembly()?.GetName().Name!;
+        var assemblyName = Assembly.GetEntryAssembly()?.GetName().Name ?? "Unknown Assembly";
 
         // We can also use appSettings or any ConfigurationProvider to configure logging
         // Usage of a ConfigurationProvider is recommended
