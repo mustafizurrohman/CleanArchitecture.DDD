@@ -3,7 +3,8 @@ using CleanArchitecture.DDD.Infrastructure.Persistence.ExtensionMethods;
 
 namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 
-public class EFDemoController(IAppServices appServices) : BaseAPIController(appServices)
+public class EFDemoController(IAppServices appServices) 
+    : BaseAPIController(appServices)
 {
     private const string DefaultControllerTag = "EF-Demo";
     

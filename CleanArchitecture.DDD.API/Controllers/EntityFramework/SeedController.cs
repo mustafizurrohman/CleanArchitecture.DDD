@@ -8,19 +8,15 @@ namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 /// <summary>
 /// 
 /// </summary>
+/// <remarks>
+/// 
+/// </remarks>
+/// <param name="appServices"></param>
 [ApiExplorerSettings(IgnoreApi = false)]
-public class SeedController : BaseAPIController
+public class SeedController(IAppServices appServices) 
+    : BaseAPIController(appServices)
 {
     private const string DefaultControllerTag = "Seed";
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="appServices"></param>
-    public SeedController(IAppServices appServices)
-        : base(appServices)
-    {
-    }
 
     /// <summary>
     /// Seed specified number of address in database

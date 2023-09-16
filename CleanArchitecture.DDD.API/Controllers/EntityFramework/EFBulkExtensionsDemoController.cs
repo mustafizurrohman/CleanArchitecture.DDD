@@ -2,7 +2,8 @@
 
 namespace CleanArchitecture.DDD.API.Controllers.EntityFramework;
 
-public class EFBulkExtensionsDemoController(IAppServices appServices) : BaseAPIController(appServices)
+public class EFBulkExtensionsDemoController(IAppServices appServices) 
+    : BaseAPIController(appServices)
 {
     private const string DefaultControllerTag = "EF-BulkExtensions";
 
