@@ -11,14 +11,15 @@ public sealed class SeedPatientsWithMasterDataCommandHandler(IAppServices appSer
 
     public async Task Handle(SeedPatientsWithMasterDataCommand request, CancellationToken cancellationToken)
     {
-        var patientList = (await PatientMasterData.CreateRandomAsync(DbContext, request.Num))
+        var patientList = await PatientMasterData.CreateRandomAsyncEnumerable(DbContext, request.Num)
             .Select(masterData => new Patient()
             {
                 Firstname = _faker.Name.FirstName(),
                 Lastname = _faker.Name.LastName(),
                 MasterData = masterData
             })
-            .ToImmutableList();
+            .ToListAsync(cancellationToken);
+
 
         await DbContext.Patients.AddRangeAsync(patientList, cancellationToken);
         await DbContext.SaveChangesAsync(cancellationToken);

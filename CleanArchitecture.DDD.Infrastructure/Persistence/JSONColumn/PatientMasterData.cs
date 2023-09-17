@@ -22,22 +22,19 @@ public class PatientMasterData
 
     public static async Task<PatientMasterData> CreateRandomAsync(DomainDbContext context)
     {
-        return (await CreateRandomAsync(context, 1)).First();
+        return (await CreateRandomAsyncEnumerable(context, 1).ToListAsync())[0];
     }
 
-    public static async Task<IEnumerable<PatientMasterData>> CreateRandomAsync(DomainDbContext context, int num)
+    public static IAsyncEnumerable<PatientMasterData> CreateRandomAsyncEnumerable(DomainDbContext context, int num)
     {
-        var patientMasterDataList = await context
+        return context
             .Doctors
             .AsQueryable()
             .OrderBy(_ => Guid.NewGuid())
             .Select(doc => doc.FullName)
             .Take(num)
-            .AsAsyncEnumerable()
             .Select(primaryDoctor => Create(primaryDoctor, RandomDay(), RandomActive))
-            .ToListAsync();
-
-        return patientMasterDataList;
+            .AsAsyncEnumerable();
     }
 
     private static bool RandomActive => DateTime.Now.Ticks % 2 == 0;
