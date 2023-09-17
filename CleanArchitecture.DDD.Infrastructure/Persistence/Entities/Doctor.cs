@@ -7,7 +7,8 @@ namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
 //[StronglyTypedId(converters: StronglyTypedIdConverter.SystemTextJson)]
 //public partial struct DoctorID{}
 
-public sealed class Doctor : BaseEntity
+public sealed class Doctor 
+    : BaseEntity
 {
 
     [Key]
@@ -108,9 +109,26 @@ public sealed class Doctor : BaseEntity
         return doc;
     }
 
+    public static Doctor Create(Guid addressId)
+    {
+        var doc = new Doctor
+        {
+            Name = Name.CreateRandom(),
+            AddressId = addressId,
+            Specialization = SpecializationEnumExtensions.GetRandomSpecialization()
+        };
+
+        return doc;
+    }
+
     public static Doctor CreateRandom()
     {
-        var doctor = Create(Name.CreateRandom(), Address.CreateRandom(), SpecializationEnumExtensions.GetRandomSpecialization());
+        var doctor = Create(
+            Name.CreateRandom(), 
+            Address.CreateRandom(), 
+            SpecializationEnumExtensions.GetRandomSpecialization()
+        );
+
         return doctor;
     }
 

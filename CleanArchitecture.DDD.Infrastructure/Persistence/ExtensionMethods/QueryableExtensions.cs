@@ -8,7 +8,7 @@ public static class QueryableExtensions
         CancellationToken cancellationToken = default)
         where T : BaseEntity
     {
-        var now = DateTime.Now;
+        var now = DateTime.UtcNow;
 
         return await queryable
             .ExecuteUpdateAsync(doc =>
@@ -21,7 +21,7 @@ public static class QueryableExtensions
         CancellationToken cancellationToken = default)
         where T : BaseEntity
     {
-        var now = DateTime.Now;
+        var now = DateTime.UtcNow;
 
         return await queryable
             .ExecuteUpdateAsync(doc =>

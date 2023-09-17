@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.DDD.Application.Exceptions;
+﻿using System.Collections.Immutable;
+using CleanArchitecture.DDD.Application.Exceptions;
 using CleanArchitecture.DDD.Application.MediatR.Handlers;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
@@ -30,22 +31,15 @@ public sealed class SeedDoctorsCommandHandler
         if (availableAddressIds.Count < request.Num)
             throw new UniqueAddressesNotAvailable(request.Num, availableAddressIds.Count);
 
-        var names = Enumerable.Range(0, request.Num)
-            .Select(_ => Name.Create(faker.Name.FirstName(), faker.Name.LastName()))
-            .ToArray();
-
         var doctors = Enumerable.Range(0, request.Num)
             .Select(_ =>
             {
-                var randomName = faker.Random.ArrayElement(names);
                 var randomAddressGuid = faker.Random.ArrayElement(addressIds.ToArray());
-                var randomSpecialization = SpecializationEnumExtensions.GetRandomSpecialization();
-
                 addressIds.Remove(randomAddressGuid);
 
-                return Doctor.Create(randomName, randomAddressGuid, randomSpecialization);
+                return Doctor.Create(randomAddressGuid);
             })
-            .ToList();
+            .ToImmutableList();
 
         await DbContext.AddRangeAsync(doctors, cancellationToken);
         await DbContext.SaveChangesAsync(cancellationToken);

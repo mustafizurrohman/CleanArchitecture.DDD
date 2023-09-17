@@ -12,19 +12,15 @@ internal static class ModelBuilderExtensions
 {
     public static ModelBuilder ConfigureSoftDelete(this ModelBuilder modelBuilder)
     {
-        // Set default value of SoftDeletedProperty in all entities
-        var allSoftDeletedProperties = modelBuilder.GetAllEntityTypes()
+         modelBuilder.GetAllEntityTypes()
             .SelectMany(type => type.GetProperties())
             .Where(p => p.Name == nameof(BaseEntity.SoftDeleted))
-            .ToImmutableList();
-
-        foreach (var prop in allSoftDeletedProperties)
-        {
-            prop.SetDefaultValue(false);
-        }
+            .ForEach(prop =>
+            {
+                prop.SetDefaultValue(false);
+            });
 
         return modelBuilder;
-
     }
 
     public static ModelBuilder ConfigureGlobalFilters(this ModelBuilder modelBuilder)
@@ -45,7 +41,6 @@ internal static class ModelBuilderExtensions
             });
 
         return modelBuilder;
-
     }
 
     private static IReadOnlyList<IMutableEntityType> GetAllEntityTypes(this ModelBuilder modelBuilder)

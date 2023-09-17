@@ -3,7 +3,8 @@ using Newtonsoft.Json;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Configurations;
 
-internal class AddressConfiguration : IEntityTypeConfiguration<Address>
+internal class AddressConfiguration 
+    : IEntityTypeConfiguration<Address>
 { 
     public void Configure(EntityTypeBuilder<Address> builder)
     {

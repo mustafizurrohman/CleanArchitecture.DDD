@@ -2,7 +2,8 @@
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Configurations;
 
-internal class PatientConfiguration : IEntityTypeConfiguration<Patient>
+internal class PatientConfiguration 
+    : IEntityTypeConfiguration<Patient>
 {
     public void Configure(EntityTypeBuilder<Patient> builder)
     {

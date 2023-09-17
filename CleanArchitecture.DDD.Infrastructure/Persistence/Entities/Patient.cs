@@ -4,7 +4,8 @@ using CleanArchitecture.DDD.Infrastructure.Persistence.JSONColumn;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
 
-public sealed class Patient : BaseEntity
+public sealed class Patient 
+    : BaseEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

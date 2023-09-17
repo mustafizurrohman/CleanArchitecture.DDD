@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.DDD.Application.MediatR.Handlers;
+﻿using System.Collections.Immutable;
+using CleanArchitecture.DDD.Application.MediatR.Handlers;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Commands.SeedAddress;
 
@@ -13,18 +14,9 @@ public sealed class SeedAddressCommandHandler
 
     public async Task Handle(SeedAddressCommand request, CancellationToken cancellationToken)
     {
-        var faker = new Faker("de");
-
-        var fakeCountries = new List<string>()
-        {
-            "Deutschland",
-            "Osterreich",
-            "Schweiz"
-        };
-
         var addresses = Enumerable.Range(0, request.Num)
-            .Select(_ => Address.Create(faker.Address.StreetName(), faker.Address.ZipCode(), faker.Address.City(), faker.Random.ArrayElement(fakeCountries.ToArray())))
-            .ToList();
+            .Select(_ => Address.CreateRandom())
+            .ToImmutableList();
 
         await DbContext.AddRangeAsync(addresses, cancellationToken);
         await DbContext.SaveChangesAsync(cancellationToken);
