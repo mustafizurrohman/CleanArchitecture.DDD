@@ -274,6 +274,7 @@ public static class WebExtensionBuilderExtensions
             });
 
             options
+                .EnableDetailedErrors()
                 .EnableSensitiveDataLogging()
                 .UseLoggerFactory(consoleLoggerFactory);
 
@@ -282,6 +283,7 @@ public static class WebExtensionBuilderExtensions
         return builder;
     }
 
+#pragma warning disable S1144 // Unused private types or members should be removed
     private static WebApplicationBuilder ConfigureHangfire(this WebApplicationBuilder builder)
     {
         // Add Hangfire services.
@@ -305,6 +307,7 @@ public static class WebExtensionBuilderExtensions
 
         return builder;
     }
+#pragma warning restore S1144 // Unused private types or members should be removed
 
     private static WebApplicationBuilder ConfigureLogging(this WebApplicationBuilder builder)
     {
