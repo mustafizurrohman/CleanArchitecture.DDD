@@ -15,12 +15,14 @@ public sealed class InactivatePatientCommandHandler
         // TODO: Why does this not work?
         // Using ExecuteUpdateAsync does not work on JSON Columns yet
         // await DbContext.Patients
-        //    .Where(patient => patient.PatientID == request.ID)
-        //    .ExecuteUpdateAsync(patient =>
-        //        patient.SetProperty(currentPatient => currentPatient.MasterData.Active, p => false), cancellationToken);
+        //   .Where(patient => patient.PatientID == request.ID)
+        //   .ExecuteUpdateAsync(patient =>
+        //       patient.SetProperty(currentPatient => currentPatient.MasterData.Active, p => false), cancellationToken);
 
         var patient = await DbContext.Patients
-            .FindAsync(request.ID, cancellationToken);
+            .Include(p => p.MasterData)
+            .Where(p => p.MasterData.Active)
+            .FirstOrDefaultAsync(p => p.PatientID == request.ID, cancellationToken);
 
         if (patient is not null)
         {

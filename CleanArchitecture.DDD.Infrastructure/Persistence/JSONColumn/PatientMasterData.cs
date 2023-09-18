@@ -25,9 +25,14 @@ public class PatientMasterData
         return (await CreateRandomAsyncEnumerable(context, 1).ToListAsync())[0];
     }
 
-    public static IAsyncEnumerable<PatientMasterData> CreateRandomAsyncEnumerable(DomainDbContext context, int num)
+    public static async IAsyncEnumerable<PatientMasterData> CreateRandomAsyncEnumerable(DomainDbContext context, int num)
     {
-        return context
+        var availableDoctors = await context.Doctors.CountAsync();
+
+        if (availableDoctors == 0)
+            throw new InvalidOperationException("Doctors not available");
+        
+        IAsyncEnumerable<PatientMasterData> doctors =  context
             .Doctors
             .AsQueryable()
             .OrderBy(_ => Guid.NewGuid())
@@ -35,6 +40,11 @@ public class PatientMasterData
             .Take(num)
             .Select(primaryDoctor => Create(primaryDoctor, RandomDay(), RandomActive))
             .AsAsyncEnumerable();
+
+        await foreach (var doctor in doctors)
+        {
+            yield return doctor;
+        }
     }
 
     private static bool RandomActive => DateTime.Now.Ticks % 2 == 0;
