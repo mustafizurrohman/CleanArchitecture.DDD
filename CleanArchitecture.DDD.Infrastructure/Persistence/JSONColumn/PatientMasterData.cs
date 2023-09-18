@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
+﻿using Bogus;
+using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.JSONColumn;
 
@@ -32,18 +33,21 @@ public class PatientMasterData
         if (availableDoctors == 0)
             throw new InvalidOperationException("Doctors not available");
         
-        IAsyncEnumerable<PatientMasterData> doctors =  context
+        string[] doctorsNames = await context
             .Doctors
             .AsQueryable()
             .OrderBy(_ => Guid.NewGuid())
             .Select(doc => doc.FullName)
             .Take(num)
-            .Select(primaryDoctor => Create(primaryDoctor, RandomDay(), RandomActive))
-            .AsAsyncEnumerable();
+            .ToArrayAsync();
 
-        await foreach (var doctor in doctors)
+        var masterData = Enumerable.Range(1, num)
+            .Select(_ => (new Faker()).Random.ArrayElement(doctorsNames))
+            .Select(primaryDoctor => Create(primaryDoctor, RandomDay(), RandomActive));
+
+        foreach (var md in masterData)
         {
-            yield return doctor;
+            yield return md;
         }
     }
 
