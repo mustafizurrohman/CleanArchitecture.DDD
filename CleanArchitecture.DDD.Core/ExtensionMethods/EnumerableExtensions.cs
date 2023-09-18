@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.DDD.Core.ExtensionMethods;
+﻿using Bogus;
+
+namespace CleanArchitecture.DDD.Core.ExtensionMethods;
 
 public static class EnumerableExtensions
 {
@@ -22,6 +24,11 @@ public static class EnumerableExtensions
         {
             await func(item);
         }
+    }
+
+    public static T GetRandomElement<T>(this IEnumerable<T> source)
+    {
+        return (new Faker()).Random.ArrayElement(source.ToArray());
     }
 
 }

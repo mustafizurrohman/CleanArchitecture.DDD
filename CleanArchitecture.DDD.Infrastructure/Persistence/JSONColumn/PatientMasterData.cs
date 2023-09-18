@@ -1,13 +1,14 @@
 ﻿using Bogus;
+using CleanArchitecture.DDD.Core.ExtensionMethods;
 using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.JSONColumn;
 
 public class PatientMasterData
 {
-    public string PrimaryDoctor { get; set; }
+    public string PrimaryDoctor { get; init; }
 
-    public DateTime DateOfBirth { get; set; }
+    public DateTime DateOfBirth { get; private init; }
 
     public bool Active { get; set; }
 
@@ -35,14 +36,13 @@ public class PatientMasterData
         
         string[] doctorsNames = await context
             .Doctors
-            .AsQueryable()
             .OrderBy(_ => Guid.NewGuid())
             .Select(doc => doc.FullName)
             .Take(num)
             .ToArrayAsync();
 
         var masterData = Enumerable.Range(1, num)
-            .Select(_ => (new Faker()).Random.ArrayElement(doctorsNames))
+            .Select(_ => doctorsNames.GetRandomElement())
             .Select(primaryDoctor => Create(primaryDoctor, RandomDay(), RandomActive));
 
         foreach (var md in masterData)
