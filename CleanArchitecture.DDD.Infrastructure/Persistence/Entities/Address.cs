@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using CleanArchitecture.DDD.Core.ExtensionMethods;
 using CleanArchitecture.DDD.Infrastructure.Persistence.Entities.Base;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.Entities;
@@ -62,7 +63,10 @@ public sealed class Address
             "Deutschland", "Osterreich", "Schweiz"
         };
 
-        var address = Create(faker.Address.StreetName(), faker.Address.ZipCode(), faker.Random.ArrayElement(fakeCities.ToArray()), faker.Random.ArrayElement(fakeCountries.ToArray()));
+        var address = Create(faker.Address.StreetName(), 
+            faker.Address.ZipCode(), 
+            fakeCities.GetRandomElement(), 
+            fakeCountries.GetRandomElement());
 
         return address;
     }

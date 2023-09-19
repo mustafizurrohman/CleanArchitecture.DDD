@@ -57,7 +57,7 @@ public static class ExternalFakeDoctorAddressDTOExtensions
         if (invalidateWithSpecialCharacters)
         {
             var randomInvalidCharacters = Enumerable.Range(1, faker.Random.Number(1, invalidCharacters.Count))
-                .Select(_ => faker.Random.ArrayElement(invalidCharacters.ToArray()))
+                .Select(_ => invalidCharacters.GetRandomElement())
                 .Aggregate(string.Empty, (a, b) => a.ToString() + b.ToString());
 
             inputString += randomInvalidCharacters;
