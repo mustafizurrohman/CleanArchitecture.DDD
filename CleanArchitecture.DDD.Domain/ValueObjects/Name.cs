@@ -46,7 +46,6 @@
          var name = Name.Create(faker.Name.FirstName(), faker.Name.LastName());
 
          return name;
-
      }
 
      public override string ToString()

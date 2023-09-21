@@ -29,7 +29,7 @@ public sealed class Doctor
     public Specialization Specialization { get; set; }
 
     [NotMapped]
-    public string FullName => (this.Name.Firstname + " " + this.Name.Middlename + " " + this.Name.Lastname)
+    public string FullName => (Name.Firstname + " " + Name.Middlename + " " + Name.Lastname)
         .RemoveConsecutiveSpaces();
 
     [NotMapped] public string SpecializationAsString => Specialization.ToStringCached();
@@ -43,7 +43,7 @@ public sealed class Doctor
 
     public Doctor UpdateAddress(Address updatedAddress)
     {
-        this.Address = updatedAddress;
+        Address = updatedAddress;
         return this;
     }
 

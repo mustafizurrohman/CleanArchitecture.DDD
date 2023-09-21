@@ -57,9 +57,6 @@ public static class Errors
 
         public static Error InvalidValueObject(IEnumerable<ValidationFailure> validationFailures) 
             => new(validationFailures);
-
-
-
     }
 }
 
