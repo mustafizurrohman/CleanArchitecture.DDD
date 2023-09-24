@@ -2,14 +2,9 @@
 
 namespace CleanArchitecture.DDD.Application.MediatR.Commands.InactivatePatient;
 
-public sealed class InactivatePatientCommandHandler
-    : BaseHandler, IRequestHandler<InactivatePatientCommand>
+public sealed class InactivatePatientCommandHandler(IAppServices appServices) 
+    : BaseHandler(appServices), IRequestHandler<InactivatePatientCommand>
 {
-    public InactivatePatientCommandHandler(IAppServices appServices)
-        : base(appServices)
-    {
-    }
-
     public async Task Handle(InactivatePatientCommand request, CancellationToken cancellationToken)
     {
         // TODO: Why does this not work?
@@ -17,7 +12,8 @@ public sealed class InactivatePatientCommandHandler
         // await DbContext.Patients
         //   .Where(patient => patient.PatientID == request.ID)
         //   .ExecuteUpdateAsync(patient =>
-        //       patient.SetProperty(currentPatient => currentPatient.MasterData.Active, p => false), cancellationToken);
+        //       patient.SetProperty(currentPatient => currentPatient.MasterData.Active, p => false)
+        //       , cancellationToken);
 
         var patient = await DbContext.Patients
             .Include(p => p.MasterData)
