@@ -26,6 +26,7 @@ public class EFBulkExtensionsDemoController(IAppServices appServices)
         await BenchmarkHelper.BenchmarkAsync(async () =>
         {
             affectedRows = await DbContext.Addresses
+                .IgnoreQueryFilters()
                 .OrderBy(_ => Guid.NewGuid())
                 .Take(20)
                 .SoftDeleteBulkAsync(cancellationToken);
