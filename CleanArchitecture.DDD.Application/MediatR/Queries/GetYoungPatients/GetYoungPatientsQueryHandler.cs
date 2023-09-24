@@ -2,15 +2,9 @@
 
 namespace CleanArchitecture.DDD.Application.MediatR.Queries.GetYoungPatients;
 
-public sealed class GetYoungPatientsQueryHandler : BaseHandler,
-    IRequestHandler<GetYoungPatientsQuery, IEnumerable<PatientMasterDataDTO>>
+public sealed class GetYoungPatientsQueryHandler(IAppServices appServices) 
+    : BaseHandler(appServices), IRequestHandler<GetYoungPatientsQuery, IEnumerable<PatientMasterDataDTO>>
 {
-    public GetYoungPatientsQueryHandler(IAppServices appServices)
-        : base(appServices)
-    {
-
-    }
-
     public async Task<IEnumerable<PatientMasterDataDTO>> Handle(GetYoungPatientsQuery request, CancellationToken cancellationToken)
     {
         // Querying a JSON column

@@ -1,18 +1,10 @@
 ﻿namespace CleanArchitecture.DDD.Application.MediatR.Queries.HashPasswordVerification;
 
-public sealed class HashPasswordVerificationQueryHandler
+public sealed class HashPasswordVerificationQueryHandler(IPasswordService passwordService) 
     : IRequestHandler<HashPasswordVerificationQuery, bool>
 {
-    private readonly IPasswordService _passwordService;
-
-    public HashPasswordVerificationQueryHandler(IPasswordService passwordService)
-    {
-        _passwordService = passwordService;
-    }
-
-
     public Task<bool> Handle(HashPasswordVerificationQuery request, CancellationToken cancellationToken)
     {
-        return Task.FromResult(_passwordService.VerifyPassword(request.Password, request.HashedPassword));
+        return Task.FromResult(passwordService.VerifyPassword(request.Password, request.HashedPassword));
     }
 }

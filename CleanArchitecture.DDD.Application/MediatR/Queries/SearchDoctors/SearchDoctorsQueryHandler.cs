@@ -2,17 +2,9 @@
 
 namespace CleanArchitecture.DDD.Application.MediatR.Queries.SearchDoctors;
 
-public sealed class SearchDoctorsQueryHandler
-    : BaseHandler, IRequestHandler<SearchDoctorsQuery, IEnumerable<DoctorCityDTO>>
+public sealed class SearchDoctorsQueryHandler(IAppServices appServices, IValidator<Name> nameValidator) 
+    : BaseHandler(appServices), IRequestHandler<SearchDoctorsQuery, IEnumerable<DoctorCityDTO>>
 {
-    private readonly IValidator<Name> _nameValidator;
-
-    public SearchDoctorsQueryHandler(IAppServices appServices, IValidator<Name> nameValidator)
-        : base(appServices)
-    {
-        _nameValidator = nameValidator;
-    }
-
     public async Task<IEnumerable<DoctorCityDTO>> Handle(SearchDoctorsQuery request, CancellationToken cancellationToken)
     {
         // Ignoring spaces at first and last of input
@@ -24,7 +16,7 @@ public sealed class SearchDoctorsQueryHandler
 
         if (request.And)
         {
-            var validationResult = await _nameValidator.ValidateAsync(name, cancellationToken);
+            var validationResult = await nameValidator.ValidateAsync(name, cancellationToken);
 
             // If we are searching all fields and the input does not represent a valid
             // domain model we do not need to search the database at all because 

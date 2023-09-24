@@ -2,15 +2,9 @@
 
 namespace CleanArchitecture.DDD.Application.MediatR.Queries.GetAllDoctors;
 
-public sealed class GetAllDoctorsQueryHandler
-    : BaseHandler, IRequestHandler<GetAllDoctorsQuery, IEnumerable<DoctorCityDTO>>
+public sealed class GetAllDoctorsQueryHandler(IAppServices appServices) 
+    : BaseHandler(appServices), IRequestHandler<GetAllDoctorsQuery, IEnumerable<DoctorCityDTO>>
 {
-    public GetAllDoctorsQueryHandler(IAppServices appServices)
-        : base(appServices)
-    {
-
-    }
-
     public async Task<IEnumerable<DoctorCityDTO>> Handle(GetAllDoctorsQuery request, CancellationToken cancellationToken)
     {
         var doctorsQuery = DbContext.Doctors.AsNoTracking();
