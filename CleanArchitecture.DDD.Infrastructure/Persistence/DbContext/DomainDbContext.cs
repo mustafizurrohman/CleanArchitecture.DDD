@@ -4,18 +4,13 @@ using CleanArchitecture.DDD.Infrastructure.Persistence.ExtensionMethods;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 
-public class DomainDbContext : DatabaseContext
+public class DomainDbContext(DbContextOptions dbContextOptions) 
+    : DatabaseContext(dbContextOptions)
 {
-    public DomainDbContext(DbContextOptions dbContextOptions)
-        : base(dbContextOptions)
-    {
-    }
-
     // Entities 
     public virtual DbSet<Doctor> Doctors { get; set; }
     public virtual DbSet<Address> Addresses { get; set; }
     public virtual DbSet<Patient> Patients { get; set; }
-
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
