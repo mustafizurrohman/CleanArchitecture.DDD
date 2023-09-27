@@ -1,6 +1,9 @@
-﻿namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Exceptions;
+﻿using CleanArchitecture.DDD.Core.Exceptions;
 
-public class ValidatorNotDefinedException : ApplicationException
+namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Exceptions;
+
+public class ValidatorNotDefinedException 
+    : CoreException
 {
     private string? TypeName { get; } 
     private string ValidatorClassName { get; }
@@ -13,7 +16,7 @@ public class ValidatorNotDefinedException : ApplicationException
         ValidatorClassName = typ.GetFluentValidationBaseClassName();
         
         AssemblyName = typ.GenericTypeArguments.Any()
-            ? typ.GenericTypeArguments.First().GetAssemblyName()
+            ? typ.GenericTypeArguments[0].GetAssemblyName()
             : typ.GetAssemblyName();
     }
     

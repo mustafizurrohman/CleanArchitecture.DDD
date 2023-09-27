@@ -1,7 +1,10 @@
-﻿namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Exceptions;
+﻿using CleanArchitecture.DDD.Core.Exceptions;
+
+namespace CleanArchitecture.DDD.Core.ExtensionMethods.FluentValidation.Exceptions;
 
 /// <inheritdoc />
-public class ValidatorInitializationException : ApplicationException
+public class ValidatorInitializationException 
+    : CoreException
 {
     private string? TypeName { get; }
     private string ValidatorClassName { get; }
