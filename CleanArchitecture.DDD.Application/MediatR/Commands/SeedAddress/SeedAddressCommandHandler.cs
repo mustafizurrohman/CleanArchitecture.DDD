@@ -8,8 +8,7 @@ public sealed class SeedAddressCommandHandler(IAppServices appServices)
 {
     public async Task Handle(SeedAddressCommand request, CancellationToken cancellationToken)
     {
-        var addresses = Enumerable.Range(0, request.Num)
-            .Select(_ => Address.CreateRandom())
+        var addresses = Address.CreateRandom(request.Num)
             .ToImmutableList();
 
         await DbContext.AddRangeAsync(addresses, cancellationToken);

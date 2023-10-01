@@ -1,5 +1,4 @@
-﻿using Bogus;
-using CleanArchitecture.DDD.Core.ExtensionMethods;
+﻿using CleanArchitecture.DDD.Core.ExtensionMethods;
 using CleanArchitecture.DDD.Infrastructure.Persistence.DbContext;
 
 namespace CleanArchitecture.DDD.Infrastructure.Persistence.JSONColumn;

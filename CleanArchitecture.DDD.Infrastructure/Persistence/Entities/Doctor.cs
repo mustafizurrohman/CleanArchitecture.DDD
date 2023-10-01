@@ -132,6 +132,12 @@ public sealed class Doctor
         return doctor;
     }
 
+    public static IEnumerable<Doctor> CreateRandom(int num)
+    {
+        return Enumerable.Range(1, num)
+            .Select(_ => CreateRandom());
+    }
+
 }
 
 

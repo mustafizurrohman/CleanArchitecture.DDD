@@ -1,7 +1,6 @@
 ﻿using System.Collections.Immutable;
 using CleanArchitecture.DDD.Application.Exceptions;
 using CleanArchitecture.DDD.Application.MediatR.Handlers;
-using CleanArchitecture.DDD.Infrastructure.Persistence.Enums;
 
 namespace CleanArchitecture.DDD.Application.MediatR.Commands.SeedDoctors;
 

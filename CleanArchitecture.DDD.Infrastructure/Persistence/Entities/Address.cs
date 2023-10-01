@@ -71,6 +71,12 @@ public sealed class Address
         return address;
     }
 
+    public static IEnumerable<Address> CreateRandom(int num)
+    {
+        return Enumerable.Range(1, num)
+            .Select(_ => CreateRandom());
+    }
+
     public void UpdateAddress(Address updatedAddress)
     {
         StreetAddress = updatedAddress.StreetAddress;
