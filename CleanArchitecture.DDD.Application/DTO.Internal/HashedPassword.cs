@@ -4,9 +4,9 @@ namespace CleanArchitecture.DDD.Application.DTO.Internal;
 
 internal class HashedPassword
 {
-    public string Hash { get; init; }
-    public string Salt { get; init; }
-    public int NumberOfRounds { get; init; }
+    public string Hash { get; }
+    public string Salt { get; }
+    public int NumberOfRounds { get; }
     private string Separator { get; }
 
     private HashedPassword()
@@ -31,7 +31,7 @@ internal class HashedPassword
         Hash = hashParts[0]; 
         Salt = hashParts[1];
 
-        var parseSuccessful = int.TryParse(hashParts[2], out var parsedNumberOfRounds);
+        var parseSuccessful = hashParts[2].TryParse<int>(out var parsedNumberOfRounds);
 
         if (!parseSuccessful)
             throw new InvalidHashedPasswordException();
