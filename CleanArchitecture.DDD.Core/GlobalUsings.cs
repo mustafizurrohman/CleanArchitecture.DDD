@@ -6,7 +6,6 @@ global using System.Text;
 global using System.Text.Json;
 global using FluentValidation;
 global using FluentValidation.Validators;
-global using JetBrains.Annotations;
 global using Polly;
 global using Polly.Registry;
 global using Polly.Wrap;

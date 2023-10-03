@@ -3,18 +3,11 @@ using System.Data;
 
 namespace CleanArchitecture.DDD.Core.Models;
 
-public class DbConnectionString
+public class DbConnectionString(string connectionString)
 {
-    private readonly string _connectionString;
+    public bool IsReachable => IsValidDbConnectionString(connectionString);
 
-    public bool IsReachable => IsValidDbConnectionString(_connectionString);
-
-    public string ConnectionString => _connectionString;
-
-    public DbConnectionString(string connectionString)
-    {
-        _connectionString = connectionString;
-    }
+    public string ConnectionString => connectionString;
 
     private static bool IsValidDbConnectionString(string connectionString)
     {

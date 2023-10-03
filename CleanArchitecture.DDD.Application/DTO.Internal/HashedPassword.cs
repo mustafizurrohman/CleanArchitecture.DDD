@@ -14,14 +14,16 @@ internal class HashedPassword
         Separator = ".";
     }
 
-    public HashedPassword(string hash, string salt, int numberOfRounds) : this()
+    public HashedPassword(string hash, string salt, int numberOfRounds) 
+        : this()
     {
         Hash = hash; 
         Salt = salt;
         NumberOfRounds = numberOfRounds;
     }
 
-    public HashedPassword(string passwordAsHashString) : this()
+    public HashedPassword(string passwordAsHashString) 
+        : this()
     {
         var hashParts = passwordAsHashString.Split(Separator);
 
