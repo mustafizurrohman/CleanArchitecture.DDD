@@ -1,5 +1,5 @@
 ﻿namespace CleanArchitecture.DDD.Domain;
 
-public abstract class DomainAssemblyMarker
+public interface IDomainAssemblyMarker
 {
 }

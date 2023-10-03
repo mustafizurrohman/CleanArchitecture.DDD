@@ -8,7 +8,7 @@ public class TechnicalTests
     [Fact]
     public void VerifyThatAlEntityClassesAreSealedToEnsureBestPractice()
     {
-        var assembly = typeof(InfrastructureAssemblyMarker).Assembly;
+        var assembly = typeof(IInfrastructureAssemblyMarker).Assembly;
 
         var allEntityTypes = AllTypes.From(assembly)
             .ThatAreInNamespace("CleanArchitecture.DDD.Infrastructure.Persistence.Entities");

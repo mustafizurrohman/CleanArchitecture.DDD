@@ -155,7 +155,7 @@ public static class WebExtensionBuilderExtensions
         /*
         // TODO: Order of injection matters here. How can it be influenced?
         builder.Services.Scan(scan =>
-            scan.FromAssemblyOf<ApplicationAssemblyMarker>()
+            scan.FromAssemblyOf<IApplicationAssemblyMarker>()
                 .AddClasses(classes => classes.AssignableTo(typeof(IPipelineBehavior<,>)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime()
@@ -169,11 +169,11 @@ public static class WebExtensionBuilderExtensions
         builder.Services.AddTransient<IAppServices, AppServices>();
 
         builder.Services
-            .RegisterServicesFromAssembly<APIAssemblyMarker>();
+            .RegisterServicesFromAssembly<IAPIAssemblyMarker>();
 
         var excludedTypes = new List<Type> { typeof(EDCMSyncService) };
         builder.Services
-            .RegisterServicesFromAssembly<ApplicationAssemblyMarker>(excludedTypes: excludedTypes);
+            .RegisterServicesFromAssembly<IApplicationAssemblyMarker>(excludedTypes: excludedTypes);
 
         builder.Services.AddMemoryCache();
         builder.Services.Decorate<IDataService, DataServiceCached>();
@@ -244,10 +244,10 @@ public static class WebExtensionBuilderExtensions
         builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
         builder.Services.AddValidatorsFromAssemblies(new[]
         {
-            typeof(CoreAssemblyMarker).Assembly,
-            typeof(ApplicationAssemblyMarker).Assembly,
-            typeof(DomainAssemblyMarker).Assembly,
-            typeof(APIAssemblyMarker).Assembly
+            typeof(ICoreAssemblyMarker).Assembly,
+            typeof(IApplicationAssemblyMarker).Assembly,
+            typeof(IDomainAssemblyMarker).Assembly,
+            typeof(IAPIAssemblyMarker).Assembly
         }, ServiceLifetime.Singleton);
 
         return builder;

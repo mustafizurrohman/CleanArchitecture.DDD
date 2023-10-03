@@ -1,5 +1,5 @@
 ﻿namespace CleanArchitecture.DDD.Core;
 
-public abstract class CoreAssemblyMarker
+public interface ICoreAssemblyMarker
 {
 }

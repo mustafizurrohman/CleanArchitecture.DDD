@@ -1,5 +1,5 @@
 ﻿namespace CleanArchitecture.DDD.API;
 
-public abstract class APIAssemblyMarker
+public interface IAPIAssemblyMarker
 {
 }
