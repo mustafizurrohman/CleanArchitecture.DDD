@@ -12,8 +12,17 @@ public static class ByteExtensions
         return Convert.ToBase64String(input);
     }
 
-    public static byte[] ByeArrayFromBase64String(this string base64String)
+    public static byte[] ByteArrayFromBase64String(this string base64String)
     {
+        if (base64String.IsBase64String())
+            throw new ArgumentException("Input string is not a valid base64 string");
+
         return Convert.FromBase64String(base64String);
+    }
+
+    public static bool IsBase64String(this string inputString)
+    {
+        Span<byte> buffer = new Span<byte>(new byte[inputString.Length]);
+        return Convert.TryFromBase64String(inputString, buffer, out _);
     }
 }
