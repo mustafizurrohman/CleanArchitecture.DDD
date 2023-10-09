@@ -14,7 +14,7 @@ public static class ByteExtensions
 
     public static byte[] ByteArrayFromBase64String(this string base64String)
     {
-        if (base64String.IsBase64String())
+        if (!base64String.IsBase64String())
             throw new ArgumentException("Input string is not a valid base64 string");
 
         return Convert.FromBase64String(base64String);
