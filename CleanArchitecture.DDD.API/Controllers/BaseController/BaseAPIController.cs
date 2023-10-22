@@ -33,12 +33,18 @@ public abstract class BaseAPIController : ControllerBase
     /// <summary>
     /// 
     /// </summary>
+    protected Faker Faker { get; }
+
+    /// <summary>
+    /// 
+    /// </summary>
     /// <param name="appServices"></param>
     protected BaseAPIController(IAppServices appServices)
     {
         DbContext = Guard.Against.Null(appServices.DbContext);
         AutoMapper = Guard.Against.Null(appServices.AutoMapper);
         Mediator = Guard.Against.Null(appServices.Mediator);
+        Faker = Guard.Against.Null(appServices.Faker);
     }
 
 

@@ -18,7 +18,7 @@ public static class HttpContextExtensions
         if (supportCode == string.Empty)
             supportCode = httpContext.TraceIdentifier;
 
-        return supportCode!;
+        return supportCode;
     }
 
 }
