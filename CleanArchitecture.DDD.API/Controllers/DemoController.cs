@@ -78,13 +78,10 @@ public class DemoController(IAppServices appServices)
     )]
     public IActionResult DemoExtensionMethodParse()
     {
-        var randomNumber1 = Faker.Random.Number(50, 100).ToString();
-        var randomNumber2 = Faker.Random.Number(100, 200).ToString();
+        var randomNumber1 = Faker.Random.Number(50, 100).ToString().Parse<int>();
+        var randomNumber2 = Faker.Random.Number(100, 200).ToString().Parse<double>();
 
-        var num1Parsed = randomNumber1.Parse<int>();
-        var num2Parsed = randomNumber2.Parse<double>(); 
-
-        return Ok((num1Parsed, num2Parsed));
+        return Ok((randomNumber1, randomNumber2));
     }
 
 }
