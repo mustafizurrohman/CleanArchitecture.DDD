@@ -89,6 +89,7 @@ public class ValidationController(IAppServices appServices, IFakeDataService fak
     /// 
     /// </summary>
     /// <param name="num"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [ApiExplorerSettings(IgnoreApi = false)]
     [HttpGet("demo/extensionMethod/collection")]
@@ -126,7 +127,7 @@ public class ValidationController(IAppServices appServices, IFakeDataService fak
         _ = await doctorsToValidate.GetModelValidationReportEnumerableAsync().ToArrayAsync(cancellationToken);
         _ = await doctorsToValidate.ToArray().GetModelValidationReportEnumerableAsync().ToListAsync(cancellationToken);
         _ = await doctorsToValidate.ToImmutableArray().GetModelValidationReportEnumerableAsync().ToListAsync(cancellationToken);
-        _ = await doctorsToValidate.ToList().GetModelValidationReportEnumerableAsync().ToListAsync(cancellationToken);
+        _ = await doctorsToValidate.AsEnumerable().GetModelValidationReportEnumerableAsync().ToListAsync(cancellationToken);
         _ = await doctorsToValidate.ToImmutableList().GetModelValidationReportEnumerableAsync().ToListAsync(cancellationToken);
 
         var validationReportJson = validationReport.ToFormattedJsonFailSafe();
@@ -154,7 +155,7 @@ public class ValidationController(IAppServices appServices, IFakeDataService fak
 
         var fakeDoctors = fakeDataService.GetFakeDoctorsWithSomeInvalidData(num).ToList();
 
-        var doctorToValidate = fakeDoctors.First();
+        var doctorToValidate = fakeDoctors[0];
 
         // We have not defined a validator for ExternalFakeDoctorAddressDTO
         // So this  will throw an exception at runtime
