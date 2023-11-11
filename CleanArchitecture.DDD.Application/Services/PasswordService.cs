@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+// ReSharper disable ConvertToPrimaryConstructor
 
 namespace CleanArchitecture.DDD.Application.Services;
 
@@ -36,7 +37,7 @@ public class PasswordService : IPasswordService
     public bool VerifyPassword(string password, string hashedPassword)
     {
         var passwordHash = new HashedPassword(hashedPassword);
-        var salt = passwordHash.Salt.ByteArrayFromBase64String();
+        var salt = passwordHash.Salt.AsByteArrayFromBase64String();
         var hashedPasswordAsBase64 = HashPasswordAsBase64(password, salt, passwordHash.NumberOfRounds);
 
         return passwordHash.Hash == hashedPasswordAsBase64;
