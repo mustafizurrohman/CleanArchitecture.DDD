@@ -17,7 +17,7 @@ public class EFDemoController(IAppServices appServices)
         Summary = "Grouping using Entity Framework",
         Description = DefaultDescription,
         OperationId = "EntityFramework Grouping Demo",
-        Tags = new[] { "EF-Demo" }
+        Tags = ["EF-Demo"]
     )]
     public async Task<IActionResult> GroupDoctorsByCity(CancellationToken cancellationToken)
     {
@@ -84,7 +84,7 @@ public class EFDemoController(IAppServices appServices)
         Summary = "Streaming using Entity Framework",
         Description = DefaultDescription,
         OperationId = "EntityFramework streaming Demo",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     public async Task<IActionResult> GetDoctorsStreaming(CancellationToken cancellationToken)
     {

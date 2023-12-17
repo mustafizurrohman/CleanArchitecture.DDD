@@ -20,7 +20,7 @@ public class PasswordController(IAppServices appServices)
         Summary = "Hash a password",
         Description = DefaultDescription,
         OperationId = "Hash Password",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> HashPassword(string password, CancellationToken cancellationToken)
@@ -44,7 +44,7 @@ public class PasswordController(IAppServices appServices)
         Summary = "Verify a password with provided hash value",
         Description = DefaultDescription,
         OperationId = "Verify Hashed Password",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> VerifyHashPassword(string password, string hashedPassword, CancellationToken cancellationToken)

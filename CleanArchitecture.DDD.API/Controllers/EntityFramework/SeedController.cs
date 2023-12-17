@@ -29,7 +29,7 @@ public class SeedController(IAppServices appServices)
         Summary = "Seed specified number of address in database",
         Description = DefaultDescription,
         OperationId = "Seed Addresses",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(typeof(Tuple<int, long>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -65,7 +65,7 @@ public class SeedController(IAppServices appServices)
         Summary = "Seed specified number of doctors in database",
         Description = DefaultDescription,
         OperationId = "Seed Doctors",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(typeof(Tuple<int, long>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -105,7 +105,7 @@ public class SeedController(IAppServices appServices)
         Summary = "Seed specified number of doctors with address in database",
         Description = DefaultDescription,
         OperationId = "Seed Doctors with Address",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(typeof(Tuple<int, long>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -144,7 +144,7 @@ public class SeedController(IAppServices appServices)
         Summary = "Seed specified number of patient with MasterData in database",
         Description = DefaultDescription,
         OperationId = "Seed Patient",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(typeof(Tuple<int, long>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -172,7 +172,7 @@ public class SeedController(IAppServices appServices)
         Summary = "Prune database",
         Description = DefaultDescription,
         OperationId = "Prune database",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(typeof(Tuple<int, long>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

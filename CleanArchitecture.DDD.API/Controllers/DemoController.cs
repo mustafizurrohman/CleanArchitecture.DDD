@@ -18,7 +18,7 @@ public class DemoController(IAppServices appServices)
         Summary = "Demo of equality of Value Object",
         Description = DefaultDescription,
         OperationId = "Check Value Object for equality",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     public IActionResult TestNameValueObjectForEquality(string name)
     {
@@ -41,7 +41,7 @@ public class DemoController(IAppServices appServices)
         Summary = "Test of random specialization as text",
         Description = DefaultDescription,
         OperationId = "Demo Specialization Enum",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     public IActionResult DemoExtensionMethod()
     {
@@ -74,7 +74,7 @@ public class DemoController(IAppServices appServices)
         Summary = "Test of extension method for parsing",
         Description = DefaultDescription,
         OperationId = "Demo Parsing",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     public IActionResult DemoExtensionMethodParse()
     {

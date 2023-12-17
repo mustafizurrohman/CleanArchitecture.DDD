@@ -25,7 +25,7 @@ public class SearchController(IAppServices appServices)
         Summary = "Searches for doctors from database",
         Description = DefaultDescription,
         OperationId = "Search Doctors",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(typeof(IEnumerable<DoctorCityDTO>), StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchVersion2(

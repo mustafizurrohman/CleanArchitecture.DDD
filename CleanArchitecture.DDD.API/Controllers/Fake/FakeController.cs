@@ -33,7 +33,7 @@ public class FakeController : BaseAPIController
         Summary = "Generates fake doctors",
         Description = "No authentication required",
         OperationId = "GetFakeDoctorsWithSomeInvalidData",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<ExternalFakeDoctorAddressDTO>))]
     public IActionResult GetFakeDoctors(int num = 10, CancellationToken cancellationToken = default)
@@ -61,7 +61,7 @@ public class FakeController : BaseAPIController
         Summary = "Generates fake doctors",
         Description = "No authentication required",
         OperationId = "GetFakeDoctorsWithSomeInvalidData",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<ExternalFakeDoctorAddressDTO>))]
     public IActionResult GetDoctorsWithInvalidData(int num = 10, CancellationToken cancellationToken = default)

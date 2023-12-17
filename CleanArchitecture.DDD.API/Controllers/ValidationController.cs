@@ -21,7 +21,7 @@ public class ValidationController(IAppServices appServices, IFakeDataService fak
         Summary = "Demo of validation of Value Object",
         Description = DefaultDescription,
         OperationId = "Validate Value Object",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     public IActionResult TestNameValueObject(string name)
     {
@@ -44,7 +44,7 @@ public class ValidationController(IAppServices appServices, IFakeDataService fak
         Summary = "Demo of input validation using FluentValidation",
         Description = DefaultDescription,
         OperationId = "Input Validation",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -65,7 +65,7 @@ public class ValidationController(IAppServices appServices, IFakeDataService fak
         Summary = "Demo of Extension method for a single object",
         Description = DefaultDescription,
         OperationId = "Extension Method Validation",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -97,7 +97,7 @@ public class ValidationController(IAppServices appServices, IFakeDataService fak
         Summary = "Demo of Extension method for IEnumerable",
         Description = DefaultDescription,
         OperationId = "Extension Method IEnumerable Validation",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -147,7 +147,7 @@ public class ValidationController(IAppServices appServices, IFakeDataService fak
         Summary = "Demo of incorrect usage of Extension method",
         Description = DefaultDescription,
         OperationId = "Extension Method Validation Incorrect usage",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     public async Task<IActionResult> DemoExtensionMethodErrorForObject(int num = 100)
     {
@@ -175,7 +175,7 @@ public class ValidationController(IAppServices appServices, IFakeDataService fak
         Summary = "Demo of incorrect usage of Extension method for IEnumerable",
         Description = DefaultDescription,
         OperationId = "Extension Method IEnumerable Incorrect usage",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     public async Task<IActionResult> DemoExtensionMethodErrorForCollection(int num = 100)
     {

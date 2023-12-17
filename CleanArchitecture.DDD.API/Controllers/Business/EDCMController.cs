@@ -25,7 +25,7 @@ public class EDCMController(IAppServices appServices, IEDCMSyncService iedcmSync
         Summary = "Gets doc from a fake external data service",
         Description = DefaultDescription,
         OperationId = "Sync Doctors",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status504GatewayTimeout)]
@@ -55,7 +55,7 @@ public class EDCMController(IAppServices appServices, IEDCMSyncService iedcmSync
         Summary = "Gets doc from a fake external data service as a Background task",
         Description = DefaultDescription,
         OperationId = "SyncDocBackground",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult SyncDoctorsInBackground()

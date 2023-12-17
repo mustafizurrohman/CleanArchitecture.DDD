@@ -17,7 +17,7 @@ public class EFBulkExtensionsDemoController(IAppServices appServices)
         Summary = "Demo of soft delete extension method on IEnumerable using Bulk Extension methods",
         Description = DefaultDescription,
         OperationId = "Demo soft delete Extension Method on IEnumerable using Bulk Extension methods",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     public async Task<IActionResult> DemoSoftDeleteBulkCollection(CancellationToken cancellationToken)
     {
@@ -45,7 +45,7 @@ public class EFBulkExtensionsDemoController(IAppServices appServices)
         Summary = "Demo of undo soft delete extension method on IEnumerable using Bulk Extension methods",
         Description = DefaultDescription,
         OperationId = "Demo undo soft delete Extension Method on IEnumerable using Bulk Extension methods",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     public async Task<IActionResult> DemoUndoSoftDeleteUndoBulkCollection(CancellationToken cancellationToken)
     {
@@ -74,7 +74,7 @@ public class EFBulkExtensionsDemoController(IAppServices appServices)
         Summary = "Demo of bulk delete",
         Description = DefaultDescription,
         OperationId = "Demo of bulk delete",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     public async Task<IActionResult> DemoBulkDelete(IEnumerable<Guid> ids, CancellationToken cancellationToken)
     {

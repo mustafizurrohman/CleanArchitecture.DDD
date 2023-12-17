@@ -26,7 +26,7 @@ public class DependencyInjectionController(IAppServices appServices)
         Summary = "Demo of DI using scrutor",
         Description = DefaultDescription,
         OperationId = "Test Scrutor",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public IActionResult TestScrutor([FromServices] ITestService testService)
@@ -45,7 +45,7 @@ public class DependencyInjectionController(IAppServices appServices)
         Summary = "Demo of DI of multiple services using scrutor",
         Description = DefaultDescription,
         OperationId = "Test Scrutor Multiple",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public IActionResult TestScrutorMultipleServices([FromServices] IEnumerable<ITestService> testServices, bool descending)
@@ -80,7 +80,7 @@ public class DependencyInjectionController(IAppServices appServices)
         Summary = "Demo of Decoration of services using scrutor",
         Description = DefaultDescription,
         OperationId = "Test Scrutor Decoration",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(typeof(IEnumerable<DemoData>), StatusCodes.Status200OK)]
     public async Task<IActionResult> TestScrutorDecoration([FromServices] IDataService dataService)

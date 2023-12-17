@@ -19,7 +19,7 @@ public class LoggingController(IAppServices appServices)
         Summary = "Demo for logging using param",
         Description = DefaultDescription,
         OperationId = "Log Generation Demo with Parameter",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     public IActionResult LogDemo(CancellationToken cancellationToken, string? randomParameter)
     {
@@ -53,7 +53,7 @@ public class LoggingController(IAppServices appServices)
         Summary = "Demo for logging using param",
         Description = DefaultDescription,
         OperationId = "Log Generation Demo with Parameter",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     public IActionResult LoggingScopeDemo(CancellationToken _)
     {
@@ -84,7 +84,7 @@ public class LoggingController(IAppServices appServices)
         Summary = "Demo of exception logging and Traceability and Support Code",
         Description = DefaultDescription,
         OperationId = "Log Traceability",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     public async Task<IActionResult> TestExceptionLogging(CancellationToken cancellationToken)
     {
@@ -104,7 +104,7 @@ public class LoggingController(IAppServices appServices)
         Summary = "Demo for Generation of logs for Seq Visualization",
         Description = DefaultDescription,
         OperationId = "Log Generation Demo",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     public async Task<IActionResult> LogGenerationDemo(CancellationToken cancellationToken, int iterations = 10, bool withDelay = true)
     {

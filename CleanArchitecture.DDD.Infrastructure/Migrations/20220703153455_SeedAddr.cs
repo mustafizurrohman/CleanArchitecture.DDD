@@ -14,7 +14,7 @@ namespace CleanArchitecture.DDD.Infrastructure.Migrations
         {
             migrationBuilder.InsertData(
                 table: "Addresses",
-                columns: new[] { "ID", "City", "Country", "CreatedOn", "StreetAddress", "UpdatedOn", "ZipCode" },
+                columns: ["ID", "City", "Country", "CreatedOn", "StreetAddress", "UpdatedOn", "ZipCode"],
                 values: new object[,]
                 {
                     { new Guid("00dbe4a4-3951-4699-a46b-8acde08f0a38"), "Jamrozyscheid", "Schweiz", null, "Lohrbergstr.", null, "67147" },

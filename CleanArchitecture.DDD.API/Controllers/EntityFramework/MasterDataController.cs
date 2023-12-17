@@ -20,7 +20,7 @@ public class MasterDataController(IAppServices appServices)
         Summary = "Retrieves all doctors from database",
         Description = DefaultDescription,
         OperationId = "Get All Doctors",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Doctor was retrieved", typeof(IEnumerable<Doctor>))]
     public async Task<IActionResult> GetAllDoctors(CancellationToken cancellationToken, bool includeSoftDeleted = false)
@@ -49,7 +49,7 @@ public class MasterDataController(IAppServices appServices)
         Summary = "Retrieves all patients from database younger than specified number of years",
         Description = DefaultDescription,
         OperationId = "Get All Young Patients",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Young patients was retrieved", typeof(IEnumerable<Patient>))]
     public async Task<IActionResult> Patients(CancellationToken cancellationToken, int years, bool includeSoftDeleted = false)
@@ -71,7 +71,7 @@ public class MasterDataController(IAppServices appServices)
         Summary = "Inactivate an existing patient",
         Description = DefaultDescription,
         OperationId = "Inactivate Patient",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [SwaggerResponse(StatusCodes.Status200OK, "Patient was inactivated")]
     public async Task<IActionResult> InactivatePatient(CancellationToken cancellationToken, Guid patientId)

@@ -20,7 +20,7 @@ public class HealthController(IAppServices appServices, HealthCheckService healt
         Summary = "Health Check Endpoint",
         Description = DefaultDescription,
         OperationId = "Health Check Endpoint",
-        Tags = new[] { DefaultControllerTag }
+        Tags = [DefaultControllerTag]
     )]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
