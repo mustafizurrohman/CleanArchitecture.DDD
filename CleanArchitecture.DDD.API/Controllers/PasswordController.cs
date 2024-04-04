@@ -26,9 +26,9 @@ public class PasswordController(IAppServices appServices)
     public async Task<IActionResult> HashPassword(string password, CancellationToken cancellationToken)
     {
         var hashPasswordQuery = new HashPasswordQuery(password);
-        var result = await Mediator.Send(hashPasswordQuery, cancellationToken);
+        var hashPasswordResult = await Mediator.Send(hashPasswordQuery, cancellationToken);
 
-        return Ok(result);
+        return Ok(hashPasswordResult);
     }
 
     /// <summary>
@@ -50,9 +50,9 @@ public class PasswordController(IAppServices appServices)
     public async Task<IActionResult> VerifyHashPassword(string password, string hashedPassword, CancellationToken cancellationToken)
     {
         var hashPasswordVerificationQuery = new HashPasswordVerificationQuery(password, hashedPassword);
-        var result = await Mediator.Send(hashPasswordVerificationQuery, cancellationToken);
+        var verificationResult = await Mediator.Send(hashPasswordVerificationQuery, cancellationToken);
 
-        return Ok(result);
+        return Ok(verificationResult);
     }
 
 }

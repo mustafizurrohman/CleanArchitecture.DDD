@@ -29,6 +29,7 @@ public class EFDemoController(IAppServices appServices)
             // .Include(doc => doc.Address)
             .Select(doc => new
             {
+                doc.Name,
                 doc.FullName,
                 doc.Specialization,
                 doc.Address.City
@@ -41,6 +42,7 @@ public class EFDemoController(IAppServices appServices)
                 City = grp.Key,
                 Doctors = grp.Select(doc => new
                 {
+                    doc.Name,
                     doc.FullName,
                     Specialization = doc.Specialization.ToString()
                 }),
@@ -62,7 +64,9 @@ public class EFDemoController(IAppServices appServices)
                     .Select(docSp => new
                     {
                         Specialization = docSp.Key.ToSpecialization().ToStringCached(),
-                        Doctors = docSp.Select(dsp => dsp.FullName),
+                        Doctors = docSp.OrderBy(dsp => dsp.Name.Lastname)
+                            .ThenBy(dsp => dsp.Name.Firstname)
+                            .Select(dsp => dsp.FullName),
                         Count = docSp.Count()
                     })
             })
