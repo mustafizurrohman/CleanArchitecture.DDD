@@ -139,7 +139,7 @@ public static class EnumerableValidationExtensions
     private static IValidator<T> GetValidator<T>(this IEnumerable<T> _)
         where T : class, new()
     {
-        IValidator<T> validatorInstance;
+        IValidator<T>? validatorInstance;
 
         try
         {
@@ -151,7 +151,12 @@ public static class EnumerableValidationExtensions
                 .First(typ => typ.IsSubclassOf(genericType))
                 ?? throw new ValidatorNotDefinedException(typeof(T));
 
-            validatorInstance = (IValidator<T>)Activator.CreateInstance(validatorTypeInstance)!;
+            validatorInstance = (IValidator<T>?)Activator.CreateInstance(validatorTypeInstance);
+
+            if (validatorInstance is null)
+                throw new ValidatorInitializationException(typeof(T), new Exception("Cannot instantiate a validator instance"));
+
+            return validatorInstance;
 
         }
         catch (Exception ex)
